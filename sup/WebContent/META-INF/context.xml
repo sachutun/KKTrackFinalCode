@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+	<!-- Specify a JDBC datasource -->
+	
+	<Resource name="jdbc/KKTrack" auth="Container"
+		type="javax.sql.DataSource" username="root" password="Test1234"
+		driverClassName="com.mysql.jdbc.Driver"
+		url='jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack'
+		maxActive="10" maxIdle="4" />
+ <ResourceLink name="jdbc/KKTrack"
+             global="jdbc/KKTrack"
+              type="javax.sql.DataSource" />
+</Context>
