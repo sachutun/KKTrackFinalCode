@@ -99,34 +99,37 @@ int i=0;
                   <li><a><i class="fa fa-home"></i> Home </a>
                     
                   </li>
-                  <li><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
+                  <li class="hide4store"><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li ><a href="expenseform.jsp">Add New Expense</a></li>
-                      <li class="userv"><a href="expenses.jsp">View Expenses</a></li>
+                         <li class="hide4acc&store" ><a href="expenseform.jsp">Add New Expense</a></li>
+                      <li class="hide4store"><a href="expenses.jsp">View Expenses</a></li>
+                      <li class="hide4store"><a href="PurchaseCost.jsp">View Purchase Costs</a></li>
+                       <li class="hide4store"><a href=CashTransfer.jsp>View Cash Transfers</a></li>
                     </ul>
                   </li>
-                  <li class="acc"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
+                 <li class="hide4acc&store"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                       <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
-                      <li  class="userv"><a href="viewpurchase.jsp">View Purchase</a></li>
-                      <li  class="userv"><a href="creditpurchase.jsp">Credit Purchase</a></li>
-                      <li  class=admin><a href="printpurchase.jsp">Print Purchase</a></li>
-                      <li class="admin"><a>Purchase Returns</a>
+                      <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
+                      <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
+                      <li  class="hide4store"><a href="printpurchase.jsp">Print Purchase</a></li>
+                      <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
+                      <li class="hide4store"><a>Purchase Returns</a>
                       <ul class="nav child_menu">
-                      <li><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
-                      <li><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
+                      <li class="hide4store"><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
+                      <li class="admin"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
                     </ul>
                       </li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
+                  <li class="hide4store"><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addsale.jsp">Add New Sale</a></li>
-                      <li  class="userv"><a href="viewsale.jsp">View Sale</a></li>
-                      <li class="userv"><a href="creditsale.jsp">Credit Sale</a></li>
-                      <li><a href="creditalert.jsp">Credit Alert</a></li>
-                      <li class="userv"><a href="printsale.jsp">Print Sale</a></li>
-                      <li class="userv"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
+                      <li class="hide4acc&store"><a href="addsale.jsp">Add New Sale</a></li>
+                      <li  class="hide4store"><a href="viewsale.jsp">View Sale</a></li>
+                      <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
+                      <li class="hide4acc&store"><a href="creditalert.jsp">Credit Alert</a></li>
+                      <li class="hide4acc&store"><a href="printsale.jsp">Print Sale</a></li>
+                      <li class="hide4acc&store"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                       <li><a href="viewsalereturn.jsp">View Returned Sale items</a></li>
                       <li><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
@@ -136,25 +139,26 @@ int i=0;
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> Inventory <span class="fa fa-chevron-down"></span></a>
                    <ul class="nav child_menu">
-                   <li><a href="viewinventory.jsp">View Stock</a></li>
-                   <li class="admin"><a href="viewinvbal.jsp">View Overall Stock</a></li>
-                   <li><a href="CodeList.jsp">View Code List</a></li>
-                   <li><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li ><a href="viewinventory.jsp">View Stock</a></li>
+                   <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
+                   <li ><a href="CodeList.jsp">View Code List</a></li>
+                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
                 </ul>
               </div>
+
             </div>
-       
+
           </div>
         </div>
 <%   
@@ -242,6 +246,9 @@ if(user==null)
                   
                   <div class="x_content">
         <form action="ibtedit.jsp">   
+        <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+        
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
        <table class="table ">
                
@@ -344,6 +351,7 @@ while(resultSet.next()){
  <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getString("IBTDetails.Qty")%> >
   <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
   <input type="hidden" id="sd" name="sd" value=<%=cn %> > 
+  
 </td>
 <td style="width: 10%;"><a href="delibt.jsp?deleteid=<%=primaryKey %>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>&code<%=i %>=<%=rs.getString("IBTDetails.Code")%>&q<%=i %>=<%=rs.getString("IBTDetails.Qty")%>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td>
 
@@ -436,12 +444,58 @@ function chsn(i)
 		var role=document.getElementById('urole').value;
 		if(role!=null && role!="1")
 		{
-		var elements = document.getElementsByClassName('admin');
+			var elements = document.getElementsByClassName('admin');
 
-	    for (var i = 0; i < elements.length; i++){
-	        elements[i].style.display = "none";
-	    }
+	    		for (var i = 0; i < elements.length; i++){
+	        		elements[i].style.display = "none";
+	    		}
 		
+		}
+		if(role!=null && role=="2")
+		{
+			var elements = document.getElementsByClassName('hide4branch');
+
+	   		 for (var i = 0; i < elements.length; i++){
+	        		elements[i].style.display = "none";
+	    		}
+		}
+		/* if(role!=null && role=="3")
+		{
+			var elements = document.getElementsByClassName('userv');
+
+			for (var i = 0; i < elements.length; i++){
+	    		elements[i].style.display = "none";
+			}
+		} */
+
+		if(role!=null && role=="4")
+		{
+			var elements = document.getElementsByClassName('hide4store');
+
+			for (var i = 0; i < elements.length; i++){
+	    			elements[i].style.display = "none";
+		    }
+			var elements1 = document.getElementsByClassName('hide4acc&store');
+
+			for (var j = 0; j < elements1.length; j++){
+	    			elements1[j].style.display = "none";
+		    }
+		    
+		}
+		if(role!=null && role=="5")
+		{
+			var elements = document.getElementsByClassName('hide4acc&store');
+
+			for (var i = 0; i < elements.length; i++){
+	    			elements[i].style.display = "none";
+			}
+			var elements1 = document.getElementsByClassName('hide4acc');
+
+			for (var j = 0; j < elements1.length; j++){
+	    			elements1[j].style.display = "none";
+		    }
+		    
+			document.getElementById("br").style.display="block";
 		}
     $('#ex').DataTable( {
     	"processing": true,
