@@ -63,9 +63,23 @@ int sno=1;
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+      <style>
+        .no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 600000000;
+	background: url(images/Preloader_2.gif) center no-repeat #fff;
+}
+  </style>
   </head>
 
   <body class="nav-md">
+   <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -130,15 +144,15 @@ int sno=1;
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -228,8 +242,8 @@ if(user==null)
                         <div class="col-md-1 col-sm-3 col-xs-3">
                           <input type="text" id="sno" class="form-control col-md-7 col-xs-12" name="sno">
                         </div>
-             <div class="col-md-3 col-sm-3 col-xs-4 admin" id="br">
-                          <select class="select2_single form-control" tabindex="-1" name="branch" id="branch">
+             <div class="col-md-3 col-sm-3 col-xs-4" id="br">
+                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
                             <option value="All">All Branches</option>
                             
@@ -250,6 +264,7 @@ if(user==null)
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled>
                         </div>
                        <button type="submit" class="btn btn-success " >Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -520,6 +535,7 @@ finally {
     	localStorage.setItem("daterange", document.getElementById('daterange').innerHTML);
     }
 $(window).load(function () {
+	$(".se-pre-con").fadeOut("slow");
 	 var s = document.getElementById("branch");
 	 document.getElementById('sno').value=localStorage.getItem("sno");
 	 document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
@@ -595,6 +611,11 @@ $(document).ready(function() {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+ 		var elements = document.getElementsByClassName('user');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "block";
+	    }
 	}
 	/* if(role!=null && role=="3")
 	{

@@ -55,6 +55,19 @@ ResultSet rs = null;
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+     <style>
+        .no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 600000000;
+	background: url(images/Preloader_2.gif) center no-repeat #fff;
+}
+  </style>
   </head>
 <script language="javascript" type="text/javascript">  
  var xmlHttp  
@@ -91,6 +104,7 @@ xmlHttp.send(null);
   
  </script>  
   <body class="nav-md">
+    <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -156,15 +170,15 @@ xmlHttp.send(null);
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -522,7 +536,7 @@ function d(){
 	localStorage.setItem("daterange", document.getElementById('daterange').innerHTML);
 }
 $(window).load(function () {
-
+ $(".se-pre-con").fadeOut("slow");
  document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
  document.getElementById('std').value=localStorage.getItem("std"); 
  document.getElementById('end').value=localStorage.getItem("end"); 
@@ -601,11 +615,6 @@ $(document).ready(function() {
 		for (var i = 0; i < elements.length; i++){
   			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
-
-		for (var j = 0; j < elements1.length; j++){
-  			elements1[j].style.display = "none";
-	    }
 	    
 		document.getElementById("br").style.display="block";
 	}

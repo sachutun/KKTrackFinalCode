@@ -56,9 +56,23 @@ ResultSet rs = null;
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+      <style>
+        .no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 600000000;
+	background: url(images/Preloader_2.gif) center no-repeat #fff;
+}
+  </style>
   </head>
  
   <body class="nav-md">
+    <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -134,15 +148,15 @@ ResultSet rs = null;
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -216,8 +230,8 @@ if(user==null)
                           <input type="text" id="cn" class="form-control col-md-7 col-xs-12" name="cn" >
                         </div>
                      <label class="control-label col-md-1 col-sm-1 col-xs-2 admin"  for="branch">Branch</label>   
-             <div class="col-md-3 col-sm-3 col-xs-4 admin">
-                          <select class="select2_single form-control" tabindex="-1" name="branch" id="branch" >
+             <div class="col-md-3 col-sm-3 col-xs-4">
+                          <select class="select2_single form-control admin" tabindex="-1" name="branch" id="branch" >
                             <option value="">Select A Branch</option>
                             <option value="">All Branches</option>
                                   <option value="Bowenpally">Bowenpally</option>
@@ -236,6 +250,7 @@ if(user==null)
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                         <button type="submit" class="btn btn-success" onclick="d()">Go </button>
                         <button  class="btn btn-success" type="reset" onclick="window.location.reload(true)">Refresh </button>
@@ -496,6 +511,11 @@ $(document).ready(function() {
     		for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+    		var elements = document.getElementsByClassName('user');
+
+    	    for (var i = 0; i < elements.length; i++){
+    	        elements[i].style.display = "block";
+    	    }
 	
 	}
 	if(role!=null && role=="2")
@@ -536,11 +556,6 @@ $(document).ready(function() {
 		for (var i = 0; i < elements.length; i++){
     			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
 	    
 		document.getElementById("br").style.display="block";
 	}
@@ -574,6 +589,7 @@ function d(){
     	localStorage.setItem("dc", document.getElementById('dc').value);
 }
     $(window).load(function () {
+    	$(".se-pre-con").fadeOut("slow");
     	 var s = document.getElementById("branch");
    /* 
    document.getElementById('single_cal3').value=localStorage.getItem("sd"); 

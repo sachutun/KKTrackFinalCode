@@ -189,15 +189,15 @@ xmlHttp.send(null);
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -957,11 +957,6 @@ $(document).ready(function() {
 			for (var i = 0; i < elements.length; i++){
 	    			elements[i].style.display = "none";
 			}
-			var elements1 = document.getElementsByClassName('hide4acc');
-
-			for (var j = 0; j < elements1.length; j++){
-	    			elements1[j].style.display = "none";
-		    }
 		    
 			document.getElementById("br").style.display="block";
 		}
