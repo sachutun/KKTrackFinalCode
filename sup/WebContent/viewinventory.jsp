@@ -410,6 +410,7 @@ var table= $('#ex').DataTable( {
             %> --%>
                                             <th>Quantity</th>
                                              <th>Bin Location</th>
+                                             <th>Min Level</th>
                                              <%
             if(role!=null && role.equals("1"))
             {
@@ -455,6 +456,7 @@ var table= $('#ex').DataTable( {
             %> --%>
                                             <th>Quantity</th>
                                              <th>Bin Location</th>
+                                             <th>Min Level</th>
                                                                                  <%
             if(role!=null && role.equals("1"))
             {
@@ -741,7 +743,7 @@ var table=$('#ex').DataTable( {
 	    } );
 	    if(role!=null && role=="1")
 		{
-	    	  table.column(9).visible(false);
+	    	  table.column(10).visible(false);
 		
 		}
 	    function hideprices()
@@ -751,7 +753,7 @@ var table=$('#ex').DataTable( {
 	        for (var i = 0; i < elements.length; i++){
 	        	elements[i].style.display = "table-cell";
 	        }
-	        table.column(9).visible(true);
+	        table.column(10).visible(true);
 	    }
 	    var h= $('.right_col').height()+200;
 	    $('.right_col').animate({height:h}, 500);
