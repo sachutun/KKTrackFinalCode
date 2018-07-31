@@ -88,7 +88,7 @@ session.setAttribute("role",role);
     }
   td.highlight {
         font-weight: bold;
-        color: blue;
+        color: #ce1a1a;
     }
     tfoot input {
         width: 100%;
@@ -147,7 +147,15 @@ var table= $('#ex').DataTable( {
        "lengthMenu": [[25, 50, 100, -1], [25, 50,100, "All"]],
        "sAjaxSource":"datatableinv.jsp?ubranch="+ubran+"&role="+role+"&br="+str,
        scrollY:        '50vh',
-       scrollCollapse: true,
+       scrollCollapse: true,  
+       "createdRow": function ( row, data, index ) {
+       		var quantity=$('td', row).eq(7).html();      	
+			var minLevel= $('td', row).eq(9).html();
+     		if((minLevel != null || minLevel != "") && parseInt(quantity) < parseInt(minLevel))
+   	 		{
+   				$('td', row).addClass('highlight');
+    	 		}
+		},
    /*     "createdRow": function ( row, data, index ) {
           
                $('td', row).eq(5).addClass('highlight');}, */
@@ -411,7 +419,7 @@ var table= $('#ex').DataTable( {
                                             <th>Quantity</th>
                                              <th>Bin Location</th>
                                              <th>Min Level</th>
-                                             <%
+                    <%--                          <%
             if(role!=null && role.equals("1"))
             {
            
@@ -419,7 +427,7 @@ var table= $('#ex').DataTable( {
                                             <th class="">LC</th>
                                             	<%
             }
-            %>
+            %> --%>
                                         </tr>
                       </thead>
                         <tfoot>
@@ -457,7 +465,7 @@ var table= $('#ex').DataTable( {
                                             <th>Quantity</th>
                                              <th>Bin Location</th>
                                              <th>Min Level</th>
-                                                                                 <%
+                                                                                <%--  <%
             if(role!=null && role.equals("1"))
             {
            
@@ -465,7 +473,7 @@ var table= $('#ex').DataTable( {
                                             <th class="">LC</th>
                                             	<%
             }
-            %>
+            %> --%>
             </tr>
         </tfoot> 
                         <tbody id="country">
@@ -716,6 +724,15 @@ var table=$('#ex').DataTable( {
 	        "sAjaxSource":"datatableinv.jsp?ubranch="+ubran+"&role="+role,
 	        scrollY:        '50vh',
 	        scrollCollapse: true,
+	        "createdRow": function ( row, data, index ) {
+	        		var quantity=$('td', row).eq(7).html();      	
+	        		var minLevel= $('td', row).eq(9).html();
+	       
+		         if((minLevel != null || minLevel != "") && parseInt(quantity) < parseInt(minLevel))
+		       	 {
+               		$('td', row).addClass('highlight');
+		        	 }
+	        	}, 
 	        "columnDefs": [
 	            { "targets": [1], "searchable": false },
 	            /* { "targets": [8], "visible": false } */
