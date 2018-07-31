@@ -245,15 +245,15 @@ var table= $('#ex').DataTable( {
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -320,8 +320,8 @@ var table= $('#ex').DataTable( {
                   <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
                       
-             <div class="col-md-3 col-sm-3 col-xs-3 admin" id="br">
-                          <select class="select2_single form-control " tabindex="-1" name="branch" id="branch" onchange=showState() >
+             <div class="col-md-3 col-sm-3 col-xs-3" id="br">
+                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch" onchange=showState() >
                             <option value="">All Branches</option>
                                   <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
@@ -339,6 +339,7 @@ var table= $('#ex').DataTable( {
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
+                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div><!-- 
                         <button type="button" class="btn btn-success" onclick=showState()>Go </button> -->
                         <input id="b1" class="form-control col-md-7 col-xs-12" type="hidden"  >
@@ -354,11 +355,11 @@ var table= $('#ex').DataTable( {
                       <br/>
                       <br/>
                     
-                       <div style=" float:right; margin-right: 10px; margin-top: -10px;">
+                       <div class="hide4branch&acc" style=" float:right; margin-right: 10px; margin-top: -10px;">
            
               <a class="hide4acc&store" href="AddCode.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
-                   <a href="viewinventory.jsp"> <button type="button" class="btn btn-info">View </button></a>
+                   <a class="hide4acc&store" href="viewinventory.jsp"> <button type="button" class="btn btn-info">View </button></a>
                     <a class="hide4acc&store" href="inventoryAdjustment.jsp" style="color:white;">   <button type="button" class="btn btn-warning admin">Adjust</button></a>
              <a id="bup" href="binlocupdate.jsp" style="color:white; display:none">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Bin Update</button></a>
              </div>       
@@ -645,6 +646,16 @@ var table= $('#ex').DataTable( {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+   		var elements = document.getElementsByClassName('user');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "block";
+	    }
+	    var elements = document.getElementsByClassName('hide4branch&acc');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "none";
+	    }
 	}
 	/* if(role!=null && role=="3")
 	{
@@ -680,11 +691,11 @@ var table= $('#ex').DataTable( {
 		for (var i = 0; i < elements.length; i++){
     			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
+		var elements = document.getElementsByClassName('hide4branch&acc');
 
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		for (var i = 0; i < elements.length; i++){
+		    elements[i].style.display = "none";
+		}
 		document.getElementById("br").style.display="block";
 		
 	}

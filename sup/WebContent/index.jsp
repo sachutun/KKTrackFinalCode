@@ -41,6 +41,19 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style>
+        .no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 600000000;
+	background: url(images/Preloader_2.gif) center no-repeat #fff;
+}
+  </style>
      <script>
   function ref()
   {

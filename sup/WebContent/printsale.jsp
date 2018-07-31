@@ -183,15 +183,15 @@ xmlHttp.send(null);
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -267,8 +267,8 @@ if(user==null)
                         <div class="col-md-1 col-sm-3 col-xs-3">
                           <input type="text" id="code" class="form-control col-md-7 col-xs-12" name="code">
                         </div>
-             <div class="col-md-3 col-sm-3 col-xs-4 admin">
-                          <select class="select2_single form-control" tabindex="-1" name="branch" id="branch">
+             <div class="col-md-3 col-sm-3 col-xs-4">
+                          <select class="select2_single form-control admin" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
                             <option value="All">All Branches</option>
                               <option value="Bowenpally">Bowenpally</option>
@@ -287,6 +287,7 @@ if(user==null)
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -669,6 +670,11 @@ $(document).ready(function() {
     		for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+    		var elements = document.getElementsByClassName('user');
+
+    	    for (var i = 0; i < elements.length; i++){
+    	        elements[i].style.display = "block";
+    	    }
 	
 	}
 	if(role!=null && role=="2")
@@ -709,11 +715,6 @@ $(document).ready(function() {
 		for (var i = 0; i < elements.length; i++){
     			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
 	    
 		document.getElementById("br").style.display="block";
 	}	   

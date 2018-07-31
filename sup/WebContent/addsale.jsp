@@ -57,6 +57,19 @@ ResultSet resultSet = null;
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style>
+        .no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 600000000;
+	background: url(images/Preloader_2.gif) center no-repeat #fff;
+}
+  </style>
   </head>
               <script language="javascript">var p = false;</script>
  <script language="javascript" type="text/javascript">  
@@ -107,6 +120,7 @@ xmlHttp.send(null);
   
  </script>  
  <body  class="nav-md">
+ <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -169,15 +183,15 @@ xmlHttp.send(null);
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -272,7 +286,7 @@ String role=(String)session.getAttribute("role");
                       <div class="form-group">
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-10">
-                          <select class="select2_single form-control" tabindex="-1" id="branch" name="branch" required="required">
+                          <select class="select2_single form-control admin" tabindex="-1" id="branch" name="branch" required="required">
                             <option></option>
                               <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
@@ -291,6 +305,7 @@ String role=(String)session.getAttribute("role");
                             <option value="Chittoor">Chittoor</option>
                              
                           </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
@@ -773,6 +788,12 @@ function cls(elt)
 	    {
 	        elements[i].style.display = "none";
 	    }
+		var elements = document.getElementsByClassName('user');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "block";
+	    }
+
 	    var s=document.getElementById('branch');
          if(s!=null)
         	 {
@@ -842,12 +863,7 @@ function cls(elt)
 
 			for (var i = 0; i < elements.length; i++){
 	    			elements[i].style.display = "none";
-			}
-			var elements1 = document.getElementsByClassName('hide4acc');
-
-			for (var j = 0; j < elements1.length; j++){
-	    			elements1[j].style.display = "none";
-		    }
+			}	
 		    
 			document.getElementById("br").style.display="block";
 		}
@@ -893,6 +909,9 @@ for (var i = 0; i < elements.length; i++){
 } */
 
  }); 
+ $(window).load(function () {
+		$(".se-pre-con").fadeOut("slow");
+	});
 </script>
 <!-- <script>
     // Run on page load

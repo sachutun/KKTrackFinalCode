@@ -183,15 +183,15 @@ xmlHttp.send(null);
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
                       <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                 
@@ -294,6 +294,7 @@ if(user==null)
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled>
                         </div>
                              
                         <button type="submit" class="btn btn-success " onclick="d()" style="margin-top: 1%">Go </button>
@@ -313,7 +314,7 @@ if(role!=null && !(role.equals("1")))
 String std=request.getParameter("std");
  String end=request.getParameter("end");	
                    %>
-            <div style=" float:right; margin-right: 10px; margin-top:-50px">
+            <div class="admin" style=" float:right; margin-right: 10px; margin-top:-50px">
 
             <a href="addsale.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
@@ -387,7 +388,7 @@ try{
 statement=connection.createStatement();
 st=connection.createStatement();
 st2=connection.createStatement();
-String sql1 ="SELECT DISTINCT * FROM Purchases";
+String sql1 ="SELECT DISTINCT * FROM Purchases where Month(Date) in( Month(CURDATE()))";
 if (branch!=null && branch.length()!=0 )
 	sql1 ="SELECT DISTINCT * FROM Purchases where Branch='"+branch+"'";
 if(std!=null)
@@ -577,6 +578,11 @@ $(document).ready(function() {
     		for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+    		var elements = document.getElementsByClassName('user');
+
+    	    for (var i = 0; i < elements.length; i++){
+    	        elements[i].style.display = "block";
+    	    }
 	
 	}
 	if(role!=null && role=="2")
@@ -617,11 +623,6 @@ $(document).ready(function() {
 		for (var i = 0; i < elements.length; i++){
     			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
 	    
 		document.getElementById("br").style.display="block";
 	}	   
