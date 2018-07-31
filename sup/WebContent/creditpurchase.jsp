@@ -316,7 +316,10 @@ if(user==null)
                   <div class="x_title">
                     <h2>View Credit Purchases</h2>
                    <%  String branch = request.getParameter("branch");
-                
+                   if(branch!=null && branch.equals("All"))
+                	    branch="";
+                	if(role!=null && !(role.equals("1")))
+                		   branch=uBranch;
                    %>
                        <%--  <label style="float:right" ><%= branch %></label> --%>
                     <div class="clearfix"></div>
