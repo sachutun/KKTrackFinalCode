@@ -236,10 +236,9 @@ if(user==null)
                         </div> -->
                      <label class="control-label col-md-1 col-sm-1 col-xs-2"  for="branch">Branch</label>   
              <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control admin" tabindex="-1" name="branch" id="branch" >
+                          <select class="select2_single form-control " tabindex="-1" name="branch" id="branch" >
                             <option value="">Select A Branch</option>
-                            <option value="">All Branches</option>
-                                  <option value="Bowenpally">Bowenpally</option>
+                            <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
                             <option value="LBNagar">LB Nagar</option>
                             <option value="Workshop">Workshop</option>
@@ -250,12 +249,12 @@ if(user==null)
                             <option value="Vijayawadan">Vijayawada New</option>
                             <option value="Rajahmundry">Rajahmundry</option>
                             <option value="Tekkali">Tekkali</option>
-                           <option value="Barhi">Barhi</option>
+                            <option value="Barhi">Barhi</option>
                             <option value="Udaipur">Udaipur</option>
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                      <%--     <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled>  --%>
                         </div>
                         <button type="submit" class="btn btn-success" onclick="d()">Go </button>
                         <button  class="btn btn-success" type="reset" onclick="window.location.reload(true)">Refresh </button>

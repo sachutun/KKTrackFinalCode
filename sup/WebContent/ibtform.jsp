@@ -296,7 +296,7 @@ if(user==null)
                           <label class="control-label col-md-1 col-sm-1 col-xs-2">From Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                         <%--   <input class="" type="text" id="fbranch" name="fbranch" value=<%=uBranch%> readonly="readonly" style="border:none"> --%>
-                          <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch" required="required">
+                          <select class="select2_single form-control " tabindex="-1" id="frombranch" name="frombranch">
                             <option></option>
                                   <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
@@ -314,7 +314,7 @@ if(user==null)
                             <option value="Bangalore">Bangalore</option>
                             <option value="Chittoor">Chittoor</option>
                           </select>
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled>
+                          <%-- <input type="text" id="name" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled> --%>
                         </div>
                           <label class="control-label col-md-2 col-sm-2 col-xs-3">To Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
