@@ -8,6 +8,7 @@
 <%@ page import="java.sql.*" %> 
 <%@ page import="java.io.*" %>
 <%@ page import= "java.util.Arrays" %>
+<%@ page language="java" import="java.util.*" %>
 
   <% int count=1; %>
 <html lang="en">
@@ -73,7 +74,13 @@ return
 } 
 document.getElementById("numb").value=i;
 var url="value.jsp";
-url += "?count=" +str+"&branch="+document.getElementById("frombranch").value+"&dt="+document.getElementById("da").value+"&ibt="+document.getElementById("ibtnumber").value;
+var role=document.getElementById("urole").value;
+var branchName;
+if(role!=null && role==2)
+	branchName = document.getElementById("fromBranchName").value;
+else
+	branchName = document.getElementById("frombranch").value;
+url += "?count=" +str+"&branch="+branchName+"&dt="+document.getElementById("da").value+"&ibt="+document.getElementById("ibtnumber").value;
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);
 xmlHttp.send(null);
@@ -115,72 +122,9 @@ xmlHttp.send(null);
 
 
             <!-- sidebar menu -->
-                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-               <div class="menu_section">
-              
-                     <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
-                    
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                         <li class="hide4acc&store" ><a href="expenseform.jsp">Add New Expense</a></li>
-                      <li class="hide4store"><a href="expenses.jsp">View Expenses</a></li>
-                      <li class="hide4store"><a href="PurchaseCost.jsp">View Purchase Costs</a></li>
-                       <li class="hide4store"><a href=CashTransfer.jsp>View Cash Transfers</a></li>
-                    </ul>
-                  </li>
-                 <li class="hide4acc&store"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                      <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
-                      <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
-                      <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
-                      <li  class="hide4store"><a href="printpurchase.jsp">Print Purchase</a></li>
-                      <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
-                      <li class="hide4store"><a>Purchase Returns</a>
-                      <ul class="nav child_menu">
-                      <li class="hide4store"><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
-                      <li class="admin"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="addsale.jsp">Add New Sale</a></li>
-                      <li  class="hide4store"><a href="viewsale.jsp">View Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditalert.jsp">Credit Alert</a></li>
-                      <li class="hide4acc&store"><a href="printsale.jsp">Print Sale</a></li>
-                      <li class="hide4acc&store"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                      <li><a href="viewsalereturn.jsp">View Returned Sale items</a></li>
-                      <li><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Inventory <span class="fa fa-chevron-down"></span></a>
-                   <ul class="nav child_menu">
-                   <li ><a href="viewinventory.jsp">View Stock</a></li>
-                   <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
-                   <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
-                      <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
-                      </ul>
-                  </li>
-                  <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
-                     <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
-                      <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
-                    </ul>
-                 </li>
+             <%! String includeMenuPage= "sidebarMenu.html"; %>
+			<jsp:include page="<%= includeMenuPage %>"></jsp:include>
                 
-                </ul>
-              </div>
-
-            </div>
        
           </div>
         </div>
@@ -296,9 +240,14 @@ if(user==null)
                           <label class="control-label col-md-1 col-sm-1 col-xs-2">From Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                         <%--   <input class="" type="text" id="fbranch" name="fbranch" value=<%=uBranch%> readonly="readonly" style="border:none"> --%>
-                          <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch" required="required">
+                        <%
+							ResourceBundle resources =ResourceBundle.getBundle("branches");
+							Enumeration resourceKeys = resources.getKeys();
+							ArrayList<String> listOfBranches = new ArrayList<String>();
+						%>
+                          <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch">
                             <option></option>
-                                  <option value="Bowenpally">Bowenpally</option>
+                                 <!--  <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
                             <option value="LBNagar">LB Nagar</option>
                             <option value="Workshop">Workshop</option>
@@ -312,15 +261,35 @@ if(user==null)
                            <option value="Barhi">Barhi</option>
                             <option value="Udaipur">Udaipur</option>
                             <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option>
+                            <option value="Chittoor">Chittoor</option> -->
+                       <%
+							 while (resourceKeys.hasMoreElements()) {
+									String branchKey = (String) resourceKeys.nextElement();
+									listOfBranches.add(branchKey);
+							 Collections.sort(listOfBranches);
+							 }		
+							 String branchKey="";
+                        	 	 String branchValue="";
+							for(int i=0;i<listOfBranches.size();i++)
+							{
+								branchKey = listOfBranches.get(i);
+								branchValue=resources.getString(branchKey);																															
+							%>
+							<option value="<%=branchKey%>"> <%=branchValue%>
+							</option> 
+							<%
+								}
+							%> 
+       
                           </select>
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled>
+                          <input type="text" id="fromBranchName" class="form-control col-md-7 col-xs-12 user" name="fromBranchName" style="display:none;" value=<%=uBranch%> disabled>
                         </div>
                           <label class="control-label col-md-2 col-sm-2 col-xs-3">To Branch:<span class="required">*</span></label>
+                         
                         <div class="col-md-3 col-sm-3 col-xs-3">
                           <select class="select2_single form-control" tabindex="-1" name="tobranch" required="required">
                             <option></option>
-                                  <option value="Bowenpally">Bowenpally</option>
+                                 <!--  <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
                             <option value="LBNagar">LB Nagar</option>
                             <option value="Workshop">Workshop</option>
@@ -334,7 +303,19 @@ if(user==null)
                            <option value="Barhi">Barhi</option>
                             <option value="Udaipur">Udaipur</option>
                             <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option>
+                            <option value="Chittoor">Chittoor</option> -->
+                            <%
+							
+							for(int i=0;i<listOfBranches.size();i++)
+							{
+								branchKey = listOfBranches.get(i);
+								branchValue=resources.getString(branchKey);																															
+							%>
+							<option value="<%=branchKey%>"> <%=branchValue%>
+							</option> 
+							<%
+								}
+							%> 
                           </select>                           
                         </div>
                       <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 6%;">Add Item</button>
@@ -581,6 +562,8 @@ function cls(elt)
 		   		 for (var i = 0; i < elements.length; i++){
 		        		elements[i].style.display = "block";
 		    		}
+		   		if(ubran!=null && ubran=="Workshop")
+		    		document.getElementById("invAdj").style.display="block";
 			}
 			/* if(role!=null && role=="3")
 			{

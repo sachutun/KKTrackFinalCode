@@ -108,72 +108,9 @@ xmlHttp.send(null);
 
 
             <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-               <div class="menu_section">
-              
-                     <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
-                    
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                         <li class="hide4acc&store" ><a href="expenseform.jsp">Add New Expense</a></li>
-                      <li class="hide4store"><a href="expenses.jsp">View Expenses</a></li>
-                      <li class="hide4store"><a href="PurchaseCost.jsp">View Purchase Costs</a></li>
-                       <li class="hide4store"><a href=CashTransfer.jsp>View Cash Transfers</a></li>
-                    </ul>
-                  </li>
-                 <li class="hide4acc&store"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                      <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
-                      <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
-                      <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
-                      <li  class="hide4store"><a href="printpurchase.jsp">Print Purchase</a></li>
-                      <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
-                      <li class="hide4store"><a>Purchase Returns</a>
-                      <ul class="nav child_menu">
-                      <li class="hide4store"><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
-                      <li class="admin"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="addsale.jsp">Add New Sale</a></li>
-                      <li  class="hide4store"><a href="viewsale.jsp">View Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditalert.jsp">Credit Alert</a></li>
-                      <li class="hide4acc&store"><a href="printsale.jsp">Print Sale</a></li>
-                      <li class="hide4acc&store"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                      <li><a href="viewsalereturn.jsp">View Returned Sale items</a></li>
-                      <li><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Inventory <span class="fa fa-chevron-down"></span></a>
-                   <ul class="nav child_menu">
-                   <li ><a href="viewinventory.jsp">View Stock</a></li>
-                   <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
-                   <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
-                      <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
-                      </ul>
-                  </li>
-                  <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
-                     <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
-                      <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
-                    </ul>
-                 </li>
-                
-                </ul>
-              </div>
-
-            </div>
+             <%! String includeMenuPage= "sidebarMenu.html"; %>
+			<jsp:include page="<%= includeMenuPage %>"></jsp:include>
+            
             
           </div>
         </div>
@@ -506,60 +443,74 @@ function cls(elt)
 		    		}
 			
 			}
-			if(role!=null && role=="2")
-			{
-				var elements = document.getElementsByClassName('hide4branch');
+			
+	if (role != null && role == "2") {
+							var elements = document
+									.getElementsByClassName('hide4branch');
 
-		   		 for (var i = 0; i < elements.length; i++){
-		        		elements[i].style.display = "none";
-		    		}
-			}
-			/* if(role!=null && role=="3")
-			{
-				var elements = document.getElementsByClassName('userv');
+							for (var i = 0; i < elements.length; i++) {
+								elements[i].style.display = "none";
+							}
+							if (ubran != null && ubran == "Workshop")
+								document.getElementById("invAdj").style.display = "block";
+						}
+						/* if(role!=null && role=="3")
+						{
+							var elements = document.getElementsByClassName('userv');
 
-				for (var i = 0; i < elements.length; i++){
-		    		elements[i].style.display = "none";
-				}
-			} */
+							for (var i = 0; i < elements.length; i++){
+								elements[i].style.display = "none";
+							}
+						} */
 
-			if(role!=null && role=="4")
-			{
-				var elements = document.getElementsByClassName('hide4store');
+						if (role != null && role == "4") {
+							var elements = document
+									.getElementsByClassName('hide4store');
 
-				for (var i = 0; i < elements.length; i++){
-		    			elements[i].style.display = "none";
-			    }
-				var elements1 = document.getElementsByClassName('hide4acc&store');
+							for (var i = 0; i < elements.length; i++) {
+								elements[i].style.display = "none";
+							}
+							var elements1 = document
+									.getElementsByClassName('hide4acc&store');
 
-				for (var j = 0; j < elements1.length; j++){
-		    			elements1[j].style.display = "none";
-			    }
-			    
-			}
-			if(role!=null && role=="5")
-			{
-				var elements = document.getElementsByClassName('hide4acc&store');
+							for (var j = 0; j < elements1.length; j++) {
+								elements1[j].style.display = "none";
+							}
 
-				for (var i = 0; i < elements.length; i++){
-		    			elements[i].style.display = "none";
-				}
-			    
-				document.getElementById("br").style.display="block";
-			}
-	var c=1;
-$('.add').click(function() {
-	 c++; 
-	 
-   var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
-   $('.codedetails:last').after(s1); 
-/*  $('#main').after(s1); */
- var h= $('.right_col').height()+200;
- $('.right_col').animate({height:h}, 500);
-});
+						}
+						if (role != null && role == "5") {
+							var elements = document
+									.getElementsByClassName('hide4acc&store');
 
- }); 
- $(window).load(function () {
+							for (var i = 0; i < elements.length; i++) {
+								elements[i].style.display = "none";
+							}
+
+							document.getElementById("br").style.display = "block";
+						}
+						var c = 1;
+						$('.add')
+								.click(
+										function() {
+											c++;
+
+											var s1 = "<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"
+													+ c
+													+ ")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"
+													+ c
+													+ "\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("
+													+ c
+													+ ")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+											$('.codedetails:last').after(s1);
+											/*  $('#main').after(s1); */
+											var h = $('.right_col').height() + 200;
+											$('.right_col').animate({
+												height : h
+											}, 500);
+										});
+
+					});
+	$(window).load(function() {
 		$(".se-pre-con").fadeOut("slow");
 	});
 </script>

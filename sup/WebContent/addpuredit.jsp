@@ -108,72 +108,9 @@ xmlHttp.send(null);
 
 
             <!-- sidebar menu -->
-             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-               <div class="menu_section">
-              
-                     <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
-                    
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                         <li class="hide4acc&store" ><a href="expenseform.jsp">Add New Expense</a></li>
-                      <li class="hide4store"><a href="expenses.jsp">View Expenses</a></li>
-                      <li class="hide4store"><a href="PurchaseCost.jsp">View Purchase Costs</a></li>
-                       <li class="hide4store"><a href=CashTransfer.jsp>View Cash Transfers</a></li>
-                    </ul>
-                  </li>
-                 <li class="hide4acc&store"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                      <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
-                      <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
-                      <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
-                      <li  class="hide4store"><a href="printpurchase.jsp">Print Purchase</a></li>
-                      <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
-                      <li class="hide4store"><a>Purchase Returns</a>
-                      <ul class="nav child_menu">
-                      <li class="hide4store"><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
-                      <li class="admin"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="hide4store"><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="addsale.jsp">Add New Sale</a></li>
-                      <li  class="hide4store"><a href="viewsale.jsp">View Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
-                      <li class="hide4acc&store"><a href="creditalert.jsp">Credit Alert</a></li>
-                      <li class="hide4acc&store"><a href="printsale.jsp">Print Sale</a></li>
-                      <li class="hide4acc&store"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                      <li><a href="viewsalereturn.jsp">View Returned Sale items</a></li>
-                      <li><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
-                    </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Inventory <span class="fa fa-chevron-down"></span></a>
-                   <ul class="nav child_menu">
-                   <li ><a href="viewinventory.jsp">View Stock</a></li>
-                   <li class="hide4branch"><a href="viewinvbal.jsp">View Overall Stock</a></li>
-                   <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li class="hide4acc&store" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
-                      <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
-                      </ul>
-                  </li>
-                  <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
-                     <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
-                      <li><a href="viewIBT.jsp">View IBT</a></li>
-                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
-                    </ul>
-                 </li>
-                
-                </ul>
-              </div>
-
-            </div>
+             <%! String includeMenuPage= "sidebarMenu.html"; %>
+			<jsp:include page="<%= includeMenuPage %>"></jsp:include>
+             
 
             
        
@@ -580,6 +517,8 @@ var r=elt.id;
 	   		 for (var i = 0; i < elements.length; i++){
 	        		elements[i].style.display = "none";
 	    		}
+	   		if(ubran!=null && ubran=="Workshop")
+	    		document.getElementById("invAdj").style.display="block";
 		}
 		/* if(role!=null && role=="3")
 		{
