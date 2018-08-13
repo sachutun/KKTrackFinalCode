@@ -181,26 +181,7 @@ if(user==null)
              <div class="col-md-3 col-sm-3 col-xs-4">
                           <select class="select2_single form-control " tabindex="-1" name="branch" id="branch" >
                             <option value="">Select A Branch</option>
-<<<<<<< HEAD
-<!--                             <option value="">All Branches</option> -->
-                                <!--   <option value="Bowenpally">Bowenpally</option>
-=======
-                            <option value="Bowenpally">Bowenpally</option>
->>>>>>> 8ddab716ef38af024ec0f94eea81138565685be8
-                            <option value="Miyapur">Miyapur</option>
-                            <option value="LBNagar">LB Nagar</option>
-                            <option value="Workshop">Workshop</option>
-                            <option value="Workshop2">Workshop 2</option>
-                            <option value="Vishakapatnam">Vishakapatnam</option>
-                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
-                            <option value="Vijayawada">Vijayawada Old</option>
-                            <option value="Vijayawadan">Vijayawada New</option>
-                            <option value="Rajahmundry">Rajahmundry</option>
-                            <option value="Tekkali">Tekkali</option>
-                            <option value="Barhi">Barhi</option>
-                            <option value="Udaipur">Udaipur</option>
-                            <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option> -->
+
                             	 <%
 							 while (resourceKeys.hasMoreElements()) {
 									String branchKey = (String) resourceKeys.nextElement();

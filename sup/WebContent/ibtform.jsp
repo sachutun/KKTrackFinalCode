@@ -240,32 +240,15 @@ if(user==null)
                           <label class="control-label col-md-1 col-sm-1 col-xs-2">From Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                         <%--   <input class="" type="text" id="fbranch" name="fbranch" value=<%=uBranch%> readonly="readonly" style="border:none"> --%>
-<<<<<<< HEAD
+
                         <%
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
 							Enumeration resourceKeys = resources.getKeys();
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
                           <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch">
-=======
-                          <select class="select2_single form-control " tabindex="-1" id="frombranch" name="frombranch">
->>>>>>> 8ddab716ef38af024ec0f94eea81138565685be8
-                            <option></option>
-                                 <!--  <option value="Bowenpally">Bowenpally</option>
-                            <option value="Miyapur">Miyapur</option>
-                            <option value="LBNagar">LB Nagar</option>
-                            <option value="Workshop">Workshop</option>
-                            <option value="Workshop2">Workshop 2</option>
-                            <option value="Vishakapatnam">Vishakapatnam</option>
-                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
-                            <option value="Vijayawada">Vijayawada Old</option>
-                            <option value="Vijayawadan">Vijayawada New</option>
-                            <option value="Rajahmundry">Rajahmundry</option>
-                            <option value="Tekkali">Tekkali</option>
-                           <option value="Barhi">Barhi</option>
-                            <option value="Udaipur">Udaipur</option>
-                            <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option> -->
+
+                 
                        <%
 							 while (resourceKeys.hasMoreElements()) {
 									String branchKey = (String) resourceKeys.nextElement();
@@ -286,11 +269,11 @@ if(user==null)
 							%> 
        
                           </select>
-<<<<<<< HEAD
+
                           <input type="text" id="fromBranchName" class="form-control col-md-7 col-xs-12 user" name="fromBranchName" style="display:none;" value=<%=uBranch%> disabled>
-=======
+
                           <%-- <input type="text" id="name" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled> --%>
->>>>>>> 8ddab716ef38af024ec0f94eea81138565685be8
+
                         </div>
                           <label class="control-label col-md-2 col-sm-2 col-xs-3">To Branch:<span class="required">*</span></label>
                          
@@ -560,16 +543,21 @@ function cls(elt)
 			}
 			if(role!=null && role=="2")
 			{
-				var elements = document.getElementsByClassName('hide4branch');
+				if(ubran!=null && ubran!="Bowenpally" && ubran!="Workshop")
+				{
+					var elements = document.getElementsByClassName('hide4branch');
 
-		   		 for (var i = 0; i < elements.length; i++){
-		        		elements[i].style.display = "none";
-		    		}
-		   		var elements = document.getElementsByClassName('user');
+		   		 	for (var i = 0; i < elements.length; i++)
+		   		 	{
+		        			elements[i].style.display = "none";
+		    			}
+		   			var elements = document.getElementsByClassName('user');
 
-		   		 for (var i = 0; i < elements.length; i++){
-		        		elements[i].style.display = "block";
-		    		}
+		   		 	for (var i = 0; i < elements.length; i++)
+		   		 	{
+		        			elements[i].style.display = "block";
+		    			}
+				}
 		   		if(ubran!=null && ubran=="Workshop")
 		    		document.getElementById("invAdj").style.display="block";
 			}
