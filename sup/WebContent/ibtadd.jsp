@@ -26,7 +26,7 @@ ResultSet resultSet = null;
    String uBranch=(String)session.getAttribute("ubranch");
    String role=(String)session.getAttribute("role"); 
    String frombranch;
-   if(role!=null && role.equals("2"))
+   if(role!=null && role=="2" && uBranch!="Bowenpally" && uBranch!="Workshop")
 	   frombranch= uBranch;
    else
 	   frombranch= request.getParameter("frombranch");
@@ -34,6 +34,7 @@ ResultSet resultSet = null;
    String[] qty = request.getParameterValues("qty");
    String totalqty=request.getParameter("totalq");
 
+   System.out.println(frombranch);
    
  /*   String connectionURL = "jdbc:mysql://localhost:8889/KKTrack";
 

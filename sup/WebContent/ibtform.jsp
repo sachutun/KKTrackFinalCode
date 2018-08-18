@@ -10,7 +10,14 @@
 <%@ page import= "java.util.Arrays" %>
 <%@ page language="java" import="java.util.*" %>
 
-  <% int count=1; %>
+  <% int count=1; 
+    
+String uBranch=(String)session.getAttribute("ubranch");
+String role=(String)session.getAttribute("role");   
+String user=(String)session.getAttribute("user"); 
+if(user==null)
+	response.sendRedirect("login.jsp");
+%>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -75,11 +82,13 @@ return
 document.getElementById("numb").value=i;
 var url="value.jsp";
 var role=document.getElementById("urole").value;
+var uBranch=document.getElementById("ubran").value;
 var branchName;
-if(role!=null && role==2)
+if( role!=null && role=="2" && uBranch!="Bowenpally" && uBranch!="Workshop")
 	branchName = document.getElementById("fromBranchName").value;
 else
 	branchName = document.getElementById("frombranch").value;
+	alert(branchName);
 url += "?count=" +str+"&branch="+branchName+"&dt="+document.getElementById("da").value+"&ibt="+document.getElementById("ibtnumber").value;
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);
@@ -128,13 +137,7 @@ xmlHttp.send(null);
        
           </div>
         </div>
-<%   
-String uBranch=(String)session.getAttribute("ubranch");
-String role=(String)session.getAttribute("role");   
-String user=(String)session.getAttribute("user"); 
-if(user==null)
-	response.sendRedirect("login.jsp");
-%> 
+
         <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu">
@@ -557,7 +560,10 @@ function cls(elt)
 		   		 	{
 		        			elements[i].style.display = "block";
 		    			}
+		   		 	
 				}
+				if(ubran!=null && ubran=="Bowenpally" && ubran=="Workshop")
+					document.getElementById('fromBranchName').style.display="none";
 		   		if(ubran!=null && ubran=="Workshop")
 		    		document.getElementById("invAdj").style.display="block";
 			}
