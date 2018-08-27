@@ -3,6 +3,7 @@
 <%@page import="java.sql.*"%>
 <%@page import="org.json.*"%>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page import="java.io.InputStream" %>
 <%
 // SELECT c.Code, c.HSNCode, c.Description,c.Machine, c.PartNo, c.Grp, c.MaxPrice, c.MinPrice, c.LC, sum(n.Quantity) FROM NewInventory n INNER JOIN CodeList c ON n.Code=c.Code group by c.Code */
     String[] cols = { "Code", "Machine", "HSNCode", "PartNo", "Description","Grp","Max","Min","Quantity" };
@@ -137,9 +138,23 @@
     	    if (ds != null) {
     	      conn = ds.getConnection(); */
     	      
-    	      Class.forName("com.mysql.jdbc.Driver").newInstance();  
-    	 	     conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-       
+    	      //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+    	 	     //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+       Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    conn = DriverManager.getConnection(url, username, password);
     	      String sql = "SELECT DISTINCT count(*) FROM "+table;
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

@@ -12,6 +12,7 @@
 <%@ page language="java" import="java.sql.*"%>
 <%@ page language="java" import="java.io.*" %>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page language="java" import="java.util.*" %>
 <%
 /* String id = request.getParameter("userId"); */
 
@@ -62,9 +63,23 @@ try{
     if (ds != null) {
       conn = ds.getConnection(); */
       
-      Class.forName("com.mysql.jdbc.Driver").newInstance();  
-	     conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-  
+      //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+	   //  conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+  	Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    conn = DriverManager.getConnection(url, username, password);
       st2=conn.createStatement();
        resultSet = st2.executeQuery(s4);
        

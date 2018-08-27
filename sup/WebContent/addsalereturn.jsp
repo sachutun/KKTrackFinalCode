@@ -6,6 +6,8 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page language="java" import="java.util.*" %>
+<%@ page import="java.io.InputStream" %>
 <%
 	/* String id = request.getParameter("userId"); */
 	/* String driverName = "com.mysql.jdbc.Driver"; */
@@ -475,10 +477,25 @@
 															if (ds != null) {
 															 conn = ds.getConnection(); */
 
-															Class.forName("com.mysql.jdbc.Driver").newInstance();
+															/* Class.forName("com.mysql.jdbc.Driver").newInstance();
 															conn = DriverManager.getConnection(
 																	"jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack", "root",
-																	"Test1234");
+																	"Test1234"); */
+															Properties props = new Properties();
+															InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+															props.load(in);
+															in.close();
+
+															String driver = props.getProperty("jdbc.driver");
+															if (driver != null) {
+																Class.forName(driver).newInstance();  
+															}
+
+															String url = props.getProperty("jdbc.url");
+															String username = props.getProperty("jdbc.username");
+															String password = props.getProperty("jdbc.password");
+
+															conn = DriverManager.getConnection(url, username, password);			
 															st = conn.createStatement();
 															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount FROM Sale";
 															String whr = " where";
@@ -587,9 +604,7 @@
 													%>
 												</tbody>
 											</table>
-											<button type="submit" class="btn btn-success"
-												style="float: right" onclick="chsn(<%=i%>)">Return
-												Items</button>
+											<button type="submit" class="btn btn-success" style="float: right" onclick="chsn(<%=i%>)">Return Items</button>
 										</form>
 
 

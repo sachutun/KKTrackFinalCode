@@ -3,6 +3,7 @@
 <%@page import="java.sql.*"%>
 <%@page import="org.json.*"%>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page import="java.io.InputStream" %>
 <%
 String role=request.getParameter("role");
 /* System.out.println("role="+role); */
@@ -138,9 +139,25 @@ String role=request.getParameter("role");
  	    Context envCtx = (Context) context.lookup("java:comp/env");
  	    ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
  	    if (ds != null) { */
- 	       Class.forName("com.mysql.jdbc.Driver").newInstance();  
- 	     conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+ 	      // Class.forName("com.mysql.jdbc.Driver").newInstance();  
+ 	     //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
  	     // conn = ds.getConnection();
+ 	     
+	 	Properties props = new Properties();
+	    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+	    props.load(in);
+	    in.close();
+	
+	    String driver = props.getProperty("jdbc.driver");
+	    if (driver != null) {
+	        Class.forName(driver).newInstance();  
+	    }
+	
+	    String url = props.getProperty("jdbc.url");
+	    String username = props.getProperty("jdbc.username");
+	    String password = props.getProperty("jdbc.password");
+	
+	    conn = DriverManager.getConnection(url, username, password);
         String sql = "SELECT DISTINCT count(*) FROM "+table;
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

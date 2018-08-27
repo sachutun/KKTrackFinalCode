@@ -9,6 +9,7 @@
 <%@ page import= "java.text.SimpleDateFormat" %>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
  <%@ page language="java" import="java.util.*" %>
+ <%@ page import="java.io.InputStream" %>
 <%
 /* String id = request.getParameter("userId"); */
 /* String driverName = "com.mysql.jdbc.Driver";
@@ -340,8 +341,23 @@ String cn=request.getParameter("cn");
   ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
   if (ds != null) {
     conn = ds.getConnection(); */
-    Class.forName("com.mysql.jdbc.Driver").newInstance();  
-     conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+    //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+     //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+    Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    conn = DriverManager.getConnection(url, username, password);
     st = conn.createStatement();
 String sql1 ="SELECT *,DATEDIFF(CURRENT_DATE, Date) as 'days' FROM Sale WHERE BalanceAmount>0 and DATEDIFF(CURRENT_DATE, Date)>50";
 String whr="";
