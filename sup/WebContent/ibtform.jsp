@@ -88,7 +88,7 @@ if( role!=null && role=="2" && uBranch!="Bowenpally" && uBranch!="Workshop")
 	branchName = document.getElementById("fromBranchName").value;
 else
 	branchName = document.getElementById("frombranch").value;
-	alert(branchName);
+
 url += "?count=" +str+"&branch="+branchName+"&dt="+document.getElementById("da").value+"&ibt="+document.getElementById("ibtnumber").value;
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);

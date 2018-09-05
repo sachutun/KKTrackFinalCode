@@ -26,10 +26,14 @@ ResultSet resultSet = null;
    String uBranch=(String)session.getAttribute("ubranch");
    String role=(String)session.getAttribute("role"); 
    String frombranch;
-   if(role!=null && role=="2" && uBranch!="Bowenpally" && uBranch!="Workshop")
-	   frombranch= uBranch;
+
+    if(role!=null && role.equals("2") && !uBranch.equals("Bowenpally") && !uBranch.equals("Workshop"))
+    	frombranch= uBranch;
    else
+   {
 	   frombranch= request.getParameter("frombranch");
+	  
+   }
    String tobranch = request.getParameter("tobranch");
    String[] qty = request.getParameterValues("qty");
    String totalqty=request.getParameter("totalq");
