@@ -1,5 +1,7 @@
   <%@page language="java" import ="java.sql.*" %>  
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@page language="java" import ="java.util.*" %> 
+<%@ page import="java.io.InputStream" %>
  
  <%  
  DataSource ds = null;
@@ -16,8 +18,23 @@ ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
 if (ds != null) {
   conn = ds.getConnection();  */
   
-  Class.forName("com.mysql.jdbc.Driver").newInstance();  
-   conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+   //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234"); 
+    Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    conn = DriverManager.getConnection(url, username, password);
   stmt = conn.createStatement(); 
 
  ResultSet rs;

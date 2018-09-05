@@ -8,6 +8,8 @@
 <%@page import="java.util.Date"%>
 <%@ page import= "java.text.SimpleDateFormat" %>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page language="java" import="java.util.*" %>
+<%@ page import="java.io.InputStream" %>
 <%
 /* String id = request.getParameter("userId"); */
 DataSource ds = null;
@@ -275,10 +277,24 @@ try{
 	  if (ds != null) {
 		  connection = ds.getConnection(); */
 		 
-		  Class.forName("com.mysql.jdbc.Driver").newInstance();  
-	 	     connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-		 
-	 	     statement=connection.createStatement();
+		  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+	 	  //   connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+	Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    connection = DriverManager.getConnection(url, username, password);
+statement=connection.createStatement();
 st=connection.createStatement();
 String std=request.getParameter("std");
 String end=request.getParameter("end");

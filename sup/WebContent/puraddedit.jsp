@@ -9,6 +9,8 @@
 <%@ page import="java.io.*" %>
 <%@ page import= "java.util.Arrays" %>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
+<%@ page language="java" import="java.util.*" %>
+<%@ page import="java.io.InputStream" %>
 <%
 /* String id = request.getParameter("userId"); */
 
@@ -48,9 +50,23 @@ ResultSet resultSet = null;
             	  if (ds != null) {
             		  connection = ds.getConnection(); */
             		  
-            		  Class.forName("com.mysql.jdbc.Driver").newInstance();  
-            	 	     connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-            		  
+            		  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+            	 	   //  connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+				    Properties props = new Properties();
+				    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+				    props.load(in);
+				    in.close();
+				
+				    String driver = props.getProperty("jdbc.driver");
+				    if (driver != null) {
+				        Class.forName(driver).newInstance();  
+				    }
+				
+				    String url = props.getProperty("jdbc.url");
+				    String username = props.getProperty("jdbc.username");
+				    String password = props.getProperty("jdbc.password");
+				
+				    connection = DriverManager.getConnection(url, username, password);  
                      // sql query to insert values in the secified table.
      /*    st=connection.createStatement();
        statement=connection.createStatement();       

@@ -263,9 +263,24 @@ if(user==null)
                         <tbody>
 <%
 try{ 
-	  Class.forName("com.mysql.jdbc.Driver").newInstance();  
-	     connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-/* String branch = request.getParameter("branch"); */
+	  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+	    // connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+	Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+    connection = DriverManager.getConnection(url, username, password);
+	    /* String branch = request.getParameter("branch"); */
 
 String sql ="SELECT * FROM CashTransfer where 1";
 String whr="";

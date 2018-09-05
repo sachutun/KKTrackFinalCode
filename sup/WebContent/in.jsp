@@ -7,6 +7,8 @@
 <%@page import="org.json.JSONObject"%>
 <%@page import="org.json.JSONException"%>
 <%@page import="java.sql.ResultSetMetaData"%>
+<%@ page language="java" import="java.util.*" %>
+<%@ page import="java.io.InputStream" %>
 
  <%  
  
@@ -15,8 +17,23 @@
  String EndDate=request.getParameter("EndDate");  
 System.out.println(branch+StartDate+EndDate); */
 String b=""; 
-Class.forName("com.mysql.jdbc.Driver").newInstance();  
- Connection con = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");   
+//Class.forName("com.mysql.jdbc.Driver").newInstance();  
+// Connection con = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+	Properties props = new Properties();
+    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+    props.load(in);
+    in.close();
+
+    String driver = props.getProperty("jdbc.driver");
+    if (driver != null) {
+        Class.forName(driver).newInstance();  
+    }
+
+    String url = props.getProperty("jdbc.url");
+    String username = props.getProperty("jdbc.username");
+    String password = props.getProperty("jdbc.password");
+
+   Connection con = DriverManager.getConnection(url, username, password);
  Statement stmt = con.createStatement(); 
  ResultSet rs;
  rs = stmt.executeQuery("SELECT * FROM CodeList inner join NewInventory on NewInventory.Code=CodeList.Code limit 100");
