@@ -183,13 +183,23 @@ if(user==null)
        <br/>              
  
      <% String r=request.getParameter("res");
- String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>IBT updated successfully.</strong></div>";
- String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>IBT deleted successfully.</strong></div>";
- if(r!=null)
-        	out.println(succ);
-/*  else if(r=="2")
-	 out.println(succ2); */
-     %> 
+ String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>IBT updated successfully.</strong></div></div>";
+ String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>IBT deleted successfully.</strong></div></div>";
+ %>
+ <div id="successMsg" >
+<%  if(r!=null && r.equals("1"))
+       	out.println(succ);
+ else if(r!=null && r.equals("2"))
+	 out.println(succ2); 
+    %>
+    </div>
+      <div id="errorMsg" class="col-md-12" style= "float:left; display: none">
+      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+      <button type="button" class="close" onclick="ref()" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span></button>
+      <strong>Please select atleast one checkbox to delete the record</strong>
+      </div>
+      </div>
           <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   
@@ -203,7 +213,8 @@ if(user==null)
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
         
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
-       <table class="table ">
+        <div class="table-responsive"> 
+       <table class="table  dt-responsive" width="100%">
                
                         <tbody>
                         <%
@@ -296,20 +307,30 @@ while(resultSet.next()){
                                             <th>Group</th>
                                             <th>IBT Price</th>
                                             <th>Quantity</th>
-										   <th>Delete Item</th>
+										   <!-- 	<th>Delete Item</th> -->
+											<th>
+                                            <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            Delete All
+                                          </th>
                                         </tr>
                       </thead>
                         <tbody >
    <tr class="odd gradeX">
-                          <% while(rs.next())
+                          <% 
+                          //System.out.println("i values: ");
+                          // create map to store
+                          Map<Integer, List<String>> map = new HashMap<Integer, List<String>>(); 
+                          while(rs.next())
 {
+                        	  List<String> list = new ArrayList<String>();
                         	  i=rs.getInt("IBTDetails.Id") ;
+                        	  //System.out.println(i);
 	%>
 <td><%=sno2++%></td> 
 <td><%=rs.getString("IBTDetails.Code") %></td>
 <td><%=rs.getString("CodeList.HSNCode") %></td>
 <td width="80%"><%=rs.getString("Description") %></td>
-<td width="80%"><%=rs.getString("Machine") %></td>
+<td width="80%"><%=rs.getString("Machine") %> </td>
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getDouble("MinPrice") %></td> 
@@ -318,20 +339,71 @@ while(resultSet.next()){
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >
  <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getString("IBTDetails.Qty")%> >
   <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
+    <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
   <input type="hidden" id="sd" name="sd" value=<%=cn %> > 
+     <input type="hidden" id="dc" name="dc" value=<%=dc %> > 
   
 </td>
-<td style="width: 10%;"><a href="delibt.jsp?deleteid=<%=primaryKey %>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>&code<%=i %>=<%=rs.getString("IBTDetails.Code")%>&q<%=i %>=<%=rs.getString("IBTDetails.Qty")%>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td>
-
+<%-- 
+<td style="width: 10%;"><a href="delibt.jsp?deleteid=<%=primaryKey %>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>&code<%=i %>=<%=rs.getString("IBTDetails.Code")%>&q<%=i %>=<%=rs.getString("IBTDetails.Qty")%>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> 
+--%>
+  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td> 
 </tr>
  <%
+ list.add(String.valueOf(primaryKey));
+ list.add(branch);
+ list.add(resultSet.getString("ToBranch"));
+ list.add(resultSet.getString("IBTNo"));
+ list.add(String.valueOf(i));
+ list.add(cn);
+ list.add(rs.getString("IBTDetails.Code"));
+ list.add(rs.getString("IBTDetails.Qty"));
+ list.add(String.valueOf(i));
+ map.put(i, list);
  sno++;
 } 
+                          //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
+                          for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+                              int key = entry.getKey();
+                              List<String> values = entry.getValue();
+                             // String bv=values.get(9);
+                              //System.out.println("Key = " + key);
+                              //System.out.println("Values = " + values + "n");
+                              
+                              //System.out.println("bv = " + bv);
+                          }
+                          session.setAttribute("map", map);
  %>
 </tbody> 
 </table>
+ <input type="hidden" id="mapValues" name="<%=map%>">  
+ <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i>Delete</button>
+ 
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Edit</button>
  <a href="addibtedit.jsp?pid=<%=primaryKey%>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
+</div>
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Are you sure?</h4>
+                        </div>
+                        <div class="modal-body">
+                          <!-- <h4>Text in a modal</h4> -->
+                          <p id="test">Do you really want to delete this item? Click Cancel if you do not wish to delete this item.</p>
+                         
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <a id="did" href=""><button type="button" class="btn btn-danger">Yes, Delete</button></a>  
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
 </form>
  
  <% 
@@ -403,6 +475,85 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
     
 <script>
+function funcSelectAll()
+{
+   if(document.forms[0].selectAllCheck.checked==true)
+   {
+            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                 document.forms[0].checkboxRow[a].checked = true;            
+           }
+     }
+     else
+     {
+           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                  document.forms[0].checkboxRow[a].checked = false;           
+           }
+     }          
+
+}
+
+$("#deleteButton").click(function() {
+	 $('#successMsg').hide();
+	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
+	  var count_checked = $('input[type="checkbox"]:checked').length;
+	  //alert(count_checked);
+      if(count_checked == 0) 
+      {
+          //alert("Please select any record to delete.");
+           // $('#errorMsg').css({ 'color': 'red'});
+          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
+         
+         $('#errorMsg').show();
+          $("#deleteModal").modal("hide");
+          return false;
+      }
+      else
+    	  {
+    	  //$('#errorMsg').html('');
+    	  $('#errorMsg').hide();
+    	  }
+});	
+function deleteCheckedRecords(){
+	//alert("hi");
+	//var did=document.getElementById("did").value;
+	var pk=document.getElementById("payid").value;
+	//alert(pk);
+	var branch=document.getElementById("branch").value;
+	//alert(branch);
+	var dc=document.getElementById("dc").value;
+	//alert(dc);
+	var cn=document.getElementById("sd").value;
+	//alert(did);
+
+	//alert(cn);
+	var items=document.getElementsByName('checkboxRow');
+	var selectedItems="";
+	for(var i=0; i<items.length; i++){
+		if(items[i].type=='checkbox' && items[i].checked==true)
+			if(selectedItems!="")				
+				{
+				selectedItems+=","+items[i].value+"\n";
+				}
+			else
+				{
+			selectedItems+=items[i].value+"\n";
+				}
+	}
+	//alert(selectedItems);
+
+	if(selectedItems=="" || selectedItems==null)
+		{
+		//alert("if");
+		 return;
+		}
+	else
+		{
+		//alert("else");
+		
+		
+	document.getElementById('did').href=('BulkDeleteIBT.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&fbranch='+branch+'&dc='+dc+'&sd='+cn);
+	}
+}
 function chsn(i)
 {
 	document.getElementById("i").value=i;
