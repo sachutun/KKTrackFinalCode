@@ -262,13 +262,23 @@ if(user==null)
        <br/>              
  
      <% String r=request.getParameter("res");
- String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Purchase updated successfully.</strong></div>";
- String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Purchase deleted successfully.</strong></div>";
- if(r!=null)
-        	out.println(succ);
-/*  else if(r=="2")
-	 out.println(succ2); */
-     %> 
+ String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Purchase updated successfully.</strong></div></div>";
+ String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Purchase deleted successfully.</strong></div></div>";
+ %>
+ <div id="successMsg" >
+<%  if(r!=null && r.equals("1"))
+       	out.println(succ);
+ else if(r!=null && r.equals("2"))
+	 out.println(succ2); 
+    %>
+    </div>
+       <div id="errorMsg" class="col-md-12" style= "float:left; display: none">
+      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+      <button type="button" class="close" onclick="ref()" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span></button>
+      <strong>Please select atleast one checkbox to delete the record</strong>
+      </div>
+      </div>
           <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   
@@ -279,7 +289,8 @@ if(user==null)
                   <div class="x_content">
         <form action="puredit.jsp">   
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
-       <table class="table ">
+        <div class="table-responsive"> 
+       <table class="table  dt-responsive" width="100%">
                
                         <tbody>
                         <%
@@ -372,8 +383,12 @@ while(resultSet.next()){
                                             <th>Group</th>
                                             <th>Cost Price</th>
                                             <th>Quantity</th>
-                                             <th>Delete Item</th>
-                                            <!-- <th>Damaged Qty</th>
+                                             <th>
+                                            <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            Delete All
+                                          </th>
+                                            <!--   <th>Delete Item</th>
+                                           <th>Damaged Qty</th>
                                             <th>Excess Qty</th> -->
                                           
 
@@ -381,10 +396,15 @@ while(resultSet.next()){
                       </thead>
                         <tbody >
                           <tr class="odd gradeX">
-                          <% while(rs.next())
+                          <%   //System.out.println("i values: ");
+                       // create map to store
+                          Map<Integer, List<String>> map = new HashMap<Integer, List<String>>(); 
+                       while(rs.next())
 {
+                    	 	  List<String> list = new ArrayList<String>();
                         	  int bqty=rs.getInt("InvoiceDetails.Qty") ;
                         	   i=rs.getInt("InvoiceDetails.Id") ;
+                        	  // System.out.println(i);
 	%>
 
 <td><%=sno%></td>
@@ -410,20 +430,69 @@ while(resultSet.next()){
                 <input type="hidden" id="date" name="date" value=<%=cn%> >  
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
 </td>
-<td style="width: 10%;"><a href="delpur.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("InvoiceDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("InvoiceDetails.Price")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>&dc=<%=dc%>&sd=<%=cn%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td>
-
+<%-- <td style="width: 10%;"><a href="delpur.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("InvoiceDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("InvoiceDetails.Price")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>&dc=<%=dc%>&sd=<%=cn%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
+  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td>   
 </tr>
  <%
+ list.add(String.valueOf(primaryKey));
+ list.add(branch);
+ list.add(resultSet.getString("BalanceAmount"));
+ list.add(rs.getString("InvoiceDetails.Code"));
+ list.add(String.valueOf(bqty));
+ list.add(rs.getString("InvoiceDetails.Price"));
+ list.add(String.valueOf(i));
+ list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
+ list.add(String.valueOf(i));
+ list.add(dc); 
+ list.add(cn);
+ map.put(i, list);
  sno++;
 } 
+                       //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
+                       for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+                           int key = entry.getKey();
+                           List<String> values = entry.getValue();
+                          // String bv=values.get(9);
+                          // System.out.println("Key = " + key);
+                           //System.out.println("Values = " + values + "n");
+                           
+                           //System.out.println("bv = " + bv);
+                       }
+                       session.setAttribute("map", map);
  %>
 </tbody> 
 </table>
+   <input type="hidden" id="mapValues" name="<%=map%>">  
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">  
+<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i>Delete</button>
+ 
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Edit</button>
  <a href="addpuredit.jsp?branch=<%=branch %>&pid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+ </div>                
+                    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Are you sure?</h4>
+                        </div>
+                        <div class="modal-body">
+                          <!-- <h4>Text in a modal</h4> -->
+                          <p id="test">Do you really want to delete this item? Click Cancel if you do not wish to delete this item.</p>
+                         
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <a id="did" href=""><button type="button" class="btn btn-danger">Yes, Delete</button></a>  
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
 </form>
  
  <% 
@@ -495,6 +564,90 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
     
 <script>
+function funcSelectAll()
+{
+   if(document.forms[0].selectAllCheck.checked==true)
+   {
+            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                 document.forms[0].checkboxRow[a].checked = true;            
+           }
+     }
+     else
+     {
+           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                  document.forms[0].checkboxRow[a].checked = false;           
+           }
+     }          
+
+}
+
+$("#deleteButton").click(function() {
+	 $('#successMsg').hide();
+	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
+	  var count_checked = $('input[type="checkbox"]:checked').length;
+	  //alert(count_checked);
+      if(count_checked == 0) 
+      {
+          //alert("Please select any record to delete.");
+           // $('#errorMsg').css({ 'color': 'red'});
+          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
+         
+         $('#errorMsg').show();
+          $("#deleteModal").modal("hide");
+          return false;
+      }
+      else
+    	  {
+    	  //$('#errorMsg').html('');
+    	  $('#errorMsg').hide();
+    	  }
+});	
+function deleteCheckedRecords(){
+	//var did=document.getElementById("did").value;
+	var pk=document.getElementById("payid").value;
+	var branch=document.getElementById("branch").value;
+	var dc=document.getElementById("dc").value;
+	var cn=document.getElementById("date").value;
+	//alert(pk);
+	//alert(branch);
+	//alert(dc);
+	//alert(cn);
+	var items=document.getElementsByName('checkboxRow');
+	var selectedItems="";
+	for(var i=0; i<items.length; i++){
+		if(items[i].type=='checkbox' && items[i].checked==true)
+			if(selectedItems!="")				
+				{
+				selectedItems+=","+items[i].value+"\n";
+				}
+			else
+				{
+			selectedItems+=items[i].value+"\n";
+				}
+	}
+	//alert(selectedItems);
+
+
+
+/* 	$.ajax({
+	    url : "BulkDeleteSale.jsp?selectedItems="+selectedItems,
+	    		//  url : "BulkDeleteSale.jsp?selectedItems="+selectedItems+"mapData="+mapData,
+	    type : "POST",
+	    async : false,
+	    success : function(data) {
+	    }
+	}); */
+	if(selectedItems=="")
+		{
+		 //alert("Please select an item to delete.");
+		 return;
+		}
+	else
+		{
+		document.getElementById('did').href=('BulkDeletePurchase.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn);
+	}
+}
+
  $(document).ready(function() {
 		var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;

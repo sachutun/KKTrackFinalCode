@@ -66,6 +66,7 @@ int i=0;
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <style>
+
         .no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; left: 100px; top: 0; }
 .se-pre-con {
@@ -206,13 +207,24 @@ if(user==null)
                  <a href="editSale.jsp" style="color:white;">   <button type="button" class="btn btn-warning">Go Back to Edit</button></a>
              </div>   
      <% String r=request.getParameter("res");
- String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale updated successfully.</strong></div>";
- String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale deleted successfully.</strong></div>";
- if(r!=null && r.equals("1"))
+ String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale updated successfully.</strong></div></div>";
+ String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale deleted successfully.</strong></div></div>";
+%>
+  <div id="successMsg" >
+<%  if(r!=null && r.equals("1"))
         	out.println(succ);
   else if(r!=null && r.equals("2"))
 	 out.println(succ2); 
-     %> 
+     %>
+     </div>
+<!--       <span id="errorMsg"></span>  -->
+      <div id="errorMsg" class="col-md-12" style= "float:left; display: none">
+      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+      <button type="button" class="close" onclick="ref()" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span></button>
+      <strong>Please select atleast one checkbox to delete the record</strong>
+      </div>
+      </div>
           <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   
@@ -221,6 +233,7 @@ if(user==null)
                     <div class="clearfix"></div>
                   
                   <div class="x_content">
+                 
         <form action="saledit.jsp">   
          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
@@ -331,17 +344,27 @@ while(resultSet.next()){
                                             <th>Group</th> 
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
-                                            <th>Delete Item</th>
-                                          
+                                            <th>
+                                            <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            Delete All
+                                          </th>
 
                                         </tr>
                       </thead>
                         <tbody >
                           <tr class="odd gradeX">
-                          <% while(rs.next())
-{
+                          <% 
+                          //System.out.println("i values: ");
+                       // create map to store
+                          Map<Integer, List<String>> map = new HashMap<Integer, List<String>>();                      
+                          while(rs.next())
+						{
+                        	 
+                        	  List<String> list = new ArrayList<String>();
                         	  int bqty=rs.getInt("BillDetails.Qty") ;
                         	   i=rs.getInt("BillDetails.Id") ;
+                        	  // System.out.println(i);
+                        	   
 	%>
 
 <td><%=sno%></td>
@@ -364,28 +387,57 @@ while(resultSet.next()){
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
                 <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
-             
+           
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
 </td>
 <%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
 
- <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td>
- 
-           
+<%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
+
+  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td>     
 </tr>
  <%
+ 
+ list.add(String.valueOf(primaryKey));
+ list.add(branch);
+ list.add(dc);
+ list.add(String.valueOf(bqty));
+ list.add(cn);
+ list.add(resultSet.getString("BalanceAmount"));
+ list.add(rs.getString("BillDetails.Code"));
+ list.add(rs.getString("BillDetails.CostPrice"));
+ list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
+ list.add(String.valueOf(i));
+ map.put(i, list);
  sno++;
 } 
+                         // System.out.println("Fetching Keys and corresponding [Multiple] Values n");
+                          for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+                              int key = entry.getKey();
+                              List<String> values = entry.getValue();
+                             // String bv=values.get(9);
+                             // System.out.println("Key = " + key);
+                             // System.out.println("Values = " + values + "n");
+                              
+                              //System.out.println("bv = " + bv);
+                          }
+                          session.setAttribute("map", map);
+                          //request.getRequestDispatcher("BulkDeleteSale.jsp").forward(request, response);
  %>
+
 </tbody> 
 </table>
+   <input type="hidden" id="mapValues" name="<%=map%>">  
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
+<!-- <input type="button" onclick='printChecked()' value="Delete"/> -->
+<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i>Delete</button>
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Edit</button>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 
+
  </div>
-  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
                     <div class="modal-dialog modal-sm">
                       <div class="modal-content">
 
@@ -479,6 +531,90 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
     
 <script>
+
+function funcSelectAll()
+{
+   if(document.forms[0].selectAllCheck.checked==true)
+   {
+            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                 document.forms[0].checkboxRow[a].checked = true;            
+           }
+     }
+     else
+     {
+           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
+                  document.forms[0].checkboxRow[a].checked = false;           
+           }
+     }          
+
+}
+
+$("#deleteButton").click(function() {
+	 $('#successMsg').hide();
+	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
+	  var count_checked = $('input[type="checkbox"]:checked').length;
+	  //alert(count_checked);
+      if(count_checked == 0) 
+      {
+          //alert("Please select any record to delete.");
+           // $('#errorMsg').css({ 'color': 'red'});
+          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
+         
+         $('#errorMsg').show();
+          $("#deleteModal").modal("hide");
+          return false;
+      }
+      else
+    	  {
+    	  //$('#errorMsg').html('');
+    	  $('#errorMsg').hide();
+    	  }
+});	
+function deleteCheckedRecords(){
+	//var did=document.getElementById("did").value;
+	var pk=document.getElementById("payid").value;
+	var branch=document.getElementById("branch").value;
+	var dc=document.getElementById("dc").value;
+	var cn=document.getElementById("ddd").value;
+	//alert(pk);
+	//alert(branch);
+	//alert(dc);
+	//alert(cn);
+	var items=document.getElementsByName('checkboxRow');
+	var selectedItems="";
+	for(var i=0; i<items.length; i++){
+		if(items[i].type=='checkbox' && items[i].checked==true)
+			if(selectedItems!="")				
+				{
+				selectedItems+=","+items[i].value+"\n";
+				}
+			else
+				{
+			selectedItems+=items[i].value+"\n";
+				}
+	}
+	//alert(selectedItems);
+
+
+
+/* 	$.ajax({
+	    url : "BulkDeleteSale.jsp?selectedItems="+selectedItems,
+	    		//  url : "BulkDeleteSale.jsp?selectedItems="+selectedItems+"mapData="+mapData,
+	    type : "POST",
+	    async : false,
+	    success : function(data) {
+	    }
+	}); */
+	if(selectedItems=="")
+		{
+		 //alert("Please select an item to delete.");
+		 return;
+		}
+	else
+		{
+	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn);
+	}
+}
 function f(i)
 {
 	var i =i;
