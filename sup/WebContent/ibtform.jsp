@@ -564,7 +564,7 @@ function cls(elt)
 				}
 				if(ubran!=null && ubran=="Bowenpally" && ubran=="Workshop")
 					document.getElementById('fromBranchName').style.display="none";
-		   		if(ubran!=null && ubran=="Workshop")
+		   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
 		    		document.getElementById("invAdj").style.display="block";
 			}
 			/* if(role!=null && role=="3")

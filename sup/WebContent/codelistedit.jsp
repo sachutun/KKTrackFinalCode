@@ -468,7 +468,7 @@ var table= $('#ex').DataTable( {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
-   		if(ubran!=null && ubran=="Workshop")
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
 	}
 	/* if(role!=null && role=="3")
