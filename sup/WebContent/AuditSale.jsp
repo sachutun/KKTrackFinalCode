@@ -10,6 +10,7 @@
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 <%@ page language="java" import="java.util.*" %>
 <%@ page import="java.io.InputStream" %>
+
 <%
 /* String id = request.getParameter("userId"); */
 DataSource ds = null;
@@ -17,7 +18,6 @@ Connection connection = null;
 Statement statement = null;
 Statement st = null;
 Statement st2 = null;
-Statement st3 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
 ResultSet rs2 = null;
@@ -61,26 +61,7 @@ ResultSet rs2 = null;
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
-
     <style>
-    td.highlight {
-        font-weight: bold;
-        color: #ce1a1a;
-    }
-    .price{
-    display: none;
-        padding: 8px;
-    color: #73879C;
-    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
-    font-size: 13px;
-    font-weight: inherit;
-    line-height: 1.471;
-    }
-    
-    th.price{
-    
-    font-weight: bold;
-    }
         .no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; left: 100px; top: 0; }
 .se-pre-con {
@@ -129,7 +110,7 @@ xmlHttp.send(null);
   
  </script>  
   <body class="nav-md">
-     <div class="se-pre-con"></div> 
+    <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -154,10 +135,10 @@ xmlHttp.send(null);
 
             <br />
 
-            <!-- sidebar menu-->
-            <%! String includeMenuPage= "sidebarMenu.html"; %>
+            <!-- sidebar menu -->
+             <%! String includeMenuPage= "sidebarMenu.html"; %>
 			<jsp:include page="<%= includeMenuPage %>"></jsp:include>
-             
+              
           </div>
         </div>
 <%   
@@ -213,8 +194,8 @@ if(user==null)
                 <h1>Sales <!-- <small>Some examples to get you started</small> --></h1>
               </div>
               <div class="clearfix"></div>
- <form id="FormId" action="viewsale.jsp" method="post" class="form-horizontal form-label-left">
-     <div class="col-md-4 col-sm-6 col-xs-12">
+ <form id="FormId" action="AuditSale.jsp" method="post" class="form-horizontal form-label-left">
+             <div class="col-md-4 col-sm-6 col-xs-12">
                         <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                           <span id="daterange"></span> <b class="caret"></b>
@@ -291,56 +272,53 @@ String std=request.getParameter("std");
  String end=request.getParameter("end");	
  String code=request.getParameter("code");	
                    %>
-            <div class="hide4acc" style=" float:right; margin-right: 10px; margin-top:-50px">
+            <div style=" float:right; margin-right: 10px; margin-top:-50px">
 
             <a href="addsale.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
                   <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
 
-                 <a href="editSale.jsp" style="color:white;">   <button id="wedit" type="button" class="btn btn-warning ">Edit</button></a>
+                 <a href="editSale.jsp" style="color:white;">   <button type="button" class="btn btn-warning admin">Edit</button></a>
                   <a href="saleReturn.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Return</button></a>
              </div>        
 
             <br/>
-        <div class="table-responsive"> 
-                  <table class="table" >
        
-        <tbody>
-          
-            <tr id="filter_col" >
-         
-                <td align="center">Date: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
-        
-          <!--   </tr>
-            <tr id="filter_col4" data-column="4"> -->
-               <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
-              
-            <!-- </tr>
-            <tr id="filter_col5" data-column="5"> -->
-               <!--  <td>Type</td> -->
-                <td align="center">Customer Name: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td>
-               
-           <!--  </tr>
-            <tr id="filter_col6" data-column="6"> -->
-                <!-- <td>Description</td> -->
-                <td align="center">Type: <input type="text" class="column_filter" id="col8_filter" data-column="8"></td>
-  
-       
-  
-            </tr>
-        </tbody></table></div>
-
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>View Sale</h2>
+                    <h2>Sale</h2>
               
   <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                  
-                  <%
+                
+                     <div class="table-responsive"> 
+                    <table id="ex" class="table table-striped table-bordered " >
+                      <thead>
+                        <tr>
+                            <tr>
+                   
+                                            <th>Date</th>
+                                            <th>DC No.</th>
+                                            <th>Customer Name</th>
+                                            <th>Total price</th>
+                                            <th>Amt Paid</th>
+                                       
+                                             <th>Details</th> 
+                                        
+                                        </tr>
+                      </thead>
+                             <tfoot>
+            <tr class="admin">
+                <th colspan="3" style="text-align:right">Total Sale:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
+                        <tbody id="country">
+<%
 try{ 
 	/*  Context context = new InitialContext();
 	  Context envCtx = (Context) context.lookup("java:comp/env");
@@ -348,9 +326,9 @@ try{
 	  if (ds != null) {
 		  connection = ds.getConnection(); */
 		  
-		  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+		 // Class.forName("com.mysql.jdbc.Driver").newInstance();  
 	 	  //   connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-   	Properties props = new Properties();
+   Properties props = new Properties();
     InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
     props.load(in);
     in.close();
@@ -364,25 +342,24 @@ try{
     String username = props.getProperty("jdbc.username");
     String password = props.getProperty("jdbc.password");
 
-    connection = DriverManager.getConnection(url, username, password);		  
+    connection = DriverManager.getConnection(url, username, password);	 	      
 statement=connection.createStatement();
 st=connection.createStatement();
 st2=connection.createStatement();
-st3=connection.createStatement();
 String sql1="";
-int primaryKey=0;
 String sqlc="";
-String g="group by s.Id";
-String sql ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) group by s.Id";
+int primaryKey=0;
+
+String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE()))";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) ";
+	sql1 ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in (Month(CURDATE(), Month(CURDATE()-1 )";
 
 	if(code!=null && code.length()!=0)
 	{
-		sqlc="SELECT *, SUM(c.LC*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
+		sqlc="SELECT * From Sale where Id in (SELECT DC from BillDetails where Code="+code+") ";
 	}
 	
-	String sql3="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
+	String sql3="Select * from Sale where 1";
 	String w="";
 	
 if(branch!="" && branch!=null)
@@ -390,7 +367,6 @@ if(branch!="" && branch!=null)
 	w+=" and Branch='"+branch+"'";
 	//sql+=w;
 	sql1+=" and Branch='"+branch+"'";
-	sql1+=g;
 }
 if(std!=null && std.length()!=0)
 {
@@ -398,8 +374,8 @@ if(std!=null && std.length()!=0)
 	//sql3+=w;
 }
 
-sqlc+=w+g;
-sql3+=w+g;
+sqlc+=w;
+sql3+=w;
 
 if(code!=null && code.length()!=0)
 {
@@ -425,56 +401,11 @@ resultSet = statement.executeQuery(sql);
 System.out.println(sql);
 
 }
-
-if(role!="null" && role.equals("1"))
-{
-%>
-        
-                     <div class="table-responsive"> 
-                    <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
-                      <thead>
-                        <tr>
-                            <tr>
-                            <th>Id</th>
-                                            <th>Branch</th>
-                                            <th>Date</th>
-                                            <th>DC Number</th>
-                                            <th>Customer Name</th>
-                                            <th>Code qty</th>
-                                            <th >Total price</th>
-                                            <th >LC</th>
-                                            <th >Amount Paid</th>
-                                            <th>Customer Number</th>
-                                            <th>Type</th>
-                                            
-                                            <th>Details</th> 
-                                            <!-- <th>Previous Payment Details</th>  -->
-                                            <th>Comments</th> 
-                                        </tr>
-                      </thead>
-                           <tfoot>
-            <tr >
-                <th colspan="6" style="text-align:right">Total Sale:</th>
-                <th ></th>
-                <th ></th>
-                <th ></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </tfoot>
-                        <tbody id="country">
-
-<%
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
-
-	primaryKey = resultSet.getInt("s.Id");
+	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	primaryKey = resultSet.getInt("Sale.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
-	/* if(code!=null && code.length()!=0)
-	sql2+=" and BillDetails.Code='"+code+"'"; */
 	rs = st.executeQuery(sql2);
 	String type=resultSet.getString("Type");
 	Date date=resultSet.getDate("Date");
@@ -483,25 +414,15 @@ while(resultSet.next()){
 %>
 
                                         <tr class="odd gradeX">
-<td><%=resultSet.getString("Date") %></td>                                          
-<td><%=resultSet.getString("Branch") %></td>
+
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("DCNumber") %></td>
 <td ><%=resultSet.getString("CustomerName") %></td>
-<%if(code!=null && code.length()!=0){%>
-<td><%=resultSet.getInt("tq") %></td>
-<%}else {%>
-<td></td>
-<%} %>
-<td ><%=resultSet.getInt("TotalPrice") %></td>
-<td ><%=resultSet.getInt("slc") %></td>
-<td ><%=resultSet.getString("AmountPaid") %></td>
-<td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getString("Type") %></td>
+<td><%=resultSet.getInt("TotalPrice") %></td>
 
+<td><%=resultSet.getString("AmountPaid") %></td>
 
-
-<td><table id="ex2" class="table table-striped table-bordered dt-responsive">
+<td><table id="" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                             <tr>
@@ -510,13 +431,11 @@ while(resultSet.next()){
                                             <th>Description</th>
                                             <th>Machine</th>
                                             <th>Part No</th>
-                                            <th>Group</th>
-                                            <th>Quantity</th>
-                                            <th class="price">Sale Price</th>
-                                            <th class="price">Total</th>
-                                            <th class="admin price">LC</th> 
-                                            <th class="price">Max Price</th>
-                                            
+                                            <th>Group</th> 
+                                            <th>Max Price</th>
+                                            <th>Sale Price</th>
+                                            <th>Qty</th>
+
                                         </tr>
                       </thead>
                       
@@ -531,17 +450,17 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getInt("BillDetails.Qty") %></td>
-<td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
-<td class="price"><%=rs.getInt("BillDetails.Total") %></td>
-<td class="admin price"><%=rs.getString("LC") %></td>
-<td class="price"><%=rs.getString("MaxPrice") %></td>
+<td><%=rs.getDouble("MaxPrice") %></td>
+<td><%=rs.getDouble("BillDetails.CostPrice") %></td>
+<td><%=rs.getDouble("BillDetails.Qty") %></td>
 
 </tr>
 <%} %>
 </tbody> </table></td>
 
- <td><%=resultSet.getString("Comments") %></td>                                      
+
+<%-- <td><button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%; " onclick="showDet(<%=primaryKey%>)">View </button></td> --%>
+                                       
                                
                                         
                    
@@ -554,132 +473,6 @@ while(resultSet.next()){
                          
 
 	  }
-%>
-
-</tbody>
-                    </table>
-                  </div>
-                  <% 
-}
-else
-{
-	%>
-	   <div class="table-responsive"> 
-                    <table id="ex4" class="table table-striped table-bordered dt-responsive" width="100%">
-                      <thead>
-                        <tr>
-                            <tr>
-                            <th>Id</th>
-                                            <th>Branch</th>
-                                            <th>Date</th>
-                                            <th>DC Number</th>
-                                            <th>Customer Name</th>
-                                            
-                                            <th>Code qty</th>
-                                            <th >Total price</th>
-                                            <th >Amount Paid</th>
-                                            <th>Customer Number</th>
-                                            <th>Type</th>
-                                            <th>Details</th>  
-                                            <th>Comments</th> 
-                                        
-                                        </tr>
-                      </thead>
-                              <tfoot>
-            <tr >
-                <th colspan="5" style="text-align:right">Total Qty:</th>
-                <th ></th>
-                <th colspan="6" class="admin " ></th>
-           
-            </tr>
-        </tfoot>
-                        <tbody id="country">
-
-<%
-while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
-
-	primaryKey = resultSet.getInt("s.Id");
-	String whr=primaryKey+"";
-	sql2+=whr;
-	if(code!=null && code.length()!=0)
-	sql2+=" and BillDetails.Code='"+code+"'";
-	rs = st.executeQuery(sql2);
-	String type=resultSet.getString("Type");
-	Date date=resultSet.getDate("Date");
-/* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
-	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
-%>
-
-                                        <tr class="odd gradeX">
-<td><%=resultSet.getString("Date") %></td>                                          
-<td><%=resultSet.getString("Branch") %></td>
-<td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
-<td><%=resultSet.getString("DCNumber") %></td>
-<td ><%=resultSet.getString("CustomerName") %></td>
-<%if(code!=null && code.length()!=0){%>
-<td><%=resultSet.getInt("tq") %></td>
-<%}else {%>
-<td></td>
-<%} %>
-<td ><%=resultSet.getInt("TotalPrice") %></td>
-<td ><%=resultSet.getString("AmountPaid") %></td>
-<td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getString("Type") %></td>
-
-
-
-<td><table id="" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                            <tr>
-                                            
-                                            <th>Code</th>
-                                            <th>Description</th>
-                                            <th>Machine</th>
-                                            <th>Part No</th>
-                                            <th>Group</th>
-                                            <th>Quantity</th>
-                                            <th class="price">Sale Price</th>
-                                            <th class="price">Total</th>
-                                            <th class="price">Max Price</th>
-
-                                        </tr>
-                      </thead>
-                      
-                        <tbody >
-                          <tr class="odd gradeX">
-                          <% while(rs.next())
-{
-	%>
-
-<td><%=rs.getString("BillDetails.Code") %></td>
-<td><%=rs.getString("Description") %></td>
-<td><%=rs.getString("Machine") %></td>
-<td><%=rs.getString("PartNo") %></td>
-<td><%=rs.getString("Grp") %></td>
-<td><%=rs.getInt("BillDetails.Qty") %></td>
-<td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
-<td class="price"><%=rs.getInt("BillDetails.Total") %></td>
-<td class="price"><%=rs.getString("MaxPrice") %></td>
-
-</tr>
-<%} %>
-</tbody> </table></td>
-
- <td><%=resultSet.getString("Comments") %></td>    </tr>
-                                        
-                   
-                                        <%
-
-                                        whr="";
-
-                         
-
-	  }
-}
-	  
-
 } catch (Exception e) {
 e.printStackTrace();
 }
@@ -710,7 +503,6 @@ finally {
             <footer>
           <div class="pull-right">
             KK Heavy Machinery 
-          <!--    <button type="button" class="btn btn-success " onclick="hideprices()">Hide </button> -->
           </div>
           <div class="clearfix"></div>
         </footer>
@@ -732,18 +524,18 @@ finally {
     <!-- iCheck -->
     <script src="vendors/iCheck/icheck.min.js"></script>
     <!-- Datatables -->
-    <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-    <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/scroller/1.4.3/js/dataTables.scroller.min.js"></script>
     <script src="vendors/moment/min/moment.min.js"></script>
     <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- bootstrap-datetimepicker -->    
@@ -755,7 +547,6 @@ finally {
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-     <script src="build/js/shortcut.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 
 <script>
@@ -774,48 +565,93 @@ function filterColumn ( i ) {
         $('#col'+i+'_filter').val()
     ).draw();
 }
-
 $(document).ready(function() {
-
-	shortcut.add("Ctrl+Shift+X",function() {
-		hideprices();
-		if(role!=null && role!="1")
-		{
-		var elements = document.getElementsByClassName('admin');
-
-	    for (var i = 0; i < elements.length; i++){
-	    	elements[i].innerHTML="";
-	    }
-		}
-	});
-
+	function exportTableToCSV($table, filename) {
+		 
+	     //rescato los títulos y las filas
+	     var $Tabla_Nueva = $table.find('tr:has(td,th)');
+	     // elimino la tabla interior.
+	     var Tabla_Nueva2= $Tabla_Nueva.filter(function() {
+	          return (this.childElementCount != 1 );
+	     });
+	 
+	     var $rows = Tabla_Nueva2,
+	         // Temporary delimiter characters unlikely to be typed by keyboard
+	         // This is to avoid accidentally splitting the actual contents
+	         tmpColDelim = String.fromCharCode(11), // vertical tab character
+	         tmpRowDelim = String.fromCharCode(0), // null character
+	 
+	         // Solo Dios Sabe por que puse esta linea
+	         colDelim = (filename.indexOf("xls") !=-1)? '"\t"': '","',
+	         rowDelim = '"\r\n"',
+	 
+	 
+	         // Grab text from table into CSV formatted string
+	         csv = '"' + $rows.map(function (i, row) {
+	             var $row = $(row);
+	             var   $cols = $row.find('td:not(.hidden),th:not(.hidden)');
+	 
+	             return $cols.map(function (j, col) {
+	                 var $col = $(col);
+	                 var text = $col.text().replace(/\./g, '');
+	                 return text.replace('"', '""'); // escape double quotes
+	 
+	             }).get().join(tmpColDelim);
+	             csv =csv +'"\r\n"' +'fin '+'"\r\n"';
+	         }).get().join(tmpRowDelim)
+	             .split(tmpRowDelim).join(rowDelim)
+	             .split(tmpColDelim).join(colDelim) + '"';
+	 
+	 
+	      download_csv(csv, filename);
+	 
+	 
+	 }
+	 
+	 
+	 
+	function download_csv(csv, filename) {
+	     var csvFile;
+	     var downloadLink;
+	 
+	     // CSV FILE
+	     csvFile = new Blob([csv], {type: "text/csv"});
+	 
+	     // Download link
+	     downloadLink = document.createElement("a");
+	 
+	     // File name
+	     downloadLink.download = filename;
+	 
+	     // We have to create a link to the file
+	     downloadLink.href = window.URL.createObjectURL(csvFile);
+	 
+	     // Make sure that the link is not displayed
+	     downloadLink.style.display = "none";
+	 
+	     // Add the link to your DOM
+	     document.body.appendChild(downloadLink);
+	 
+	     // Lanzamos
+	     downloadLink.click();
+	 }
 
 	var ubran=document.getElementById('ubran').value;
+	var bran=localStorage.getItem("branch");
 	var role=document.getElementById('urole').value;
+	
+	if(ubran=="All")
+		ubran=bran;
+	
 	if(role!=null && role!="1")
-		{
+	{
 		var elements = document.getElementsByClassName('admin');
 
-	    for (var i = 0; i < elements.length; i++){
-	    	elements[i].style.display = "none";
-	    }
-
-	    if(ubran!='Workshop' && ubran!='All')
-    	{
- 
-    	  document.getElementById('wedit').style.display="none";
-    	}
+    		for (var i = 0; i < elements.length; i++){
+        		elements[i].style.display = "none";
+    		}
 	
-		}//
-	/* if(role!=null && role=="3")
-	{
-	var elements = document.getElementsByClassName('userv');
-
-    for (var i = 0; i < elements.length; i++){
-        elements[i].style.display = "none";
-    }
-	} */
- 	
+	}
 	if(role!=null && role=="2")
 	{
 		var elements = document.getElementsByClassName('hide4branch');
@@ -828,8 +664,8 @@ $(document).ready(function() {
 	    for (var i = 0; i < elements.length; i++){
 	        elements[i].style.display = "block";
 	    }
-	    if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
-			document.getElementById("invAdj").style.display="block";
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
+    		document.getElementById("invAdj").style.display="block";
 	}
 	/* if(role!=null && role=="3")
 	{
@@ -861,217 +697,109 @@ $(document).ready(function() {
 		for (var i = 0; i < elements.length; i++){
     			elements[i].style.display = "none";
 		}
-		var elements1 = document.getElementsByClassName('hide4acc');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
 	    
 		//document.getElementById("br").style.display="block";
-	}
-	
-	
-
-	   
+	}	   
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,
-	        "lengthMenu": [[25, 50, -1], [25, 50, "All"]],
+	        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 	        "order": [[ 0, "desc" ]],
 	        "processing": true,
+	     
 	        "language": {
-	          "sProcessing" : '<img src="images/Preloader_2.gif"  style="z-index:60000000; margin-top:20%"> '}, 
-	            
-	        "columnDefs": [
-	         /*    { "visible": false, "targets": 0 }, */
-	        	{ "targets": [0,6,7,8], "visible": false }
-	          
-	            
-	          ],
-	          "footerCallback": function ( row, data, start, end, display ) {
-	              var api = this.api(), data;
-	   
-	              // Remove the formatting to get integer data for summation
-	              var intVal = function ( i ) {
-	                  return typeof i === 'string' ?
-	                      i.replace(/[\$,]/g, '')*1 :
-	                      typeof i === 'number' ?
-	                          i : 0;
-	              };
-	   
-	              // Total over all pages
-	              total = api
-	                  .column( 6 )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Total over this page
-	              pageTotal = api
-	                  .column( 6, { page: 'current'} )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Update footer
-	              $( api.column( 6 ).footer() ).html(
-	            		  pageTotal.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' ( '+  total.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' total)'
-	              );
-	              // Total over all pages
-	              total = api
-	                  .column( 7 )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Total over this page
-	              pageTotal = api
-	                  .column( 7, { page: 'current'} )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Update footer
-	              $( api.column( 7 ).footer() ).html(
-	            		  pageTotal.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' ( '+  total.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' total)'
-	              );
-	              
-	              // Total over all pages
-	              total = api
-	                  .column( 5 )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Total over this page
-	              pageTotal = api
-	                  .column( 5, { page: 'current'} )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Update footer
-	              $( api.column( 5 ).footer() ).html(
-	            		  pageTotal+' ( '+ total+' total)'
-	              );
-	          },
-	          scrollY:        '53vh',
-		        scrollCollapse: true,
-		        "createdRow": function ( row, data, index ) {
-		        var tp=$('td', row).eq(5).text();
-		        var lc=$('td', row).eq(6).text();
-			         if(Number(tp) < Number(lc))
-			        	 {
-			        
-	                $('td', row).addClass('highlight');
-			        	 }
-		        },
+	            "sProcessing" : '<img src="images/Preloader_2.gif"  style="z-index:60000000; margin-top:20%"> '},
+	          /*   "footerCallback": function ( row, data, start, end, display ) {
+		              var api = this.api(), data;
+		   
+		              // Remove the formatting to get integer data for summation
+		              var intVal = function ( i ) {
+		                  return typeof i === 'string' ?
+		                      i.replace(/[\$,]/g, '')*1 :
+		                      typeof i === 'number' ?
+		                          i : 0;
+		              };
+		   
+		              // Total over all pages
+		              total = api
+		                  .column( 3 )
+		                  .data()
+		                  .reduce( function (a, b) {
+		                      return intVal(a) + intVal(b);
+		                  }, 0 );
+		   
+		              // Total over this page
+		              pageTotal = api
+		                  .column( 3, { page: 'current'} )
+		                  .data()
+		                  .reduce( function (a, b) {
+		                      return intVal(a) + intVal(b);
+		                  }, 0 );
+		   
+		              // Update footer
+		              $( api.column( 3 ).footer() ).html(
+		            		  pageTotal.toLocaleString('en-IN', {
+			                	    maximumFractionDigits: 2,
+			                	    style: 'currency',
+			                	    currency: 'INR'
+			                	}) +' ( '+  total.toLocaleString('en-IN', {
+			                	    maximumFractionDigits: 2,
+			                	    style: 'currency',
+			                	    currency: 'INR'
+			                	}) +' total)'
+		              );
+		          }, */
+		          scrollY:        '50vh',
+			        scrollCollapse: true,
+	    /*     "createdRow": function ( row, data, index ) {
+	           
+	                $('td', row).eq(5).addClass('highlight');}, */
 	      
-	        dom: 'lfrtip'/* ,
+	        dom: 'Blfrtip' ,
 	        buttons: [
-	            'copy', 'excel', 'pdf', 'print'
-	        ] */
+	        	{
+                    extend:    'excelHtml5',
+                    text:      '<i class="fa fa-file-excel-o"></i>',
+                    titleAttr: 'Excel',
+                    "oSelectorOpts": { filter: 'applied', order: 'current' },
+                    "sFileName": "report.xls",
+                    action : function( e, dt, button, config ) {
+                        exportTableToCSV.apply(this, [$('#ex'), 'export.xls']);
+
+                    }
+
+                },
+	            {
+	                extend: 'print',
+	                footer:true,
+	                title: ubran + " Sale",
+	                
+	                
+	                exportOptions: {
+	                    stripHtml: false
+	                    
+	               },
+	                customize: function ( win ) {
+	             
+	                    $(win.document.body).find( 'table' )
+	                        .addClass( 'compact' )
+	                        .css( 'font-size', 'inherit' );
+	                }
+	            } ,
+	            {
+	            	extend: 'pdfHtml5',
+	                orientation: 'landscape',
+	                pageSize: 'A4'
+	              
+	            },
+	            {
+	                extend: 'copy',
+	                exportOptions: {
+	                    stripHtml: true
+	               }
+	            } 
+	        ]
 	    } );
-
-
-table2=$('#ex4').DataTable( {
-    
-    "iDisplayStart":0,
-    "lengthMenu": [[25, 50, -1], [25, 50, "All"]],
-    "order": [[ 0, "desc" ]],
-    "processing": true,
-    "language": {
-      "sProcessing" : '<img src="images/Preloader_2.gif"  style="z-index:60000000; margin-top:20%"> '}, 
-        
-    "columnDefs": [
-        { "visible": false, "targets": 0 },
-     	{ "targets": [6,7], "visible": false }
-      
-        
-      ],
-      "footerCallback": function ( row, data, start, end, display ) {
-          var api = this.api(), data;
-
-          // Remove the formatting to get integer data for summation
-          var intVal = function ( i ) {
-              return typeof i === 'string' ?
-                  i.replace(/[\$,]/g, '')*1 :
-                  typeof i === 'number' ?
-                      i : 0;
-          };
-
-         
-          
-          // Total over all pages
-          total = api
-              .column( 5 )
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-          // Total over this page
-          pageTotal = api
-              .column( 5, { page: 'current'} )
-              .data()
-              .reduce( function (a, b) {
-                  return intVal(a) + intVal(b);
-              }, 0 );
-
-          // Update footer
-          $( api.column( 5 ).footer() ).html(
-        		  pageTotal+' ( '+ total+' total)'
-          );
-      },
-      scrollY:        '53vh',
-        scrollCollapse: true,
-       
-  
-    dom: 'lfrtip'/* ,
-    buttons: [
-        'copy', 'excel', 'pdf', 'print'
-    ] */
-} );
-
-function hideprices()
-{
-	var elements = document.getElementsByClassName('price');
-
-    for (var i = 0; i < elements.length; i++){
-    	elements[i].style.display = "table-cell";
-    	
-    }
-
-    table.column(6).visible(true);
-    table.column(7).visible(true);
-    table.column(8).visible(true);
-    
-     table2.column(6).visible(true);
-     table2.column(7).visible(true);
-}
-
 	    
 $('input.column_filter').on( 'keyup click', function () {
     filterColumn( $(this).attr('data-column') );
@@ -1096,7 +824,6 @@ else
 <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
 
 <script type='text/javascript'>
-
 
 function d(){
 
@@ -1136,7 +863,6 @@ $(window).load(function () {
 	 document.getElementById('std').value=localStorage.getItem("std"); 
 	 document.getElementById('end').value=localStorage.getItem("end"); 
 	 document.getElementById('code').value=localStorage.getItem("code"); 
-	 
 /* 
 document.getElementById('single_cal3').value=localStorage.getItem("sd"); 
 
@@ -1163,7 +889,6 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 
 	    	}
 	    	localStorage.setItem("branch", "");
-	    	localStorage.setItem("code", "");
 	     	localStorage.setItem("daterange", "Select Date Range"); 
 	  /*   	localStorage.setItem("sd", ""); */
 	  /*   	localStorage.setItem("dc", ""); */
@@ -1172,12 +897,3 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 </script> 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
