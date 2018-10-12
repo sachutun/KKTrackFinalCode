@@ -203,10 +203,7 @@ if(user==null)
                   <input id="end" name="end" class="form-control col-md-7 col-xs-12" type="hidden" > 
                         </div>
                       </div>
- <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Code:</label>
-                        <div class="col-md-1 col-sm-3 col-xs-3">
-                          <input type="text" id="code" class="form-control col-md-7 col-xs-12" name="code">
-                        </div>
+
                         <%
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
 							Enumeration resourceKeys = resources.getKeys();
@@ -302,21 +299,21 @@ String std=request.getParameter("std");
                                             <th>Date</th>
                                             <th>DC No.</th>
                                             <th>Customer Name</th>
-                                            <th>Total price</th>
-                                            <th>Amt Paid</th>
-                                       
-                                             <th>Details</th> 
+                                            <th>Code</th> 
+                                            <th>Description</th>
+                                            <th>IBT Price</th>
+                                            <th>Qty</th> 
                                         
                                         </tr>
                       </thead>
-                             <tfoot>
+                           <!--   <tfoot>
             <tr class="admin">
                 <th colspan="3" style="text-align:right">Total Sale:</th>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
-        </tfoot>
+        </tfoot> -->
                         <tbody id="country">
 <%
 try{ 
@@ -350,16 +347,12 @@ String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE()))";
+String sql ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE()))";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in (Month(CURDATE(), Month(CURDATE()-1 )";
+	sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE(), Month(CURDATE()-1 )";
 
-	if(code!=null && code.length()!=0)
-	{
-		sqlc="SELECT * From Sale where Id in (SELECT DC from BillDetails where Code="+code+") ";
-	}
 	
-	String sql3="Select * from Sale where 1";
+	String sql3="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
 	String w="";
 	
 if(branch!="" && branch!=null)
@@ -377,13 +370,7 @@ if(std!=null && std.length()!=0)
 sqlc+=w;
 sql3+=w;
 
-if(code!=null && code.length()!=0)
-{
-	resultSet = statement.executeQuery(sqlc);
-	System.out.println(sqlc);
-}
-
-else if(std!=null && std.length()!=0)
+ if(std!=null && std.length()!=0)
 {
 	resultSet = statement.executeQuery(sql3);
 	System.out.println(sql3);
@@ -402,12 +389,7 @@ System.out.println(sql);
 
 }
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
-	primaryKey = resultSet.getInt("Sale.Id");
-	String whr=primaryKey+"";
-	sql2+=whr;
-	rs = st.executeQuery(sql2);
-	String type=resultSet.getString("Type");
+	
 	Date date=resultSet.getDate("Date");
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
 	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
@@ -418,45 +400,12 @@ while(resultSet.next()){
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("DCNumber") %></td>
 <td ><%=resultSet.getString("CustomerName") %></td>
-<td><%=resultSet.getInt("TotalPrice") %></td>
+<td><%=resultSet.getString("Code") %></td>
 
-<td><%=resultSet.getString("AmountPaid") %></td>
+<td><%=resultSet.getString("Description") %></td>
 
-<td><table id="" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                            <tr>
-                                            
-                                            <th>Code</th>
-                                            <th>Description</th>
-                                            <th>Machine</th>
-                                            <th>Part No</th>
-                                            <th>Group</th> 
-                                            <th>Max Price</th>
-                                            <th>Sale Price</th>
-                                            <th>Qty</th>
-
-                                        </tr>
-                      </thead>
-                      
-                        <tbody >
-                          <tr class="odd gradeX">
-                          <% while(rs.next())
-{
-	%>
-
-<td><%=rs.getString("BillDetails.Code") %></td>
-<td><%=rs.getString("Description") %></td>
-<td><%=rs.getString("Machine") %></td>
-<td><%=rs.getString("PartNo") %></td>
-<td><%=rs.getString("Grp") %></td>
-<td><%=rs.getDouble("MaxPrice") %></td>
-<td><%=rs.getDouble("BillDetails.CostPrice") %></td>
-<td><%=rs.getDouble("BillDetails.Qty") %></td>
-
-</tr>
-<%} %>
-</tbody> </table></td>
+<td><%=resultSet.getString("MinPrice") %></td>
+<td><%=resultSet.getString("Qty") %></td>
 
 
 <%-- <td><button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%; " onclick="showDet(<%=primaryKey%>)">View </button></td> --%>
@@ -466,10 +415,6 @@ while(resultSet.next()){
                    
                                         <%
 
-                                        whr="";
-
-              
-                        
                          
 
 	  }
