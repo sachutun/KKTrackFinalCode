@@ -287,10 +287,10 @@ while(resultSet.next()){
  <tr class="odd gradeX">
 
 <%-- <td><%=sno%></td>      --%>                                     
-<td width="3%"><strong> IBT Number: </strong><input class="" type="text" id="ibtno" name="ibtno" value=<%=resultSet.getString("IBTNo") %> readonly="readonly" style="border:none"></td>
+<td width="4%"><strong> IBT Number: </strong><input class="" type="text" id="ibtno" name="ibtno" value=<%=resultSet.getString("IBTNo") %> readonly="readonly" style="border:none"></td>
 <td width="2%"><strong> Date: </strong><input class="" type="text" id="date" name="date" value=<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %> ></td>
-<td width="3%"><strong> From Branch: </strong><input class="" type="text" id="fbranch" name="fbranch" value=<%=resultSet.getString("FromBranch") %> readonly="readonly" style="border:none"></td>
-<td width="3%"><strong> To Branch: </strong><input class="" type="text" id="tbranch" name="tbranch" value=<%=resultSet.getString("ToBranch") %> readonly="readonly" style="border:none"></td>
+<td width="6%"><strong> From Branch: </strong><input class="" type="text" id="fbranch" name="fbranch" value=<%=resultSet.getString("FromBranch") %> readonly="readonly" style="border:none"></td>
+<td width="4%"><strong> To Branch: </strong><input class="" type="text" id="tbranch" name="tbranch" value=<%=resultSet.getString("ToBranch") %> readonly="readonly" style="border:none"></td>
 <td width="3%"><strong> Total Qty: </strong><%=resultSet.getInt("TotalQty") %></td>
 
 </tr></tbody></table>
@@ -300,7 +300,6 @@ while(resultSet.next()){
                             <tr>
                                             <th>Sno</th>
                                             <th>Code</th>
-                                            <th>HSNCode</th>
                                             <th>Description</th>
                                             <th>Machine</th>
                                             <th>Part No</th>
@@ -328,13 +327,12 @@ while(resultSet.next()){
 	%>
 <td><%=sno2++%></td> 
 <td><%=rs.getString("IBTDetails.Code") %></td>
-<td><%=rs.getString("CodeList.HSNCode") %></td>
-<td width="80%"><%=rs.getString("Description") %></td>
-<td width="80%"><%=rs.getString("Machine") %> </td>
-<td width="80%"><%=rs.getString("PartNo") %></td>
+<td ><%=rs.getString("Description") %></td>
+<td><%=rs.getString("Machine") %> </td>
+<td ><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><input class="col-md-12" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getInt("IBTDetails.Qty") %> >
+<td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getInt("IBTDetails.Qty") %> >
 <input type="hidden" id="i" name="i">  
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >
  <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getString("IBTDetails.Qty")%> >
@@ -377,9 +375,9 @@ while(resultSet.next()){
 </tbody> 
 </table>
  <input type="hidden" id="mapValues" name="<%=map%>">  
- <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i>Delete</button>
+ <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger " data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
  
-<button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Edit</button>
+<button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
  <a href="addibtedit.jsp?pid=<%=primaryKey%>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 </div>
   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
@@ -433,12 +431,20 @@ e.printStackTrace();
               </div>
               
  </div>
-  </div>
-   </div>
-    </div>
+
+ 
     
            
-
+    </div>
+            <footer>
+          <div class="pull-right">
+            KK Heavy Machinery 
+          <!--    <button type="button" class="btn btn-success " onclick="hideprices()">Hide </button> -->
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+      </div>
+    </div>
     <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

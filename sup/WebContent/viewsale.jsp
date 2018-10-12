@@ -614,7 +614,7 @@ while(resultSet.next()){
                                         <tr class="odd gradeX">
 <td><%=resultSet.getString("Date") %></td>                                          
 <td><%=resultSet.getString("Branch") %></td>
-<td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
+<td width="12%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("DCNumber") %></td>
 <td ><%=resultSet.getString("CustomerName") %></td>
 <%if(code!=null && code.length()!=0){%>

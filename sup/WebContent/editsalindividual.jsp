@@ -431,8 +431,8 @@ while(resultSet.next()){
    <input type="hidden" id="mapValues" name="<%=map%>">  
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
 <!-- <input type="button" onclick='printChecked()' value="Delete"/> -->
-<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i>Delete</button>
-<button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Edit</button>
+<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
+<button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 
 
