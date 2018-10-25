@@ -397,6 +397,8 @@ String role=(String)session.getAttribute("role");
                           <input id="ftotal" class="form-control col-md-7 col-xs-12" type="number" name="ftotal" onchange="balcalc()" readonly="readonly" >
                         </div>
                       </div>
+                    
+                    <br/>
                       
                       <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Customer Name:<span class="required">*</span>
@@ -411,8 +413,9 @@ String role=(String)session.getAttribute("role");
                           <input id="customernumber" class="form-control col-md-7 col-xs-12" type="number" name="customernumber">
                         </div>
                       </div>
-                      <div class="form-group" style="margin-top:2%;">
-                        <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
+                      
+                    <div class="form-group" style="margin-top:2%;">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <select class="select2_single form-control" tabindex="-1" name="type" required="required">
                             <option></option>
@@ -475,6 +478,26 @@ String role=(String)session.getAttribute("role");
                         <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank">
                         </div> </div>
                         <br/>
+                          
+                       <div class="form-group ">
+                       <label class="control-label col-md-2 col-sm-2 col-xs-3">General Invoice:</label>
+                        <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                            <div class="iradio_flat-green checked" style="position: relative;"><input type="radio" class="flat" name="taxtype" id="gi" value="general" checked="" required="" data-parsley-multiple="taxtype" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
+                        </div>
+                        
+                        <label class="control-label col-md-1 col-sm-1 col-xs-3">Tax Invoice:</label>
+                        <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                         <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="taxtype" id="ti" value="tax" data-parsley-multiple="taxtype" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                        </div> 
+                        <label class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:</label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                        <input id="GST" class="form-control col-md-7 col-xs-12" type="text" name="GST">
+                        </div>
+                        </div>
+                        
+                      
+                        <br/>
+                        
                         <div class="form-group"> 
                        <label class="control-label col-md-2 col-sm-2 col-xs-3">Comments:</label>
                        <div class="col-md-8 col-sm-7 col-xs-8">
