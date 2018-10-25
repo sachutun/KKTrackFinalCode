@@ -32,7 +32,7 @@ ResultSet rs2 = null;
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/log.png"> 
 
-    <title>KK Track- Sales</title>
+    <title>KK Track- Audit Sales</title>
 
      <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -191,7 +191,7 @@ if(user==null)
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Sales <!-- <small>Some examples to get you started</small> --></h1>
+                <h1>Audit Sales <!-- <small>Some examples to get you started</small> --></h1>
               </div>
               <div class="clearfix"></div>
  <form id="FormId" action="AuditSale.jsp" method="post" class="form-horizontal form-label-left">
@@ -280,11 +280,13 @@ String std=request.getParameter("std");
              </div>        
 
             <br/>
-       
+       <% if(branch==null )
+    	   branch="";
+       %>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Sale</h2>
+                    <h2><%=branch %> Sale</h2>
               
   <div class="clearfix"></div>
                   </div>
@@ -297,11 +299,11 @@ String std=request.getParameter("std");
                             <tr>
                    
                                             <th>Date</th>
-                                            <th>DC No.</th>
+                                            <th>Invoice No.</th>
                                             <th>Customer Name</th>
                                             <th>Code</th> 
                                             <th>Description</th>
-                                            <th>IBT Price</th>
+                                            <th>Invoice Price</th>
                                             <th>Qty</th> 
                                         
                                         </tr>
@@ -469,19 +471,20 @@ finally {
     <!-- iCheck -->
     <script src="vendors/iCheck/icheck.min.js"></script>
     <!-- Datatables -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.flash.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.0/js/buttons.print.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/scroller/1.4.3/js/dataTables.scroller.min.js"></script>
-    <script src="vendors/moment/min/moment.min.js"></script>
+ <script src="vendors/moment/min/moment.min.js"></script>
     <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- bootstrap-datetimepicker -->    
     
@@ -489,10 +492,16 @@ finally {
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+   
+ 
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script> -->
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+     <script src="build/js/shortcut.js"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 
 <script>
 function showDet(i)
@@ -511,76 +520,7 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
-	function exportTableToCSV($table, filename) {
-		 
-	     //rescato los títulos y las filas
-	     var $Tabla_Nueva = $table.find('tr:has(td,th)');
-	     // elimino la tabla interior.
-	     var Tabla_Nueva2= $Tabla_Nueva.filter(function() {
-	          return (this.childElementCount != 1 );
-	     });
-	 
-	     var $rows = Tabla_Nueva2,
-	         // Temporary delimiter characters unlikely to be typed by keyboard
-	         // This is to avoid accidentally splitting the actual contents
-	         tmpColDelim = String.fromCharCode(11), // vertical tab character
-	         tmpRowDelim = String.fromCharCode(0), // null character
-	 
-	         // Solo Dios Sabe por que puse esta linea
-	         colDelim = (filename.indexOf("xls") !=-1)? '"\t"': '","',
-	         rowDelim = '"\r\n"',
-	 
-	 
-	         // Grab text from table into CSV formatted string
-	         csv = '"' + $rows.map(function (i, row) {
-	             var $row = $(row);
-	             var   $cols = $row.find('td:not(.hidden),th:not(.hidden)');
-	 
-	             return $cols.map(function (j, col) {
-	                 var $col = $(col);
-	                 var text = $col.text().replace(/\./g, '');
-	                 return text.replace('"', '""'); // escape double quotes
-	 
-	             }).get().join(tmpColDelim);
-	             csv =csv +'"\r\n"' +'fin '+'"\r\n"';
-	         }).get().join(tmpRowDelim)
-	             .split(tmpRowDelim).join(rowDelim)
-	             .split(tmpColDelim).join(colDelim) + '"';
-	 
-	 
-	      download_csv(csv, filename);
-	 
-	 
-	 }
-	 
-	 
-	 
-	function download_csv(csv, filename) {
-	     var csvFile;
-	     var downloadLink;
-	 
-	     // CSV FILE
-	     csvFile = new Blob([csv], {type: "text/csv"});
-	 
-	     // Download link
-	     downloadLink = document.createElement("a");
-	 
-	     // File name
-	     downloadLink.download = filename;
-	 
-	     // We have to create a link to the file
-	     downloadLink.href = window.URL.createObjectURL(csvFile);
-	 
-	     // Make sure that the link is not displayed
-	     downloadLink.style.display = "none";
-	 
-	     // Add the link to your DOM
-	     document.body.appendChild(downloadLink);
-	 
-	     // Lanzamos
-	     downloadLink.click();
-	 }
-
+	
 	var ubran=document.getElementById('ubran').value;
 	var bran=localStorage.getItem("branch");
 	var role=document.getElementById('urole').value;
@@ -648,7 +588,7 @@ $(document).ready(function() {
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,
-	        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	        /* "lengthMenu": [[200,250,300 -1], [200, 250, 300, "All"]], */
 	        "order": [[ 0, "desc" ]],
 	        "processing": true,
 	     
@@ -700,8 +640,8 @@ var table=$('#ex').DataTable( {
 	           
 	                $('td', row).eq(5).addClass('highlight');}, */
 	      
-	        dom: 'Blfrtip' ,
-	        buttons: [
+	        dom: 'Bfrtip' ,
+	       /*  buttons: [
 	        	{
                     extend:    'excelHtml5',
                     text:      '<i class="fa fa-file-excel-o"></i>',
@@ -743,6 +683,9 @@ var table=$('#ex').DataTable( {
 	                    stripHtml: true
 	               }
 	            } 
+	        ] */
+	        buttons: [
+	        	'excel','copy', 'pdf', 'print'
 	        ]
 	    } );
 	    
