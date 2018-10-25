@@ -479,20 +479,21 @@ String role=(String)session.getAttribute("role");
                         </div> </div>
                         <br/>
                           
-                       <div class="form-group ">
-                       <label class="control-label col-md-2 col-sm-2 col-xs-3">General Invoice:</label>
-                        <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                            <div class="iradio_flat-green checked" style="position: relative;"><input type="radio" class="flat" name="taxtype" id="gi" value="general" checked="" required="" data-parsley-multiple="taxtype" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
-                        </div>
                         
-                        <label class="control-label col-md-1 col-sm-1 col-xs-3">Tax Invoice:</label>
-                        <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                         <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="taxtype" id="ti" value="tax" data-parsley-multiple="taxtype" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                        </div> 
-                        <label class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:</label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                        <input id="GST" class="form-control col-md-7 col-xs-12" type="text" name="GST">
-                        </div>
+                   		<div class="form-group ">
+                       		<label class="control-label col-md-2 col-sm-2 col-xs-3">General Invoice:</label>
+                        		<div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked="checked">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-1 col-sm-1 col-xs-3">Tax Invoice:</label>
+                       		 <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
+                       		 </div> 
+                       		 <label id="GSTLabel" style="visibility:hidden" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:</label>
+                        		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
+                        			<input id="GST" class="form-control col-md-7 col-xs-12" type="text" name="GST">
+                       		 </div>
                         </div>
                         
                       
@@ -597,6 +598,18 @@ String role=(String)session.getAttribute("role");
     <script src="build/js/custom.min.js"></script>
    
 <script>
+function invoiceCheck() {	
+    if (document.getElementById('taxInvoice').checked) {
+        document.getElementById('GSTdiv').style.visibility = 'visible';
+        document.getElementById('GSTLabel').style.visibility = 'visible';
+    }
+    else 
+    	{
+    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+    	}
+
+}
 
  function dch() 
 { 
