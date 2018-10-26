@@ -814,6 +814,13 @@ $(document).ready(function() {
 
 <script type='text/javascript'>
 
+function convert(str) {
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth()+1)).slice(-2),
+        day  = ("0" + date.getDate()).slice(-2);
+    return [ date.getFullYear(), mnth, day ].join("-");
+}
+
 function d(){
 
 	 	var dr=document.getElementById('daterange').innerHTML;
@@ -821,11 +828,16 @@ function d(){
     		{
     	var drv=dr.split('-');
     	var sdate = new Date(drv[0]);
-    	var std = sdate.toString("yyyy-MM-dd");
+    	
+   // 	var std = sdate.toString("yyyy-MM-dd");
+   var std=convert(sdate);
+
     	var edate = new Date(drv[1]);
-    	var end = edate.toString("yyyy-MM-dd");
+ //   	var end = edate.toString("yyyy-MM-dd");
+  var end=convert(edate);
     	document.getElementById('std').value=std;
     	document.getElementById('end').value=end;
+    	
     	
  
     	localStorage.setItem("std", std);
