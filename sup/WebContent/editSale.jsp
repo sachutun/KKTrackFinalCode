@@ -351,7 +351,7 @@ if(user==null)
                                             <th>Edit</th> 
                                              <th>Details</th> 
                                              <th>Comments</th> 
-
+											<th>Customer GST Number</th> 
                                         </tr>
                       </thead>
                         <tbody id="country">
@@ -431,6 +431,9 @@ while(resultSet.next()){
 	sql2+=whr;
 	rs = st.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
+	 String gst= resultSet.getString("GST");
+	 if(gst== null)
+	 	gst="";
 %>
                                         <tr class="odd gradeX">
 <td><%=resultSet.getString("Date") %></td>                                            
@@ -443,7 +446,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><a href="editsalindividual.jsp?dc=<%=resultSet.getString("DCNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>&pk=<%=primaryKey%>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Edit </button></a></td> 
-<td><table id="" class="table table-striped table-bordered">
+<td><table id="" class="table table-striped table-bordered dt-responsive">
                       <thead>
                         <tr>
                             <tr>
@@ -477,6 +480,8 @@ while(resultSet.next()){
  <% }%>
 </tbody> </table></td>
  <td><%=resultSet.getString("Comments") %></td> 
+  
+  <td><%=gst %></td> 
 <%-- <td><button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%; " onclick="showDet(<%=primaryKey%>)">View </button></td> --%>
                                         </tr>
                                
@@ -654,7 +659,7 @@ $(document).ready(function() {
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,
-	        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	        "lengthMenu": [[25, 50, -1], [25, 50, "All"]],
 	        "order": [[ 0, "desc" ]],
 	        "columnDefs": [
 	            { "visible": false, "targets": 0 },

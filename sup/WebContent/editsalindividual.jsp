@@ -314,6 +314,7 @@ while(resultSet.next()){
 	   st3 = conn.createStatement();
 	rs = st2.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
+	  String gst = resultSet.getString("GST");
 %>
                                         <tr class="odd gradeX">
 
@@ -424,14 +425,64 @@ while(resultSet.next()){
                           }
                           session.setAttribute("map", map);
                           //request.getRequestDispatcher("BulkDeleteSale.jsp").forward(request, response);
+                        
  %>
 
 </tbody> 
 </table>
    <input type="hidden" id="mapValues" name="<%=map%>">  
+
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
-<!-- <input type="button" onclick='printChecked()' value="Delete"/> -->
-<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style="float:right" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
+
+ <br/> <br/> 
+<div class="form-group " >
+                       		
+
+<% if(gst!= null && gst!="")
+{ 
+%>
+<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;"> UN-REG Invoice:</label>
+<div class="col-md-1 col-sm-1 col-xs-3" >
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
+                       		  <div class="col-md-1 col-sm-1 col-xs-3" >
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax" checked>
+                       		 </div> 
+                       		 
+                       		 <label id="GSTLabel" style="width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
+                        		<div id="GSTdiv" class="col-md-3 col-sm-3 col-xs-6">
+                        			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst %>" >
+                       		 </div>
+<%
+}
+else
+{
+gst ="";
+%>
+	<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;">UN-REG Invoice:</label>
+<div class="col-md-1 col-sm-1 col-xs-3">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked>
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
+                       		  <div class="col-md-1 col-sm-1 col-xs-3">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
+                       		 </div> 
+                       		 
+                       		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
+                        		<div id="GSTdiv" style="visibility:hidden;" class="col-md-3 col-sm-3 col-xs-6">
+                        			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst%>" >
+                       		 </div>
+<%} %>
+
+                        		
+                       		
+                        </div>
+
+<br/> 
+<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 
@@ -721,6 +772,23 @@ else
 </script>
 
 <script type='text/javascript'>
+function invoiceCheck() {
+if (document.getElementById('taxInvoice').checked) {
+    document.getElementById('GSTdiv').style.visibility = 'visible';
+    document.getElementById('GSTLabel').style.visibility = 'visible';
+    document.getElementById('GST').required = 'true';
+}
+else 
+	{
+	 document.getElementById('GST').required = 'false';
+     document.getElementById('GST').removeAttribute("required");
+     document.getElementById('GST').value = '';
+	document.getElementById('GSTdiv').style.visibility = 'hidden';
+ 	document.getElementById('GSTLabel').style.visibility = 'hidden';
+ 
+	}
+
+}
 function chsn(i)
 {
 	document.getElementById("i").value=i;

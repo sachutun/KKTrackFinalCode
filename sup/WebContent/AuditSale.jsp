@@ -301,6 +301,7 @@ String std=request.getParameter("std");
                                             <th>Date</th>
                                             <th>Invoice No.</th>
                                             <th>Customer Name</th>
+                                             <th>Customer GST No.</th>
                                             <th>Code</th> 
                                             <th>Description</th>
                                             <th>Invoice Price</th>
@@ -349,12 +350,12 @@ String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE()))";
+String sql ="SELECT s.Date, s.DCNumber, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE()))";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE(), Month(CURDATE()-1 )";
+	sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 ))";
 
 	
-	String sql3="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
+	String sql3="SELECT s.Date, s.DCNumber, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
 	String w="";
 	
 if(branch!="" && branch!=null)
@@ -374,19 +375,22 @@ sql3+=w;
 
  if(std!=null && std.length()!=0)
 {
-	resultSet = statement.executeQuery(sql3);
+	 System.out.println("sql3--:  " +sql3);
+	 resultSet = statement.executeQuery(sql3);
 	System.out.println(sql3);
 }
 
 
 else if(branch!="" && branch!=null)
 {
+	 System.out.println("sql1--:  " +sql1);
 	resultSet = statement.executeQuery(sql1);	
 	System.out.println(sql1);
 }
 else
 {
-resultSet = statement.executeQuery(sql);
+	 System.out.println("sql--:  " +sql);
+	resultSet = statement.executeQuery(sql);
 System.out.println(sql);
 
 }
@@ -395,6 +399,9 @@ while(resultSet.next()){
 	Date date=resultSet.getDate("Date");
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
 	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
+	String gst= resultSet.getString("GST");
+	if(gst== null)
+		gst="";
 %>
 
                                         <tr class="odd gradeX">
@@ -402,6 +409,7 @@ while(resultSet.next()){
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("DCNumber") %></td>
 <td ><%=resultSet.getString("CustomerName") %></td>
+<td ><%=gst %></td>
 <td><%=resultSet.getString("Code") %></td>
 
 <td><%=resultSet.getString("Description") %></td>

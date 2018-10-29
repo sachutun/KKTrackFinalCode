@@ -72,7 +72,8 @@ ResultSet resultSet = null;
 }
   </style>
   </head>
-              <script language="javascript">var p = false;</script>
+              <script language="javascript">var p = false;
+              </script>
  <script language="javascript" type="text/javascript">  
  var xmlHttp  
  var xmlHttp
@@ -115,7 +116,6 @@ xmlHttp.send(null);
 		 document.getElementById("dcnumber").value="";
 		 document.getElementById("dcnumber").focus();
 		 }
-	
  }   
  }
   
@@ -431,7 +431,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Amount Paid:<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0">
+                          <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
                       </div>
                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
@@ -481,18 +481,18 @@ String role=(String)session.getAttribute("role");
                           
                         
                    		<div class="form-group ">
-                       		<label class="control-label col-md-2 col-sm-2 col-xs-3">General Invoice:</label>
+                       		<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;">UN-REG Invoice:</label>
                         		<div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
                           		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked="checked">
                         		</div>
                         
-                       		 <label class="control-label col-md-1 col-sm-1 col-xs-3">Tax Invoice:</label>
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		 <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
                         			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
                        		 </div> 
-                       		 <label id="GSTLabel" style="visibility:hidden" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:</label>
+                       		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
                         		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
-                        			<input id="GST" class="form-control col-md-7 col-xs-12" type="text" name="GST">
+                        			<input id="GST" style=";width:200px; "class="form-control col-md-7 col-xs-12" type="text" name="GST">
                        		 </div>
                         </div>
                         
@@ -598,15 +598,21 @@ String role=(String)session.getAttribute("role");
     <script src="build/js/custom.min.js"></script>
    
 <script>
-function invoiceCheck() {	
+function invoiceCheck() {
+
     if (document.getElementById('taxInvoice').checked) {
         document.getElementById('GSTdiv').style.visibility = 'visible';
         document.getElementById('GSTLabel').style.visibility = 'visible';
+        document.getElementById('GST').required = 'true';
     }
     else 
     	{
+    	 document.getElementById('GST').required = 'false';
+         document.getElementById('GST').removeAttribute("required");
+         document.getElementById('GST').value = '';
     		document.getElementById('GSTdiv').style.visibility = 'hidden';
      	document.getElementById('GSTLabel').style.visibility = 'hidden';
+     
     	}
 
 }
