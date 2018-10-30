@@ -450,11 +450,12 @@ if(role!="null" && role.equals("1"))
                                             <th>Details</th> 
                                             <!-- <th>Previous Payment Details</th>  -->
                                             <th>Comments</th> 
+                                            <th>Customer GST Number </th>
                                         </tr>
                       </thead>
                            <tfoot>
             <tr >
-                <th colspan="6" style="text-align:right">Total Sale:</th>
+                <th colspan="7" style="text-align:right">Total Sale:</th>
                 <th ></th>
                 <th ></th>
                 <th ></th>
@@ -542,8 +543,10 @@ while(resultSet.next()){
 </tbody> </table></td>
 
  <td><%=resultSet.getString("Comments") %></td>                                      
-                               
-                                        
+ <%String gst= resultSet.getString("GST");
+ if(gst== null)
+		gst="";  %>                             
+  <td><%=gst %></td>                                     
                    
                                         <%
 
@@ -582,13 +585,14 @@ else
                                             <th>Type</th>
                                             <th>Details</th>  
                                             <th>Comments</th> 
-                                        
+                                           <th>Customer GST Number </th>
                                         </tr>
                       </thead>
                               <tfoot>
             <tr >
-                <th colspan="5" style="text-align:right">Total Qty:</th>
+                <th colspan="6" style="text-align:right">Total Qty:</th>
                 <th ></th>
+                
                 <th colspan="6" class="admin " ></th>
            
             </tr>
@@ -667,7 +671,12 @@ while(resultSet.next()){
 <%} %>
 </tbody> </table></td>
 
- <td><%=resultSet.getString("Comments") %></td>    </tr>
+ <td><%=resultSet.getString("Comments") %></td>  
+ <%String gst= resultSet.getString("GST");
+ if(gst== null)
+		gst="";  %>                             
+  <td><%=gst %></td>  
+    </tr>
                                         
                    
                                         <%

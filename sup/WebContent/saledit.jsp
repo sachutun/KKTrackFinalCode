@@ -35,6 +35,7 @@ try{
     String cname = request.getParameter("cusnam");
     String cno = request.getParameter("cusno");
     String com = request.getParameter("com");
+    String gst = request.getParameter("GST");
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
  String date=request.getParameter("date") ;
 
@@ -170,7 +171,7 @@ Date ndate=df.parse(dt);
        } 
        ftot+=tax;
        ftot-=disc;
-       ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? WHERE Id=?");
+       ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? WHERE Id=?");
        ps.setDouble(1,ftot);
        ps.setDouble(2,ftot-ap);
        ps.setString(3,cname);
@@ -180,7 +181,8 @@ Date ndate=df.parse(dt);
        ps.setString(7,tx);
        ps.setString(8,dis);
        ps.setString(9,com);
-       ps.setInt(10,Pid);
+       ps.setString(10,gst);
+       ps.setInt(11,Pid);
        ps.executeUpdate();     
 
     	 response.sendRedirect("editsalindividual.jsp?res=1&branch="+branch+"&dc="+dc+"&sd="+nd+"&pk="+Pid);

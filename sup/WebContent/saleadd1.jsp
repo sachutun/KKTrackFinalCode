@@ -42,6 +42,7 @@ ResultSet rs = null;
    String type = request.getParameter("type");
    String amountpaid = request.getParameter("amountpaid");
    String balanceamount = request.getParameter("balanceamount");
+   String gst = request.getParameter("GST");
    String sqlb="";
 
    
@@ -100,7 +101,7 @@ ResultSet rs = null;
      /*    System.out.println("fine"); */
        statement=connection.createStatement();       
        
-       int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"')");
+       int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"')");
        
        String sql="Select Max(Id) from Sale";
        resultSet = statement.executeQuery(sql);

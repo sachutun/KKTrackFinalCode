@@ -464,18 +464,30 @@ finally {
     <script src="build/js/custom.min.js"></script>
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
 <script>
+function convert(str) {
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth()+1)).slice(-2),
+        day  = ("0" + date.getDate()).slice(-2);
+    return [ date.getFullYear(), mnth, day ].join("-");
+}
+
 function d(){
 
-	var dr=document.getElementById('daterange').innerHTML;
-	if(dr!="Select Date Range")
-		{
-	var drv=dr.split('-');
-	var sdate = new Date(drv[0]);
-	var std = sdate.toString("yyyy-MM-dd");
-	var edate = new Date(drv[1]);
-	var end = edate.toString("yyyy-MM-dd");
-	document.getElementById('std').value=std;
-	document.getElementById('end').value=end;
+	 	var dr=document.getElementById('daterange').innerHTML;
+    	if(dr!="Select Date Range")
+    		{
+    	var drv=dr.split('-');
+    	var sdate = new Date(drv[0]);
+    	
+   // 	var std = sdate.toString("yyyy-MM-dd");
+   var std=convert(sdate);
+
+    	var edate = new Date(drv[1]);
+ //   	var end = edate.toString("yyyy-MM-dd");
+  var end=convert(edate);
+    	document.getElementById('std').value=std;
+    	document.getElementById('end').value=end;
+    	
 	
 
 	localStorage.setItem("std", std);
