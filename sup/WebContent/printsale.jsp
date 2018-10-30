@@ -350,9 +350,8 @@ int primaryKey=0;
 String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE()))";
 if (branch!=null && branch.length()!=0 )
 
-	//sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 ))";
 
-	sql1 ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 ))";
+	//sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 ))";
 
 
 	if(code!=null && code.length()!=0)
