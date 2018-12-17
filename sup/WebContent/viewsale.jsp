@@ -812,7 +812,7 @@ $(document).ready(function() {
 	    	elements[i].style.display = "none";
 	    }
 
-	    if(ubran!='Workshop' && ubran!='All')
+	    if(ubran!='Workshop' && ubran!='Barhi' && ubran!='All')
     	{
  
     	  document.getElementById('wedit').style.display="none";

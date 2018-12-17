@@ -603,7 +603,7 @@ $(document).ready(function() {
 	    for (var i = 0; i < elements.length; i++){
 	    	elements[i].style.display = "none";
 	    }
-	    if(ubran!='Workshop' && ubran!='All')
+	    if(ubran!='Workshop' && ubran!='Barhi' && ubran!='All')
     	{
  
     	  document.getElementById('wedit').style.display="none";
