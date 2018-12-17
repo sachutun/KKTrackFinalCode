@@ -32,7 +32,7 @@ ResultSet rs2 = null;
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/log.png"> 
 
-    <title>KK Track- Audit Sales</title>
+    <title>KK Track- Audit IBT</title>
 
      <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -191,11 +191,11 @@ if(user==null)
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Audit Sales <!-- <small>Some examples to get you started</small> --></h1>
+                <h1>Audit IBT <!-- <small>Some examples to get you started</small> --></h1>
               </div>
               <div class="clearfix"></div>
- <form id="FormId" action="AuditSale.jsp" method="post" class="form-horizontal form-label-left">
-             <div class="col-md-4 col-sm-6 col-xs-12">
+ <form id="FormId" action="AuditIBT.jsp" method="post" class="form-horizontal form-label-left">
+             <div class="col-md-3 col-sm-6 col-xs-12">
                         <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                           <span id="daterange"></span> <b class="caret"></b>
@@ -204,51 +204,6 @@ if(user==null)
                         </div>
                       </div>
 
-                        <%
-							ResourceBundle resources =ResourceBundle.getBundle("branches");
-							Enumeration resourceKeys = resources.getKeys();
-							ArrayList<String> listOfBranches = new ArrayList<String>();
-						%>
-             <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
-                            <option value="">Select Another Branch</option>
-                            <option value="All">All Branches</option>
-                             <!--  <option value="Bowenpally">Bowenpally</option>
-                            <option value="Miyapur">Miyapur</option>
-                            <option value="LBNagar">LB Nagar</option>
-                            <option value="Workshop">Workshop</option>
-                            <option value="Workshop2">Workshop 2</option>
-                            <option value="Vishakapatnam">Vishakapatnam</option>
-                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
-                            <option value="Vijayawada">Vijayawada Old</option>
-                            <option value="Vijayawadan">Vijayawada New</option>
-                            <option value="Rajahmundry">Rajahmundry</option>
-                            <option value="Tekkali">Tekkali</option>
-                           <option value="Barhi">Barhi</option>
-                            <option value="Udaipur">Udaipur</option>
-                            <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option> -->
-                            <%
-							 while (resourceKeys.hasMoreElements()) {
-									String branchKey = (String) resourceKeys.nextElement();
-									listOfBranches.add(branchKey);
-							 Collections.sort(listOfBranches);
-							 }		
-							 String branchKey="";
-                        	 	 String branchValue="";
-							for(int i=0;i<listOfBranches.size();i++)
-							{
-								branchKey = listOfBranches.get(i);
-								branchValue=resources.getString(branchKey);																															
-							%>
-							<option value="<%=branchKey%>"> <%=branchValue%>
-							</option> 
-							<%
-								}
-							%> 
-                          </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
-                        </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> </form>
@@ -257,14 +212,14 @@ if(user==null)
                            <br/>
             <div class="clearfix"></div>
     
-<%  String branch = request.getParameter("branch");
+<%  /* String branch = request.getParameter("branch");
 if(branch!=null && branch.equals("All"))
     branch="";
 if(role!=null && !(role.equals("1")))
 {
 	if(!(role.equals("5")))
 	   branch=uBranch; 
-}
+} */
 String std=request.getParameter("std");
  String end=request.getParameter("end");	
  String code=request.getParameter("code");	
@@ -280,13 +235,13 @@ String std=request.getParameter("std");
              </div>        
 
             <br/>
-       <% if(branch==null )
+     <%--   <% if(branch==null )
     	   branch="";
-       %>
+       %> --%>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><%=branch %> Sale</h2>
+                    <h2>IBT</h2>
               
   <div class="clearfix"></div>
                   </div>
@@ -297,11 +252,10 @@ String std=request.getParameter("std");
                       <thead>
                         <tr>
                             <tr>
-                   <th>Branch</th>
+                                            <th>IBT No.</th>
                                             <th>Date</th>
-                                            <th>Invoice No.</th>
-                                            <th>Customer Name</th>
-                                             <th>Customer GST No.</th>
+                                            <th>From Branch</th>
+                                            <th>To Branch</th>
                                             <th>Code</th> 
                                             <th>Description</th>
                                             <th>Invoice Price</th>
@@ -350,22 +304,18 @@ String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURDATE())";
-if (branch!=null && branch.length()!=0 )
-
-	sql1 ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName,s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 )) year(Date)=year(CURDATE())";
-
+String sql ="SELECT *, IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id FROM IBT inner join IBTDetails on IBT.Id=IBTDetails.IBT inner join CodeList on IBTDetails.Code=CodeList.Code where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURDATE())";
 
 	
-	String sql3="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
+	String sql3="SELECT *, IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id FROM IBT inner join IBTDetails on IBT.Id=IBTDetails.IBT inner join CodeList on IBTDetails.Code=CodeList.Code where 1";
 	String w="";
 	
-if(branch!="" && branch!=null)
+/* if(branch!="" && branch!=null)
 {
 	w+=" and Branch='"+branch+"'";
 	//sql+=w;
 	sql1+=" and Branch='"+branch+"'";
-}
+} */
 if(std!=null && std.length()!=0)
 {
 	w+=" and Date between '"+std+"' and '"+end+"'";
@@ -377,47 +327,39 @@ sql3+=w;
 
  if(std!=null && std.length()!=0)
 {
-	 System.out.println("sql3--:  " +sql3);
+	/*  System.out.println("sql3--:  " +sql3); */
 	 resultSet = statement.executeQuery(sql3);
-	System.out.println(sql3);
+	//System.out.println(sql3);
 }
-
+/* 
 
 else if(branch!="" && branch!=null)
 {
 	 System.out.println("sql1--:  " +sql1);
 	resultSet = statement.executeQuery(sql1);	
 	System.out.println(sql1);
-}
+} */
 else
 {
-	 System.out.println("sql--:  " +sql);
+	// System.out.println("sql--:  " +sql);
 	resultSet = statement.executeQuery(sql);
-System.out.println(sql);
+//System.out.println(sql);
 
 }
 while(resultSet.next()){
 	int price=resultSet.getInt("MinPrice");	
 	
 	Date date=resultSet.getDate("Date");
-/* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
-	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
-	String gst= resultSet.getString("GST");
-	if(gst== null)
-		gst="";
- 	
-	if(!gst.equals(""))
-		price=resultSet.getInt("b.CostPrice"); 
+
 	
 
 %>
 
                                         <tr class="odd gradeX">
-<td><%=resultSet.getString("Branch") %></td>
+<td><%=resultSet.getString("IBTNo") %></td>
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
-<td><%=resultSet.getString("DCNumber") %></td>
-<td ><%=resultSet.getString("CustomerName") %></td>
-<td ><%=gst %></td>
+<td><%=resultSet.getString("FromBranch") %></td>
+<td ><%=resultSet.getString("ToBranch") %></td>
 <td><%=resultSet.getString("Code") %></td>
 
 <td><%=resultSet.getString("Description") %></td>

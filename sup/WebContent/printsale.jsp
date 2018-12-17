@@ -297,7 +297,7 @@ String std=request.getParameter("std");
                             <tr>
                    
                                             <th>Date</th>
-                                            <th>DC No.</th>
+                                            <th>Invoice No.</th>
                                             <th>Customer Name</th>
                                             <th>Total price</th>
                                             <th>Amt Paid</th>

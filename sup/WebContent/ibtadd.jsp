@@ -40,6 +40,7 @@ ResultSet resultSet = null;
    String totalqty=request.getParameter("totalq");
 
    System.out.println(frombranch);
+   System.out.println(tobranch);
    
  /*   String connectionURL = "jdbc:mysql://localhost:8889/KKTrack";
 
@@ -96,23 +97,50 @@ for(int i=0;i<count;i++)
 qparts+=" ("+code[i]+","+qty[i]+","+id+")";
 /*  sq1="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
  sq2="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
+ 
 sq1="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity-?";
+ 
 sq2="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity+?";
-//System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+frombranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+qty[i]);
-//System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+tobranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+qty[i]);
-preparedStatement = connection.prepareStatement(sq1);
+
+/* System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+frombranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+qty[i]);
+System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+tobranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity+"+qty[i]);
+ */
+/* preparedStatement = connection.prepareStatement(sq1);
 preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,frombranch);
 preparedStatement.setString(3,qty[i]);
 preparedStatement.setString(4,qty[i]);
 preparedStatement.executeUpdate(); 
 
+//connection.setAutoCommit(false);
+
 preparedStatement2 = connection.prepareStatement(sq2);
 preparedStatement2.setString(1,code[i]);
 preparedStatement2.setString(2,tobranch);
 preparedStatement2.setString(3,qty[i]);
 preparedStatement2.setString(4,qty[i]);
-preparedStatement2.executeUpdate(); 
+preparedStatement2.executeUpdate();  */
+
+preparedStatement = connection.prepareStatement(sq1);
+
+connection.setAutoCommit(false);
+
+preparedStatement.setString(1,code[i]);
+preparedStatement.setString(2,frombranch);
+preparedStatement.setString(3,qty[i]);
+preparedStatement.setString(4,qty[i]);
+preparedStatement.addBatch();
+
+preparedStatement.setString(1,code[i]);
+preparedStatement.setString(2,tobranch);
+preparedStatement.setInt(3,Integer.parseInt(qty[i]));
+preparedStatement.setInt(4,-Integer.parseInt(qty[i]));
+preparedStatement.addBatch();
+
+int[] cnt = preparedStatement.executeBatch();
+
+//Explicitly commit statements to apply changes
+
 
 if(i!=(count-1))
 qparts+=",";
@@ -122,7 +150,7 @@ qparts+=",";
 String isql= "INSERT INTO IBTDetails (`Code`, `Qty`, `IBT`) VALUES"+ qparts;
 
 int y=st2.executeUpdate(isql);
- 
+connection.commit();
        response.sendRedirect("ibtform.jsp?res=1");
       /*  out.println("Inserted successfully in database."); */
    //  }

@@ -309,7 +309,7 @@ String end=request.getParameter("end");
 String code=request.getParameter("code");	
 String sqlc="";
 String sql ="SELECT * FROM IBT where 1";
-String sqlf ="SELECT * FROM IBT where Month(Date) in( Month(CURDATE()))";
+String sqlf ="SELECT * FROM IBT where Month(Date) in( Month(CURDATE())) and year(Date) in (year(CURDATE()))";
 int sno=1;
 if(code!=null && code.length()!=0)
 {

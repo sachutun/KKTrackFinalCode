@@ -6,7 +6,7 @@
 <%@ page import="java.io.InputStream" %>
 <%
 // SELECT c.Code, c.HSNCode, c.Description,c.Machine, c.PartNo, c.Grp, c.MaxPrice, c.MinPrice, c.LC, sum(n.Quantity) FROM NewInventory n INNER JOIN CodeList c ON n.Code=c.Code group by c.Code */
-    String[] cols = { "Code", "Machine", "HSNCode", "PartNo", "Description","Grp","Max","Min","Quantity" };
+    String[] cols = { "Code", "Machine", "HSNCode", "PartNo", "Description","Grp","Quantity" };
     String table = "CodeList c inner join NewInventory n on n.Code=c.Code";
   /*   Class.forName("com.mysql.jdbc.Driver").newInstance();  
     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/KKTrack","root","root");   */
@@ -50,9 +50,8 @@
     PartNo = request.getParameter("sSearch_3");
     Description = request.getParameter("sSearch_4");
     Grp = request.getParameter("sSearch_5");
-    MaxPrice = request.getParameter("sSearch_6");
-    MinPrice = request.getParameter("sSearch_7");
-    Quantity = request.getParameter("sSearch_8");
+   
+    Quantity = request.getParameter("sSearch_6");
       
      List<String> sArray = new ArrayList<String>();
  /*     if (branch!="" && branch!=null) {
@@ -90,11 +89,6 @@
     if (Grp!="" && Grp!=null)
         sArray.add(" Grp like '%" + Grp + "%'");
 
-    if (MaxPrice!="" && MaxPrice!=null)
-        sArray.add(" MaxPrice like '%" + MaxPrice + "%'");
-    
-    if (MinPrice!="" && MinPrice!=null)
-        sArray.add(" MinPrice like '%" + MinPrice + "%'");
     
     if (Quantity!="" && Quantity!=null)
         sArray.add(" sum(Case When Quantity > 0 then Quantity else 0 end) like '%" + Quantity + "%'");
@@ -207,8 +201,6 @@
             ja.put(rs.getString("PartNo"));
             ja.put(rs.getString("Description"));
             ja.put(rs.getString("Grp"));
-            ja.put(rs.getString("MaxPrice"));
-            ja.put(rs.getString("MinPrice"));
             ja.put(rs.getString("sum(Case When Quantity > 0 then Quantity else 0 end)"));
             
             array.put(ja);

@@ -283,7 +283,7 @@ String std=request.getParameter("std");
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
+                <td align="center">Invoice No: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -318,7 +318,7 @@ String std=request.getParameter("std");
                                             
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             <th>Customer Number</th>
                                             <th >Total price</th>
@@ -396,7 +396,7 @@ if(std!=null && std.length()!=0)
 }
 else
 {
-	whr+=" and Month(Date) in( Month(CURDATE()))";
+	whr+=" and month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE)";
 }
 sql1+=whr;
 

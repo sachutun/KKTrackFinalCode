@@ -103,7 +103,7 @@ try{
     else  if(nq<oq)
     {
     	 diffq=oq-nq;
-    	  sq1="UPDATE `NewInventory` SET `Quantity`=`Quantity`+ ? WHERE Code=? AND Branch=?";
+    	  sq1="UPDATE `NewInventory` SET `Quantity`=`Quantity`- ? WHERE Code=? AND Branch=?";
     	    sq2="UPDATE `NewInventory` SET `Quantity`=`Quantity`- ? WHERE Code=? AND Branch=?";
    //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code+","+fbranch+","+diffq+") ON DUPLICATE KEY UPDATE Quantity=Quantity+"+diffq);
    //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code+","+tbranch+","+diffq+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+diffq);
@@ -121,7 +121,7 @@ try{
     if(nq!=oq)
     {
      //update inventory
-    preparedStatement = conn.prepareStatement(sq1);
+  /*   preparedStatement = conn.prepareStatement(sq1);
     preparedStatement.setInt(1,diffq);
     preparedStatement.setString(2,code);
     preparedStatement.setString(3,fbranch);
@@ -131,8 +131,24 @@ try{
     preparedStatement2.setInt(1,diffq);
     preparedStatement2.setString(3,tbranch);
     preparedStatement2.setString(2,code);
-    preparedStatement2.executeUpdate(); 
+    preparedStatement2.executeUpdate(); */ 
      
+    preparedStatement = conn.prepareStatement(sq1);
+
+    conn.setAutoCommit(false);
+
+    preparedStatement.setInt(1,diffq);
+    preparedStatement.setString(2,code);
+    preparedStatement.setString(3,fbranch);
+    preparedStatement.addBatch();
+
+    preparedStatement.setInt(1,-diffq);
+    preparedStatement.setString(2,code);
+    preparedStatement.setString(3,tbranch);
+    preparedStatement.addBatch();
+
+    int[] cnt = preparedStatement.executeBatch();
+    
     ps2 = conn.prepareStatement("UPDATE `IBTDetails` SET `Qty`=? WHERE Id=?");
     ps2.setInt(1,nq);
     ps2.setInt(2,sn);
@@ -149,6 +165,7 @@ try{
        ps.setInt(3,diffq);
        ps.setInt(4,Pid);
        ps.executeUpdate();     
+       conn.commit();
   }
   else if(nq<oq)
   {
@@ -158,6 +175,7 @@ try{
 	       ps.setInt(3,diffq);
 	       ps.setInt(4,Pid);
 	       ps.executeUpdate();     
+	       conn.commit();
 	  }
 	  
        }    

@@ -292,7 +292,7 @@ String role=(String)session.getAttribute("role");
                       </div>
                     <!-- </div>
                     <div class="form-group"> -->
-                        <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dcnumber">DC No<span class="required">*</span>
+                        <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dcnumber">Invoice No<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" name="dcnumber">
@@ -531,7 +531,7 @@ String role=(String)session.getAttribute("role");
      <% String r=request.getParameter("res");
   
  String succ="<div class=\"col-md-6\" style= \" margin-top:-63%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \" margin-top:-63%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and DC Number!   </strong></div>";
+ String err="<div class=\"col-md-6\" style= \" margin-top:-63%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
  
  if(r!=null && r.equals("1"))
         	out.println(succ);%>
@@ -539,7 +539,7 @@ String role=(String)session.getAttribute("role");
  <%--      <% String r=request.getParameter("res");
       System.out.println(r);	
  String succ="<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and DC Number!   </strong></div>";
+ String err="<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
  
  if(r!=null && r.equals("1"))
         	out.println(succ);

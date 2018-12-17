@@ -27,14 +27,14 @@ String role=request.getParameter("role");
     
     if(request.getParameter("ubranch")!=null)
      Branch = request.getParameter("ubranch");
-/*     System.out.println(Branch); */
+    System.out.println(Branch); 
     if(Branch.equals("All") || Branch.length()==0)
     {
     Branch = request.getParameter("sSearch_0");
     
      branch = request.getParameter("br");
     /*  Branch=branch; */
- /*      System.out.println(branch);  */
+    System.out.println(branch);  
     }
   /*   
     System.out.println("Branch="+Branch+" branch="+branch+ "role="+role);  */
@@ -75,13 +75,15 @@ String role=request.getParameter("role");
      List<String> sArray = new ArrayList<String>();
      
       if (branch!="" && branch!=null) {
-         String sbranch = " Branch like '%" + branch + "%'";
+         String sbranch = " Branch ='" + branch + "'";
          sArray.add(sbranch);
+        // System.out.println(sbranch);
      } 
-     
+    
      if (Branch!="" && Branch!=null) {
-        String sBranch = " Branch like '%" + Branch + "%'";
+         String sBranch = " Branch ='" + Branch + "'";
         sArray.add(sBranch);
+      //  System.out.println(sBranch);
         //or combine the above two steps as:
         //sArray.add(" engine like '%" + engine + "%'");
         //the same as followings

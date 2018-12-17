@@ -244,7 +244,7 @@ if(user==null)
                                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Sale Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             <th>Customer Number</th>
                                             <th>Total price</th>

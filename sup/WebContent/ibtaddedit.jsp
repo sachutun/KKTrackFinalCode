@@ -87,7 +87,7 @@ sq2="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICA
 //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+frombranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+qty[i]);
 //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code[i]+","+tobranch+","+qty[i]+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+qty[i]);
 preparedStatement = connection.prepareStatement(sq1);
-preparedStatement.setString(1,code[i]);
+/* preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,frombranch);
 preparedStatement.setString(3,qty[i]);
 preparedStatement.setString(4,qty[i]);
@@ -98,8 +98,23 @@ preparedStatement2.setString(1,code[i]);
 preparedStatement2.setString(2,tobranch);
 preparedStatement2.setString(3,qty[i]);
 preparedStatement2.setString(4,qty[i]);
-preparedStatement2.executeUpdate(); 
+preparedStatement2.executeUpdate();  */
 
+connection.setAutoCommit(false);
+
+preparedStatement.setString(1,code[i]);
+preparedStatement.setString(2,frombranch);
+preparedStatement.setString(3,qty[i]);
+preparedStatement.setString(4,qty[i]);
+preparedStatement.addBatch();
+
+preparedStatement.setString(1,code[i]);
+preparedStatement.setString(2,tobranch);
+preparedStatement.setInt(3,Integer.parseInt(qty[i]));
+preparedStatement.setInt(4,-Integer.parseInt(qty[i]));
+preparedStatement.addBatch();
+
+int[] cnt = preparedStatement.executeBatch();
 
 if(i!=(count-1))
 qparts+=",";
@@ -117,7 +132,7 @@ preparedStatement3 = connection.prepareStatement(s);
 preparedStatement3.setDouble(1,tq);
 preparedStatement3.setInt(2,id);
 preparedStatement3.executeUpdate();  
- 
+connection.commit();
        response.sendRedirect("editibtindividual.jsp?res=1&fbranch="+frombranch+"&dc="+ibt+"&sd="+sd);
       /*  out.println("Inserted successfully in database."); */
    //  }

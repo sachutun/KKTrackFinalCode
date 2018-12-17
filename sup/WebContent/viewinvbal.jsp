@@ -263,9 +263,10 @@ if(user==null)
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
-                                            <th>Max</th>
-                                            <th>Min</th>
+                                           <!--  <th>Max</th>
+                                            <th>Min</th> -->
                                             <th>Quantity</th>
+                                            
                                             
                                         </tr>
                       </thead>
@@ -277,8 +278,8 @@ if(user==null)
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
-                                            <th>Max</th>
-                                            <th>Min</th>
+                                           <!--  <th>Max</th>
+                                            <th>Min</th> -->
                                             <th>Quantity</th>
                                             
             </tr>

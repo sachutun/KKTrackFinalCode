@@ -311,7 +311,7 @@ String std=request.getParameter("std");
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Invoice No: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -370,9 +370,9 @@ String sql1="";
 int primaryKey=0;
 String sqlc="";
 String g="group by s.Id";
-String sql ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) group by s.Id";
+String sql ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date) in (year(CURDATE())) group by s.Id";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) ";
+	sql1 ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date) in (year(CURDATE())) ";
 
 	if(code!=null && code.length()!=0)
 	{
@@ -435,7 +435,7 @@ if(role!="null" && role.equals("1"))
                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             <th>Code qty</th>
                                             <th >Total price</th>
@@ -529,7 +529,7 @@ while(resultSet.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getInt("BillDetails.Qty") %></td>
-<td><%=rs.getInt("BillDetails.CostPrice") %></td>
+<td><%=rs.getInt("BillDetails.CostPrice")+rs.getInt("BillDetails.CostPrice")*(0.18)%></td>
 <td ><%=rs.getInt("BillDetails.Total") %></td>
 <td class="admin "><%=rs.getString("LC") %></td>
 <td><%=rs.getString("MaxPrice") %></td>
@@ -569,7 +569,7 @@ else
                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             
                                             <th>Code qty</th>

@@ -173,35 +173,42 @@ if(user==null)
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input type="text" id="cn" class="form-control col-md-7 col-xs-12" name="cn" >
                         </div> -->
-                     <label class="control-label col-md-1 col-sm-1 col-xs-2"  for="branch">Branch</label>   
-                      <%
-				ResourceBundle resources =ResourceBundle.getBundle("branches");
-				Enumeration resourceKeys = resources.getKeys();
-				ArrayList<String> listOfBranches = new ArrayList<String>();
-				%> 
-             <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control " tabindex="-1" name="branch" id="branch" >
-                            <option value="">Select A Branch</option>
+                     <label class="control-label col-md-1 col-sm-1 col-xs-2"> Branch:<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                        <%--   <input class="" type="text" id="fbranch" name="fbranch" value=<%=uBranch%> readonly="readonly" style="border:none"> --%>
 
-                            	 <%
+                        <%
+							ResourceBundle resources =ResourceBundle.getBundle("branches");
+							Enumeration resourceKeys = resources.getKeys();
+							ArrayList<String> listOfBranches = new ArrayList<String>();
+						%>
+                          <select class="select2_single form-control hide4branch" tabindex="-1" id="branch" name="branch">
+
+                 
+                       <%
 							 while (resourceKeys.hasMoreElements()) {
 									String branchKey = (String) resourceKeys.nextElement();
 									listOfBranches.add(branchKey);
 							 Collections.sort(listOfBranches);
-							 }	
-                            	 String branchKey="";
-                            	 String branchValue="";
+							 }		
+							 String branchKey="";
+                        	 	 String branchValue="";
 							for(int i=0;i<listOfBranches.size();i++)
 							{
-								branchKey = listOfBranches.get(i);								
+								branchKey = listOfBranches.get(i);
 								branchValue=resources.getString(branchKey);																															
 							%>
 							<option value="<%=branchKey%>"> <%=branchValue%>
 							</option> 
-							<%								
-							}
+							<%
+								}
 							%> 
+       
                           </select>
+
+                          <input type="text" id="BranchName" class="form-control col-md-7 col-xs-12 user" name="BranchName" style="display:none;" value=<%=uBranch%> disabled>
+
+
                       <%--     <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled>  --%>
                         </div>
                         <button type="submit" class="btn btn-success" onclick="d()">Go </button>
@@ -216,8 +223,12 @@ if(user==null)
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Inventory Adjustment</h2>
-                   <%  String branch = request.getParameter("branch");
-                
+                   <%  
+                   
+                   String branch = request.getParameter("branch");
+                   if(role!=null && !(role.equals("1")))
+                	   branch = uBranch;
+            //    System.out.println(branch);
                    %>
                        <%--  <label style="float:right" ><%= branch %></label> --%>
                     <div class="clearfix"></div>
@@ -273,8 +284,9 @@ try{
     connection = DriverManager.getConnection(url, username, password);		  
 statement=connection.createStatement();
 String code=request.getParameter("code"); 
+	
 String sql1 ="SELECT * FROM CodeList c INNER JOIN NewInventory n ON c.Code=n.Code where n.Code='"+code+"' and Branch='"+branch+"'";
-
+if(code!=null && branch!=null)
 rs = statement.executeQuery(sql1); 
 int i=1;
 while(rs.next()){
@@ -393,7 +405,7 @@ $(document).ready(function() {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
-   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")||(ubran=="Tekkali")||(ubran=="Bowenpally")))
     		document.getElementById("invAdj").style.display="block";
 	}
 	/* if(role!=null && role=="3")

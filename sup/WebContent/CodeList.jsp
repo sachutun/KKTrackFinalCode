@@ -138,7 +138,7 @@ var table= $('#ex').DataTable( {
           
                $('td', row).eq(5).addClass('highlight');}, */
      
-       dom: 'Blfrtip',
+       dom: 'lfrtip',
        buttons: [
            'copy', 'excel', 'pdf', 'print'
        ]
@@ -542,7 +542,7 @@ var table=$('#ex').DataTable( {
 	           
 	                $('td', row).eq(5).addClass('highlight');}, */
 	      
-	        dom: 'Blfrtip',
+	        dom: 'lfrtip',
 	        buttons: [
 	            'copy', 'excel', 'pdf', 'print'
 	        ]

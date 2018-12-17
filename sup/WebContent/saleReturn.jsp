@@ -302,7 +302,7 @@ String std=request.getParameter("std");
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Invoice No: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -328,7 +328,7 @@ String std=request.getParameter("std");
                                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             <th>Customer Number</th>
                                             <th>Total price</th>
@@ -699,6 +699,14 @@ else
 </script>
 <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
 <script type='text/javascript'>
+
+function convert(str) {
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth()+1)).slice(-2),
+        day  = ("0" + date.getDate()).slice(-2);
+    return [ date.getFullYear(), mnth, day ].join("-");
+}
+
 function d(){
 
  	var dr=document.getElementById('daterange').innerHTML;
@@ -706,11 +714,16 @@ function d(){
 		{
 	var drv=dr.split('-');
 	var sdate = new Date(drv[0]);
-	var std = sdate.toString("yyyy-MM-dd");
+	
+// 	var std = sdate.toString("yyyy-MM-dd");
+var std=convert(sdate);
+
 	var edate = new Date(drv[1]);
-	var end = edate.toString("yyyy-MM-dd");
+//   	var end = edate.toString("yyyy-MM-dd");
+var end=convert(edate);
 	document.getElementById('std').value=std;
 	document.getElementById('end').value=end;
+	
 	
 
 	localStorage.setItem("std", std);
@@ -723,6 +736,7 @@ function d(){
     	localStorage.setItem("end", "");
 		}
    	localStorage.setItem("branch", document.getElementById('branch').value);
+	localStorage.setItem("code", document.getElementById('code').value);
  	localStorage.setItem("daterange", document.getElementById('daterange').innerHTML);
 /*    	localStorage.setItem("sd", document.getElementById('single_cal3').value);
 localStorage.setItem("pd", document.getElementById('da1').value); */

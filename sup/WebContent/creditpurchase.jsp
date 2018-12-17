@@ -350,7 +350,7 @@ String ino=request.getParameter("Ino");
 String sn=request.getParameter("sn");
 st=conn.createStatement();
 st2=conn.createStatement();
-String sql1 ="SELECT DISTINCT * FROM Purchases where BalanceAmount>0";
+String sql1 ="SELECT DISTINCT * FROM Purchases where BalanceAmount>0 and month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE)";
 String whr="";
 if(branch!=null && branch.length()!=0 )
 {

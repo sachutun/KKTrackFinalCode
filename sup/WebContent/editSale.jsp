@@ -309,7 +309,7 @@ if(user==null)
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Invoice No: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -341,7 +341,7 @@ if(user==null)
                                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th>
+                                            <th>Invoice No</th>
                                             <th>Customer Name</th>
                                             <th>Customer Number</th>
                                             <th>Total price</th>
@@ -384,9 +384,9 @@ statement=connection.createStatement();
 st=connection.createStatement();
 String sql1="";
 
-String sql ="SELECT DISTINCT * FROM Sale where Month(Date) in( Month(CURDATE()))";
+String sql ="SELECT DISTINCT * FROM Sale where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURRENT_DATE)";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT DISTINCT * FROM Sale where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1)";
+	sql1 ="SELECT DISTINCT * FROM Sale where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1) and year(Date)=year(CURRENT_DATE)";
 	
 	String sql3="Select * from Sale where 1";
 	String w="";

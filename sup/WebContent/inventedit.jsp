@@ -29,6 +29,10 @@ try{
 
 
     String branch = request.getParameter("branch");
+    String role=(String)session.getAttribute("role"); 
+    String uBranch=(String)session.getAttribute("ubranch");
+    if(!(role.equals("1")) && role!=null)
+ 	   branch = uBranch;
     String code = request.getParameter("code");
     String nq = request.getParameter("nq"+code);
    /*  System.out.println(nq); */
@@ -59,7 +63,7 @@ try{
     st2=conn.createStatement();
 
   String s3= "UPDATE `NewInventory` SET `Quantity`="+nq+" WHERE Code="+code+" AND Branch="+branch;
- /*  System.out.println(s3); */
+   System.out.println(s3); 
 
      ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=? WHERE Code=? AND Branch=?");
     ps2.setString(1,nq);

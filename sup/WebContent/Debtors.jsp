@@ -148,7 +148,7 @@ if(user==null)
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Purchase OB <!-- <small>Some examples to get you started</small> --></h1>
+                <h1>Debtors <!-- <small>Some examples to get you started</small> --></h1>
               </div>
 
              <!--  <div class="title_right">
@@ -167,8 +167,55 @@ if(user==null)
             <div class="clearfix"></div>
 
           
-<form action="expenses.jsp" method="get" class="form-horizontal form-label-left" onsubmit="d()">
+<form action="" method="get" class="form-horizontal form-label-left" onsubmit="d()">
 
+                  
+                  <%
+							ResourceBundle resources =ResourceBundle.getBundle("branches");
+							Enumeration resourceKeys = resources.getKeys();
+							ArrayList<String> listOfBranches = new ArrayList<String>();
+						%>
+             <div class="col-md-3 col-sm-3 col-xs-4">
+                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
+                            <option value="">Select Another Branch</option>
+                            <option value="All">All Branches</option>
+                             <!--  <option value="Bowenpally">Bowenpally</option>
+                            <option value="Miyapur">Miyapur</option>
+                            <option value="LBNagar">LB Nagar</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Workshop2">Workshop 2</option>
+                            <option value="Vishakapatnam">Vishakapatnam</option>
+                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
+                            <option value="Vijayawada">Vijayawada Old</option>
+                            <option value="Vijayawadan">Vijayawada New</option>
+                            <option value="Rajahmundry">Rajahmundry</option>
+                            <option value="Tekkali">Tekkali</option>
+                           <option value="Barhi">Barhi</option>
+                            <option value="Udaipur">Udaipur</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Chittoor">Chittoor</option> -->
+                            <%
+							 while (resourceKeys.hasMoreElements()) {
+									String branchKey = (String) resourceKeys.nextElement();
+									listOfBranches.add(branchKey);
+							 Collections.sort(listOfBranches);
+							 }		
+							 String branchKey="";
+                        	 	 String branchValue="";
+							for(int i=0;i<listOfBranches.size();i++)
+							{
+								branchKey = listOfBranches.get(i);
+								branchValue=resources.getString(branchKey);																															
+							%>
+							<option value="<%=branchKey%>"> <%=branchValue%>
+							</option> 
+							<%
+								}
+							%> 
+                          </select>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                        </div>
+                       <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> </form>
                          <br/>
@@ -193,12 +240,12 @@ if(user==null)
         <!--     </tr>
             <tr id="filter_col3" data-column="3"> -->
                <!--  <td>Name</td> -->
-                <td align="center">Name: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Name: <input type="text" class="column_filter" id="col1_filter" data-column="1"></td>
         
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-           <!--      <td align="center">Date: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td> -->
+           <!--      <td align="center">Date: <input type="text" class="column_filter" id="col4_filter" data-column="2"></td> -->
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -208,19 +255,19 @@ if(user==null)
            <!--  </tr>
             <tr id="filter_col6" data-column="6"> -->
                 <!-- <td>Description</td> -->
-                <td align="center">Description: <input type="text" class="column_filter" id="col6_filter" data-column="6"></td>
+                <td align="center">Customer ID: <input type="text" class="column_filter" id="col0_filter" data-column="0"></td>
   
            <!--  </tr>
              <tr id="filter_col7" data-column="7"> -->
                <!--  <td>Amount</td> -->
-                <td align="center">Amount: <input type="text"  id="min" ></td>
+             <!--    <td align="center">Amount: <input type="text"  id="min" ></td> -->
   
             </tr>
         </tbody></table></div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>View Purchase OB</h2>
+                    <h2> Debtors OB</h2>
                     
                <%  String branch = request.getParameter("branch");
             
@@ -234,15 +281,16 @@ if(user==null)
   
                   </div>
                   <div class="x_content">
-                  <form action="saledit.jsp">   
+                  <form action="">   
                  <div class="table-responsive"> 
                     <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
                       <thead>
                        
                             <tr>
                                           
-                                            <th>Sno</th>
+                                            <th>Cust ID</th>
                                             <th>Name</th>
+                                            <th>Mobile</th>
                                             <th>Amount</th>
                                             <th>Pay</th>
                                         </tr>
@@ -250,9 +298,11 @@ if(user==null)
                       </thead>
                      <tfoot>
             <tr>
+                
+                <th></th>
+                <th></th>
+                <th></th>
                 <th style="text-align:right">Total:</th>
-                <th></th>
-                <th></th>
                 <th></th>
             </tr>
         </tfoot> 
@@ -284,11 +334,11 @@ try{
     connection = DriverManager.getConnection(url, username, password);
 statement=connection.createStatement();
 
-String sql ="SELECT * FROM Expenses where 1";
+String sql ="select * from Debtors where 1";
 String whr="";
 
 if(branch!="" && branch!=null)
-	whr+=" and Branch='"+branch+"'";
+	whr+=" and Branch='"+branch+"'"; 
 sql+=whr;
 
 statement=connection.createStatement();
@@ -300,14 +350,15 @@ while(resultSet.next()){
 	/* Date date=resultSet.getDate("Date"); */
 %>
                                         <tr class="odd gradeX">
-                                        <td><%=resultSet.getString("Id")  %></td>
+                                        <td><%=resultSet.getString("CustID")  %></td>
                                         
-<td><%=resultSet.getString("Name") %></td>
+<td><%=resultSet.getString("CustomerName") %></td>
+<td><%=resultSet.getString("Mobile") %></td>
 
-<td><%=resultSet.getInt("Amount") %></td>
+<td><%=resultSet.getInt("OB") %></td>
    <td>  <div class="col-md-4 col-sm-3 col-xs-4 ">
                <label for="pay"> Amount:</label>
-                <input type="text" id="pay" name="pay" style="margin-left: 7%;width: 40%;" min="0" max=<%=resultSet.getString("Amount")%>> 
+                <input type="text" id="pay" name="pay" style="margin-left: 7%;width: 40%;" min="0" max=<%=resultSet.getString("OB")%>> 
              </div>
              <div class="col-md-3 col-sm-3 col-xs-4 ">
                <label for="dis"> Discount:</label>
@@ -558,9 +609,9 @@ var table=$('#ex').DataTable( {
 	        "iDisplayStart":0,
 	        "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
 	        "order": [[ 0, "desc" ]],
-	        "columnDefs": [
+	      /*   "columnDefs": [
 	            { "visible": false, "targets": 0 }
-	          ],
+	          ], */
 	          "footerCallback": function ( row, data, start, end, display ) {
 	              var api = this.api(), data;
 	   
@@ -574,7 +625,7 @@ var table=$('#ex').DataTable( {
 	   
 	              // Total over all pages
 	              total = api
-	                  .column( 2 )
+	                  .column( 3 )
 	                  .data()
 	                  .reduce( function (a, b) {
 	                      return intVal(a) + intVal(b);
@@ -582,14 +633,14 @@ var table=$('#ex').DataTable( {
 	   
 	              // Total over this page
 	              pageTotal = api
-	                  .column( 2, { page: 'current'} )
+	                  .column( 3, { page: 'current'} )
 	                  .data()
 	                  .reduce( function (a, b) {
 	                      return intVal(a) + intVal(b);
 	                  }, 0 );
 	   
 	              // Update footer
-	              $( api.column( 2 ).footer() ).html(
+	              $( api.column( 3 ).footer() ).html(
 	                 pageTotal.toLocaleString('en-IN', {
 		                	    maximumFractionDigits: 2,
 		                	    style: 'currency',

@@ -287,7 +287,7 @@ if(role!=null && !(role.equals("1")))
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">DC Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Invoice No: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
@@ -321,7 +321,7 @@ if(role!=null && !(role.equals("1")))
                             <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
-                                            <th>DC Number</th><!-- 
+                                            <th>Invoice No</th><!-- 
                                             <th>Code</th>
                                             <th>Description</th>
                                             <th>Sale Price</th>
