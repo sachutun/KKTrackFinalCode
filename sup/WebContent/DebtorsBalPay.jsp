@@ -22,6 +22,8 @@ PreparedStatement preparedStatement = null;
 %>
 <%
 try{ 
+	String branch = request.getParameter("branch");
+	
     String amtPaid= request.getParameter("amtPaid");
 
     String ob = request.getParameter("ob");
@@ -94,7 +96,7 @@ try{
      response.sendRedirect("creditsale.jsp?branch="+branch); // redirect to JSP one, which will again reload.
      else */
   }
-    	 response.sendRedirect("Debtors.jsp");
+    	 response.sendRedirect("Debtors.jsp?branch="+branch);
   //}
 
 }catch (Exception e) {

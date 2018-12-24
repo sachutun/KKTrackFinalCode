@@ -215,6 +215,7 @@ if(user==null)
 							</option> 
 							<%
 								}
+							
 							%> 
                           </select>
                            <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
@@ -250,9 +251,9 @@ if(user==null)
             
                if(role!=null && !(role.equals("1")))
             	   branch=uBranch; 
-               if(branch!=null && branch.equals("All"))
+               if(branch==null || branch.equals("All"))
                branch="";
-             
+            
                    %>
                     <label style="float:right" id><%= branch %></label>
   <div class="clearfix"></div>
@@ -363,6 +364,7 @@ while(resultSet.next()){
                        <textarea id="comments" class="form-control col-md-7 col-xs-12" name="comments"></textarea>
                        </div>
         
+        			<input id="branch" name="branch" type="hidden" value=<%=branch %>> 
                   <input type="hidden" id="ob" name="ob" value=<%=resultSet.getInt("OB") %> > 
                    <input type="hidden" id="custId" name="custId" value=<%=resultSet.getString("CustID")  %> > 
              <input type="hidden" id="Id" name="Id" value=<%=resultSet.getInt("Id") %> >
