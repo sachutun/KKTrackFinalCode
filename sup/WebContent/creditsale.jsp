@@ -465,7 +465,7 @@ while(resultSet.next()){
  <% }%>
 </tbody> </table></td> 
 <% 
-   rs2 = st3.executeQuery("SELECT * FROM SaleCredit where Ino="+primaryKey);
+   rs2 = st3.executeQuery("SELECT * FROM SaleCredit where CustID="+primaryKey);
                          
 if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
 {

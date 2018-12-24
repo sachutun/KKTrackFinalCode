@@ -24,7 +24,9 @@ e.printStackTrace();
  DataSource ds = null;
 Connection connection = null;
 Statement statement = null;
+Statement st2 = null;
 ResultSet resultSet = null;
+ResultSet rs2 = null;
 int sno=1;
 %>
 <html lang="en">
@@ -46,12 +48,7 @@ int sno=1;
     <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- Datatables -->
-    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+ 
   <!-- bootstrap-wysiwyg -->
     <link href="vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
     <!-- Select2 -->
@@ -62,7 +59,14 @@ int sno=1;
     <link href="vendors/starrr/dist/starrr.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
+   <!-- Datatables -->
+    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
      <style>
@@ -167,7 +171,7 @@ if(user==null)
             <div class="clearfix"></div>
 
           
-<form action="" method="get" class="form-horizontal form-label-left" onsubmit="d()">
+<form action="Debtors.jsp" method="post" class="form-horizontal form-label-left" >
 
                   
                   <%
@@ -221,7 +225,7 @@ if(user==null)
                          <br/>
         <br/>
                 <br/>
-            
+            <div class="clearfix"></div>
               
  <div class="table-responsive"> 
                   <table class="table" >
@@ -229,38 +233,11 @@ if(user==null)
         <tbody>
           
             <tr id="filter_col" >
-               <!--  <td>Sno</td> -->
-             <!--    <td align="center">Sno: <input type="text" class="column_filter col-md-7" id="col1_filter" data-column="1"></td> -->
-          
-           <!--  </tr>
-            <tr id="filter_col2" data-column="2"> -->
-               <!--  <td>Branch</td> -->
-             <!--    <td align="center">Branch: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td> -->
-              
-        <!--     </tr>
-            <tr id="filter_col3" data-column="3"> -->
-               <!--  <td>Name</td> -->
+            
                 <td align="center">Name: <input type="text" class="column_filter" id="col1_filter" data-column="1"></td>
         
-          <!--   </tr>
-            <tr id="filter_col4" data-column="4"> -->
-               <!--  <td>Date</td> -->
-           <!--      <td align="center">Date: <input type="text" class="column_filter" id="col4_filter" data-column="2"></td> -->
-              
-            <!-- </tr>
-            <tr id="filter_col5" data-column="5"> -->
-               <!--  <td>Type</td> -->
-  
-               
-           <!--  </tr>
-            <tr id="filter_col6" data-column="6"> -->
-                <!-- <td>Description</td> -->
                 <td align="center">Customer ID: <input type="text" class="column_filter" id="col0_filter" data-column="0"></td>
   
-           <!--  </tr>
-             <tr id="filter_col7" data-column="7"> -->
-               <!--  <td>Amount</td> -->
-             <!--    <td align="center">Amount: <input type="text"  id="min" ></td> -->
   
             </tr>
         </tbody></table></div>
@@ -275,24 +252,27 @@ if(user==null)
             	   branch=uBranch; 
                if(branch!=null && branch.equals("All"))
                branch="";
+             
                    %>
                     <label style="float:right" id><%= branch %></label>
   <div class="clearfix"></div>
   
                   </div>
                   <div class="x_content">
-                  <form action="">   
+                    
                  <div class="table-responsive"> 
-                    <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
+                    <table id="ex" class=" display table table-striped table-bordered dt-responsive" width="100%">
                       <thead>
-                       
+                       <tr>
                             <tr>
                                           
-                                            <th>Cust ID</th>
+                                            <th width="10%">Cust ID</th>
                                             <th>Name</th>
                                             <th>Mobile</th>
-                                            <th>Amount</th>
-                                            <th>Pay</th>
+                                            <th width="10%">Amount</th>
+                                            <th width="50%">Pay</th>
+                                            <th class="none">Previous Payment Details</th> 
+                                    
                                         </tr>
                                         
                       </thead>
@@ -302,8 +282,12 @@ if(user==null)
                 <th></th>
                 <th></th>
                 <th></th>
+                
                 <th style="text-align:right">Total:</th>
                 <th></th>
+                 <th></th>
+          
+               
             </tr>
         </tfoot> 
                         <tbody>
@@ -333,6 +317,7 @@ try{
 
     connection = DriverManager.getConnection(url, username, password);
 statement=connection.createStatement();
+st2 = connection.createStatement();
 
 String sql ="select * from Debtors where 1";
 String whr="";
@@ -346,7 +331,7 @@ statement=connection.createStatement();
 resultSet = statement.executeQuery(sql);
 	
 while(resultSet.next()){
-	
+
 	/* Date date=resultSet.getDate("Date"); */
 %>
                                         <tr class="odd gradeX">
@@ -356,23 +341,93 @@ while(resultSet.next()){
 <td><%=resultSet.getString("Mobile") %></td>
 
 <td><%=resultSet.getInt("OB") %></td>
-   <td>  <div class="col-md-4 col-sm-3 col-xs-4 ">
-               <label for="pay"> Amount:</label>
-                <input type="text" id="pay" name="pay" style="margin-left: 7%;width: 40%;" min="0" max=<%=resultSet.getString("OB")%>> 
+   <td> 
+    <div class="form-group">
+                 
+                    <form id="form2" action="DebtorsBalPay.jsp" method="post">
+                  <div class="col-md-4 col-sm-3 col-xs-4 ">
+               <label for="amtPaid"> Amount:</label>
+                <input type="text" id="amtPaid" name="amtPaid" style="margin-left: 7%;width: 40%;" min="0" max=<%=resultSet.getInt("OB")%> required="true"> 
              </div>
              <div class="col-md-3 col-sm-3 col-xs-4 ">
-               <label for="dis"> Discount:</label>
-                <input type="text" id="dis" value="0" name="dis" style="margin-left: 7%;width: 40%;"> 
+               <label for="disc"> Discount:</label>
+                <input type="text" id="disc" name="disc" style="margin-left: 7%;width: 40%;"> 
              </div>
-               <div class="col-md-3 col-sm-3 col-xs-4 ">
+                <div class="col-md-3 col-sm-3 col-xs-4 ">
                <label for="pdate"> Date:</label>
-                <input type="text" id="pdate" name="pdate" style="margin-left: 7%;width: 60%;"> 
-             </div><button type="submit" class="btn btn-success" style="float:right">Pay</button></td>
-                                        </tr>
+                <input  readonly="readonly" type="text" id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>" class="dateField datepicker" > 
+</div>
+
+                       <div class="col-md-3 col-sm-3 col-xs-4">
+                       <label for="comments"> Comments:</label>
+                       <textarea id="comments" class="form-control col-md-7 col-xs-12" name="comments"></textarea>
+                       </div>
+        
+                  <input type="hidden" id="ob" name="ob" value=<%=resultSet.getInt("OB") %> > 
+                   <input type="hidden" id="custId" name="custId" value=<%=resultSet.getString("CustID")  %> > 
+             <input type="hidden" id="Id" name="Id" value=<%=resultSet.getInt("Id") %> >
+             <button type="submit" class="btn btn-success" style="float:right">Pay</button>
+             </form>
+             </div>
+             </td>
+
                                         <% 
-}
+
 
 //} 
+//System.out.println("SELECT * FROM SaleCredit where CustID="+resultSet.getString("CustID"));
+//rs2 = st2.executeQuery("SELECT * FROM SaleCredit where Ino="+resultSet.getString("CustID"));
+PreparedStatement statement2 = connection.prepareStatement("select * from SaleCredit where CustId = ?");    
+statement2.setString(1, resultSet.getString("CustID")); 
+rs2 = statement2.executeQuery();                    
+if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
+{
+
+                     	%>
+                     <td><table width="100%" id="" class="table table-striped table-bordered">
+                                           <thead>
+                                             
+                                                  <tr> 
+                                                                 
+                                                                 <th>Amount</th>
+                                                                 <th>Discount</th>
+                                                                 <th>Date</th>
+                                                                 <th>Comments </th>
+
+                                                             </tr>
+                                           </thead>
+                                             <tbody >
+                                               <tr class="odd gradeX">
+                                               <%while(rs2.next()){
+                                             		 %>
+                                               <td><%=rs2.getInt("Amount") %></td>
+                                               <td><%=rs2.getInt("Discount") %></td>
+                     <td><%=rs2.getString("Date") %></td>
+                     <%
+                     String comm="";
+                    	 if(rs2.getString("Comments") == null) 
+                     	comm="";
+                     else
+                     	comm=rs2.getString("Comments");%>
+                     <td><%=comm %></td>
+                    </tr>
+                   <%}
+                                               %>
+                                                </tbody> </table></td>
+                                                <% } 
+                   else
+                   {
+             
+                   %>
+                   <td></td>
+                                                          
+                   <% 
+                  
+                   } 
+%>
+</tr>
+ <% }
+
 }catch (Exception e) {
 e.printStackTrace();
 }
@@ -386,12 +441,12 @@ finally {
 	        if (connection != null)
 	        	connection.close();
 	        } catch (SQLException e) {}
-	    }
-%>
+	    } %>
+
 
                       </tbody>
                     </table>
-                  </div></form>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -421,7 +476,16 @@ finally {
     <script src="vendors/nprogress/nprogress.js"></script>
     <!-- iCheck -->
     <script src="vendors/iCheck/icheck.min.js"></script>
-    <!-- Datatables -->
+   
+    <script src="vendors/moment/min/moment.min.js"></script>
+    <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-datetimepicker -->    
+    
+    <script src="vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="vendors/jszip/dist/jszip.min.js"></script>
+    <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+ <!-- Datatables -->
     <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -434,28 +498,26 @@ finally {
     <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
     <script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-    <script src="vendors/moment/min/moment.min.js"></script>
-    <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap-datetimepicker -->    
-    
-    <script src="vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="vendors/jszip/dist/jszip.min.js"></script>
-    <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
-    <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
     <script>
-function convert(str) {
+    
+/*     function dch() { 
+  	  var d=document.getElementById("single_cal3").value.toString();
+  	var dv=d.split("/");
+  	var da=dv[2]+'-'+dv[0]+'-'+dv[1];
+  	  document.getElementById('da').value=da;
+  	} */
+    function convert(str) {
     var date = new Date(str),
         mnth = ("0" + (date.getMonth()+1)).slice(-2),
         day  = ("0" + date.getDate()).slice(-2);
     return [ date.getFullYear(), mnth, day ].join("-");
 }
 
-function d(){
+ function d(){
 
 	 	var dr=document.getElementById('daterange').innerHTML;
     	if(dr!="Select Date Range")
@@ -485,14 +547,14 @@ function d(){
     	localStorage.setItem("branch", document.getElementById('branch').value);
 
     	localStorage.setItem("daterange", document.getElementById('daterange').innerHTML);
-    }
+    } 
 $(window).load(function () {
 	$(".se-pre-con").fadeOut("slow");
 	 var s = document.getElementById("branch");
 	 document.getElementById('sno').value=localStorage.getItem("sno");
-	 document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
-	 document.getElementById('std').value=localStorage.getItem("std"); 
-	 document.getElementById('end').value=localStorage.getItem("end"); 
+	// document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
+	// document.getElementById('std').value=localStorage.getItem("std"); 
+	// document.getElementById('end').value=localStorage.getItem("end"); 
 /* 
 document.getElementById('single_cal3').value=localStorage.getItem("sd"); 
 
@@ -520,7 +582,7 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 	    	}
 	    	localStorage.setItem("branch", "");
 	    	localStorage.setItem("sno", ""); 
-	    	localStorage.setItem("daterange", "Select Date Range"); 
+	  //  	localStorage.setItem("daterange", "Select Date Range"); 
 	  /*   	localStorage.setItem("dc", ""); */
 /* 	document.getElementById('branch').value=localStorage.getItem("branch"); */
 });
@@ -601,17 +663,21 @@ $(document).ready(function() {
 	    
 		document.getElementById("br").style.display="block";
 	}
+
 	
 	/*  var h= $('.right_col').min-height()+20;
 	 $('.right_col').animate({height:h}, 500); */
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,
-	        "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+ 	       // "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+ 	       "lengthMenu":[[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+ //"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 	        "order": [[ 0, "desc" ]],
 	      /*   "columnDefs": [
 	            { "visible": false, "targets": 0 }
 	          ], */
+	          'responsive': true,
 	          "footerCallback": function ( row, data, start, end, display ) {
 	              var api = this.api(), data;
 	   
@@ -655,15 +721,47 @@ var table=$('#ex').DataTable( {
 	          
 	          scrollY:        '53vh',
 		        scrollCollapse: true,
+		    
+		     
 	    /*     "createdRow": function ( row, data, index ) {
 	           
 	                $('td', row).eq(5).addClass('highlight');}, */
 	      
 	        dom: 'Blfrtip' ,
+	        select:true,
+	        enabled: true,
 	        buttons: [
 	            'copy', 'excel', 'pdf', 'print'
 	        ] 
 	    } );
+		  
+		 var oTable = $('#ex').DataTable();
+	    $('#ex').on('draw.dt', function () { 
+	     
+	        $(".dateField").datepicker();
+	    });
+	    $('.dateField').click(function() {
+			var i =$(this).attr('id'); 
+			//alert("0: "+i);
+			 var v =$(this).val(); 
+		     //   alert(v);
+		    	v = new Date(date).getTime();
+	        $(".dateField").datepicker();
+	    });
+	    $(".dateField").datepicker({
+	        autoclose: true,
+	        showOtherMonths: true,
+	        selectOtherMonths: true,
+	        gotoCurrent: true,
+	        dateFormat: 'mm/dd/yy',
+	        closeText: "Clear"
+	        
+	    });	  
+	    $(document).on("click", ".ui-datepicker-close", function(){
+	        $('.datepicker').val("");
+	        dataTable.columns(pdate).search("").draw();
+	    });
+	   
 $('input.column_filter').on( 'keyup click', function () {
     filterColumn( $(this).attr('data-column') );
 } );
@@ -675,6 +773,7 @@ $('#min').keyup( function() {
     table.draw();
 } );
 } );
+
 </script>
   </body>
 </html>
