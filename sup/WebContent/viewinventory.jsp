@@ -623,7 +623,7 @@ var table= $('#ex').DataTable( {
 	    for (var i = 0; i < elements.length; i++){
 	        elements[i].style.display = "none";
 	    }
-	    if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")||(ubran=="Tekkali")|| (ubran=="Bhubhaneshwar")||(ubran=="Bowenpally")))
+	    if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")||(ubran=="Tekkali")|| (ubran=="Vishakapatnam")||(ubran=="Bowenpally")))
     		document.getElementById("invAdj").style.display="block";
 	}
 	/* if(role!=null && role=="3")
