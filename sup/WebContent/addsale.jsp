@@ -513,13 +513,13 @@ String role=(String)session.getAttribute("role");
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
-                        <!--  <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                          <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
                         </div>
-                        </div> -->
+                        </div> 
                       </div>
                         <p id="creditMsg"></p> 
                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
@@ -772,7 +772,7 @@ function calculate(i)
     }
     if(document.getElementById("tax").value=="")
     	document.getElementById("tax").value=0;
-    if(document.getElementById("dis").value=="")
+   if(document.getElementById("dis").value=="")
     	document.getElementById("dis").value=0;
     if(!isNaN(document.getElementById('ftotal').value)) 
     	calculatetax();
@@ -788,6 +788,7 @@ function calculatetax()
 	if(document.getElementById("dis").value!=null && document.getElementById("dis").value!="")
 		calculatedis();	
 	document.getElementById("amountpaid").max=document.getElementById('ftotal').value;
+	balcalc();
 }
 
 function calculatedis()
@@ -795,6 +796,7 @@ function calculatedis()
 	
 	document.getElementById('ftotal').value=parseInt( document.getElementById('total').value)+parseInt(document.getElementById("tax").value)-parseInt(document.getElementById("dis").value);
 	document.getElementById("amountpaid").max=document.getElementById('ftotal').value;
+	balcalc();
 }
 
 function calculater(x)
