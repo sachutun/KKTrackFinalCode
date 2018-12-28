@@ -996,7 +996,10 @@ function cls(elt)
 	               	$("#customername").prop('disabled', true);
 	              	$("#customernumber").prop('disabled', true); 
 	              	$("#creditCustId").prop('required',true);
-	            	balcalc();
+	            		$("#creditCustId").val("");
+	            		$("#customername").val("");
+	            		$("#customernumber").val("");	            
+	            		balcalc();
 	            	}
 	            else
 	            	{
