@@ -21,6 +21,7 @@ Statement st2 = null;
 Statement st3 = null;
 Statement st4 = null;
 PreparedStatement preparedStatement = null;
+PreparedStatement preparedStatement1 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
 
@@ -43,6 +44,9 @@ ResultSet rs = null;
    String amountpaid = request.getParameter("amountpaid");
    String balanceamount = request.getParameter("balanceamount");
    String gst = request.getParameter("GST");
+   String creditCustId=request.getParameter("creditCustId");
+   String CrediCustStatus=request.getParameter("CrediCustStatus");
+   
    String sqlb="";
 
    
@@ -100,8 +104,8 @@ ResultSet rs = null;
          } */
      /*    System.out.println("fine"); */
        statement=connection.createStatement();       
-       
-       int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"')");
+        	
+    	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"')");
        
        String sql="Select Max(Id) from Sale";
        resultSet = statement.executeQuery(sql);
@@ -111,6 +115,7 @@ ResultSet rs = null;
        
         st2=connection.createStatement();
         st3=connection.createStatement();
+     
 
 int count=code.length;
 String qparts="";
@@ -151,6 +156,30 @@ else if(type.equals("Cheque"))
 	   String chkno=request.getParameter("chkno");
 	   sqlb="INSERT INTO ChequeDetails (Id, Type, ChequeNo, Date, BankName) VALUES('"+ id+"', 'sale', '"+chkno+"','"+cd+"', '"+bank+"')";
 	   int z=st3.executeUpdate(sqlb);
+}
+else if(type.equals("Credit"))
+{
+	int OBnew=0;
+	System.out.println("CrediCustStatus: " +CrediCustStatus);
+	if(CrediCustStatus.equals("update"))
+	{
+		
+		 OBnew=Integer.parseInt(balanceamount);
+		 sq="UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustID=?";
+//System.out.println("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustID=?");
+		 preparedStatement1 = connection.prepareStatement(sq);
+		 preparedStatement1.setInt(1,OBnew);
+		 preparedStatement1.setString(2,creditCustId);
+		 preparedStatement1.executeUpdate(); 
+	}
+	if(CrediCustStatus.equals("insert"))
+	{
+		if(customernumber==null)
+			customernumber="";
+		 String sqlc="INSERT INTO Debtors (CustID, CustomerName, Mobile, OB, Branch) VALUES('"+ creditCustId+"', '"+ customername+"', '"+customernumber+"','"+Integer.parseInt(balanceamount)+"', '"+branch+"')";
+		// System.out.println("add sqlc: " +sqlc); 
+		 int z=st4.executeUpdate(sqlc);
+	}
 }
 
 

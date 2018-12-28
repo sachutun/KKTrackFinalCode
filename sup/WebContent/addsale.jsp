@@ -75,8 +75,9 @@ ResultSet resultSet = null;
               <script language="javascript">var p = false;
               </script>
  <script language="javascript" type="text/javascript">  
- var xmlHttp  
  var xmlHttp
+ var xmlHttp1
+ var res="notCredit"
  function showState(str,i){ 
 if (typeof XMLHttpRequest != "undefined"){
    xmlHttp= new XMLHttpRequest();
@@ -91,7 +92,7 @@ return
 document.getElementById("numb").value=i;
 var url="value.jsp";
 url += "?count=" +str+"&branch="+document.getElementById("branch").value+"&dt="+document.getElementById("da").value+"&dc="+document.getElementById("dcnumber").value;
-
+	
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);
 xmlHttp.send(null);
@@ -118,7 +119,76 @@ xmlHttp.send(null);
 		 }
  }   
  }
+ 
+function showCustomer(custID){ 
+	if (typeof XMLHttpRequest != "undefined"){
+   		xmlHttp1= new XMLHttpRequest();
+       }
+    else if (window.ActiveXObject){
+   		xmlHttp1= new ActiveXObject("Microsoft.XMLHTTP");
+    }
+	if (xmlHttp1==null){
+    		alert ("Browser does not support XMLHTTP Request")
+		return
+	} 
+	var url="getCreditCustomers.jsp";
+	url += "?creditcustID=" +custID+"&branch="+document.getElementById("branch").value;
+	
+	xmlHttp1.onreadystatechange = getCustomer;
+	xmlHttp1.open("GET", url, true);
+	xmlHttp1.send(null);
+}
   
+ function getCustomer(){  
+	 var res="";
+	 var creditMsg="";
+	 document.getElementById("creditMsg").style.color = "blue";
+	 document.getElementById("creditMsg").style.fontSize = "medium";
+	  if (xmlHttp1.readyState==4 || xmlHttp1.readyState=="complete"){   
+		  
+	 	 var data=xmlHttp1.responseText;
+	 	
+	 	 var dv=data.split(",");
+	 
+	 	 document.getElementById("customername").value=dv[0];
+	 	 document.getElementById("customernumber").value=dv[1];
+	
+	 	 res="update";
+	 	
+	 	creditMsg = "Existing credit balance:" +dv[2];
+       
+	 	 if(dv[3]==0)
+	 		 {
+	 		 //alert("Credit Customer ID do not exists");
+	 		var answer = confirm("Credit Customer ID do not exists.\nDo you want to add the Credit Customer?");
+	 	
+	 		if (answer) {
+	 		    //some code
+	 		     document.getElementById("customername").focus();
+	 			document.getElementById("customername").disabled = false;
+	 			document.getElementById("customernumber").disabled = false;	 			
+	 			creditMsg="Add the above Customer!"
+	 			res="insert";
+	 		}
+	 		else {
+	 		    //some code
+	 		
+	 		 //document.getElementById("creditCustId").value="";
+	 		 document.getElementById("customername").disabled = true;
+	 		document.getElementById("customernumber").disabled = true;
+	 		 document.getElementById("creditCustId").focus();
+	 		 res="error";
+	 		creditMsg="Please enter valid Credit Customer Id to proceed."
+	 		document.getElementById("creditMsg").style.color = "#ff0000";
+	 		 }
+	 		 }
+	  }
+	 // alert(creditMsg);
+	 // alert(res);
+	  document.getElementById("creditMsg").innerHTML = creditMsg;
+	 
+	  document.getElementById("CrediCustStatus").value=res;
+	  } 
  </script>  
  <body  class="nav-md">
  <div class="se-pre-con"></div>
@@ -400,7 +470,31 @@ String role=(String)session.getAttribute("role");
                     
                     <br/>
                       
-                      <div class="form-group">
+                     
+                      
+                    <div class="form-group" style="margin-top:2%;">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <select id="type" class="select2_single form-control" tabindex="-1" name="type" required="required">
+                            <option></option>
+                               <option value="Cash">Cash</option>
+                            <option value="Neft">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Swipe">Swipe</option>
+                             <option value="Credit">Credit</option>
+                          </select>
+                        </div>
+                      <!-- </div>
+                       <div class="form-group"> -->
+                       <div class="form-group Credit creditDet" style="display:none;">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Customer ID:<span class="required">*</span>
+                         </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="creditCustId" class="form-control col-md-7 col-xs-12" type="text" name="creditCustId" onchange="showCustomer(this.value)">
+                        </div>
+                        </div>
+                        </div>
+                         <div class="form-group custDet">
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Customer Name:<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
@@ -413,27 +507,21 @@ String role=(String)session.getAttribute("role");
                           <input id="customernumber" class="form-control col-md-7 col-xs-12" type="number" name="customernumber">
                         </div>
                       </div>
-                      
-                    <div class="form-group" style="margin-top:2%;">
-                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <select class="select2_single form-control" tabindex="-1" name="type" required="required">
-                            <option></option>
-                               <option value="Cash">Cash</option>
-                            <option value="Neft">Bank Transfer</option>
-                            <option value="Cheque">Cheque</option>
-                            <option value="Swipe">Swipe</option>
-                            
-                          </select>
-                        </div>
-                      <!-- </div>
-                       <div class="form-group"> -->
+                           <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Amount Paid:<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
+                         <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                           <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
+                        </div>
+                        </div>
                       </div>
+                        <p id="creditMsg"></p> 
                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
                        <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname">Bank Name:<span class="required">*</span>
                         </label>
@@ -498,7 +586,7 @@ String role=(String)session.getAttribute("role");
                         
                       
                         <br/>
-                        
+                   
                         <div class="form-group"> 
                        <label class="control-label col-md-2 col-sm-2 col-xs-3">Comments:</label>
                        <div class="col-md-8 col-sm-7 col-xs-8">
@@ -507,6 +595,8 @@ String role=(String)session.getAttribute("role");
                        </div>
                        <input id="balanceamount" class="form-control col-md-7 col-xs-12" type="hidden" name="balanceamount">
                        <input id="numb" class="form-control col-md-7 col-xs-12" type="hidden" name="numb" value="1">
+                       <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
+                       
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
@@ -530,8 +620,8 @@ String role=(String)session.getAttribute("role");
      <br> 
      <% String r=request.getParameter("res");
   
- String succ="<div class=\"col-md-6\" style= \" margin-top:-63%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \" margin-top:-63%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
+ String succ="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
+ String err="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
  
  if(r!=null && r.equals("1"))
         	out.println(succ);%>
@@ -680,16 +770,20 @@ function calculate(i)
         
         document.getElementById("amountpaid").max=result;
     }
-    if(!isNaN(document.getElementById('ftotal').value))
+    if(document.getElementById("tax").value=="")
+    	document.getElementById("tax").value=0;
+    if(document.getElementById("dis").value=="")
+    	document.getElementById("dis").value=0;
+    if(!isNaN(document.getElementById('ftotal').value)) 
     	calculatetax();
     calculatedis();
-    
+  	balcalc();
     
 }
 
 function calculatetax()
 {
-	
+
 	document.getElementById('ftotal').value=parseInt(document.getElementById("tax").value)+parseInt( document.getElementById('total').value);
 	if(document.getElementById("dis").value!=null && document.getElementById("dis").value!="")
 		calculatedis();	
@@ -753,8 +847,14 @@ function tot(i)
 
 function balcalc()
 {
-	document.getElementById("balanceamount").value=document.getElementById("ftotal").value-document.getElementById("amountpaid").value;
-
+var bal;
+var finalTotal;
+finalTotal=document.getElementById("ftotal").value;
+if(finalTotal==null)
+	finalTotal=0;	
+bal=finalTotal-document.getElementById("amountpaid").value;
+document.getElementById("balanceamount").value=bal;
+document.getElementById("creditBal").value=bal;
 }	 
 function cls(elt)
 {
@@ -774,6 +874,7 @@ function cls(elt)
 
 
  $(document).ready(function() {
+	
 	 $(window).keydown(function(event){
 		    if(event.keyCode == 13) {
 		      event.preventDefault();
@@ -879,14 +980,31 @@ function cls(elt)
 	 $("select").change(function(){
 	        $(this).find("option:selected").each(function(){
 	            var optionValue = $(this).attr("value");
+	           
 	            if(optionValue){
+	           
 	                $(".bankdet").not("." + optionValue).hide();
+	                $(".creditDet").not("." + optionValue).hide();           
 	                $("." + optionValue).show();
-	              
+	                
 	            } else{
 	                $(".bankdet").hide();
-	               
+	                $(".creditDet").hide();	          
 	            }
+	            if(optionValue=='Credit')
+	            	{
+	               	$("#customername").prop('disabled', true);
+	              	$("#customernumber").prop('disabled', true); 
+	              	$("#creditCustId").prop('required',true);
+	            	balcalc();
+	            	}
+	            else
+	            	{
+	             	$("#customername").prop('disabled', false);
+	              	$("#customernumber").prop('disabled', false); 
+	              	$("#creditCustId").prop('required',false);
+	              	document.getElementById("creditMsg").innerHTML = "";
+	            	}
 	        });
 	    }).change();
 	var c=1;
@@ -916,6 +1034,12 @@ for (var i = 0; i < elements.length; i++){
  }); 
  $(window).load(function () {
 		$(".se-pre-con").fadeOut("slow");
+	});
+ $(function() {
+	    $("#branch").change(function() {
+	       $('select[name=type]').val("");
+	       document.getElementById("creditMsg").innerHTML = "";
+	    });
 	});
 </script>
 <!-- <script>
