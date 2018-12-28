@@ -176,7 +176,7 @@ function showCustomer(custID){
 	 		 //document.getElementById("creditCustId").value="";
 	 		 document.getElementById("customername").disabled = true;
 	 		document.getElementById("customernumber").disabled = true;
-	 		 document.getElementById("creditCustId").focus();
+	 		// document.getElementById("creditCustId").focus();
 	 		 res="error";
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
 	 		document.getElementById("creditMsg").style.color = "#ff0000";
@@ -490,7 +490,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Customer ID:<span class="required">*</span>
                          </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="creditCustId" class="form-control col-md-7 col-xs-12" type="text" name="creditCustId" onchange="showCustomer(this.value)">
+                          <input id="creditCustId" class="form-control col-md-7 col-xs-12" type="text" name="creditCustId" onfocusout="showCustomer(this.value)">
                         </div>
                         </div>
                         </div>
@@ -513,13 +513,13 @@ String role=(String)session.getAttribute("role");
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
-                         <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                        <!--  <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
                         </div>
-                        </div>
+                        </div> -->
                       </div>
                         <p id="creditMsg"></p> 
                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
@@ -874,7 +874,7 @@ function cls(elt)
 
 
  $(document).ready(function() {
-	
+	 	
 	 $(window).keydown(function(event){
 		    if(event.keyCode == 13) {
 		      event.preventDefault();
@@ -1044,6 +1044,8 @@ for (var i = 0; i < elements.length; i++){
 	       document.getElementById("creditMsg").innerHTML = "";
 	    });
 	});
+ 
+
 </script>
 <!-- <script>
     // Run on page load
