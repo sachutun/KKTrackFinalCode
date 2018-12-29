@@ -324,7 +324,7 @@ String std=request.getParameter("std");
            <!--  </tr>
             <tr id="filter_col6" data-column="6"> -->
                 <!-- <td>Description</td> -->
-                <td align="center">Type: <input type="text" class="column_filter" id="col8_filter" data-column="8"></td>
+                <td align="center">Type: <input type="text" class="column_filter" id="col9_filter" data-column="9"></td>
   
        
   
@@ -444,9 +444,8 @@ if(role!="null" && role.equals("1"))
                                             <th >Total price</th>
                                             <th >LC</th>
                                             <th >Amount Paid</th>
-                                            <th>Customer Number</th>
                                             <th>Type</th>
-                                            
+                                            <th>Customer Number</th>
                                             <th>Details</th> 
                                             <!-- <th>Previous Payment Details</th>  -->
                                             <th>Comments</th> 
@@ -498,8 +497,9 @@ while(resultSet.next()){
 <td ><%=resultSet.getInt("TotalPrice") %></td>
 <td ><%=resultSet.getInt("slc") %></td>
 <td ><%=resultSet.getString("AmountPaid") %></td>
-<td><%=resultSet.getString("CustomerNumber") %></td>
 <td><%=resultSet.getString("Type") %></td>
+<td><%=resultSet.getString("CustomerNumber") %></td>
+
 
 
 

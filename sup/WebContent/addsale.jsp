@@ -358,7 +358,7 @@ String role=(String)session.getAttribute("role");
                             </div>
                           </div>
                         </fieldset>
-                         <input id="da" class="form-control col-md-7 col-xs-12" type="hidden" name="date" value="2017-11-16">
+                         <input id="da" class="form-control col-md-7 col-xs-12" type="hidden" name="date" value="">
                       </div>
                     <!-- </div>
                     <div class="form-group"> -->

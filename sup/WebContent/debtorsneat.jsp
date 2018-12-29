@@ -268,10 +268,10 @@ if(user==null)
                             <tr>
                                           
                                             <th width="10%">Cust ID</th>
-                                            <th width="30%">Name</th>
+                                            <th>Name</th>
                                             <th>Mobile</th>
-                                            <th>OB</th>
-                                            <th>Pay</th>
+                                            <th width="10%">Amount</th>
+                                            <th class="none">Pay</th>
                                             <th class="none">Previous Payment Details</th> 
                                     
                                         </tr>
@@ -343,26 +343,27 @@ while(resultSet.next()){
 
 <td><%=resultSet.getInt("OB") %></td>
    <td> 
-   
+    <div class="form-group">
                  
                     <form id="form2" action="DebtorsBalPay.jsp" method="post">
-                     <div class="form-group">
-                  <div class="col-md-3 col-sm-3 col-xs-4 ">
-               <label for="amtPaid"> Amount:</label>
-                <input type="text" id="amtPaid" name="amtPaid" style="width: 80%;" min="0" max=<%=resultSet.getInt("OB")%> required="true"> 
+                  <div>
+                  <div class="form-group col-md-2 col-sm-3 col-xs-4 ">
+               <label class="control-label col-md-5 col-sm-2 col-xs-5" for="amtPaid"> Amount:</label>
+                <input type="text" id="amtPaid" name="amtPaid"  min="0" max=<%=resultSet.getInt("OB")%> required="true"> 
              </div>
-             <div class="col-md-3 col-sm-3 col-xs-4 ">
-               <label for="disc" style="margin-left: 17%;"> Discount:</label>
-                <input type="text" id="disc" name="disc" style="margin-left: 17%;width: 80%;"> 
+             <div class="form-group col-md-2 col-sm-3 col-xs-4 ">
+               <label class="control-label col-md-5 col-sm-2 col-xs-5" for="disc"> Discount:</label>
+                <input type="text" id="disc" name="disc"> 
              </div>
-                <div class="col-md-3 col-sm-3 col-xs-4 ">
-               <label for="pdate"> Date:</label>
+                <div class="form-group col-md-2 col-sm-3 col-xs-4 ">
+               <label class="control-label col-md-5 col-sm-2 col-xs-5" for="pdate"> Date:</label>
                 <input  readonly="readonly" type="text" id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>" class="dateField datepicker" > 
 </div>
 
-                       <div class="col-md-7 col-sm-3 col-xs-4">
-                       <label for="comments"> Comments:</label>
-                       <textarea id="comments" class="form-control col-md-7 col-xs-12" name="comments" style="width: 150%;"></textarea>
+
+                       <div class="form-group col-md-2 col-sm-3 col-xs-4">
+                       <label class="control-label col-md-5 col-sm-2 col-xs-5" for="comments"> Comments:</label>
+                       <textarea id="comments" class="form-control col-md-7 col-xs-12" name="comments" style="width: 250%;"></textarea>
                        </div>
         
         			<input id="branch" name="branch" type="hidden" value=<%=branch %>> 
@@ -370,11 +371,15 @@ while(resultSet.next()){
                    <input type="hidden" id="custId" name="custId" value=<%=resultSet.getString("CustID")  %> > 
              <input type="hidden" id="Id" name="Id" value=<%=resultSet.getInt("Id") %> >
              
-         <!--      <div class="form-group" style="margin-left:40%; margin-top: 3%;"> -->
-             <button type="submit" class="btn btn-success" style="float:right;margin-top: 6%;">Pay</button>
-         </div> 
+              <div class="form-group" style="margin-left: 40%;margin-top: -4%;float: right;">
+             <button type="submit" class="btn btn-success" style="float:right">Pay</button>
+             </div>
+             </div>
              </form>
-             
+             <br>
+             <br>
+
+             </div>
              </td>
 
                                         <% 
@@ -633,6 +638,11 @@ $(document).ready(function() {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+   		var elements = document.getElementsByClassName('user');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "block";
+	    }
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
 	}
@@ -740,17 +750,18 @@ var table=$('#ex').DataTable( {
 	            'copy', 'excel', 'pdf', 'print'
 	        ] 
 	    } );
-		  
+	
 		 var oTable = $('#ex').DataTable();
 	    $('#ex').on('draw.dt', function () { 
 	     
 	        $(".dateField").datepicker();
 	    });
+	   
 	    $('.dateField').click(function() {
 			var i =$(this).attr('id'); 
-			//alert("0: "+i);
+			alert("0: "+i);
 			 var v =$(this).val(); 
-		     //   alert(v);
+		      // alert(v);
 		    	v = new Date(date).getTime();
 	        $(".dateField").datepicker();
 	    });
@@ -766,7 +777,7 @@ var table=$('#ex').DataTable( {
 	    $(document).on("click", ".ui-datepicker-close", function(){
 	        $('.datepicker').val("");
 	        dataTable.columns(pdate).search("").draw();
-	    });
+	    }); 
 	   
 $('input.column_filter').on( 'keyup click', function () {
     filterColumn( $(this).attr('data-column') );
