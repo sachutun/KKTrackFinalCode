@@ -613,7 +613,15 @@ $.fn.dataTable.ext.search.push(
 	);
 $(document).ready(function() {
 	
-	
+	   $(".dateField").datepicker({
+	        autoclose: true,
+	        showOtherMonths: true,
+	        selectOtherMonths: true,
+	        gotoCurrent: true,
+	        dateFormat: 'yy-mm-dd',
+	        closeText: "Clear"
+	        
+	    });	
 	
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
@@ -633,6 +641,11 @@ $(document).ready(function() {
    		 for (var i = 0; i < elements.length; i++){
         		elements[i].style.display = "none";
     		}
+   		var elements = document.getElementsByClassName('user');
+
+	    for (var i = 0; i < elements.length; i++){
+	        elements[i].style.display = "block";
+	    }
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
 	}

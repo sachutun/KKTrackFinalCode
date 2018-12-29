@@ -240,11 +240,11 @@ if(user==null)
           
             <tr id="filter_col" >
            
-                <td align="center"> Customer Name: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
+                <td align="center"> Customer ID: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
         
-                <td align="center">Date: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td>
+                <td align="center">Customer Name: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
   
-                <td align="center">Comments <input type="text" class="column_filter" id="col5_filter" data-column="5"></td>
+                <td align="center">Status <input type="text" class="column_filter" id="col6_filter" data-column="6"></td>
 
             </tr>
         </tbody></table></div>
@@ -277,21 +277,24 @@ if(user==null)
                       <thead>
                        
                             <tr>
-    			                         <th>Customer ID</th>
+    			                        <th> </th>
                           			<th>Branch</th>
+                          			  <th>Customer ID</th>
                                      <th>Customer Name</th>
                                      <th>OB</th>
-                                     <th>Date</th>
-                                   	<th>Comments</th>
-                                     <th>Payment</th>
+                                     <th>Target</th>
+                                   	<th>Collections</th>
+                                     <th>Status</th>
                             </tr>
                                         
                       </thead>
                       <tfoot>
             <tr>
+          
 
-                <th colspan="6" style="text-align:right">Total:</th>
+<th colspan="6" style="text-align:right">Total: </th>
                 <th></th>
+             <th> </th>
          
             </tr>
         </tfoot>
@@ -322,15 +325,16 @@ try{
     //Class.forName("com.mysql.jdbc.Driver").newInstance();  
      //connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");     
 statement=connection.createStatement();
-
-String sql ="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,s.Amount,s.Date,s.Comments  FROM Debtors d , SaleCredit s WHERE d.CustId=s.CustId";
+//SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId and Date between '2018-12-01' and '2018-12-31' group by s.CustId
+//String sql ="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,s.Amount,s.Date,s.Comments  FROM Debtors d , SaleCredit s WHERE d.CustId=s.CustId";
+String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId";
 String whr="";
 
 if(std!=null && std.length()!=0)
-	whr+=" and Date between '"+std+"' and '"+end+"'";
+	whr+=" and s.Date between '"+std+"' and '"+end+"'";
 if(branch!="" && branch!=null)
-	whr+=" and Branch='"+branch+"'";
-sql+=whr;
+	whr+=" and d.Branch='"+branch+"'";
+sql+=whr+" group by s.CustId";
 
 statement=connection.createStatement();
 System.out.println("sql: "+sql);
@@ -338,20 +342,22 @@ resultSet = statement.executeQuery(sql);
 	
 while(resultSet.next()){
 	
-	Date date=resultSet.getDate("Date");
+	//Date date=resultSet.getDate("Date");
 	String comments="";
-	if(resultSet.getString("Comments")!=null)
-		comments=resultSet.getString("Comments");
+	//if(resultSet.getString("Comments")!=null)
+	//	comments=resultSet.getString("Comments");
 		
 %>
                                         <tr class="odd gradeX">
+                                        <td> </td>
+                                         <td width="10%"><%=resultSet.getString("Branch") %></td>
                                          <td width="12%"><%=resultSet.getString("CustId")  %></td>
-                                         <td width="20%"><%=resultSet.getString("Branch") %></td>
+                                        
                                          <td width="20%"><%=resultSet.getString("CustomerName") %></td>
                                          <td width="20%"><%=resultSet.getInt("OB") %></td>                                          
-                                        <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>                                      
-                                          <td width="10%"><%=comments %></td>
- 										<td width="20%"><%=resultSet.getString("Amount") %></td> 
+                                        <td width="10%"> </td>                                      
+                                          <td width="20%"><%=resultSet.getInt("Collections") %></td>
+ 										<td width="20%"></td> 
 
                                         </tr>
                                         <% 
