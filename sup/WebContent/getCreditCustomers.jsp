@@ -11,6 +11,8 @@ String custName="";
 String custNumber="";
 String output="";
 int OB=0;
+String aadhaar="";
+String gst="";
 Statement stmt = null;
 
 Connection con = null;
@@ -51,10 +53,12 @@ stmt = con.createStatement();
    custName+=rs.getString("CustomerName");  
    custNumber+=rs.getString("Mobile"); 
    OB+=rs.getInt("OB");
+   aadhaar+=rs.getString("Aadhaar"); 
+   gst+=rs.getString("GST");
 res=1;
    }  
 
- output+=custName+","+custNumber+","+OB+","+res; 
+ output+=custName+","+custNumber+","+OB+","+aadhaar+","+gst+","+res; 
  System.out.println("output: " +output);
  response.getWriter().println(output);    
 //}

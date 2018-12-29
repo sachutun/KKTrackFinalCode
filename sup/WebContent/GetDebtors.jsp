@@ -200,7 +200,7 @@ String role=request.getParameter("role");
             ja.put(rs.getString("CustomerName"));
             ja.put(rs.getString("Mobile"));
             ja.put(rs.getString("Aadhaar"));
-            ja.put(String.valueOf(rs.getInt("GST")));
+            ja.put(rs.getString("GST"));
             //System.out.println(rs.getString("CustID") + " -> " + rs.getInt("OB"));
             ja.put(String.valueOf(rs.getInt("OB")));
       

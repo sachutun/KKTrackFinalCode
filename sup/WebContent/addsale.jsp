@@ -152,12 +152,22 @@ function showCustomer(custID){
 	 
 	 	 document.getElementById("customername").value=dv[0];
 	 	 document.getElementById("customernumber").value=dv[1];
-	
+	 	document.getElementById("aadhaar").value=dv[3];
+		var gst=dv[4];
+		if(gst!="" || gst!=null)
+			{
+			document.getElementById("GST").value=gst;	
+			document.getElementById('taxInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'visible';
+	        document.getElementById('GSTLabel').style.visibility = 'visible';
+	        document.getElementById('GST').required = 'true';
+	        document.getElementById("GST").disabled = true;
+			}
 	 	 res="update";
 	 	
 	 	creditMsg = "Existing credit balance:" +dv[2];
        
-	 	 if(dv[3]==0)
+	 	 if(dv[5]==0)
 	 		 {
 	 		 //alert("Credit Customer ID do not exists");
 	 		var answer = confirm("Credit Customer ID do not exists.\nDo you want to add the Credit Customer?");
@@ -166,7 +176,14 @@ function showCustomer(custID){
 	 		    //some code
 	 		     document.getElementById("customername").focus();
 	 			document.getElementById("customername").disabled = false;
-	 			document.getElementById("customernumber").disabled = false;	 			
+	 			document.getElementById("customernumber").disabled = false;	
+	 			document.getElementById("aadhaar").disabled = false;
+	 			document.getElementById("GST").value="";	 			
+				document.getElementById('generalInvoice').checked=true;
+		        document.getElementById('GSTdiv').style.visibility = 'hidden';
+		        document.getElementById('GSTLabel').style.visibility = 'hidden';
+		   	    document.getElementById("GST").disabled = false;
+		   	  document.getElementById('GST').required = false;
 	 			creditMsg="Add the above Customer!"
 	 			res="insert";
 	 		}
@@ -176,6 +193,13 @@ function showCustomer(custID){
 	 		 //document.getElementById("creditCustId").value="";
 	 		 document.getElementById("customername").disabled = true;
 	 		document.getElementById("customernumber").disabled = true;
+	 		document.getElementById("aadhaar").disabled = true;
+	 		document.getElementById("GST").value="";	 			
+			document.getElementById('generalInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'hidden';
+	        document.getElementById('GSTLabel').style.visibility = 'hidden';
+	        document.getElementById("GST").disabled = false;
+	        document.getElementById('GST').required = false;
 	 		// document.getElementById("creditCustId").focus();
 	 		 res="error";
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
@@ -513,7 +537,14 @@ String role=(String)session.getAttribute("role");
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
-                          <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                          <div class="form-group Credit creditDet"style="display:none;" id="aadhar">
+                           <label class="control-label col-md-2 col-sm-2 col-xs-5">Aadhaar:
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar"  disabled>
+                        </div>
+                        </div> 
+                        <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
@@ -705,7 +736,7 @@ function invoiceCheck() {
      
     	}
 
-}
+}	
 
  function dch() 
 { 
@@ -1009,6 +1040,14 @@ function cls(elt)
 	              	$("#customernumber").prop('disabled', false); 
 	              	$("#creditCustId").prop('required',false);
 	              	document.getElementById("creditMsg").innerHTML = "";
+	              	document.getElementById('generalInvoice').checked=true;
+			        document.getElementById('GSTdiv').style.visibility = 'hidden';
+			        document.getElementById('GSTLabel').style.visibility = 'hidden';
+			   	    document.getElementById("GST").disabled = false;
+			   	    $("#customername").val("");
+         		    $("#customernumber").val("");
+         		    $("#GST").val("");
+     
 	            	}
 	        });
 	    }).change();
