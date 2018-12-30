@@ -161,7 +161,8 @@ function showCustomer(custID){
 	        document.getElementById('GSTdiv').style.visibility = 'visible';
 	        document.getElementById('GSTLabel').style.visibility = 'visible';
 	        document.getElementById('GST').required = 'true';
-	        document.getElementById("GST").disabled = true;
+	       // document.getElementById("GST").disabled = true;
+	        document.getElementById("GST").readOnly = true;
 			}
 	 	 res="update";
 	 	
@@ -175,14 +176,18 @@ function showCustomer(custID){
 	 		if (answer) {
 	 		    //some code
 	 		     document.getElementById("customername").focus();
-	 			document.getElementById("customername").disabled = false;
-	 			document.getElementById("customernumber").disabled = false;	
-	 			document.getElementById("aadhaar").disabled = false;
+	 			//document.getElementById("customername").disabled = false;
+	 			//document.getElementById("customernumber").disabled = false;	
+	 			//document.getElementById("aadhaar").disabled = false;
+	 			 document.getElementById("customername").readOnly = false;
+	 			 document.getElementById("customernumber").readOnly = false;
+	 			 document.getElementById("aadhaar").readOnly = false;
+	 			 document.getElementById("GST").readOnly = false;
 	 			document.getElementById("GST").value="";	 			
 				document.getElementById('generalInvoice').checked=true;
 		        document.getElementById('GSTdiv').style.visibility = 'hidden';
 		        document.getElementById('GSTLabel').style.visibility = 'hidden';
-		   	    document.getElementById("GST").disabled = false;
+		   	   // document.getElementById("GST").disabled = false;
 		   	  document.getElementById('GST').required = false;
 	 			creditMsg="Add the above Customer!"
 	 			res="insert";
@@ -191,15 +196,20 @@ function showCustomer(custID){
 	 		    //some code
 	 		
 	 		 //document.getElementById("creditCustId").value="";
-	 		 document.getElementById("customername").disabled = true;
-	 		document.getElementById("customernumber").disabled = true;
-	 		document.getElementById("aadhaar").disabled = true;
+	 		// document.getElementById("customername").disabled = true;
+	 		//document.getElementById("customernumber").disabled = true;
+	 		//document.getElementById("aadhaar").disabled = true;
 	 		document.getElementById("GST").value="";	 			
 			document.getElementById('generalInvoice').checked=true;
 	        document.getElementById('GSTdiv').style.visibility = 'hidden';
 	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        document.getElementById("GST").disabled = false;
+	        //document.getElementById("GST").disabled = false;
 	        document.getElementById('GST').required = false;
+	        document.getElementById("customername").readOnly = true;
+			 document.getElementById("customernumber").readOnly = true;
+			 document.getElementById("aadhaar").readOnly = true;
+			 document.getElementById("GST").readOnly = true;
+			 
 	 		// document.getElementById("creditCustId").focus();
 	 		 res="error";
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
@@ -541,7 +551,7 @@ String role=(String)session.getAttribute("role");
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Aadhaar:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar"  disabled>
+                          <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar" >
                         </div>
                         </div> 
                         <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
@@ -1026,24 +1036,28 @@ function cls(elt)
 	            }
 	            if(optionValue=='Credit')
 	            	{
-	               	$("#customername").prop('disabled', true);
-	              	$("#customernumber").prop('disabled', true); 
+	               	$("#customername").prop('readonly', true);
+	              	$("#customernumber").prop('readonly', true); 
+	              	$("#GST").prop('readonly', true); 
+	              	$("#aadhaar").prop('readonly', true); 
 	              	$("#creditCustId").prop('required',true);
 	            		$("#creditCustId").val("");
 	            		$("#customername").val("");
-	            		$("#customernumber").val("");	            
+	            		$("#customernumber").val("");
+	            		
 	            		balcalc();
 	            	}
 	            else
 	            	{
-	             	$("#customername").prop('disabled', false);
-	              	$("#customernumber").prop('disabled', false); 
+	             	$("#customername").prop('readonly', false);
+	              	$("#customernumber").prop('readonly', false); 
 	              	$("#creditCustId").prop('required',false);
 	              	document.getElementById("creditMsg").innerHTML = "";
 	              	document.getElementById('generalInvoice').checked=true;
 			        document.getElementById('GSTdiv').style.visibility = 'hidden';
 			        document.getElementById('GSTLabel').style.visibility = 'hidden';
-			   	    document.getElementById("GST").disabled = false;
+			        $("#GST").prop('readonly', false); 
+			   		$("#aadhaar").prop('readonly', false); 
 			   	    $("#customername").val("");
          		    $("#customernumber").val("");
          		    $("#GST").val("");
