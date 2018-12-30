@@ -35,7 +35,7 @@ try{
     String gstno = request.getParameter("gst");
     String amt = request.getParameter("ob");
 
-    int gst=Integer.parseInt(gstno);
+   // int gst=Integer.parseInt(gstno);
     int ob=Integer.parseInt(amt);
    /*  System.out.println(nq); */
    
@@ -64,14 +64,14 @@ try{
     conn = DriverManager.getConnection(url, username, password);
     st2=conn.createStatement();
 
-  String s3="UPDATE `Debtors` SET `CustomerName`="+custName+",`Mobile`="+mobile+",`Aadhaar`="+aadhaar+",`GST`="+gst+",`OB`="+ob+" WHERE `CustID`="+custId;
+  String s3="UPDATE `Debtors` SET `CustomerName`="+custName+",`Mobile`="+mobile+",`Aadhaar`="+aadhaar+",`GST`="+gstno+",`OB`="+ob+" WHERE `CustID`="+custId;
  
 System.out.println(s3);
   ps2 = conn.prepareStatement("UPDATE `Debtors` SET `CustomerName`=?,`Mobile`=?,`Aadhaar`=?,`GST`=?,`OB`=? WHERE `CustID`=?");
     ps2.setString(1,custName);
     ps2.setString(2,mobile);
     ps2.setString(3,aadhaar);
-    ps2.setInt(4,gst);
+    ps2.setString(4,gstno);
     ps2.setInt(5,ob);
     ps2.setString(6,custId);
     ps2.executeUpdate(); 

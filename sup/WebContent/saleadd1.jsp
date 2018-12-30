@@ -46,10 +46,9 @@ ResultSet rs = null;
    String gst = request.getParameter("GST");
    String creditCustId=request.getParameter("creditCustId");
    String CrediCustStatus=request.getParameter("CrediCustStatus");
-   
+   String aadhaar = request.getParameter("aadhaar");
    String sqlb="";
 
-   
    DataSource ds = null;
    int updateQuery = 0;
 
@@ -176,7 +175,7 @@ else if(type.equals("Credit"))
 	{
 		if(customernumber==null)
 			customernumber="";
-		 String sqlc="INSERT INTO Debtors (CustID, CustomerName, Mobile, OB, Branch) VALUES('"+ creditCustId+"', '"+ customername+"', '"+customernumber+"','"+Integer.parseInt(balanceamount)+"', '"+branch+"')";
+		 String sqlc="INSERT INTO Debtors (CustID, CustomerName, Mobile, OB, Branch, GST, Aadhaar) VALUES('"+ creditCustId+"', '"+ customername+"', '"+customernumber+"','"+Integer.parseInt(balanceamount)+"', '"+branch+"', '"+gst+"', '"+aadhaar+"')";
 		// System.out.println("add sqlc: " +sqlc); 
 		 int z=st4.executeUpdate(sqlc);
 	}
