@@ -64,7 +64,7 @@ String role=request.getParameter("role");
         //the same as followings
     }  */
     if (CustID!="" && CustID!=null) {
-        String sCustID = "CustID ="+CustID;
+        String sCustID = "CustID like '%"+CustID + "%'";
         sArray.add(sCustID);
     }
     if (CustomerName!="" && CustomerName!=null) {
@@ -191,7 +191,7 @@ String role=request.getParameter("role");
          }
      /*   sql += " order by " + colName + " " + dir; */
          sql += " limit " + start + ", " + amount; 
-      /*  System.out.println(sql);  */
+      //  System.out.println(sql);  
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -208,7 +208,7 @@ String role=request.getParameter("role");
             array.put(ja);
             
         }
-        System.out.println("array" +array);
+       // System.out.println("array" +array);
          String sql2 = "SELECT count(*) FROM "+table;
         if (searchSQL != "") {
             sql2 += searchSQL;

@@ -24,7 +24,9 @@ e.printStackTrace();
  DataSource ds = null;
 Connection connection = null;
 Statement statement = null;
+Statement st = null;
 ResultSet resultSet = null;
+ResultSet rs = null;
 int sno=1;
 %>
 <html lang="en">
@@ -186,23 +188,7 @@ if(user==null)
                           <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
                             <option value="All">All Branches</option>
-                            
-                            <option value="KKExpenses">KKExpenses</option>
-                             <!--  <option value="Bowenpally">Bowenpally</option>
-                            <option value="Miyapur">Miyapur</option>
-                            <option value="LBNagar">LB Nagar</option>
-                            <option value="Workshop">Workshop</option>
-                            <option value="Workshop2">Workshop 2</option>
-                            <option value="Vishakapatnam">Vishakapatnam</option>
-                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
-                            <option value="Vijayawada">Vijayawada Old</option>
-                            <option value="Vijayawadan">Vijayawada New</option>
-                            <option value="Rajahmundry">Rajahmundry</option>
-                            <option value="Tekkali">Tekkali</option>
-                           <option value="Barhi">Barhi</option>
-                            <option value="Udaipur">Udaipur</option>
-                            <option value="Bangalore">Bangalore</option>
-                            <option value="Chittoor">Chittoor</option> -->
+                        
                             <%
 							 while (resourceKeys.hasMoreElements()) {
 									String branchKey = (String) resourceKeys.nextElement();
@@ -273,18 +259,19 @@ if(user==null)
                   <div class="x_content">
                  
                  <div class="table-responsive"> 
-                    <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
+                    <table id="ex" class=" display table table-striped table-bordered dt-responsive" width="100%">
                       <thead>
                        
                             <tr>
-    			                        <th> </th>
+    			                       
                           			<th>Branch</th>
-                          			  <th>Customer ID</th>
+                          			<th>Customer ID</th>
                                      <th>Customer Name</th>
                                      <th>OB</th>
                                      <th>Target</th>
                                    	<th>Collections</th>
                                      <th>Status</th>
+                                     <th class="none" >History</th>
                             </tr>
                                         
                       </thead>
@@ -292,9 +279,11 @@ if(user==null)
             <tr>
           
 
-<th colspan="6" style="text-align:right">Total: </th>
+<th colspan="4" style="text-align:right">Total: </th>
+                <th></th>
                 <th></th>
              <th> </th>
+              <th> </th>
          
             </tr>
         </tfoot>
@@ -327,40 +316,105 @@ try{
 statement=connection.createStatement();
 //SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId and Date between '2018-12-01' and '2018-12-31' group by s.CustId
 //String sql ="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,s.Amount,s.Date,s.Comments  FROM Debtors d , SaleCredit s WHERE d.CustId=s.CustId";
-String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId";
+//String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB FROM Debtors d WHERE 1";
+String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where month(Date)= month(CURRENT_DATE) and CustID=d.CustID group by CustId) as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1"; 
 String whr="";
-
-if(std!=null && std.length()!=0)
-	whr+=" and s.Date between '"+std+"' and '"+end+"'";
+String primaryKey;
+String sql2="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where CustID=d.CustID";
+String sql3=") as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
+String sql3a=") as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(";
+String sql3b="), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
 if(branch!="" && branch!=null)
 	whr+=" and d.Branch='"+branch+"'";
-sql+=whr+" group by s.CustId";
+whr+=" group by d.CustId";
 
+if(std!=null && std.length()!=0)
+	sql2+=" and Date between '"+std+"' and '"+end+"' group by CustId"+sql3a+"'"+end+"'"+sql3b+whr; 
+	
 statement=connection.createStatement();
-System.out.println("sql: "+sql);
-resultSet = statement.executeQuery(sql);
-	
+
+if(std!=null && std.length()!=0)
+{
+resultSet = statement.executeQuery(sql2);
+/* System.out.println("sql: "+sql2); */
+}
+else
+{
+	resultSet = statement.executeQuery(sql);	
+}
 while(resultSet.next()){
-	
-	//Date date=resultSet.getDate("Date");
-	String comments="";
-	//if(resultSet.getString("Comments")!=null)
-	//	comments=resultSet.getString("Comments");
-		
+	primaryKey = resultSet.getString("d.CustId");
+	int target=resultSet.getInt("target") ;
+	if(resultSet.getInt("d.OB")<target)
+		target=resultSet.getInt("d.OB");
 %>
                                         <tr class="odd gradeX">
-                                        <td> </td>
-                                         <td width="10%"><%=resultSet.getString("Branch") %></td>
-                                         <td width="12%"><%=resultSet.getString("CustId")  %></td>
+                                         <td ><%=resultSet.getString("d.Branch") %></td>
+                                         <td ><%=resultSet.getString("d.CustId")  %></td>
                                         
-                                         <td width="20%"><%=resultSet.getString("CustomerName") %></td>
-                                         <td width="20%"><%=resultSet.getInt("OB") %></td>                                          
-                                        <td width="10%"> </td>                                      
-                                          <td width="20%"><%=resultSet.getInt("Collections") %></td>
+                                         <td width="60%"><%=resultSet.getString("d.CustomerName") %></td>
+                                         <td ><%=resultSet.getInt("d.OB") %></td>                                          
+                                        <td ><%=target%></td>                                      
+                                          <td ><%=resultSet.getInt("Collections") %></td>
  										<td width="20%"></td> 
+ 									<%
+ 									String sql4="select *, DATEDIFF(CURRENT_DATE, Date) as 'days' from Debtors d inner join Sale s on d.CustID=s.CustID where d.CustId='";
 
+ 									String whr2=primaryKey+"' ";
+ 									sql4+=whr2;
+ 									st=connection.createStatement();
+ 									rs = st.executeQuery(sql4);
+ 							
+ 									if(!rs.isLast() && ((rs.getRow() != 0) || rs.isBeforeFirst()))	
+ 									{
+ 										
+ 										//Date date=rs.getDate("Date");
+ 									%>	
+ 										<td>
+ 										<table id="ex2" class="table table-striped table-bordered dt-responsive">
+                      <thead>
+                        <tr>
+                            <tr>
+                                            
+                                            <th>Invoice No</th>
+                                            <th width="10%">Date</th>
+                                            <th width="60%">Customer Name</th>
+                                            <th width="60%">Total price</th>
+                                            <th width="60%">Balance Amount</th>
+                                            <th width="60%">Amount Paid</th>
+                                            <th width="60%">No.of Days</th>
+                                            
+                                            
                                         </tr>
-                                        <% 
+                      </thead>
+                      
+                        <tbody >
+                          <tr class="odd gradeX">
+                          <% 
+                        	  
+                          while(rs.next()){
+	%>
+
+<td><%=rs.getString("DCNumber") %></td>
+<td width="60%"><%=new SimpleDateFormat("dd-MM-yyyy").format(rs.getDate("Date") )%></td>
+<td width="60%"><%=rs.getString("CustomerName") %></td>
+<td><%=rs.getInt("Totalprice") %></td>
+<td><%=rs.getInt("BalanceAmount") %></td>
+<td><%=rs.getInt("AmountPaid") %></td>
+<td><%=rs.getInt("days") %></td>
+
+
+</tr>
+<%}
+                                               %>
+</tbody> </table></td>
+<%}
+                          else 
+                          {
+ %>
+<td> Did not buy anything in 2018</td>
+                                        </tr>
+                                        <% }
 }
 
 //} 
@@ -474,8 +528,10 @@ function d(){
     }
 $(window).load(function () {
 	$(".se-pre-con").fadeOut("slow");
+	
 	 var s = document.getElementById("branch");
-	 document.getElementById('sno').value=localStorage.getItem("sno");
+	 
+	// document.getElementById('sno').value=localStorage.getItem("sno");
 	 document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
 	 document.getElementById('std').value=localStorage.getItem("std"); 
 	 document.getElementById('end').value=localStorage.getItem("end"); 
@@ -491,7 +547,7 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 	    	for (i = 0; i< s.options.length; i++)
 
 	    	{ 
-
+       
 	    	if (s.options[i].value == localStorage.getItem("branch"))
 
 	    	{
@@ -620,7 +676,7 @@ var table=$('#ex').DataTable( {
 	   
 	              // Total over all pages
 	              total = api
-	                  .column( 6 )
+	                  .column( 5 )
 	                  .data()
 	                  .reduce( function (a, b) {
 	                      return intVal(a) + intVal(b);
@@ -628,14 +684,14 @@ var table=$('#ex').DataTable( {
 	   
 	              // Total over this page
 	              pageTotal = api
-	                  .column( 6, { page: 'current'} )
+	                  .column( 5, { page: 'current'} )
 	                  .data()
 	                  .reduce( function (a, b) {
 	                      return intVal(a) + intVal(b);
 	                  }, 0 );
 	   
 	              // Update footer
-	              $( api.column( 6 ).footer() ).html(
+	              $( api.column( 5 ).footer() ).html(
 	                 pageTotal.toLocaleString('en-IN', {
 		                	    maximumFractionDigits: 2,
 		                	    style: 'currency',
@@ -646,6 +702,34 @@ var table=$('#ex').DataTable( {
 		                	    currency: 'INR'
 		                	}) +' total)'
 	              );
+	              
+	              total = api
+                  .column( 4 )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Total over this page
+              pageTotal = api
+                  .column( 4, { page: 'current'} )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Update footer
+              $( api.column( 4 ).footer() ).html(
+                 pageTotal.toLocaleString('en-IN', {
+	                	    maximumFractionDigits: 2,
+	                	    style: 'currency',
+	                	    currency: 'INR'
+	                	}) +' ( '+  total.toLocaleString('en-IN', {
+	                	    maximumFractionDigits: 2,
+	                	    style: 'currency',
+	                	    currency: 'INR'
+	                	}) +' total)'
+              );
 	          },
 	          
 	          scrollY:        '53vh',

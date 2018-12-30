@@ -1156,6 +1156,7 @@ $(window).load(function () {
 	$(".se-pre-con").fadeOut("slow");
 
 	 var s = document.getElementById("branch");
+	 
 	 document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
 	 document.getElementById('std').value=localStorage.getItem("std"); 
 	 document.getElementById('end').value=localStorage.getItem("end"); 

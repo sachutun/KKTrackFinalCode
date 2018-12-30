@@ -138,7 +138,7 @@ qparts+=",";
 }
 
 String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
-
+System.out.println(isql);
 int y=st2.executeUpdate(isql);
 
 if(type.equals("Neft"))
