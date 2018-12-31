@@ -24,9 +24,9 @@ e.printStackTrace();
  DataSource ds = null;
 Connection connection = null;
 Statement statement = null;
-Statement st = null;
+Statement st,st2 = null;
 ResultSet resultSet = null;
-ResultSet rs = null;
+ResultSet rs,rs2 = null;
 int sno=1;
 %>
 <html lang="en">
@@ -226,9 +226,9 @@ if(user==null)
           
             <tr id="filter_col" >
            
-                <td align="center"> Customer ID: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
+                <td align="center"> Customer ID: <input type="text" class="column_filter" id="col1_filter" data-column="1"></td>
         
-                <td align="center">Customer Name: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Customer Name: <input type="text" class="column_filter" id="col2_filter" data-column="2"></td>
   
                 <td align="center">Status <input type="text" class="column_filter" id="col6_filter" data-column="6"></td>
 
@@ -252,7 +252,7 @@ if(user==null)
                String std=request.getParameter("std");
                String end=request.getParameter("end");	
                    %>
-                    <label style="float:right" id><%= branch %></label>
+                    <label style="float:right" ><%= branch %></label>
   <div class="clearfix"></div>
   
                   </div>
@@ -270,8 +270,9 @@ if(user==null)
                                      <th>OB</th>
                                      <th>Target</th>
                                    	<th>Collections</th>
-                                     <th>Status</th>
-                                     <th class="none" >History</th>
+                                     <th>Last Payment</th>
+                                     <th class="none" >Sale History</th>
+                                     <th class="none" >Payment History</th>
                             </tr>
                                         
                       </thead>
@@ -279,12 +280,13 @@ if(user==null)
             <tr>
           
 
-<th colspan="4" style="text-align:right">Total: </th>
+<th colspan="3" style="text-align:right"></th>
+                <th></th>
                 <th></th>
                 <th></th>
              <th> </th>
               <th> </th>
-         
+         <th> </th>
             </tr>
         </tfoot>
                         <tbody>
@@ -317,17 +319,20 @@ statement=connection.createStatement();
 //SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId and Date between '2018-12-01' and '2018-12-31' group by s.CustId
 //String sql ="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,s.Amount,s.Date,s.Comments  FROM Debtors d , SaleCredit s WHERE d.CustId=s.CustId";
 //String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB FROM Debtors d WHERE 1";
-String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where month(Date)= month(CURRENT_DATE) and CustID=d.CustID group by CustId) as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1"; 
+String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where month(Date)= month(CURRENT_DATE) and CustID=d.CustID group by CustId) as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target, (Select Datediff((CURRENT_DATE),Max(sc.Date)) from SaleCredit sc where sc.CustID=d.CustID ) as lastpayment  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1"; 
 String whr="";
 String primaryKey;
 String sql2="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where CustID=d.CustID";
-String sql3=") as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
+String sql3=") as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target, (Select Datediff((CURRENT_DATE),Max(sc.Date)) from SaleCredit sc where sc.CustID=d.CustID ) as lastpayment  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
 String sql3a=") as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(";
-String sql3b="), sa.Date)>50 group by d.CustID) as target  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
+String sql3b="), sa.Date)>50 group by d.CustID) as target, (Select Datediff((CURRENT_DATE),Max(sc.Date)) from SaleCredit sc where sc.CustID=d.CustID ) as lastpayment  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1";
+
+
+
 if(branch!="" && branch!=null)
 	whr+=" and d.Branch='"+branch+"'";
-whr+=" group by d.CustId";
-
+whr+=" group by d.CustId order by lastpayment desc";
+sql+=whr;
 if(std!=null && std.length()!=0)
 	sql2+=" and Date between '"+std+"' and '"+end+"' group by CustId"+sql3a+"'"+end+"'"+sql3b+whr; 
 	
@@ -336,17 +341,19 @@ statement=connection.createStatement();
 if(std!=null && std.length()!=0)
 {
 resultSet = statement.executeQuery(sql2);
-/* System.out.println("sql: "+sql2); */
+ System.out.println("sql: "+sql2); 
 }
 else
 {
 	resultSet = statement.executeQuery(sql);	
+	 System.out.println("sql: "+sql); 
 }
 while(resultSet.next()){
 	primaryKey = resultSet.getString("d.CustId");
 	int target=resultSet.getInt("target") ;
 	if(resultSet.getInt("d.OB")<target)
 		target=resultSet.getInt("d.OB");
+	
 %>
                                         <tr class="odd gradeX">
                                          <td ><%=resultSet.getString("d.Branch") %></td>
@@ -356,19 +363,20 @@ while(resultSet.next()){
                                          <td ><%=resultSet.getInt("d.OB") %></td>                                          
                                         <td ><%=target%></td>                                      
                                           <td ><%=resultSet.getInt("Collections") %></td>
- 										<td width="20%"></td> 
+ 										<td ><%=resultSet.getInt("lastpayment") %></td> 
  									<%
  									String sql4="select *, DATEDIFF(CURRENT_DATE, Date) as 'days' from Debtors d inner join Sale s on d.CustID=s.CustID where d.CustId='";
-
+                                     String sql5="select * from SaleCredit where CustId='";
  									String whr2=primaryKey+"' ";
  									sql4+=whr2;
+ 									sql5+=whr2;
  									st=connection.createStatement();
  									rs = st.executeQuery(sql4);
- 							
+ 									st2=connection.createStatement();
+ 									rs2= st2.executeQuery(sql5);
  									if(!rs.isLast() && ((rs.getRow() != 0) || rs.isBeforeFirst()))	
  									{
  										
- 										//Date date=rs.getDate("Date");
  									%>	
  										<td>
  										<table id="ex2" class="table table-striped table-bordered dt-responsive">
@@ -413,6 +421,49 @@ while(resultSet.next()){
                           {
  %>
 <td> Did not buy anything in 2018</td>
+                                       
+                                        <% }
+ 									
+ 									if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))	
+ 									{
+ 										
+ 									%>	
+ 										   <td><table width="100%" id="" class="table table-striped table-bordered">
+                                           <thead>
+                                             <tr>
+                                                  <tr> 
+                                                                 
+                                                                 <th>Amount</th>
+                                                                 <th>Discount</th>
+                                                                 <th>Date</th>
+                                                                 <th>Comments </th>
+
+                                                             </tr>
+                                           </thead>
+                                             <tbody >
+                                               <tr class="odd gradeX">
+                                               <%while(rs2.next()){
+                                             		 %>
+                                               <td><%=rs2.getInt("Amount") %></td>
+                                               <td><%=rs2.getInt("Discount") %></td>
+                     <td><%=rs2.getString("Date") %></td>
+                     <%
+                     String comm="";
+                    	 if(rs2.getString("Comments") == null) 
+                     	comm="";
+                     else
+                     	comm=rs2.getString("Comments");%>
+                     <td><%=comm %></td>
+                    </tr>
+                   <%}
+                                               %>
+                                                </tbody> </table></td>
+                                                <% } 
+                   else
+                   {
+             
+                   %>
+                   <td></td>
                                         </tr>
                                         <% }
 }
@@ -730,6 +781,34 @@ var table=$('#ex').DataTable( {
 	                	    currency: 'INR'
 	                	}) +' total)'
               );
+              
+              total = api
+              .column( 3 )
+              .data()
+              .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+              }, 0 );
+
+          // Total over this page
+          pageTotal = api
+              .column( 3, { page: 'current'} )
+              .data()
+              .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+              }, 0 );
+
+          // Update footer
+          $( api.column( 3 ).footer() ).html(
+             pageTotal.toLocaleString('en-IN', {
+                	    maximumFractionDigits: 2,
+                	    style: 'currency',
+                	    currency: 'INR'
+                	}) +' ( '+  total.toLocaleString('en-IN', {
+                	    maximumFractionDigits: 2,
+                	    style: 'currency',
+                	    currency: 'INR'
+                	}) +' total)'
+          );
 	          },
 	          
 	          scrollY:        '53vh',

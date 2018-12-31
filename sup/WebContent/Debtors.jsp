@@ -392,7 +392,7 @@ if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
                      	%>
                      <td><table width="100%" id="" class="table table-striped table-bordered">
                                            <thead>
-                                             
+                                            <tr> 
                                                   <tr> 
                                                                  
                                                                  <th>Amount</th>

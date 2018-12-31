@@ -81,7 +81,7 @@ try{
 
     conn = DriverManager.getConnection(url, username, password);
     System.out.println("UPDATE `Debtors` SET `OB`="+outBal+ "WHERE Id=" +id);
-    preparedStatement = conn.prepareStatement("UPDATE `Debtors` SET `OB`=? WHERE Id=?");
+    preparedStatement = conn.prepareStatement("UPDATE `Debtors` SET `OB`=?  WHERE Id=?");
     preparedStatement.setInt(1,outBal);
     preparedStatement.setInt(2,id);
     
