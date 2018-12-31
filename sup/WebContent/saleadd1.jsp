@@ -20,10 +20,13 @@ Statement st = null;
 Statement st2 = null;
 Statement st3 = null;
 Statement st4 = null;
+Statement st5 = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement preparedStatement1 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
+ResultSet rs1 = null;
+int res=0;
 
           String[] code = request.getParameterValues("code");
         
@@ -102,7 +105,17 @@ ResultSet rs = null;
           
          } */
      /*    System.out.println("fine"); */
-       statement=connection.createStatement();       
+     
+        st5=connection.createStatement(); 
+     rs1=st5.executeQuery("Select * from Sale where Date='"+date+"'and Branch='"+branch+"'and DCNumber='"+dcnumber+"'");
+
+if(rs1.next())
+{
+	res=2;
+}
+else
+{
+statement=connection.createStatement();       
         	
     	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"')");
        
@@ -180,9 +193,9 @@ else if(type.equals("Credit"))
 		 int z=st4.executeUpdate(sqlc);
 	}
 }
-
-
-       response.sendRedirect("addsale.jsp?res=1");
+res=1;
+}
+       response.sendRedirect("addsale.jsp?res="+res);
       /*  out.println("Inserted successfully in database."); */
    //  } 
               }

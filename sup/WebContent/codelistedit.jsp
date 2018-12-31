@@ -564,8 +564,9 @@ var table=$('#ex').DataTable( {
 	        
 	        	$(this).on('click','.bck', function (){
 	        		 $(this).parents('tr').children('td:not(:first-child, :last-child)').each(function(){
-	        			var c=$(this).find("input").val();
-	        			
+	        			//var c=$(this).find("input").val();
+	        				var content = $(this).html();
+		        		 var c= $(content).val();
 	        			$(this).html(c);
 	        		 });
 	        		 

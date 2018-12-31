@@ -77,6 +77,7 @@ ResultSet resultSet = null;
  <script language="javascript" type="text/javascript">  
  var xmlHttp
  var xmlHttp1
+ var xmlHttp2
  var res="notCredit"
  function showState(str,i){ 
 if (typeof XMLHttpRequest != "undefined"){
@@ -101,15 +102,7 @@ xmlHttp.send(null);
  if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete"){   
 	 var data=xmlHttp.responseText;
 	 var dv=data.split(",");
-	 var i=document.getElementById("numb").value;
-	 document.getElementById("mac"+i).value=dv[0];
-	 document.getElementById("description"+i).value=dv[1];
-	 document.getElementById("partno"+i).value=dv[2];
-	/*  document.getElementById("minprice"+i).value=dv[3]; */
-	 document.getElementById("mp"+i).value=dv[4];
-	 document.getElementById("grp"+i).value=dv[5];
-	  document.getElementById("qmax").value=dv[7];
-	 document.getElementById("qty"+i).max=dv[7]; 
+	
 	 
 	 if(dv[8]==2)
 		 {
@@ -117,8 +110,50 @@ xmlHttp.send(null);
 		 document.getElementById("dcnumber").value="";
 		 document.getElementById("dcnumber").focus();
 		 }
+	 else
+		 {
+		 var i=document.getElementById("numb").value;
+		 document.getElementById("mac"+i).value=dv[0];
+		 document.getElementById("description"+i).value=dv[1];
+		 document.getElementById("partno"+i).value=dv[2];
+		/*  document.getElementById("minprice"+i).value=dv[3]; */
+		 document.getElementById("mp"+i).value=dv[4];
+		 document.getElementById("grp"+i).value=dv[5];
+		  document.getElementById("qmax").value=dv[7];
+		 document.getElementById("qty"+i).max=dv[7]; 
+		 }
  }   
  }
+ function checkInvoice(){ 
+	 if (typeof XMLHttpRequest != "undefined"){
+	    xmlHttp2= new XMLHttpRequest();
+	        }
+	        else if (window.ActiveXObject){
+	    xmlHttp2= new ActiveXObject("Microsoft.XMLHTTP");
+	        }
+	 if (xmlHttp2==null){
+	     alert ("Browser does not support XMLHTTP Request")
+	 return
+	 } 
+	 var url="checkInvoiceDetails.jsp";
+	 url += "?branch="+document.getElementById("branch").value+"&date="+document.getElementById("da").value+"&dcnumber="+document.getElementById("dcnumber").value	
+	 xmlHttp2.onreadystatechange = checkOutput;
+	 xmlHttp2.open("GET", url, true);
+	 xmlHttp2.send(null);
+	 }
+	  function checkOutput(){   
+	  if (xmlHttp2.readyState==4 || xmlHttp2.readyState=="complete"){   
+	 	 var data=xmlHttp2.responseText;
+	 	 var dv=data.split(",");
+	 	
+	 	 if(dv[0]==2)
+	 		 {
+	 		 alert("Sale already exists for same date, branch and DCNumber! Please verify in view sale or please enter a different DCNumber!");
+	 		 document.getElementById("dcnumber").value="";
+	 		 document.getElementById("dcnumber").focus();
+	 		 }
+	  }   
+	  }
  
 function showCustomer(custID){ 
 	if (typeof XMLHttpRequest != "undefined"){
@@ -152,17 +187,28 @@ function showCustomer(custID){
 	 
 	 	 document.getElementById("customername").value=dv[0];
 	 	 document.getElementById("customernumber").value=dv[1];
-	 	document.getElementById("aadhaar").value=dv[3];
+	 	if(dv[3]!="" && dv[3]!=null)
+	 		document.getElementById("aadhaar").value=dv[3];
+	 	else
+	 		document.getElementById("aadhaar").value="";
 		var gst=dv[4];
-		if(gst!="" || gst!=null)
+		if(gst!="" && gst!=null)
 			{
 			document.getElementById("GST").value=gst;	
 			document.getElementById('taxInvoice').checked=true;
 	        document.getElementById('GSTdiv').style.visibility = 'visible';
 	        document.getElementById('GSTLabel').style.visibility = 'visible';
-	        document.getElementById('GST').required = 'true';
-	       // document.getElementById("GST").disabled = true;
+	        document.getElementById('GST').required = true;
 	        document.getElementById("GST").readOnly = true;
+			}
+		else
+			{
+			document.getElementById("GST").value="";	
+			document.getElementById('generalInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'hidden';
+	        document.getElementById('GSTLabel').style.visibility = 'hidden';
+	        document.getElementById('GST').required = false;
+	        document.getElementById("GST").readOnly = false;
 			}
 	 	 res="update";
 	 	
@@ -170,15 +216,10 @@ function showCustomer(custID){
        
 	 	 if(dv[5]==0)
 	 		 {
-	 		 //alert("Credit Customer ID do not exists");
 	 		var answer = confirm("Credit Customer ID do not exists.\nDo you want to add the Credit Customer?");
 	 	
 	 		if (answer) {
-	 		    //some code
 	 		     document.getElementById("customername").focus();
-	 			//document.getElementById("customername").disabled = false;
-	 			//document.getElementById("customernumber").disabled = false;	
-	 			//document.getElementById("aadhaar").disabled = false;
 	 			 document.getElementById("customername").readOnly = false;
 	 			 document.getElementById("customernumber").readOnly = false;
 	 			 document.getElementById("aadhaar").readOnly = false;
@@ -187,30 +228,20 @@ function showCustomer(custID){
 				document.getElementById('generalInvoice').checked=true;
 		        document.getElementById('GSTdiv').style.visibility = 'hidden';
 		        document.getElementById('GSTLabel').style.visibility = 'hidden';
-		   	   // document.getElementById("GST").disabled = false;
 		   	  document.getElementById('GST').required = false;
 	 			creditMsg="Add the above Customer!"
 	 			res="insert";
 	 		}
 	 		else {
-	 		    //some code
-	 		
-	 		 //document.getElementById("creditCustId").value="";
-	 		// document.getElementById("customername").disabled = true;
-	 		//document.getElementById("customernumber").disabled = true;
-	 		//document.getElementById("aadhaar").disabled = true;
 	 		document.getElementById("GST").value="";	 			
 			document.getElementById('generalInvoice').checked=true;
 	        document.getElementById('GSTdiv').style.visibility = 'hidden';
 	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        //document.getElementById("GST").disabled = false;
 	        document.getElementById('GST').required = false;
 	        document.getElementById("customername").readOnly = true;
 			 document.getElementById("customernumber").readOnly = true;
 			 document.getElementById("aadhaar").readOnly = true;
 			 document.getElementById("GST").readOnly = true;
-			 
-	 		// document.getElementById("creditCustId").focus();
 	 		 res="error";
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
 	 		document.getElementById("creditMsg").style.color = "#ff0000";
@@ -399,7 +430,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dcnumber">Invoice No<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-3">
-                          <input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" name="dcnumber">
+                          <input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" name="dcnumber" onchange="checkInvoice()">
                         </div>
                       <button class="add col-md-1 col-xs-3" type="button" style="background: #26B99A;color: white;border: 1px solid #169F85; line-height: 2;">Add Item</button>
                      
@@ -662,10 +693,12 @@ String role=(String)session.getAttribute("role");
      <% String r=request.getParameter("res");
   
  String succ="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
+ String err="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-error alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
  
  if(r!=null && r.equals("1"))
-        	out.println(succ);%>
+        	out.println(succ);
+  else if(r!=null && r.equals("2"))
+ 	System.out.println(err);	%>
         	
  <%--      <% String r=request.getParameter("res");
       System.out.println(r);	
