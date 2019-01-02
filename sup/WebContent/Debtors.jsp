@@ -272,7 +272,8 @@ if(user==null)
                                             <th>Mobile</th>
                                             <th>OB</th>
                                             <th>Pay</th>
-                                            <th class="none">Previous Payment Details</th> 
+                                            <th class="none">Previous Payment Details
+                                            </th> 
                                     
                                         </tr>
                                         
@@ -374,7 +375,7 @@ while(resultSet.next()){
              <button type="submit" class="btn btn-success" style="float:right;margin-top: 6%;">Pay</button>
          </div> 
              </form>
-             
+            
              </td>
 
                                         <% 
@@ -399,6 +400,7 @@ if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
                                                                  <th>Discount</th>
                                                                  <th>Date</th>
                                                                  <th>Comments </th>
+                                                                 <th> Delete </th> 
 
                                                              </tr>
                                            </thead>
@@ -416,10 +418,13 @@ if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
                      else
                      	comm=rs2.getString("Comments");%>
                      <td><%=comm %></td>
+                    <td>
+     <a class="btn btn-danger" onclick="return confirm('Do you really want to delete this record?')" href=<%= "\"DeleteDebtorPayment.jsp?deleteId=" + rs2.getInt("Id") +"&amt="+rs2.getInt("Amount")+ "&disc="+rs2.getInt("Discount")+"&CustId="+rs2.getString("CustId")+"&OB="+resultSet.getInt("OB")+"&branch="+branch+"\"" %> > <i class="fa fa-trash-o"></i></a> 
+</td>
                     </tr>
                    <%}
                                                %>
-                                                </tbody> </table></td>
+                                                </tbody> </table>  </td>
                                                 <% } 
                    else
                    {
@@ -509,7 +514,6 @@ finally {
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
     <script>
-    
 /*     function dch() { 
   	  var d=document.getElementById("single_cal3").value.toString();
   	var dv=d.split("/");

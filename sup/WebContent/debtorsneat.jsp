@@ -355,9 +355,10 @@ while(resultSet.next()){
                <label class="control-label col-md-5 col-sm-2 col-xs-5" for="disc"> Discount:</label>
                 <input type="text" id="disc" name="disc"> 
              </div>
-                <div class="form-group col-md-2 col-sm-3 col-xs-4 ">
+                <div id="dpicker" class="form-group col-md-2 col-sm-3 col-xs-4 ">
                <label class="control-label col-md-5 col-sm-2 col-xs-5" for="pdate"> Date:</label>
-                <input  readonly="readonly" type="text" id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>" class="dateField datepicker" > 
+                <input   type="text" readonly="readonly"   id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>"  class="dateField datepicker" > 
+
 </div>
 
 
@@ -617,8 +618,122 @@ $.fn.dataTable.ext.search.push(
 	    }
 	);
 $(document).ready(function() {
+	var table=$('#ex').DataTable( {
+	     
+        "iDisplayStart":0,
+	       // "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+	       "lengthMenu":[[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+//"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[ 0, "desc" ]],
+      /*   "columnDefs": [
+            { "visible": false, "targets": 0 }
+          ], */
+          'responsive': true,
+          "footerCallback": function ( row, data, start, end, display ) {
+              var api = this.api(), data;
+   
+              // Remove the formatting to get integer data for summation
+              var intVal = function ( i ) {
+                  return typeof i === 'string' ?
+                      i.replace(/[\$,]/g, '')*1 :
+                      typeof i === 'number' ?
+                          i : 0;
+              };
+   
+              // Total over all pages
+              total = api
+                  .column( 3 )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Total over this page
+              pageTotal = api
+                  .column( 3, { page: 'current'} )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Update footer
+              $( api.column( 3 ).footer() ).html(
+                 pageTotal.toLocaleString('en-IN', {
+	                	    maximumFractionDigits: 2,
+	                	    style: 'currency',
+	                	    currency: 'INR'
+	                	}) +' ( '+  total.toLocaleString('en-IN', {
+	                	    maximumFractionDigits: 2,
+	                	    style: 'currency',
+	                	    currency: 'INR'
+	                	}) +' total)'
+              );
+          },
+          
+          scrollY:        '53vh',
+	        scrollCollapse: true,
+	    
+	     
+    /*     "createdRow": function ( row, data, index ) {
+           
+                $('td', row).eq(5).addClass('highlight');}, */
+      
+        dom: 'Blfrtip' ,
+        select:true,
+        enabled: true,
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ] 
+    } );
 	
-	
+
+	   $('body').on('focus',".dateField", function(){
+		  $("input[name^=pdate]").datepicker({
+			 
+		        onSelect: function(selectedDate) {
+		        alert(selectedDate);
+		        var i =$(this).attr('id'); 
+		        alert("i here: " +i);
+		        alert(this.id);
+		        alert("this.val() " +$(this).val());
+var j="#"+i;
+alert("j " +j);
+alert("j val " +$(j).val());
+//var k= 
+		        $('.datepicker').val(selectedDate);
+		       // dataTable.columns(j).search("datepicker").val(selectedDate);
+//$(j).datepicker().datepicker('setDate', selectedDate);
+//$(j).datepicker("setDate", '01/10/2014' );
+
+		      },
+		      dateFormat: "yy-mm-dd"
+		  })	; 
+	   
+	/*     $('.dateField').click(function() {
+			var i =$(this).attr('id'); 
+			alert("0: "+i);
+			 var v =$(this).val(); 
+		       alert("v1 " +v);
+		    	v = new Date(date).getTime();
+		    	alert("v2 " +v);
+		  
+	       // $(".dateField").datepicker();
+	    }); */
+	   /*   $(".dateField").datepicker({
+	  // disabled:false,
+	        autoclose: true,
+	        showOtherMonths: true,
+	        selectOtherMonths: true,
+	        gotoCurrent: true,
+	        dateFormat: 'yy-mm-dd',
+	        closeText: "Clear"
+	        
+	    });	 */  
+	    $(document).on("click", ".ui-datepicker-close", function(){
+	        $('.datepicker').val("");
+	        dataTable.columns(pdate).search("").draw();
+	    }); 
+});	
 	
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
@@ -683,102 +798,11 @@ $(document).ready(function() {
 	
 	/*  var h= $('.right_col').min-height()+20;
 	 $('.right_col').animate({height:h}, 500); */
-var table=$('#ex').DataTable( {
-	     
-	        "iDisplayStart":0,
- 	       // "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
- 	       "lengthMenu":[[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
- //"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-	        "order": [[ 0, "desc" ]],
-	      /*   "columnDefs": [
-	            { "visible": false, "targets": 0 }
-	          ], */
-	          'responsive': true,
-	          "footerCallback": function ( row, data, start, end, display ) {
-	              var api = this.api(), data;
-	   
-	              // Remove the formatting to get integer data for summation
-	              var intVal = function ( i ) {
-	                  return typeof i === 'string' ?
-	                      i.replace(/[\$,]/g, '')*1 :
-	                      typeof i === 'number' ?
-	                          i : 0;
-	              };
-	   
-	              // Total over all pages
-	              total = api
-	                  .column( 3 )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Total over this page
-	              pageTotal = api
-	                  .column( 3, { page: 'current'} )
-	                  .data()
-	                  .reduce( function (a, b) {
-	                      return intVal(a) + intVal(b);
-	                  }, 0 );
-	   
-	              // Update footer
-	              $( api.column( 3 ).footer() ).html(
-	                 pageTotal.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' ( '+  total.toLocaleString('en-IN', {
-		                	    maximumFractionDigits: 2,
-		                	    style: 'currency',
-		                	    currency: 'INR'
-		                	}) +' total)'
-	              );
-	          },
-	          
-	          scrollY:        '53vh',
-		        scrollCollapse: true,
-		    
-		     
-	    /*     "createdRow": function ( row, data, index ) {
-	           
-	                $('td', row).eq(5).addClass('highlight');}, */
-	      
-	        dom: 'Blfrtip' ,
-	        select:true,
-	        enabled: true,
-	        buttons: [
-	            'copy', 'excel', 'pdf', 'print'
-	        ] 
-	    } );
+
 	
-		 var oTable = $('#ex').DataTable();
-	    $('#ex').on('draw.dt', function () { 
-	     
-	        $(".dateField").datepicker();
-	    });
-	   
-	    $('.dateField').click(function() {
-			var i =$(this).attr('id'); 
-			alert("0: "+i);
-			 var v =$(this).val(); 
-		      // alert(v);
-		    	v = new Date(date).getTime();
-	        $(".dateField").datepicker();
-	    });
-	    $(".dateField").datepicker({
-	        autoclose: true,
-	        showOtherMonths: true,
-	        selectOtherMonths: true,
-	        gotoCurrent: true,
-	        dateFormat: 'yy-mm-dd',
-	        closeText: "Clear"
-	        
-	    });	  
-	    $(document).on("click", ".ui-datepicker-close", function(){
-	        $('.datepicker').val("");
-	        dataTable.columns(pdate).search("").draw();
-	    }); 
-	   
+	
+
+	
 $('input.column_filter').on( 'keyup click', function () {
     filterColumn( $(this).attr('data-column') );
 } );
