@@ -216,7 +216,7 @@ function showCustomer(custID){
        
 	 	 if(dv[5]==0)
 	 		 {
-	 		var answer = confirm("Credit Customer ID do not exists.\nDo you want to add the Credit Customer?");
+	 		var answer = confirm("Credit Customer ID does not exists.\nDo you want to add the Credit Customer?");
 	 	
 	 		if (answer) {
 	 		     document.getElementById("customername").focus();
@@ -585,13 +585,15 @@ String role=(String)session.getAttribute("role");
                           <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar" >
                         </div>
                         </div> 
-                        <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                        
+                      <!--   <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
                         </div>
-                        </div> 
+                        </div>  -->
+                        
                       </div>
                         <p id="creditMsg"></p> 
                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
@@ -930,7 +932,7 @@ if(finalTotal==null)
 	finalTotal=0;	
 bal=finalTotal-document.getElementById("amountpaid").value;
 document.getElementById("balanceamount").value=bal;
-document.getElementById("creditBal").value=bal;
+//document.getElementById("creditBal").value=bal;
 }	 
 function cls(elt)
 {
