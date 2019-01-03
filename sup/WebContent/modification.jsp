@@ -169,13 +169,18 @@ if(user==null)
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>   
                 
                   <label class="control-label col-md-1 col-sm-1 col-xs-2" for="oldcode">Old Code:</label>
-                        <div class="col-md-2 col-sm-2 col-xs-3">
+                        <div class="col-md-1 col-sm-2 col-xs-3">
                           <input type="number" id="oldcode"  class="form-control col-md-7 col-xs-12" name="oldcode" >
                         </div>
                   
-                  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="newcode">Modified Code:</label>
-                        <div class="col-md-2 col-sm-2 col-xs-3">
+                  <label class="control-label col-md-2 col-sm-1 col-xs-2" for="newcode" style="margin-left:-5%">Modified Code:</label>
+                        <div class="col-md-1 col-sm-2 col-xs-3">
                           <input type="number" id="newcode"  class="form-control col-md-7 col-xs-12" name="newcode" >
+                        </div>
+                        
+                  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="qty">Qty:</label>
+                        <div class="col-md-1 col-sm-2 col-xs-3">
+                          <input type="number" id="qty"  class="form-control col-md-7 col-xs-12" name="qty" >
                         </div>
                       
                        <!-- <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dc"> Customer Name:</label>
