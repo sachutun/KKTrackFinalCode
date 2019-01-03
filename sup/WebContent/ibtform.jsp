@@ -343,7 +343,7 @@ xmlHttp.send(null);
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-2">
-                          <input id="qty1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="qty"  min=0 onblur="calculate(1)">
+                          <input id="qty1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="qty" step="any"  min=0 onblur="calculate(1)">
                         </div>
                     
                         
@@ -492,7 +492,7 @@ function calculate(i)
 	  for(var x=1;x<=itemc;x++)
 	  {
 		  if(document.getElementById("id"+x)!=null)
-	  tot+=parseInt(document.getElementById("qty"+x).value);
+	  tot+=parseFloat(document.getElementById("qty"+x).value);
 	 
 	  }
    /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */

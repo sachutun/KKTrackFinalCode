@@ -51,7 +51,13 @@ int res=0;
    String CrediCustStatus=request.getParameter("CrediCustStatus");
    String aadhaar = request.getParameter("aadhaar");
    String sqlb="";
+   float[] q= new float[qty.length];
 
+
+   for(int i=0;i<qty.length;i++)
+  {
+	   q[i]=Float.parseFloat(qty[i]);  
+  } 
    DataSource ds = null;
    int updateQuery = 0;
 
@@ -135,11 +141,11 @@ String sq="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ('"+dcnumber+"',"+code[i]+","+qty[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
+qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
 /* System.out.println("Update NewInventory SET Quantity=Quantity-"+qty[i]+" WHERE Code="+code[i]+" and Branch="+branch); */
 preparedStatement = connection.prepareStatement(sq);
-preparedStatement.setString(1,qty[i]);
+preparedStatement.setFloat(1,q[i]);
 preparedStatement.setString(2,code[i]);
 preparedStatement.setString(3,branch);
 preparedStatement.executeUpdate(); 

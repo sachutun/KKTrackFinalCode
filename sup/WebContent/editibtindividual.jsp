@@ -291,7 +291,7 @@ while(resultSet.next()){
 <td width="2%"><strong> Date: </strong><input class="" type="text" id="date" name="date" value=<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %> ></td>
 <td width="6%"><strong> From Branch: </strong><input class="" type="text" id="fbranch" name="fbranch" value=<%=resultSet.getString("FromBranch") %> readonly="readonly" style="border:none"></td>
 <td width="4%"><strong> To Branch: </strong><input class="" type="text" id="tbranch" name="tbranch" value=<%=resultSet.getString("ToBranch") %> readonly="readonly" style="border:none"></td>
-<td width="3%"><strong> Total Qty: </strong><%=resultSet.getInt("TotalQty") %></td>
+<td width="3%"><strong> Total Qty: </strong><%=resultSet.getFloat("TotalQty") %></td>
 
 </tr></tbody></table>
 <table id="" class="table table-striped table-bordered dt-responsive">
@@ -332,10 +332,10 @@ while(resultSet.next()){
 <td ><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getInt("IBTDetails.Qty") %> >
+<td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty") %> >
 <input type="hidden" id="i" name="i">  
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >
- <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getString("IBTDetails.Qty")%> >
+ <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty")%> >
   <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
     <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
   <input type="hidden" id="sd" name="sd" value=<%=cn %> > 
@@ -355,7 +355,7 @@ while(resultSet.next()){
  list.add(String.valueOf(i));
  list.add(cn);
  list.add(rs.getString("IBTDetails.Code"));
- list.add(rs.getString("IBTDetails.Qty"));
+ list.add(String.valueOf(rs.getFloat("IBTDetails.Qty")));
  list.add(String.valueOf(i));
  map.put(i, list);
  sno++;

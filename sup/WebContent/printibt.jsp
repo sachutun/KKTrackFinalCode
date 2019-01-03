@@ -277,7 +277,7 @@ while(resultSet.next()){
 <td width="2%"><strong> Date: </strong><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td width="3%"><strong> From Branch: </strong><%=resultSet.getString("FromBranch") %></td>
 <td width="3%"><strong> To Branch: </strong><%=resultSet.getString("ToBranch") %> </td>
-<td width="3%"><strong> Total Qty: </strong><%=resultSet.getInt("TotalQty") %></td>
+<td width="3%"><strong> Total Qty: </strong><%=resultSet.getFloat("TotalQty") %></td>
 
 </tr></tbody></table>
 <table id="" class="table table-striped table-bordered dt-responsive">
@@ -309,10 +309,10 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td> --%>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><%=rs.getInt("IBTDetails.Qty") %>
+<td><%=rs.getFloat("IBTDetails.Qty") %>
 <input type="hidden" id="i" name="i">  
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >
- <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getString("IBTDetails.Qty")%> >
+ <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty")%> >
   <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
   <input type="hidden" id="sd" name="sd" value=<%=cn %> > 
   <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 

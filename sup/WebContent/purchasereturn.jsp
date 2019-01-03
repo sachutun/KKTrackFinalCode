@@ -401,7 +401,7 @@ while(resultSet.next()){
                           <tr class="odd gradeX">
                           <% while(rs.next())
 {
-                        	  int bqty=rs.getInt("InvoiceDetails.Qty") ;
+                        	  float bqty=rs.getFloat("InvoiceDetails.Qty") ;
                         	   i=rs.getInt("InvoiceDetails.Id") ;
 	%>
 
@@ -414,7 +414,7 @@ while(resultSet.next()){
 <td><%=rs.getDouble("InvoiceDetails.Price") %></td>
 <td><%=bqty%></td>
 <td style="width: 10%;">          
-                <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>"> 
+                <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" step="any" max="<%=bqty%>"> 
                 <%-- <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
                 <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=bqty%> > 

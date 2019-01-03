@@ -456,7 +456,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getInt("BillDetails.Qty") %></td>
+<td><%=rs.getFloat("BillDetails.Qty") %></td>
 <td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
 <td class="admin price"><%=rs.getInt("LC") %></td>

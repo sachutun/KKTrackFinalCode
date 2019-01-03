@@ -402,7 +402,7 @@ while(resultSet.next()){
                        while(rs.next())
 {
                     	 	  List<String> list = new ArrayList<String>();
-                        	  int bqty=rs.getInt("InvoiceDetails.Qty") ;
+                        	  float bqty=rs.getFloat("InvoiceDetails.Qty") ;
                         	   i=rs.getInt("InvoiceDetails.Id") ;
                         	  // System.out.println(i);
 	%>
@@ -414,7 +414,7 @@ while(resultSet.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><input type="number" id="cp<%=i %>" name="cp<%=i %>" value="<%=rs.getString("InvoiceDetails.Price")%>"></td>
-<td><input type="number" id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
+<td><input type="number" id="nq<%=i %>" name="nq<%=i %>" step="any" value=<%=bqty%> >   
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
                 <%--  <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 

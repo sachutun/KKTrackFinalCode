@@ -38,8 +38,12 @@ try{
     String q=request.getParameter("qty"); 
      int qty=Integer.parseInt(q);
      
+
      int z=0;
-   //  int one=1;
+
+     float z=0;
+     int one=1;
+
    
     /* Context context = new InitialContext();
     Context envCtx = (Context) context.lookup("java:comp/env");
@@ -79,15 +83,20 @@ try{
   //   preparedStatement.setInt(1,-1);
      preparedStatement.setString(1,ocode);
      preparedStatement.setString(2,branch);
-     preparedStatement.setInt(3,z);
-     preparedStatement.setInt(4,-qty);
+
+
+     preparedStatement.setFloat(3,z);
+     preparedStatement.setFloat(4,-qty);
+
      preparedStatement.addBatch();
 
     // preparedStatement.setInt(1,1);
      preparedStatement.setString(1,ncode);
      preparedStatement.setString(2,branch);
-     preparedStatement.setInt(3,qty);
-     preparedStatement.setInt(4,qty);
+
+     preparedStatement.setFloat(3,qty);
+     preparedStatement.setFloat(4,qty);
+
      preparedStatement.addBatch();
 
      int[] cnt = preparedStatement.executeBatch();

@@ -317,7 +317,7 @@ while(rs.next()){
 <td><%=rs.getString("Grp") %></td>
 <%-- <td><%=rs.getDouble("MinPrice") %></td>
 <td><%=rs.getDouble("LC") %></td> --%>
-<td><%=rs.getDouble("Quantity") %></td>
+<td><%=rs.getFloat("Quantity") %></td>
 <td><%=rs.getString("Location") %></td>
 <td style="width: 10%;">          
                 <input id="nbl<%=code %>" name="nbl<%=code %>" style="width: 80%;margin-left: 7%;" type="text" min=0> 

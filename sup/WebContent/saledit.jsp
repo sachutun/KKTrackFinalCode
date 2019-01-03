@@ -27,7 +27,6 @@ Statement st2=null;
 %>
 <%
 try{ 
-
     String recordToUpdate = request.getParameter("payid");
     String branch = request.getParameter("branch");
     String ba = request.getParameter("ba");
@@ -57,8 +56,8 @@ Date ndate=df.parse(dt);
     int code=0;
     double newcp=0; 
     double oldcp=0;
-    int oq=0;
-    int nq=0;
+    float oq=0;
+    float nq=0;
     double ap=0;
     int billid=0;
     double ftot=0;
@@ -106,12 +105,12 @@ Date ndate=df.parse(dt);
     String oldftp=request.getParameter("tp");
 
 
-    int diffq=0;
+    float diffq=0;
      code=Integer.parseInt(cod);
      newcp=Double.parseDouble(ncp);
      oldcp=Double.parseDouble(ocp);
-     oq=Integer.parseInt(oldq);
-     nq=Integer.parseInt(newq);
+     oq=Float.parseFloat(oldq);
+     nq=Float.parseFloat(newq);
      ap=Double.parseDouble(amp);
      double oldftotalp=Double.parseDouble(oldftp);
      double newtotalp=0;
@@ -149,7 +148,7 @@ Date ndate=df.parse(dt);
   
     preparedStatement = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=?, `CostPrice`=?  WHERE Id=?");
     preparedStatement.setDouble(1,newtotalp);
-    preparedStatement.setDouble(2,nq);
+    preparedStatement.setFloat(2,nq);
     preparedStatement.setDouble(3,newcp);
     preparedStatement.setInt(4,billid);
     preparedStatement.executeUpdate();  
@@ -158,7 +157,7 @@ Date ndate=df.parse(dt);
     if(nq!=oq)
     {
     ps2 = conn.prepareStatement(s3);
-    ps2.setInt(1,diffq);
+    ps2.setFloat(1,diffq);
     ps2.setInt(2,code);
     ps2.setString(3,branch);
     ps2.executeUpdate();   

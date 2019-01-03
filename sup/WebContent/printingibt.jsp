@@ -343,7 +343,7 @@ while(resultSet.next()){
 <td width="40%"><%=resultSet.getString("FromBranch") %></td>
 
 <td width="50%"><%=resultSet.getString("ToBranch") %></td>
-<td><%=resultSet.getInt("TotalQty") %></td>
+<td><%=resultSet.getFloat("TotalQty") %></td>
 <td><a href="printibt.jsp?dc=<%=resultSet.getString("IBTNo") %>&sd=<%=resultSet.getDate("Date") %>&fbranch=<%=resultSet.getString("FromBranch") %>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Print </button></a></td> 
 
 <td><table id="" class="table table-striped table-bordered dt-responsive">
@@ -375,7 +375,7 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><%=rs.getDouble("IBTDetails.Qty") %></td>
+<td><%=rs.getFloat("IBTDetails.Qty") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>

@@ -42,6 +42,13 @@ ResultSet resultSet = null;
    String balanceamount = request.getParameter("balanceamount");
    String sqlb="";
    int updateQuery = 0;
+   float[] q= new float[qty.length];
+
+
+   for(int i=0;i<qty.length;i++)
+  {
+	   q[i]=Float.parseFloat(qty[i]);  
+  } 
 
               try {
             	  /* Context context = new InitialContext();
@@ -88,7 +95,7 @@ String sq="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ('"+innumber+"',"+code[i]+","+qty[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
+qparts+=" ('"+innumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
 /* INSERT IGNORE INTO NewInventory (Code, Branch, Quantity) VALUES ('1', 'Bowenpally', 2) */
 /*  sq="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
 sq="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity+?";
@@ -96,8 +103,8 @@ sq="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICAT
 preparedStatement = connection.prepareStatement(sq);
 preparedStatement.setString(1,code[i] );
 preparedStatement.setString(2,branch);
-preparedStatement.setString(3,qty[i]);
-preparedStatement.setString(4,qty[i]);
+preparedStatement.setFloat(3,q[i]);
+preparedStatement.setFloat(4,q[i]);
 preparedStatement.executeUpdate(); 
 
 int minp=(Integer.parseInt(costprice[i])+((10*Integer.parseInt(costprice[i]))/100));
