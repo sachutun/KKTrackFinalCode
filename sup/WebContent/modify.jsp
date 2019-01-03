@@ -37,9 +37,6 @@ try{
     String ncode=request.getParameter("newcode"); 
     String q=request.getParameter("qty"); 
      int qty=Integer.parseInt(q);
-     
-
-     int z=0;
 
      float z=0;
      int one=1;
