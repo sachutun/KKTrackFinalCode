@@ -337,8 +337,8 @@ ResultSet resultSet = null;
 															</label>
 															<div class="col-md-1 col-sm-1 col-xs-2">
 																<input id="qty1" class="form-control col-md-7 col-xs-12"
-																	required="required" type="number" name="qty"
-																	onchange="calculate(1)" min=0>
+																	required="required" type="number" step="any" name="qty"
+																	onchange="calculate(1)" min=0.0>
 															</div>
 															<label class="control-label col-md-1 col-sm-1 col-xs-2">Total:</label>
 															<div class="col-md-1 col-sm-1 col-xs-2">

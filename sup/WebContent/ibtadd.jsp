@@ -38,7 +38,14 @@ ResultSet resultSet = null;
    String tobranch = request.getParameter("tobranch");
    String[] qty = request.getParameterValues("qty");
    String totalqty=request.getParameter("totalq");
+   float tqty=Float.parseFloat(totalqty);
+   float[] q= new float[qty.length];
 
+
+   for(int i=0;i<qty.length;i++)
+  {
+	   q[i]=Float.parseFloat(qty[i]);  
+  } 
    System.out.println(frombranch);
    System.out.println(tobranch);
    
@@ -77,7 +84,7 @@ Class.forName("com.mysql.jdbc.Driver").newInstance(); */
 	    Statement st=connection.createStatement();
        statement=connection.createStatement();       
       
-       int x=st.executeUpdate("INSERT INTO IBT (IBTNo, FromBranch,ToBranch, Date, TotalQty) values ('"+ ibtnumber+"', '"+frombranch+"', '"+tobranch+"','"+date+"', "+totalqty+")");
+       int x=st.executeUpdate("INSERT INTO IBT (IBTNo, FromBranch,ToBranch, Date, TotalQty) values ('"+ ibtnumber+"', '"+frombranch+"', '"+tobranch+"','"+date+"', "+tqty+")");
        
        String sql="Select Max(Id) from IBT";
        resultSet = statement.executeQuery(sql);
@@ -94,7 +101,7 @@ String sq2="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ("+code[i]+","+qty[i]+","+id+")";
+qparts+=" ("+code[i]+","+q[i]+","+id+")";
 /*  sq1="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
  sq2="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
  
@@ -127,14 +134,14 @@ connection.setAutoCommit(false);
 
 preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,frombranch);
-preparedStatement.setString(3,qty[i]);
-preparedStatement.setString(4,qty[i]);
+preparedStatement.setFloat(3,q[i]);
+preparedStatement.setFloat(4,q[i]);
 preparedStatement.addBatch();
 
 preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,tobranch);
-preparedStatement.setInt(3,Integer.parseInt(qty[i]));
-preparedStatement.setInt(4,-Integer.parseInt(qty[i]));
+preparedStatement.setFloat(3,q[i]);
+preparedStatement.setFloat(4,-q[i]);
 preparedStatement.addBatch();
 
 int[] cnt = preparedStatement.executeBatch();

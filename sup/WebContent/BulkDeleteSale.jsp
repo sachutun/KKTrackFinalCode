@@ -94,7 +94,7 @@ String ba=values.get(5);
     double ftot=0;
     int code=0;
     int cost=0;
-    int qty=0;
+    float qty=0;
     int nq=0;
     int newtotal=0;
     int billid=0;
@@ -136,7 +136,7 @@ String ba=values.get(5);
     //System.out.println(q+","+bid+","+cod+","+totp+","+bb);  
      code=Integer.parseInt(cod);
      cost=Integer.parseInt(cp);
-     qty=Integer.parseInt(q);
+     qty=Float.parseFloat(q);
      nq=0;
   
      billid=Integer.parseInt(bid);
@@ -168,7 +168,7 @@ String ba=values.get(5);
     //System.out.println(s2);
    
     ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`+? WHERE Code= ? AND Branch=?");
-    ps2.setInt(1,qty);
+    ps2.setFloat(1,qty);
     ps2.setInt(2,code);
     ps2.setString(3,branch);
     ps2.executeUpdate(); 

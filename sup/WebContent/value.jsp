@@ -59,13 +59,13 @@ st5 = con.createStatement();
 stmt2 = con.createStatement();  
  ResultSet rs = stmt.executeQuery("SELECT * FROM CodeList where Code = "+name); 
  
- int iq=0;
+ float iq=0;
  rs3 = st4.executeQuery("Select * from NewInventory where Code='"+name+"'and Branch='"+branch+"'");
 
 while  ( rs3.next())
 {
 
- iq=rs3.getInt("Quantity");
+ iq=rs3.getFloat("Quantity");
 
 }
 rs3=null;

@@ -528,7 +528,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getInt("BillDetails.Qty") %></td>
+<td><%=rs.getFloat("BillDetails.Qty") %></td>
 <td><%=rs.getInt("BillDetails.CostPrice")+rs.getInt("BillDetails.CostPrice")*(0.18)%></td>
 <td ><%=rs.getInt("BillDetails.Total") %></td>
 <td class="admin "><%=rs.getString("LC") %></td>
@@ -655,7 +655,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getInt("BillDetails.Qty") %></td>
+<td><%=rs.getFloat("BillDetails.Qty") %></td>
 <td ><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td ><%=rs.getInt("BillDetails.Total") %></td>
 <td ><%=rs.getString("MaxPrice") %></td>

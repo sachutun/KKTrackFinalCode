@@ -31,7 +31,14 @@ ResultSet resultSet = null;
    String sd=request.getParameter("sd");
    String ibt=request.getParameter("ibt");
    int id= Integer.parseInt(request.getParameter("pid"));
-int tq=Integer.parseInt(totalqty);
+float tq=Float.parseFloat(totalqty);
+float[] q= new float[qty.length];
+
+
+for(int i=0;i<qty.length;i++)
+{
+   q[i]=Float.parseFloat(qty[i]);  
+} 
    
  /*   String connectionURL = "jdbc:mysql://localhost:8889/KKTrack";
 
@@ -79,7 +86,7 @@ String sq2="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ("+code[i]+","+qty[i]+","+id+")";
+qparts+=" ("+code[i]+","+q[i]+","+id+")";
 /*  sq1="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
  sq2="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
 sq1="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity-?";
@@ -104,14 +111,14 @@ connection.setAutoCommit(false);
 
 preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,frombranch);
-preparedStatement.setString(3,qty[i]);
-preparedStatement.setString(4,qty[i]);
+preparedStatement.setFloat(3,q[i]);
+preparedStatement.setFloat(4,q[i]);
 preparedStatement.addBatch();
 
 preparedStatement.setString(1,code[i]);
 preparedStatement.setString(2,tobranch);
-preparedStatement.setInt(3,Integer.parseInt(qty[i]));
-preparedStatement.setInt(4,-Integer.parseInt(qty[i]));
+preparedStatement.setFloat(3,q[i]);
+preparedStatement.setFloat(4,-q[i]);
 preparedStatement.addBatch();
 
 int[] cnt = preparedStatement.executeBatch();
@@ -129,7 +136,7 @@ String s="UPDATE `IBT` SET `TotalQty`=`TotalQty`+?  WHERE Id=?";
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement3 = connection.prepareStatement(s);
-preparedStatement3.setDouble(1,tq);
+preparedStatement3.setFloat(1,tq);
 preparedStatement3.setInt(2,id);
 preparedStatement3.executeUpdate();  
 connection.commit();

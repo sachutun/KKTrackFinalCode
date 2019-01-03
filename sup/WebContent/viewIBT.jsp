@@ -355,7 +355,7 @@ while(resultSet.next()){
 <td width="20%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td width="40%"><%=resultSet.getString("FromBranch") %></td>
 <td width="50%"><%=resultSet.getString("ToBranch") %></td>
-<td><%=resultSet.getInt("TotalQty") %></td>
+<td><%=resultSet.getFloat("TotalQty") %></td>
 <%if(code!=null && code.length()!=0){%>
 <td><%=resultSet.getInt("tq") %></td>
 <%}else {%>
@@ -392,7 +392,7 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><%=rs.getDouble("IBTDetails.Qty") %></td>
+<td><%=rs.getFloat("IBTDetails.Qty") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>

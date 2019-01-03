@@ -35,6 +35,7 @@ try{
  	   branch = uBranch;
     String code = request.getParameter("code");
     String nq = request.getParameter("nq"+code);
+    float q=Float.parseFloat(nq);
    /*  System.out.println(nq); */
    
     /* Context context = new InitialContext();
@@ -62,11 +63,11 @@ try{
     conn = DriverManager.getConnection(url, username, password);
     st2=conn.createStatement();
 
-  String s3= "UPDATE `NewInventory` SET `Quantity`="+nq+" WHERE Code="+code+" AND Branch="+branch;
+  String s3= "UPDATE `NewInventory` SET `Quantity`="+q+" WHERE Code="+code+" AND Branch="+branch;
    System.out.println(s3); 
 
      ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=? WHERE Code=? AND Branch=?");
-    ps2.setString(1,nq);
+    ps2.setFloat(1,q);
     ps2.setString(2,code);
     ps2.setString(3,branch);
     ps2.executeUpdate(); 

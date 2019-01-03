@@ -423,7 +423,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("Description") %></td>
 
 <td><%=price %></td>
-<td><%=resultSet.getString("Qty") %></td>
+<td><%=resultSet.getFloat("Qty") %></td>
 
 
 <%-- <td><button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%; " onclick="showDet(<%=primaryKey%>)">View </button></td> --%>

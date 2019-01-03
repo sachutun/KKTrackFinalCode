@@ -424,7 +424,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Grp") %></td>
 <%-- <td><%=rs.getDouble("MaxPrice") %></td> --%><%-- 
 <td><%=rs.getDouble("InvoiceDetails.Price") %></td> --%>
-<td><%=rs.getDouble("InvoiceDetails.Qty") %></td>
+<td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
 
 </tr>
 <%} %>

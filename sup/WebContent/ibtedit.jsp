@@ -66,7 +66,7 @@ try{
     conn = DriverManager.getConnection(url, username, password);
       st2=conn.createStatement();
        resultSet = st2.executeQuery(s4);
-       int diffq=0;  
+       float diffq=0;  
        while (resultSet.next())
        {
        int sn=resultSet.getInt("Id");
@@ -78,8 +78,8 @@ try{
     String code = request.getParameter("code"+sn);
     
    
-    int oq=Integer.parseInt(olq);
-    int nq=Integer.parseInt(newq);
+    float oq=Float.parseFloat(olq);
+    float nq=Float.parseFloat(newq);
     
     String sno = request.getParameter("i");
     int billid=Integer.parseInt(sno);
@@ -137,12 +137,12 @@ try{
 
     conn.setAutoCommit(false);
 
-    preparedStatement.setInt(1,diffq);
+    preparedStatement.setFloat(1,diffq);
     preparedStatement.setString(2,code);
     preparedStatement.setString(3,fbranch);
     preparedStatement.addBatch();
 
-    preparedStatement.setInt(1,-diffq);
+    preparedStatement.setFloat(1,-diffq);
     preparedStatement.setString(2,code);
     preparedStatement.setString(3,tbranch);
     preparedStatement.addBatch();
@@ -150,7 +150,7 @@ try{
     int[] cnt = preparedStatement.executeBatch();
     
     ps2 = conn.prepareStatement("UPDATE `IBTDetails` SET `Qty`=? WHERE Id=?");
-    ps2.setInt(1,nq);
+    ps2.setFloat(1,nq);
     ps2.setInt(2,sn);
     ps2.executeUpdate(); 
      
@@ -162,7 +162,7 @@ try{
      ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`+?  WHERE Id=?");
        ps.setString(1,date);
        ps.setString(2,ibtno);
-       ps.setInt(3,diffq);
+       ps.setFloat(3,diffq);
        ps.setInt(4,Pid);
        ps.executeUpdate();     
        conn.commit();
@@ -172,7 +172,7 @@ try{
 	     ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`-?  WHERE Id=?");
 	       ps.setString(1,date);
 	       ps.setString(2,ibtno);
-	       ps.setInt(3,diffq);
+	       ps.setFloat(3,diffq);
 	       ps.setInt(4,Pid);
 	       ps.executeUpdate();     
 	       conn.commit();

@@ -37,7 +37,7 @@ try{
     String ncode=request.getParameter("newcode"); 
     
      
-     int z=0;
+     float z=0;
      int one=1;
    
     /* Context context = new InitialContext();
@@ -78,15 +78,15 @@ try{
   //   preparedStatement.setInt(1,-1);
      preparedStatement.setString(1,ocode);
      preparedStatement.setString(2,branch);
-     preparedStatement.setInt(3,z);
-     preparedStatement.setInt(4,-one);
+     preparedStatement.setFloat(3,z);
+     preparedStatement.setFloat(4,-one);
      preparedStatement.addBatch();
 
     // preparedStatement.setInt(1,1);
      preparedStatement.setString(1,ncode);
      preparedStatement.setString(2,branch);
-     preparedStatement.setInt(3,one);
-     preparedStatement.setInt(4,one);
+     preparedStatement.setFloat(3,one);
+     preparedStatement.setFloat(4,one);
      preparedStatement.addBatch();
 
      int[] cnt = preparedStatement.executeBatch();

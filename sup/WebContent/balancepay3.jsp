@@ -57,23 +57,23 @@ try{
     int damage=Integer.parseInt(dq);
     int code=Integer.parseInt(cod);
     int cost=Integer.parseInt(cp);
-    int qty=Integer.parseInt(q);
-    int excess=Integer.parseInt(eq);
+    float qty=Float.parseFloat(q);
+    float excess=Float.parseFloat(eq);
     int bala=Integer.parseInt(ba);
     int billid=Integer.parseInt(bid);
    /*  String up=Integer.toString(d);  */
     
     //initial total
-    int itotalp=cost*qty;
+    double itotalp=cost*qty;
     
     //after return
     qty-=damage+excess;
     
     //new total - total to update in BillDetails
-    int totalp=cost*qty;
+    double totalp=cost*qty;
     
     //diff to subtract from Sale total - Sale=Sale-diff
-    int diff=itotalp-totalp;
+    double diff=itotalp-totalp;
     
     //bal amt = bal amt- diff
     		
@@ -111,21 +111,21 @@ try{
     st2=conn.createStatement();
    
    preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=? WHERE Id=?");
-    preparedStatement.setInt(1,diff);
+    preparedStatement.setDouble(1,diff);
     preparedStatement.setInt(2,bala);
     preparedStatement.setInt(3,d);
     preparedStatement.executeUpdate(); 
     
     ps = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=? WHERE Id=?");
-    ps.setInt(1,totalp);
-    ps.setInt(2,qty);
+    ps.setDouble(1,totalp);
+    ps.setFloat(2,qty);
     ps.setInt(3,billid);
     ps.executeUpdate();  
     
     if(excess > 0)
     {
     ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`+? WHERE Code=? AND Branch=?");
-    ps2.setInt(1,excess);
+    ps2.setFloat(1,excess);
     ps2.setInt(2,code);
     ps2.setString(3,branch);
     ps2.executeUpdate();

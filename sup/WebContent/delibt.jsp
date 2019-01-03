@@ -37,7 +37,7 @@ try{
     int d=Integer.parseInt(recordToUpdate);
 
     int code=0;
-    int qty=0;
+    float qty=0;
     int billid=0;
     String s4="SELECT * FROM IBTDetails WHERE INo="+d;
    
@@ -79,7 +79,7 @@ try{
     String cod = request.getParameter("code"+sn);
    
      code=Integer.parseInt(cod);
-     qty=Integer.parseInt(q);
+     qty=Float.parseFloat(q);
   
      billid=Integer.parseInt(bid);
    /*  String up=Integer.toString(d);  */
@@ -107,21 +107,21 @@ try{
     System.out.println(s2); 
    
     ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`+? WHERE Code= ? AND Branch=?");
-    ps2.setInt(1,qty);
+    ps2.setFloat(1,qty);
     ps2.setInt(2,code);
     ps2.setString(3,fbranch);
     ps2.executeUpdate(); 
     System.out.println(isql);
     
     ps3 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`-? WHERE Code= ? AND Branch=?");
-    ps3.setInt(1,qty);
+    ps3.setFloat(1,qty);
     ps3.setInt(2,code);
     ps3.setString(3,tbranch);
     ps3.executeUpdate(); 
     System.out.println(isql2);
     
     preparedStatement = conn.prepareStatement("UPDATE `IBT` SET `TotalQty`=`TotalQty`-? WHERE Id=?");
-    preparedStatement.setInt(1,qty);
+    preparedStatement.setFloat(1,qty);
     preparedStatement.setInt(2,d);
     preparedStatement.executeUpdate(); 
     System.out.println(s1);
