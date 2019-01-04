@@ -470,6 +470,11 @@ var table= $('#ex').DataTable( {
     		}
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
+			{
+			document.getElementById("mod").style.display="block";
+			document.getElementById("grping").style.display="block";
+			}
 	}
 	/* if(role!=null && role=="3")
 	{
