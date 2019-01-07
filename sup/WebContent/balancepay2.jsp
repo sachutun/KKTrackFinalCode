@@ -190,14 +190,13 @@ try{
    	     	ps1.setString(2,custId);
    	     	ps1.executeUpdate();
       	}
-   	  		String s2= "UPDATE `Sale` SET `TotalPrice`="+0+",`BalanceAmount`="+0+" ,`Tax`="+0+" ,`Discount`="+0+" WHERE Id="+d;
+   	  		String s2= "UPDATE `Sale` SET `TotalPrice`="+0+",`Tax`="+0+" ,`Discount`="+0+" WHERE Id="+d;
       		//System.out.println(s2);
-      		ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`Tax`=?,`Discount`=? WHERE Id=?");
+      		ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`Tax`=?,`Discount`=? WHERE Id=?");
       		ps3.setDouble(1,0);
-      		ps3.setDouble(2,0);
+			ps3.setInt(2,0);
       		ps3.setInt(3,0);
-      		ps3.setInt(4,0);
-      		ps3.setInt(5,d);
+      		ps3.setInt(4,d);
       		ps3.executeUpdate();
       	
    	     
