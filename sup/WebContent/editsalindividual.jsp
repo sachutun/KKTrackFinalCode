@@ -323,7 +323,15 @@ while(resultSet.next()){
 <td><strong> Date: </strong><input class="col-md-12" type="text" id="date" name="date" value="<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %>" ></td>
 
 <td><strong> DCNumber: </strong><%=resultSet.getString("DCNumber") %></td>
-
+<%String custId="";
+if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
+{
+	custId=resultSet.getString("CustID");
+	%>
+	<td width="10%"><strong> Credit CustId: </strong><%=custId %></td>
+	<% 
+}
+%>
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" ></td>
 <td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
@@ -346,7 +354,7 @@ while(resultSet.next()){
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
                                             <th>
-                                            <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            <input type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
                                             Delete All
                                           </th>
 
@@ -388,7 +396,10 @@ while(resultSet.next()){
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
                 <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
-           
+         
+                
+       
+          <input type="hidden" id="custId" name="custId" value=<%=custId%> > 
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
 </td>
@@ -396,7 +407,7 @@ while(resultSet.next()){
 
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
-  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td>     
+  <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td>     
 </tr>
  <%
  
@@ -410,6 +421,7 @@ while(resultSet.next()){
  list.add(rs.getString("BillDetails.CostPrice"));
  list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
  list.add(String.valueOf(i));
+ list.add(custId);
  map.put(i, list);
  sno++;
 } 
@@ -580,26 +592,88 @@ e.printStackTrace();
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-    
+ <script type="text/javascript">
+function invoiceCheck() {
+if (document.getElementById('taxInvoice').checked) {
+    document.getElementById('GSTdiv').style.visibility = 'visible';
+    document.getElementById('GSTLabel').style.visibility = 'visible';
+    document.getElementById('GST').required = 'true';
+}
+else 
+	{
+	 document.getElementById('GST').required = 'false';
+     document.getElementById('GST').removeAttribute("required");
+     document.getElementById('GST').value = '';
+	document.getElementById('GSTdiv').style.visibility = 'hidden';
+ 	document.getElementById('GSTLabel').style.visibility = 'hidden';
+ 
+	}
+
+}
+function chsn(i)
+{
+	document.getElementById("i").value=i;
+}
+function d(){
+    	localStorage.setItem("branch", document.getElementById('branch').value);
+     	localStorage.setItem("sd", document.getElementById('single_cal3').value);
+   /*  	localStorage.setItem("rd", document.getElementById('single_cal4').value);  */
+     	localStorage.setItem("dc", document.getElementById('dc').value); 
+}
+    $(window).load(function () {
+    	$(".se-pre-con").fadeOut("slow");
+    	 var s = document.getElementById("branch");
+   	 document.getElementById('single_cal3').value=localStorage.getItem("sd");
+  /*   	 document.getElementById('single_cal4').value=localStorage.getItem("rd");  */
+      	 document.getElementById('dc').value=localStorage.getItem("dc"); 
+    	    	// Loop through all the items in drop down list
+
+    	    	for (i = 0; i< s.options.length; i++)
+
+    	    	{ 
+
+    	    	if (s.options[i].value == localStorage.getItem("branch"))
+
+    	    	{
+    	    		if(s.options[i].value=="Bowenpally")
+    	    	s.selectedIndex=i+1;
+    	    		else
+    	    		 	s.selectedIndex=i;
+    	    	break;
+
+    	    	}
+
+    	    	}
+    	    	document.getElementById('branch').value=localStorage.getItem("branch"); 
+    	    	document.getElementById('dc').value=localStorage.getItem("dc"); 
+    	     	/* localStorage.setItem("branch", ""); */
+    	     	localStorage.setItem("sd", "");
+    	   /*  	localStorage.setItem("rd", "");  */ 
+    	 /*    	localStorage.setItem("dc", "");   */
+
+    });
+</script>    
 <script>
 
-function funcSelectAll()
+ function funcSelectAll()
 {
    if(document.forms[0].selectAllCheck.checked==true)
    {
-            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                 document.forms[0].checkboxRow[a].checked = true;            
-           }
+        var elements=document.getElementsByClassName('chkbox');
+       	for(var i=0; i<elements.length; i++){
+       		elements[i].checked = true;
      }
+   }
      else
      {
-           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                  document.forms[0].checkboxRow[a].checked = false;           
-           }
+    	 var elements=document.getElementsByClassName('chkbox');
+        	for(var i=0; i<elements.length; i++){
+        		elements[i].checked = false;
+      }
      }          
 
-}
-
+} 
+ 
 $("#deleteButton").click(function() {
 	 $('#successMsg').hide();
 	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
@@ -617,6 +691,8 @@ $("#deleteButton").click(function() {
       }
       else
     	  {
+    	
+        
     	  //$('#errorMsg').html('');
     	  $('#errorMsg').hide();
     	  }
@@ -663,7 +739,9 @@ function deleteCheckedRecords(){
 		}
 	else
 		{
-	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn);
+	   	  var elements=document.getElementsByClassName('chkbox').length;
+    	  var count_checked = $('input[class="chkbox"]:checked').length;
+	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked);
 	}
 }
 function f(i)
@@ -691,6 +769,7 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
  document.getElementById('da1').value=da;
 }
 $(document).ready(function() {
+	
 
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
@@ -776,67 +855,7 @@ else
 }
 </script>
 
-<script type='text/javascript'>
-function invoiceCheck() {
-if (document.getElementById('taxInvoice').checked) {
-    document.getElementById('GSTdiv').style.visibility = 'visible';
-    document.getElementById('GSTLabel').style.visibility = 'visible';
-    document.getElementById('GST').required = 'true';
-}
-else 
-	{
-	 document.getElementById('GST').required = 'false';
-     document.getElementById('GST').removeAttribute("required");
-     document.getElementById('GST').value = '';
-	document.getElementById('GSTdiv').style.visibility = 'hidden';
- 	document.getElementById('GSTLabel').style.visibility = 'hidden';
- 
-	}
 
-}
-function chsn(i)
-{
-	document.getElementById("i").value=i;
-}
-function d(){
-    	localStorage.setItem("branch", document.getElementById('branch').value);
-     	localStorage.setItem("sd", document.getElementById('single_cal3').value);
-   /*  	localStorage.setItem("rd", document.getElementById('single_cal4').value);  */
-     	localStorage.setItem("dc", document.getElementById('dc').value); 
-}
-    $(window).load(function () {
-    	$(".se-pre-con").fadeOut("slow");
-    	 var s = document.getElementById("branch");
-   	 document.getElementById('single_cal3').value=localStorage.getItem("sd");
-  /*   	 document.getElementById('single_cal4').value=localStorage.getItem("rd");  */
-      	 document.getElementById('dc').value=localStorage.getItem("dc"); 
-    	    	// Loop through all the items in drop down list
-
-    	    	for (i = 0; i< s.options.length; i++)
-
-    	    	{ 
-
-    	    	if (s.options[i].value == localStorage.getItem("branch"))
-
-    	    	{
-    	    		if(s.options[i].value=="Bowenpally")
-    	    	s.selectedIndex=i+1;
-    	    		else
-    	    		 	s.selectedIndex=i;
-    	    	break;
-
-    	    	}
-
-    	    	}
-    	    	document.getElementById('branch').value=localStorage.getItem("branch"); 
-    	    	document.getElementById('dc').value=localStorage.getItem("dc"); 
-    	     	/* localStorage.setItem("branch", ""); */
-    	     	localStorage.setItem("sd", "");
-    	   /*  	localStorage.setItem("rd", "");  */ 
-    	 /*    	localStorage.setItem("dc", "");   */
-
-    });
-</script> 
 
   </body>
 </html>

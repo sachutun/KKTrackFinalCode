@@ -497,7 +497,7 @@
 
 															conn = DriverManager.getConnection(url, username, password);			
 															st = conn.createStatement();
-															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount FROM Sale";
+															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount,Sale.CustId FROM Sale";
 															String whr = " where";
 
 															whr += " Sale.Branch='" + branch + "'";
@@ -522,9 +522,14 @@
 																sql2 += whr2;
 																st2 = conn.createStatement();
 																rs = st2.executeQuery(sql2);
+																String custId=resultSet.getString("CustId");
 													%>
 													<tr class="odd gradeX">
-
+													<% if(custId!=null && custId!="")
+													{%>
+														<td><strong>Customer Id: </strong> <%=resultSet.getString("CustId")%></td>
+													<%} %>
+													
 														<td><strong>Customer Name: </strong> <%=resultSet.getString("CustomerName")%></td>
 														<td><strong>Customer Number:</strong> <%=resultSet.getString("CustomerNumber")%></td>
 														<td><strong>Total Price:</strong> <%=resultSet.getDouble("TotalPrice")%></td>
@@ -577,6 +582,8 @@
 															max="<%=bqty%>" type="number" step="any"> <%-- <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
 															<input type="hidden" id="ba" name="ba"
 															value=<%=resultSet.getString("BalanceAmount")%>>
+															<input type="hidden" id="custId" name="custId"
+															value=<%=resultSet.getString("CustId")%>>
 															<input type="hidden" id="q<%=i%>" name="q<%=i%>"
 															value=<%=bqty%>> <input type="hidden"
 															id="cp<%=i%>" name="cp<%=i%>"

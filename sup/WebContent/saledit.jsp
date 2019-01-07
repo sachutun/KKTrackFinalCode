@@ -20,6 +20,7 @@ DataSource ds = null;
 Connection conn = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement ps = null;
+PreparedStatement ps1 = null;
 PreparedStatement ps2 = null;
 ResultSet resultSet = null;
 Statement st=null;
@@ -27,7 +28,10 @@ Statement st2=null;
 %>
 <%
 try{ 
+
     String recordToUpdate = request.getParameter("payid");
+    String i = request.getParameter("i");
+
     String branch = request.getParameter("branch");
     String ba = request.getParameter("ba");
     String dc = request.getParameter("dc");
@@ -35,6 +39,8 @@ try{
     String cno = request.getParameter("cusno");
     String com = request.getParameter("com");
     String gst = request.getParameter("GST");
+
+    String custId=request.getParameter("custId");
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
  String date=request.getParameter("date") ;
 
@@ -50,7 +56,7 @@ Date ndate=df.parse(dt);
     String dis=request.getParameter("dis");
     String s1="";
     int Pid=Integer.parseInt(recordToUpdate);
-    double bala=Double.parseDouble(ba);
+    double oldBal=Double.parseDouble(ba);
     int tax=Integer.parseInt(tx);
     int disc=Integer.parseInt(dis);
     int code=0;
@@ -61,6 +67,8 @@ Date ndate=df.parse(dt);
     double ap=0;
     int billid=0;
     double ftot=0;
+    double newOB=0;
+ 
     String s4="SELECT * FROM BillDetails WHERE DC="+Pid;
    
     /* Context context = new InitialContext();
@@ -89,7 +97,7 @@ Date ndate=df.parse(dt);
 	    conn = DriverManager.getConnection(url, username, password);
        st2=conn.createStatement();
        resultSet = st2.executeQuery(s4);
-       
+       double newBalAmt=0;
        while (resultSet.next())
        {
        int sn=resultSet.getInt("Id");
@@ -136,16 +144,15 @@ Date ndate=df.parse(dt);
     diffq=oq-nq;
   
     s3= "UPDATE `NewInventory` SET `Quantity`=`Quantity`+ ? WHERE Code=? AND Branch=?";
-    }    
-   System.out.println(tax);
-   System.out.println(ftot);
-  
+    }  
+   
      st=conn.createStatement();
 
      
-  s1= "UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+(ftot-ap)+" WHERE Id="+Pid;
- String s2="UPDATE `BillDetails` SET `Total`="+newtotalp+",`Qty`="+nq+", `CostPrice`="+newcp+"  WHERE Id="+billid;
-  
+
+ String s2="UPDATE `BillDetails` SET `Total`="+newtotalp+",`Qty`="+nq+", `CostPrice`="+newcp+"  WHERE Id="+billid; 
+//System.out.println(s2);
+
     preparedStatement = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=?, `CostPrice`=?  WHERE Id=?");
     preparedStatement.setDouble(1,newtotalp);
     preparedStatement.setFloat(2,nq);
@@ -170,9 +177,15 @@ Date ndate=df.parse(dt);
        } 
        ftot+=tax;
        ftot-=disc;
+       newBalAmt=ftot-ap;
+ 
+   	   newOB=newBalAmt-oldBal;
+
+       s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+" WHERE Id="+Pid;
+       //System.out.println(s1);
        ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? WHERE Id=?");
        ps.setDouble(1,ftot);
-       ps.setDouble(2,ftot-ap);
+       ps.setDouble(2,newBalAmt);
        ps.setString(3,cname);
        ps.setString(4,cno);
        ps.setDouble(5,ap);
@@ -183,7 +196,15 @@ Date ndate=df.parse(dt);
        ps.setString(10,gst);
        ps.setInt(11,Pid);
        ps.executeUpdate();     
-
+       if(custId!=null && custId!="")
+       {
+    	   String s5="UPDATE `Debtors` SET `OB`=`OB`+" +newOB+" WHERE CustId="+custId; 
+    	   System.out.println(s5);
+       ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
+       ps1.setDouble(1,newOB);
+       ps1.setString(2,custId);
+       ps1.executeUpdate(); 
+       }
     	 response.sendRedirect("editsalindividual.jsp?res=1&branch="+branch+"&dc="+dc+"&sd="+nd+"&pk="+Pid);
 
 //}
@@ -202,6 +223,8 @@ finally {
 	    	   ps.close();
 	    if (ps2 != null)
 	    	   ps2.close();
+	    if (ps1 != null)
+	    	   ps1.close();
 	       }  catch (SQLException e) {}
 	       try {
 	        if (conn != null)

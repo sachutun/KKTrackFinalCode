@@ -199,7 +199,7 @@ function showCustomer(custID){
 	        document.getElementById('GSTdiv').style.visibility = 'visible';
 	        document.getElementById('GSTLabel').style.visibility = 'visible';
 	        document.getElementById('GST').required = true;
-	        document.getElementById("GST").readOnly = true;
+	       // document.getElementById("GST").readOnly = true;
 			}
 		else
 			{
@@ -208,7 +208,7 @@ function showCustomer(custID){
 	        document.getElementById('GSTdiv').style.visibility = 'hidden';
 	        document.getElementById('GSTLabel').style.visibility = 'hidden';
 	        document.getElementById('GST').required = false;
-	        document.getElementById("GST").readOnly = false;
+	        //document.getElementById("GST").readOnly = false;
 			}
 	 	 res="update";
 	 	
@@ -223,7 +223,7 @@ function showCustomer(custID){
 	 			 document.getElementById("customername").readOnly = false;
 	 			 document.getElementById("customernumber").readOnly = false;
 	 			 document.getElementById("aadhaar").readOnly = false;
-	 			 document.getElementById("GST").readOnly = false;
+	 			 //document.getElementById("GST").readOnly = false;
 	 			document.getElementById("GST").value="";	 			
 				document.getElementById('generalInvoice').checked=true;
 		        document.getElementById('GSTdiv').style.visibility = 'hidden';
@@ -241,7 +241,7 @@ function showCustomer(custID){
 	        document.getElementById("customername").readOnly = true;
 			 document.getElementById("customernumber").readOnly = true;
 			 document.getElementById("aadhaar").readOnly = true;
-			 document.getElementById("GST").readOnly = true;
+			 //document.getElementById("GST").readOnly = true;
 	 		 res="error";
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
 	 		document.getElementById("creditMsg").style.color = "#ff0000";
@@ -1078,7 +1078,7 @@ function cls(elt)
 	            	{
 	               	$("#customername").prop('readonly', true);
 	              	$("#customernumber").prop('readonly', true); 
-	              	$("#GST").prop('readonly', true); 
+	              	//$("#GST").prop('readonly', true); 
 	              	$("#aadhaar").prop('readonly', true); 
 	              	$("#creditCustId").prop('required',true);
 	            		$("#creditCustId").val("");
@@ -1096,7 +1096,7 @@ function cls(elt)
 	              	document.getElementById('generalInvoice').checked=true;
 			        document.getElementById('GSTdiv').style.visibility = 'hidden';
 			        document.getElementById('GSTLabel').style.visibility = 'hidden';
-			        $("#GST").prop('readonly', false); 
+			       // $("#GST").prop('readonly', false); 
 			   		$("#aadhaar").prop('readonly', false); 
 			   	    $("#customername").val("");
          		    $("#customernumber").val("");

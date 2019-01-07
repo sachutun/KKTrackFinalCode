@@ -345,7 +345,7 @@ while(resultSet.next()){
 <%-- 
 <td style="width: 10%;"><a href="delibt.jsp?deleteid=<%=primaryKey %>&fbranch=<%=branch %>&tbranch=<%=resultSet.getString("ToBranch") %>&ibt=<%=resultSet.getString("IBTNo") %>&bid<%=i %>=<%=i %>&sd=<%=cn%>&code<%=i %>=<%=rs.getString("IBTDetails.Code")%>&q<%=i %>=<%=rs.getString("IBTDetails.Qty")%>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> 
 --%>
-  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td> 
+  <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td> 
 </tr>
  <%
  list.add(String.valueOf(primaryKey));
@@ -485,18 +485,20 @@ function funcSelectAll()
 {
    if(document.forms[0].selectAllCheck.checked==true)
    {
-            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                 document.forms[0].checkboxRow[a].checked = true;            
-           }
+        var elements=document.getElementsByClassName('chkbox');
+       	for(var i=0; i<elements.length; i++){
+       		elements[i].checked = true;
      }
+   }
      else
      {
-           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                  document.forms[0].checkboxRow[a].checked = false;           
-           }
+    	 var elements=document.getElementsByClassName('chkbox');
+        	for(var i=0; i<elements.length; i++){
+        		elements[i].checked = false;
+      }
      }          
 
-}
+} 
 
 $("#deleteButton").click(function() {
 	 $('#successMsg').hide();
