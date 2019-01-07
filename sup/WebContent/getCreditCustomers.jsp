@@ -53,9 +53,13 @@ stmt = con.createStatement();
    custName+=rs.getString("CustomerName");  
    custNumber+=rs.getString("Mobile"); 
    OB+=rs.getInt("OB");
-   aadhaar+=rs.getString("Aadhaar"); 
-   gst+=rs.getString("GST");
-res=1;
+   aadhaar=rs.getString("Aadhaar"); 
+   if(aadhaar==null)
+	   aadhaar="";
+   gst=rs.getString("GST");
+   if(gst==null)
+	   gst="";
+   res=1;
    }  
 
  output+=custName+","+custNumber+","+OB+","+aadhaar+","+gst+","+res; 
