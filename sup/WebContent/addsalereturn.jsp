@@ -235,10 +235,7 @@
 
 									<div class="x_content">
 										<form action="balancepay2.jsp?sno=<%=sno%>">
-											<input id="ubran" class="form-control col-md-7 col-xs-12"
-												type="hidden" value=<%=uBranch%>> <input id="urole"
-												class="form-control col-md-7 col-xs-12" type="hidden"
-												value=<%=role%>> <label class="control-label"
+											 <label class="control-label"
 												style="float: left;">Return Date</label>
 											<div class="col-md-3">
 												<div
@@ -494,7 +491,7 @@
 															String url = props.getProperty("jdbc.url");
 															String username = props.getProperty("jdbc.username");
 															String password = props.getProperty("jdbc.password");
-
+															String environment = props.getProperty("jdbc.environment");
 															conn = DriverManager.getConnection(url, username, password);			
 															st = conn.createStatement();
 															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount,Sale.CustId FROM Sale";
@@ -599,6 +596,7 @@
 															<input type="hidden" id="sad" name="sad" value=<%=cn%>>
 															<%--   <input type="hidden" id="red" name="red" value=<%=rd %> >  --%>
 															<input type="hidden" id="i" name="i"></td>
+															
 														<td style="width: 10%;"><input type="number"
 															id="eq<%=i%>" name="eq<%=i%>" value="0"
 															style="width: 80%; margin-left: 7%;" min="0"
@@ -611,6 +609,14 @@
 													%>
 												</tbody>
 											</table>
+											<input id="ubran" class="form-control col-md-7 col-xs-12"
+												type="hidden" value=<%=uBranch%>>
+												 <input id="urole"
+												class="form-control col-md-7 col-xs-12" type="hidden"
+												value=<%=role%>>
+												 <input id="uenv"
+												class="form-control col-md-7 col-xs-12" type="hidden"
+												value=<%=environment%>>
 											<button type="submit" class="btn btn-success" style="float: right" onclick="chsn(<%=i%>)">Return Items</button>
 										</form>
 
@@ -695,22 +701,23 @@
 $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+	{
+	$('.site_title').css('background-color', 'red');
+	}
+else
+	{
+	$('.site_title').css('background-color', '');
+	}
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		 $( '[class*="admin"]' ).hide();
 	
 	}
 	if(role!=null && role=="2")
 	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		 $( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -719,36 +726,19 @@ $(document).ready(function() {
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	/* if(role!=null && role=="3")
+	if(role!=null && role=="3")
 	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
+		 $( '[class*="man"]' ).hide();
+	} 
 
 	if(role!=null && role=="4")
 	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		 $( '[class*="store"]' ).hide();
 	    
 	}
 	if(role!=null && role=="5")
 	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
+		 $( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
 	}  

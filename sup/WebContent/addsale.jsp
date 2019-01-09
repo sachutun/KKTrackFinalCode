@@ -358,7 +358,15 @@ String role=(String)session.getAttribute("role");
                     <div id="main">
                       <div class="form-group">
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Branch:<span class="required">*</span></label>
-                        <%
+                          <%
+            					Properties props = new Properties();
+  							InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+  							props.load(in);
+  							in.close();
+
+  							String environment = props.getProperty("jdbc.environment");
+            
+                    
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
 							Enumeration resourceKeys = resources.getKeys();
 							ArrayList<String> listOfBranches = new ArrayList<String>();
@@ -405,6 +413,7 @@ String role=(String)session.getAttribute("role");
                         </div>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                        <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
                       <!-- </div>
                        <div class="form-group"> -->
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Date:<span class="required">*</span>
@@ -961,15 +970,19 @@ function cls(elt)
 		  });
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
+		var environment=document.getElementById('uenv').value;
+		if(environment!=null && environment=="local")
+			{
+			$('.site_title').css('background-color', 'red');
+			}
+		else
+			{
+			$('.site_title').css('background-color', '');
+			}
 		
 		if(role!=null && role!="1")
 		{
-		var elements = document.getElementsByClassName('admin');
-
-	    for (var i = 0; i < elements.length; i++)
-	    {
-	        elements[i].style.display = "none";
-	    }
+			 $( '[class*="admin"]' ).hide();
 		var elements = document.getElementsByClassName('user');
 
 	    for (var i = 0; i < elements.length; i++){
@@ -1010,11 +1023,7 @@ function cls(elt)
 		
 		if(role!=null && role=="2")
 		{
-			var elements = document.getElementsByClassName('hide4branch');
-
-	   		 for (var i = 0; i < elements.length; i++){
-	        		elements[i].style.display = "none";
-	    		}
+			 $( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
 	    		document.getElementById("invAdj").style.display="block";
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -1023,36 +1032,19 @@ function cls(elt)
   			document.getElementById("grping").style.display="block";
   			}
 		}
-		/* if(role!=null && role=="3")
+		if(role!=null && role=="3")
 		{
-			var elements = document.getElementsByClassName('userv');
-
-			for (var i = 0; i < elements.length; i++){
-	    		elements[i].style.display = "none";
-			}
-		} */
+			 $( '[class*="man"]' ).hide();
+		} 
 
 		if(role!=null && role=="4")
 		{
-			var elements = document.getElementsByClassName('hide4store');
-
-			for (var i = 0; i < elements.length; i++){
-	    			elements[i].style.display = "none";
-		    }
-			var elements1 = document.getElementsByClassName('hide4acc&store');
-
-			for (var j = 0; j < elements1.length; j++){
-	    			elements1[j].style.display = "none";
-		    }
+			 $( '[class*="store"]' ).hide();
 		    
 		}
 		if(role!=null && role=="5")
 		{
-			var elements = document.getElementsByClassName('hide4acc&store');
-
-			for (var i = 0; i < elements.length; i++){
-	    			elements[i].style.display = "none";
-			}	
+			 $( '[class*="acc"]' ).hide();	
 		    
 			document.getElementById("br").style.display="block";
 		}

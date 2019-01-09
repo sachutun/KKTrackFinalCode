@@ -12,7 +12,7 @@ Description		: KK Track Menu options
                   </li>
                   <li class="hide4store" id="exp"><a><i class="fa fa-inr"></i> Expenses <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                         <li class="hide4acc&store" ><a href="expenseform.jsp">Add New Expense</a></li>
+                         <li class="hide4acc&store&man" ><a href="expenseform.jsp">Add New Expense</a></li>
                       <li class="hide4store"><a href="expenses.jsp">View Expenses</a></li>
                       <li class="hide4store"><a href="PurchaseCost.jsp">View Purchase Costs</a></li>
                        <li class="hide4store"><a href=CashTransfer.jsp>View Cash Transfers</a></li>
@@ -23,7 +23,7 @@ Description		: KK Track Menu options
                       <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
                       <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
                       <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
-                      <li  class="hide4store"><a href="printpurchase.jsp">Print Purchase</a></li>
+                      <li  class="hide4store&man"><a href="printpurchase.jsp">Print Purchase</a></li>
                       <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
                       <li class="hide4store"><a>Purchase Returns</a>
                       <ul class="nav child_menu">
@@ -35,16 +35,16 @@ Description		: KK Track Menu options
                   </li>
                   <li class="hide4store"><a><i class="fa fa-table"></i> Sales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="addsale.jsp">Add New Sale</a></li>
+                      <li class="hide4acc&store&man"><a href="addsale.jsp">Add New Sale</a></li>
                       <li  class="hide4acc&store"><a href="viewsale.jsp">View Sale</a></li>
                       <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
 <!--                       <li class="hide4acc&store"><a href="creditalert.jsp">Credit Alert</a></li> -->
-                      <li class="hide4acc&store"><a href="printsale.jsp">Print Sale</a></li>
+                      <li class="hide4acc&store&man"><a href="printsale.jsp">Print Sale</a></li>
                       <li class="hide4branch"><a href="AuditSale.jsp">Audit Sale</a></li>
                       <li class="hide4acc&store"><a>Sale Returns <span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                       <li><a href="viewsalereturn.jsp">View Returned Sale items</a></li>
-                      <li><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
+                      <li class="hide4man"><a href="saleReturn.jsp">Enter Returned Sale items</a></li>
                     </ul>
                       </li>
                     </ul>
@@ -62,17 +62,17 @@ Description		: KK Track Menu options
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
-                      <li class="hide4acc&store"><a href="ibtform.jsp">IBT Form</a></li>
+                      <li class="hide4acc&store&man"><a href="ibtform.jsp">IBT Form</a></li>
                       <li><a href="viewIBT.jsp">View IBT</a></li>
                       <li class="hide4branch"><a href="AuditIBT.jsp">Audit IBT</a></li>
-                      <li class="hide4acc&store"><a href="printingibt.jsp">Print IBT</a></li>
+                      <li class="hide4acc&store&man"><a href="printingibt.jsp">Print IBT</a></li>
                     </ul>
                  </li>
                     <li class="hide4store" id="debtors"><a><i class="fa fa-users"></i> Debtors <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                          <li class="hide4store" ><a href="Debtors.jsp">Debtors</a></li>
                       <li class="hide4store"><a href="ViewCollections.jsp">View Collections</a></li>
-                      <li class="admin"><a href="EditDebtors.jsp">Edit Debtors</a></li>
+                      <li class="hide4acc&store&branch"><a href="EditDebtors.jsp">Edit Debtors</a></li>
                     
                     </ul>
                   </li>
@@ -80,3 +80,5 @@ Description		: KK Track Menu options
               </div>
 
             </div> 
+          
+       

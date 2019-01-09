@@ -112,6 +112,16 @@ String role=(String)session.getAttribute("role");
 String user=(String)session.getAttribute("user"); 
 if(user==null)
 	response.sendRedirect("login.jsp");
+	Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+
+String driver = props.getProperty("jdbc.driver");
+String url = props.getProperty("jdbc.url");
+String username = props.getProperty("jdbc.username");
+String password = props.getProperty("jdbc.password");
+String environment = props.getProperty("jdbc.environment");
 %> 
         <!-- top navigation -->
         <div class="top_nav">
@@ -175,7 +185,7 @@ if(user==null)
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
              <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control admin" tabindex="-1" name="branch" id="branch" >
+                          <select class="select2_single form-control hide4branch&store&acc" tabindex="-1" name="branch" id="branch" >
                             <option value="">Select A Branch</option>
                             <option value="">All Branches</option>
                                 <!--   <option value="Bowenpally">Bowenpally</option>
@@ -218,6 +228,7 @@ if(user==null)
                         <button  class="btn btn-success" type="reset" onclick="window.location.reload(true)">Refresh </button>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
                         </form>
                       
                            </br>
@@ -230,6 +241,8 @@ if(user==null)
                    <%  String branch = request.getParameter("branch");
                     		 if(role!=null && !(role.equals("1")))
                     			   branch=uBranch; 
+                    		 if(branch==null && !(branch.equals("All")))
+                    			 branch="";
                    %>
                        <%--  <label style="float:right" ><%= branch %></label> --%>
                     <div class="clearfix"></div>
@@ -266,20 +279,10 @@ try{
 		  
 		  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
 	 	   //  connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-   	Properties props = new Properties();
-    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
-    props.load(in);
-    in.close();
 
-    String driver = props.getProperty("jdbc.driver");
     if (driver != null) {
         Class.forName(driver).newInstance();  
     }
-
-    String url = props.getProperty("jdbc.url");
-    String username = props.getProperty("jdbc.username");
-    String password = props.getProperty("jdbc.password");
-
     connection = DriverManager.getConnection(url, username, password);		  
 statement=connection.createStatement();
 String dc=request.getParameter("dc");
@@ -480,27 +483,27 @@ xmlHttp.send(null);
 $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+		{
+		$('.site_title').css('background-color', 'red');
+		}
+	else
+		{
+		$('.site_title').css('background-color', '');
+		}
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
+		$( '[class*="admin"]' ).hide();
+		if(role!="3")
+    		{
+			$( '[class*="user"]' ).show();
     		}
-    		var elements = document.getElementsByClassName('user');
-
-    	    for (var i = 0; i < elements.length; i++){
-    	        elements[i].style.display = "block";
-    	    }
 	
 	}
 	if(role!=null && role=="2")
 	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		$( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
 			document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -509,36 +512,19 @@ $(document).ready(function() {
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	/* if(role!=null && role=="3")
+	 if(role!=null && role=="3")
 	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
+		 $( '[class*="man"]' ).hide();
+	} 
 
 	if(role!=null && role=="4")
 	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		$( '[class*="store"]' ).hide();
 	    
 	}
 	if(role!=null && role=="5")
 	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
+		$( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
 	}

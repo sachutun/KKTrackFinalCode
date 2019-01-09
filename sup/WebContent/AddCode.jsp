@@ -119,6 +119,18 @@ String role=(String)session.getAttribute("role");
 if(user==null)
 	response.sendRedirect("login.jsp");
 session.setAttribute("user",user);
+Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+
+String driver = props.getProperty("jdbc.driver");
+
+
+String url = props.getProperty("jdbc.url");
+String username = props.getProperty("jdbc.username");
+String password = props.getProperty("jdbc.password");
+String environment = props.getProperty("jdbc.environment");
 %> 
         <!-- top navigation -->
         <div class="top_nav">
@@ -173,7 +185,9 @@ session.setAttribute("user",user);
                    <a href="inventory.jsp"> <button type="button" class="btn btn-info">View </button></a>
              </div> 
              <br/><br/><br/>
-             
+             <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
                 <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -325,20 +339,9 @@ session.setAttribute("user",user);
   Context envCtx = (Context) context.lookup("java:comp/env");
   ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
   if (ds != null) { */
-	  Properties props = new Properties();
-  InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
-  props.load(in);
-  in.close();
-
-  String driver = props.getProperty("jdbc.driver");
-  if (driver != null) {
-      Class.forName(driver).newInstance();  
-  }
-
-  String url = props.getProperty("jdbc.url");
-  String username = props.getProperty("jdbc.username");
-  String password = props.getProperty("jdbc.password");
-
+	  if (driver != null) {
+		    Class.forName(driver).newInstance();  
+		} 
   conn = DriverManager.getConnection(url, username, password);
 	  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
    //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
@@ -447,22 +450,23 @@ session.setAttribute("user",user);
 $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+		{
+		$('.site_title').css('background-color', 'red');
+		}
+	else
+		{
+		$('.site_title').css('background-color', '');
+		}
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		 $( '[class*="admin"]' ).hide();
 	
 	}
 	
 	if (role != null && role == "2") {
-			var elements = document.getElementsByClassName('hide4branch');
-
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].style.display = "none";
-			}
+		 $( '[class*="branch"]' ).hide();
 			if (ubran != null && ubran == "Workshop")
 				document.getElementById("invAdj").style.display = "block";
 	  		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -471,34 +475,17 @@ $(document).ready(function() {
 	  			document.getElementById("grping").style.display="block";
 	  			}
 		}
-		/* if(role!=null && role=="3")
+		 if(role!=null && role=="3")
 		{
-			var elements = document.getElementsByClassName('userv');
-
-			for (var i = 0; i < elements.length; i++){
-				elements[i].style.display = "none";
-			}
-		} */
+			 $( '[class*="man"]' ).hide();
+		} 
 
 		if (role != null && role == "4") {
-			var elements = document.getElementsByClassName('hide4store');
-
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].style.display = "none";
-			}
-			var elements1 = document.getElementsByClassName('hide4acc&store');
-
-			for (var j = 0; j < elements1.length; j++) {
-				elements1[j].style.display = "none";
-			}
+			 $( '[class*="store"]' ).hide();
 
 		}
 		if (role != null && role == "5") {
-			var elements = document.getElementsByClassName('hide4acc&store');
-
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].style.display = "none";
-			}
+			 $( '[class*="acc"]' ).hide();
 
 			document.getElementById("br").style.display = "block";
 		}

@@ -1,26 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.util.Date"%>
 <%@ page import= "java.text.SimpleDateFormat" %>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 <%@ page language="java" import="java.util.*" %>
-<%
-/* String id = request.getParameter("userId"); */
-DataSource ds = null;
-Connection connection = null;
-Statement statement = null;
-Statement st = null;
-Statement st2 = null;
-ResultSet resultSet = null;
-ResultSet rs = null;
-ResultSet rs2 = null;
-
-%>
+<%@ page language="java" import="java.io.*" %>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -148,6 +132,11 @@ String uBranch=(String)session.getAttribute("ubranch");
 String role=(String)session.getAttribute("role");
 if(user==null)
 	response.sendRedirect("login.jsp");
+Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+String environment = props.getProperty("jdbc.environment");
 
 /* System.out.println("Branch "+uBranch); */
 
@@ -254,6 +243,7 @@ if(user==null)
                        </div>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
                         </form>
                       
                            <br/>
@@ -466,22 +456,23 @@ function filterColumn ( i ) {
 $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+		{
+		$('.site_title').css('background-color', 'red');
+		}
+	else
+		{
+		$('.site_title').css('background-color', '');
+		}
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		$( '[class*="admin"]' ).hide();
 	
 	}
 	if(role!=null && role=="2")
 	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		$( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -490,37 +481,19 @@ $(document).ready(function() {
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	/* if(role!=null && role=="3")
+	 if(role!=null && role=="3")
 	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
+		 $( '[class*="man"]' ).hide();
+	} 
 
 	if(role!=null && role=="4")
 	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		$( '[class*="store"]' ).hide();
 	    
 	}
 	if(role!=null && role=="5")
 	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
-	    
+		$( '[class*="acc"]' ).hide();
 		document.getElementById("br").style.display="block";
 	}	 
 	var table=$('#ex').DataTable( {
