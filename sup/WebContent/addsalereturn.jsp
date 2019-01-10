@@ -235,10 +235,7 @@
 
 									<div class="x_content">
 										<form action="balancepay2.jsp?sno=<%=sno%>">
-											<input id="ubran" class="form-control col-md-7 col-xs-12"
-												type="hidden" value=<%=uBranch%>> <input id="urole"
-												class="form-control col-md-7 col-xs-12" type="hidden"
-												value=<%=role%>> <label class="control-label"
+											 <label class="control-label"
 												style="float: left;">Return Date</label>
 											<div class="col-md-3">
 												<div
@@ -494,10 +491,10 @@
 															String url = props.getProperty("jdbc.url");
 															String username = props.getProperty("jdbc.username");
 															String password = props.getProperty("jdbc.password");
-
+															String environment = props.getProperty("jdbc.environment");
 															conn = DriverManager.getConnection(url, username, password);			
 															st = conn.createStatement();
-															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount FROM Sale";
+															String sql1 = "SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid, Sale.BalanceAmount,Sale.CustId FROM Sale";
 															String whr = " where";
 
 															whr += " Sale.Branch='" + branch + "'";
@@ -522,9 +519,14 @@
 																sql2 += whr2;
 																st2 = conn.createStatement();
 																rs = st2.executeQuery(sql2);
+																String custId=resultSet.getString("CustId");
 													%>
 													<tr class="odd gradeX">
-
+													<% if(custId!=null && custId!="")
+													{%>
+														<td><strong>Customer Id: </strong> <%=resultSet.getString("CustId")%></td>
+													<%} %>
+													
 														<td><strong>Customer Name: </strong> <%=resultSet.getString("CustomerName")%></td>
 														<td><strong>Customer Number:</strong> <%=resultSet.getString("CustomerNumber")%></td>
 														<td><strong>Total Price:</strong> <%=resultSet.getDouble("TotalPrice")%></td>
@@ -577,6 +579,8 @@
 															max="<%=bqty%>" type="number" step="any"> <%-- <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
 															<input type="hidden" id="ba" name="ba"
 															value=<%=resultSet.getString("BalanceAmount")%>>
+															<input type="hidden" id="custId" name="custId"
+															value=<%=resultSet.getString("CustId")%>>
 															<input type="hidden" id="q<%=i%>" name="q<%=i%>"
 															value=<%=bqty%>> <input type="hidden"
 															id="cp<%=i%>" name="cp<%=i%>"
@@ -592,6 +596,7 @@
 															<input type="hidden" id="sad" name="sad" value=<%=cn%>>
 															<%--   <input type="hidden" id="red" name="red" value=<%=rd %> >  --%>
 															<input type="hidden" id="i" name="i"></td>
+															
 														<td style="width: 10%;"><input type="number"
 															id="eq<%=i%>" name="eq<%=i%>" value="0"
 															style="width: 80%; margin-left: 7%;" min="0"
@@ -604,6 +609,14 @@
 													%>
 												</tbody>
 											</table>
+											<input id="ubran" class="form-control col-md-7 col-xs-12"
+												type="hidden" value=<%=uBranch%>>
+												 <input id="urole"
+												class="form-control col-md-7 col-xs-12" type="hidden"
+												value=<%=role%>>
+												 <input id="uenv"
+												class="form-control col-md-7 col-xs-12" type="hidden"
+												value=<%=environment%>>
 											<button type="submit" class="btn btn-success" style="float: right" onclick="chsn(<%=i%>)">Return Items</button>
 										</form>
 
@@ -688,22 +701,23 @@
 $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+	{
+	$('.site_title').css('background-color', 'red');
+	}
+else
+	{
+	$('.site_title').css('background-color', '');
+	}
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		 $( '[class*="admin"]' ).hide();
 	
 	}
 	if(role!=null && role=="2")
 	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		 $( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -712,36 +726,19 @@ $(document).ready(function() {
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	/* if(role!=null && role=="3")
+	if(role!=null && role=="3")
 	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
+		 $( '[class*="man"]' ).hide();
+	} 
 
 	if(role!=null && role=="4")
 	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		 $( '[class*="store"]' ).hide();
 	    
 	}
 	if(role!=null && role=="5")
 	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
+		 $( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
 	}  

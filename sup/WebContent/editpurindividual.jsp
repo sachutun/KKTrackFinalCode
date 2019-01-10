@@ -325,6 +325,7 @@ System.out.println(branch); */
     String url = props.getProperty("jdbc.url");
     String username = props.getProperty("jdbc.username");
     String password = props.getProperty("jdbc.password");
+    String environment = props.getProperty("jdbc.environment");
 
     conn = DriverManager.getConnection(url, username, password);
     st = conn.createStatement();
@@ -431,7 +432,7 @@ while(resultSet.next()){
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
 </td>
 <%-- <td style="width: 10%;"><a href="delpur.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("InvoiceDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("InvoiceDetails.Price")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>&dc=<%=dc%>&sd=<%=cn%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
-  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td>   
+  <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td>   
 </tr>
  <%
  list.add(String.valueOf(primaryKey));
@@ -470,6 +471,7 @@ while(resultSet.next()){
  <a href="addpuredit.jsp?branch=<%=branch %>&pid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
 <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
  </div>                
                     <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
                     <div class="modal-dialog modal-sm">
@@ -568,18 +570,20 @@ function funcSelectAll()
 {
    if(document.forms[0].selectAllCheck.checked==true)
    {
-            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                 document.forms[0].checkboxRow[a].checked = true;            
-           }
+        var elements=document.getElementsByClassName('chkbox');
+       	for(var i=0; i<elements.length; i++){
+       		elements[i].checked = true;
      }
+   }
      else
      {
-           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                  document.forms[0].checkboxRow[a].checked = false;           
-           }
+    	 var elements=document.getElementsByClassName('chkbox');
+        	for(var i=0; i<elements.length; i++){
+        		elements[i].checked = false;
+      }
      }          
 
-}
+} 
 
 $("#deleteButton").click(function() {
 	 $('#successMsg').hide();
@@ -651,22 +655,22 @@ function deleteCheckedRecords(){
  $(document).ready(function() {
 		var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
+		var environment=document.getElementById('uenv').value;
+		if(environment!=null && environment=="local")
+			{
+			$('.site_title').css('background-color', 'red');
+			}
+		else
+			{
+			$('.site_title').css('background-color', '');
+			}
 		if(role!=null && role!="1")
 		{
-			var elements = document.getElementsByClassName('admin');
-
-	    		for (var i = 0; i < elements.length; i++){
-	        		elements[i].style.display = "none";
-	    		}
-		
+			$( '[class*="admin"]' ).hide();
 		}
 		if(role!=null && role=="2")
 		{
-			var elements = document.getElementsByClassName('hide4branch');
-
-	   		 for (var i = 0; i < elements.length; i++){
-	        		elements[i].style.display = "none";
-	    		}
+			$( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
 	    		document.getElementById("invAdj").style.display="block";
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -675,36 +679,18 @@ function deleteCheckedRecords(){
   			document.getElementById("grping").style.display="block";
   			}
 		}
-		/* if(role!=null && role=="3")
+		 if(role!=null && role=="3")
 		{
-			var elements = document.getElementsByClassName('userv');
-
-			for (var i = 0; i < elements.length; i++){
-	    		elements[i].style.display = "none";
-			}
-		} */
+			 $( '[class*="man"]' ).hide();
+		} 
 
 		if(role!=null && role=="4")
 		{
-			var elements = document.getElementsByClassName('hide4store');
-
-			for (var i = 0; i < elements.length; i++){
-	    			elements[i].style.display = "none";
-		    }
-			var elements1 = document.getElementsByClassName('hide4acc&store');
-
-			for (var j = 0; j < elements1.length; j++){
-	    			elements1[j].style.display = "none";
-		    }
-		    
+			$( '[class*="store"]' ).hide();
 		}
 		if(role!=null && role=="5")
 		{
-			var elements = document.getElementsByClassName('hide4acc&store');
-
-			for (var i = 0; i < elements.length; i++){
-	    			elements[i].style.display = "none";
-			}
+			$( '[class*="acc"]' ).hide();
 		    
 			document.getElementById("br").style.display="block";
 		}

@@ -18,6 +18,7 @@ DataSource ds = null;
 Connection conn = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement ps = null;
+PreparedStatement ps1 = null;
 PreparedStatement ps2 = null;
 PreparedStatement ps4 = null;
 ResultSet resultSet = null;
@@ -31,10 +32,13 @@ try{
 	    //System.out.println(recordToUpdate); 
 	    
 	    String branch = request.getParameter("branch");
+	    String totRecs=request.getParameter("totRecs");
+	    String checkedRecs=request.getParameter("checkedRecs");
+	    
 	    
 	     String dc = request.getParameter("dc"); 
 	    String sd = request.getParameter("sd");
-	 
+
 
 	    int d=Integer.parseInt(recordToUpdate);
 String selectedItems = request.getParameter("selectedItems");
@@ -58,11 +62,25 @@ String[] selectedItemsArray=selectedItems.split(",");
     String password = props.getProperty("jdbc.password");
 
     conn = DriverManager.getConnection(url, username, password);
+    boolean flag;
+    String custId="";
+    double bal=0;
+    System.out.println("totRecs: " +totRecs); 
+    System.out.println("checkedRecs: "+checkedRecs); 
+    if(totRecs.equals(checkedRecs))
+    { 
+   	   flag=true;
+    }
+   	   else
+   	   {   		
+     	   flag=false;
+   	   }
 for(i=0;i<selectedItemsArray.length;i++)
 {
 	 //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
     Map<Integer, List<String>> map = (HashMap<Integer, List<String>>)session.getAttribute("map");
   //Map<Integer, List<String>> map = (HashMap<Integer, List<String>>)request.getParameter("mapData");
+ 
     for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
         int key = entry.getKey();
         //System.out.println("Key = " + key);
@@ -89,6 +107,7 @@ for(i=0;i<selectedItemsArray.length;i++)
      sd=values.get(4);
    // String ba = request.getParameter("ba");
 String ba=values.get(5);
+ custId=values.get(10);
      d=Integer.parseInt(recordToUpdate);
     double bala=Double.parseDouble(ba);
     double ftot=0;
@@ -143,7 +162,9 @@ String ba=values.get(5);
    /*  String up=Integer.toString(d);  */
     //totalp is total price of item being deleted
    double totalp=Double.parseDouble(totp);
- 
+    bal=Double.parseDouble(ba);
+   //System.out.println("custId: " +custId);
+ //System.out.println("bal: " +bal);
     //if new quantity> q i.e. more items
     String s3= "";
  
@@ -199,13 +220,36 @@ String ba=values.get(5);
 /*    if(branch!=null && branch.length()!=0)
      response.sendRedirect("addsalereturn.jsp?branch="+branch+"&dc="+dc+"&sd="+sd); // redirect to JSP one, which will again reload.
      else  */
+     if(flag==false && custId!=null && custId!="")
+     {
+String s="UPDATE `Debtors` SET `OB`=`OB`-"+(cost*qty)+" WHERE CustId="+custId;
+System.out.println("single: " +s);
+     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
+     ps1.setDouble(1,cost*qty);
+     ps1.setString(2,custId);
+     ps1.executeUpdate();
      
+     }
   
 
 //}
         }
     }
 }
+
+
+
+	  if(flag==true && custId!=null && custId!="")
+	     {
+	String s="UPDATE `Debtors` SET `OB`=`OB`-"+(bal)+" WHERE CustId="+custId;
+	System.out.println("all checked: " +s);
+	     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
+	     ps1.setDouble(1,bal);
+	     ps1.setString(2,custId);
+	     ps1.executeUpdate();
+	     
+	     }
+
 	 response.sendRedirect("editsalindividual.jsp?res=2&branch="+branch+"&dc="+dc+"&sd="+sd+"&pk="+d);
 }catch (Exception e) {
     	 e.printStackTrace();

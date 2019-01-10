@@ -235,8 +235,7 @@ if(user==null)
                   <div class="x_content">
                  
         <form action="saledit.jsp">   
-         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
+        
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
               <div class="table-responsive"> 
        <table class="table  dt-responsive" width="100%">
@@ -276,6 +275,7 @@ System.out.println(branch); */
     String url = props.getProperty("jdbc.url");
     String username = props.getProperty("jdbc.username");
     String password = props.getProperty("jdbc.password");
+    String environment = props.getProperty("jdbc.environment");
 
     conn = DriverManager.getConnection(url, username, password);
     st = conn.createStatement();
@@ -323,7 +323,15 @@ while(resultSet.next()){
 <td><strong> Date: </strong><input class="col-md-12" type="text" id="date" name="date" value="<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %>" ></td>
 
 <td><strong> DCNumber: </strong><%=resultSet.getString("DCNumber") %></td>
-
+<%String custId="";
+if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
+{
+	custId=resultSet.getString("CustID");
+	%>
+	<td width="10%"><strong> Credit CustId: </strong><%=custId %></td>
+	<% 
+}
+%>
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" ></td>
 <td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
@@ -346,7 +354,7 @@ while(resultSet.next()){
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
                                             <th>
-                                            <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            <input type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
                                             Delete All
                                           </th>
 
@@ -388,7 +396,10 @@ while(resultSet.next()){
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
                 <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
-           
+         
+                
+       
+          <input type="hidden" id="custId" name="custId" value=<%=custId%> > 
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
 </td>
@@ -396,7 +407,7 @@ while(resultSet.next()){
 
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
-  <td>  <input type="checkbox" name="checkboxRow" value="<%=i %>">   </td>     
+  <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td>     
 </tr>
  <%
  
@@ -410,6 +421,7 @@ while(resultSet.next()){
  list.add(rs.getString("BillDetails.CostPrice"));
  list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
  list.add(String.valueOf(i));
+ list.add(custId);
  map.put(i, list);
  sno++;
 } 
@@ -510,6 +522,9 @@ gst ="";
                       </div>
                     </div>
                   </div>
+                   <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
+                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
 </form>
  
  <% 
@@ -580,203 +595,7 @@ e.printStackTrace();
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-    
-<script>
-
-function funcSelectAll()
-{
-   if(document.forms[0].selectAllCheck.checked==true)
-   {
-            for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                 document.forms[0].checkboxRow[a].checked = true;            
-           }
-     }
-     else
-     {
-           for (var a=0; a < document.forms[0].checkboxRow.length; a++)        {
-                  document.forms[0].checkboxRow[a].checked = false;           
-           }
-     }          
-
-}
-
-$("#deleteButton").click(function() {
-	 $('#successMsg').hide();
-	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
-	  var count_checked = $('input[type="checkbox"]:checked').length;
-	  //alert(count_checked);
-      if(count_checked == 0) 
-      {
-          //alert("Please select any record to delete.");
-           // $('#errorMsg').css({ 'color': 'red'});
-          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
-         
-         $('#errorMsg').show();
-          $("#deleteModal").modal("hide");
-          return false;
-      }
-      else
-    	  {
-    	  //$('#errorMsg').html('');
-    	  $('#errorMsg').hide();
-    	  }
-});	
-function deleteCheckedRecords(){
-	//var did=document.getElementById("did").value;
-	var pk=document.getElementById("payid").value;
-	var branch=document.getElementById("branch").value;
-	var dc=document.getElementById("dc").value;
-	var cn=document.getElementById("ddd").value;
-	//alert(pk);
-	//alert(branch);
-	//alert(dc);
-	//alert(cn);
-	var items=document.getElementsByName('checkboxRow');
-	var selectedItems="";
-	for(var i=0; i<items.length; i++){
-		if(items[i].type=='checkbox' && items[i].checked==true)
-			if(selectedItems!="")				
-				{
-				selectedItems+=","+items[i].value+"\n";
-				}
-			else
-				{
-			selectedItems+=items[i].value+"\n";
-				}
-	}
-	//alert(selectedItems);
-
-
-
-/* 	$.ajax({
-	    url : "BulkDeleteSale.jsp?selectedItems="+selectedItems,
-	    		//  url : "BulkDeleteSale.jsp?selectedItems="+selectedItems+"mapData="+mapData,
-	    type : "POST",
-	    async : false,
-	    success : function(data) {
-	    }
-	}); */
-	if(selectedItems=="")
-		{
-		 //alert("Please select an item to delete.");
-		 return;
-		}
-	else
-		{
-	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn);
-	}
-}
-function f(i)
-{
-	var i =i;
-	var pk=document.getElementById("payid").value;
-	var branch=document.getElementById("branch").value;
-	var dc=document.getElementById("dc").value;
-	var q=document.getElementById("q"+i).value;
-	var cn=document.getElementById("ddd").value;
-	var ba=document.getElementById("ba").value;
-	var code=document.getElementById("code"+i).value;
-	var cp=document.getElementById("ocp"+i).value;
-	var tp=document.getElementById("tp").value;
-	var bid=document.getElementById("bid"+i).value;
-	
- document.getElementById('did').href=('delsal.jsp?deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&ba='+ba+'&code'+i+'='+code+'&q'+i+'='+q+'&cp'+i+'='+cp+'&bid'+i+'='+i+'&tp='+tp+'&i='+i); 
-
-	}
-function dch() 
-{ 
- var d=document.getElementById("single_cal3").value.toString();
-var dv=d.split("/");
-var da=dv[2]+'-'+dv[0]+'-'+dv[1];
- document.getElementById('da1').value=da;
-}
-$(document).ready(function() {
-
-	var ubran=document.getElementById('ubran').value;
-	var role=document.getElementById('urole').value;
-	if(role!=null && role!="1")
-	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
-	
-	}
-	if(role!=null && role=="2")
-	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
-   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
-    		document.getElementById("invAdj").style.display="block";
-   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
-			{
-			document.getElementById("mod").style.display="block";
-			document.getElementById("grping").style.display="block";
-			}
-	}
-	/* if(role!=null && role=="3")
-	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
-
-	if(role!=null && role=="4")
-	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
-	    
-	}
-	if(role!=null && role=="5")
-	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
-	    
-		document.getElementById("br").style.display="block";
-	}
-	 $('#ex').DataTable( {
-		"processing": true,
-        "serverSide": true,
-        "ajax":"dem.php",
-        "deferRender": true,
-        "deferLoading": 57,
-        "iDisplayLength":10
-    } );
-} ); 
-  $("#FormId").submit( function(e) {
-	  loadAjax();
-	  e.returnValue = false;
-	  return false;
-	});  
-function dch(val) { 
-  var d=document.getElementById(val).value.toString();
-var dv=d.split("/");
-var da=dv[2]+'-'+dv[0]+'-'+dv[1];
-if(val=="single_cal3")
-  document.getElementById('da1').value=da;
-else
-	document.getElementById('da2').value=da;
-}
-</script>
-
-<script type='text/javascript'>
+ <script type="text/javascript">
 function invoiceCheck() {
 if (document.getElementById('taxInvoice').checked) {
     document.getElementById('GSTdiv').style.visibility = 'visible';
@@ -836,7 +655,192 @@ function d(){
     	 /*    	localStorage.setItem("dc", "");   */
 
     });
-</script> 
+</script>    
+<script>
+
+ function funcSelectAll()
+{
+   if(document.forms[0].selectAllCheck.checked==true)
+   {
+        var elements=document.getElementsByClassName('chkbox');
+       	for(var i=0; i<elements.length; i++){
+       		elements[i].checked = true;
+     }
+   }
+     else
+     {
+    	 var elements=document.getElementsByClassName('chkbox');
+        	for(var i=0; i<elements.length; i++){
+        		elements[i].checked = false;
+      }
+     }          
+
+} 
+ 
+$("#deleteButton").click(function() {
+	 $('#successMsg').hide();
+	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
+	  var count_checked = $('input[type="checkbox"]:checked').length;
+	  //alert(count_checked);
+      if(count_checked == 0) 
+      {
+          //alert("Please select any record to delete.");
+           // $('#errorMsg').css({ 'color': 'red'});
+          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
+         
+         $('#errorMsg').show();
+          $("#deleteModal").modal("hide");
+          return false;
+      }
+      else
+    	  {
+    	
+        
+    	  //$('#errorMsg').html('');
+    	  $('#errorMsg').hide();
+    	  }
+});	
+function deleteCheckedRecords(){
+	//var did=document.getElementById("did").value;
+	var pk=document.getElementById("payid").value;
+	var branch=document.getElementById("branch").value;
+	var dc=document.getElementById("dc").value;
+	var cn=document.getElementById("ddd").value;
+	//alert(pk);
+	//alert(branch);
+	//alert(dc);
+	//alert(cn);
+	var items=document.getElementsByName('checkboxRow');
+	var selectedItems="";
+	for(var i=0; i<items.length; i++){
+		if(items[i].type=='checkbox' && items[i].checked==true)
+			if(selectedItems!="")				
+				{
+				selectedItems+=","+items[i].value+"\n";
+				}
+			else
+				{
+			selectedItems+=items[i].value+"\n";
+				}
+	}
+	//alert(selectedItems);
+
+
+
+/* 	$.ajax({
+	    url : "BulkDeleteSale.jsp?selectedItems="+selectedItems,
+	    		//  url : "BulkDeleteSale.jsp?selectedItems="+selectedItems+"mapData="+mapData,
+	    type : "POST",
+	    async : false,
+	    success : function(data) {
+	    }
+	}); */
+	if(selectedItems=="")
+		{
+		 //alert("Please select an item to delete.");
+		 return;
+		}
+	else
+		{
+	   	  var elements=document.getElementsByClassName('chkbox').length;
+    	  var count_checked = $('input[class="chkbox"]:checked').length;
+	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked);
+	}
+}
+function f(i)
+{
+	var i =i;
+	var pk=document.getElementById("payid").value;
+	var branch=document.getElementById("branch").value;
+	var dc=document.getElementById("dc").value;
+	var q=document.getElementById("q"+i).value;
+	var cn=document.getElementById("ddd").value;
+	var ba=document.getElementById("ba").value;
+	var code=document.getElementById("code"+i).value;
+	var cp=document.getElementById("ocp"+i).value;
+	var tp=document.getElementById("tp").value;
+	var bid=document.getElementById("bid"+i).value;
+	
+ document.getElementById('did').href=('delsal.jsp?deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&ba='+ba+'&code'+i+'='+code+'&q'+i+'='+q+'&cp'+i+'='+cp+'&bid'+i+'='+i+'&tp='+tp+'&i='+i); 
+
+	}
+function dch() 
+{ 
+ var d=document.getElementById("single_cal3").value.toString();
+var dv=d.split("/");
+var da=dv[2]+'-'+dv[0]+'-'+dv[1];
+ document.getElementById('da1').value=da;
+}
+$(document).ready(function() {
+	
+
+	var ubran=document.getElementById('ubran').value;
+	var role=document.getElementById('urole').value;
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+		{
+		$('.site_title').css('background-color', 'red');
+		}
+	else
+		{
+		$('.site_title').css('background-color', '');
+		}
+	if(role!=null && role!="1")
+	{
+		$( '[class*="admin"]' ).hide();
+	
+	}
+	if(role!=null && role=="2")
+	{
+		$( '[class*="branch"]' ).hide();
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
+    		document.getElementById("invAdj").style.display="block";
+   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
+			{
+			document.getElementById("mod").style.display="block";
+			document.getElementById("grping").style.display="block";
+			}
+	}
+	if(role!=null && role=="3")
+	{
+		$( '[class*="man"]' ).hide();
+	} 
+
+	if(role!=null && role=="4")
+	{
+		$( '[class*="store"]' ).hide();
+	}
+	if(role!=null && role=="5")
+	{
+		$( '[class*="acc"]' ).hide();
+		document.getElementById("br").style.display="block";
+	}
+	 $('#ex').DataTable( {
+		"processing": true,
+        "serverSide": true,
+        "ajax":"dem.php",
+        "deferRender": true,
+        "deferLoading": 57,
+        "iDisplayLength":10
+    } );
+} ); 
+  $("#FormId").submit( function(e) {
+	  loadAjax();
+	  e.returnValue = false;
+	  return false;
+	});  
+function dch(val) { 
+  var d=document.getElementById(val).value.toString();
+var dv=d.split("/");
+var da=dv[2]+'-'+dv[0]+'-'+dv[1];
+if(val=="single_cal3")
+  document.getElementById('da1').value=da;
+else
+	document.getElementById('da2').value=da;
+}
+</script>
+
+
 
   </body>
 </html>

@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="java.io.*"%>
+<%@page import="java.util.*"%>
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 <%
 /* String id = request.getParameter("userId"); */
@@ -30,7 +28,11 @@ if(user==null)
 session.setAttribute("user",user);
 session.setAttribute("ubranch",uBranch);
 session.setAttribute("role",role);
-
+Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+String environment = props.getProperty("jdbc.environment");
 /* System.out.println("Branch "+uBranch); */
 %>  
 <html lang="en">
@@ -243,6 +245,7 @@ var table= $('#ex').DataTable( {
                       
                   <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
                       
              
                         <!-- 
@@ -399,6 +402,15 @@ var table= $('#ex').DataTable( {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	var s=document.getElementById('branch');
+	var environment=document.getElementById('uenv').value;
+	if(environment!=null && environment=="local")
+		{
+		$('.site_title').css('background-color', 'red');
+		}
+	else
+		{
+		$('.site_title').css('background-color', '');
+		}
 
 /*   	for (var i = 0; i< s.options.length; i++)
 
@@ -424,20 +436,12 @@ var table= $('#ex').DataTable( {
 	$('#bran').html('');
 	if(role!=null && role!="1")
 	{
-		var elements = document.getElementsByClassName('admin');
-
-    		for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		$( '[class*="admin"]' ).hide();
 	
 	}
 	if(role!=null && role=="2")
 	{
-		var elements = document.getElementsByClassName('hide4branch');
-
-   		 for (var i = 0; i < elements.length; i++){
-        		elements[i].style.display = "none";
-    		}
+		$( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
     		document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
@@ -446,36 +450,19 @@ var table= $('#ex').DataTable( {
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	/* if(role!=null && role=="3")
+	 if(role!=null && role=="3")
 	{
-		var elements = document.getElementsByClassName('userv');
-
-		for (var i = 0; i < elements.length; i++){
-    		elements[i].style.display = "none";
-		}
-	} */
+		 $( '[class*="man"]' ).hide();
+	} 
 
 	if(role!=null && role=="4")
 	{
-		var elements = document.getElementsByClassName('hide4store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-	    }
-		var elements1 = document.getElementsByClassName('hide4acc&store');
-
-		for (var j = 0; j < elements1.length; j++){
-    			elements1[j].style.display = "none";
-	    }
+		$( '[class*="store"]' ).hide();
 	    
 	}
 	if(role!=null && role=="5")
 	{
-		var elements = document.getElementsByClassName('hide4acc&store');
-
-		for (var i = 0; i < elements.length; i++){
-    			elements[i].style.display = "none";
-		}
+		$( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
 	}	
