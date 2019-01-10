@@ -296,11 +296,12 @@ if(user==null)
                             <option value="Commission">Commission</option>
                             <option value="ElectricityBill">Electricity Bill</option>
                             <option value="Courier">Courier</option>
+                            <option value="Purchase">Purchase</option>
                             <option value="CashTransfer">Cash Transfer</option>
                             <option value="Interest">Interest On Loans</option>
                             <option value="CreditCard">Credit Card Expenses</option>
                             <option value="Building">Building Maintenance</option>
-                             <option value="Medical">Medical</option>
+                            <option value="Medical">Medical</option>
                             <option value="Others">Others</option>
                           </select>
                         </div>

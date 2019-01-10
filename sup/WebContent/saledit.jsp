@@ -114,6 +114,23 @@ Date ndate=df.parse(dt);
      ap=Double.parseDouble(amp);
      double oldftotalp=Double.parseDouble(oldftp);
      double newtotalp=0;
+   
+     //oldbalamt=oldftotalp-ap
+    		 
+    		 //OB+=newbalamt-oldbalamt
+    		 
+    		 /*
+    		 OB=1000
+    		 old bal= 100
+    		 new bal=190
+    		 new-old= 90
+    		 ob=1000+90.
+    		 
+    		 old bal= 100
+    		 new bal=80
+    		 new-old= -20
+    		 ob=1000-20
+    		 */
      
      billid=Integer.parseInt(bid);
 
