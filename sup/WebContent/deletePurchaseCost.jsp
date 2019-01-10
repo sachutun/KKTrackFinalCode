@@ -28,8 +28,8 @@ ResultSet resultSet = null;
 <%
 try{ 
 	  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
-	     //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-	     Properties props = new Properties();
+	   //  conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+	   Properties props = new Properties();
     InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
     props.load(in);
     in.close();
@@ -50,10 +50,11 @@ try{
   /*   preparedStatement=connection.createStatement();
     // Use PreparedStatements here instead of Statment
     resultSet = statement.executeQuery("delete from Expenses where id="+ recordToDelete ); */
-    preparedStatement = conn.prepareStatement("DELETE FROM CashTransfer WHERE id = ?");
+    System.out.println("DELETE FROM PurchaseCost WHERE id = " +d);
+    preparedStatement = conn.prepareStatement("DELETE FROM PurchaseCost WHERE id = ?");
     preparedStatement.setInt(1,d);
     preparedStatement.executeUpdate();
-     response.sendRedirect("editcash.jsp?res=1"); // redirect to JSP one, which will again reload.
+     response.sendRedirect("editpurchasecost.jsp?res=1"); // redirect to JSP one, which will again reload.
 }catch (Exception e) {
     	 e.printStackTrace();
     	 }

@@ -410,7 +410,7 @@ e.printStackTrace();
 <script>
 function f(p)
 {
- document.getElementById('did').href='delete.jsp?deleteid='+p;	
+ document.getElementById('did').href='deleteExpense.jsp?deleteid='+p;	
 	}
 $(document).ready(function() {
 

@@ -244,10 +244,11 @@ String environment = props.getProperty("jdbc.environment");
 
                    <a href="expenses.jsp"> <button type="button" class="btn btn-info">View </button></a>
 
-                 <a class="hide4acc&man" href="editexpense.jsp">   <button type="button" class="btn btn-warning">Edit</button></a>
+<!--                  <a class="hide4acc&man" href="editexpense.jsp">   <button type="button" class="btn btn-warning">Edit Expenses</button></a> -->
+                   <a class="hide4acc&man" href="editpurchasecost.jsp">   <button type="button" class="btn btn-warning">Edit Purchase Costs</button></a>
                  
                  <a href="CashTransfer.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Cash Transfers</button></a>
-             <a class="ws" href="PurchaseCost.jsp" style="color:white;">   <button type="button" class="btn btn-info" >Purchase Costs</button></a>
+<!--              <a class="ws" href="PurchaseCost.jsp" style="color:white;">   <button type="button" class="btn btn-info" >Purchase Costs</button></a> -->
              </div>      
 
 
@@ -261,7 +262,7 @@ String environment = props.getProperty("jdbc.environment");
                if(role!=null && !(role.equals("1")) && !(role.equals("5")))
             	   branch=uBranch; 
  
-               if(branch != null || branch.equals("All")) 
+               if(branch == null || branch.equals("All")) 
            	    branch="";
                String std=request.getParameter("std");
                String end=request.getParameter("end");

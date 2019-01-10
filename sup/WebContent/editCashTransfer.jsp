@@ -159,7 +159,7 @@ String environment = props.getProperty("jdbc.environment");
             <div class="clearfix"></div>
 
             <div style=" float:right; margin-right: 10px;margin-top: -5%">
-            <form action="editcash.jsp" method="get">
+            <form action="editCashTransfer.jsp" method="get">
              <div class="control-group">
              <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style="/* margin-left:-7% */"> SNo:</label>
                         <div class="col-md-2 col-sm-3 col-xs-3">
@@ -245,10 +245,11 @@ String environment = props.getProperty("jdbc.environment");
                   <div class="x_title">
                     <h2>Edit Cash Transfer</h2>
                    <%  String branch = request.getParameter("branch");
-                   if(role!=null && !(role.equals("1")))
+                   if(role!=null && !(role.equals("1")) && !(role.equals("5")))
                 	   branch=uBranch; 
-                   if(branch ==null)
-                	   branch="";
+                   if(branch == null || branch.equals("All")) 
+                  	    branch="";
+            
                    %>
                         <label style="float:right" id><%= branch %></label>
                     <div class="clearfix"></div>
@@ -312,14 +313,8 @@ Date date=resultSet.getDate("Date");
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("Description") %></td>
 <td><%=resultSet.getDouble("Amount") %></td>
- <td>
-<!--                             
-                            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a> -->
-                <a href="delcashtransfer.jsp?deleteid=<%=primaryKey%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> 
-          <!--   <button onclick="f()" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
-
-               
-               </td>
+<td><button onclick="f(<%=primaryKey%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td>
+ 
                                         </tr>
                                         <% 
 }
@@ -332,6 +327,28 @@ e.printStackTrace();
 
                       </tbody>
                     </table>
+                                   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Are you sure?</h4>
+                        </div>
+                        <div class="modal-body">
+                          <!-- <h4>Text in a modal</h4> -->
+                          <p>Do you really want to delete this item? Click Cancel if you do not wish to delete this item.</p>
+                         
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <a id="did" href=""><button type="button" class="btn btn-danger">Yes, Delete</button></a>  
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
                   </div>
                   </div>
                 </div>
@@ -378,16 +395,11 @@ e.printStackTrace();
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-<!-- <script>
-function f()
-{
-	window.alert("hi");
-	var s="delete.jsp?deleteid="+document.getElementById("dk").innerHTML;
-	document.getElement.id("h").innerHTML+='<button type="button" class="btn btn-primary">Save changes</button>'
-	window.alert(s);
-	}
-</script> -->
 <script>
+function f(p)
+{
+ document.getElementById('did').href='deleteCashTransfer.jsp?deleteid='+p;	
+	}
 $(document).ready(function() {
 
 		var ubran=document.getElementById('ubran').value;
