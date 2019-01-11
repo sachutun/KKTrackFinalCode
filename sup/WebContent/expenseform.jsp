@@ -112,6 +112,16 @@ String uBranch=(String)session.getAttribute("ubranch");
 String role=(String)session.getAttribute("role");
 if(user==null)
 	response.sendRedirect("login.jsp");
+Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+
+String driver = props.getProperty("jdbc.driver");
+String url = props.getProperty("jdbc.url");
+String username = props.getProperty("jdbc.username");
+String password = props.getProperty("jdbc.password");
+String environment = props.getProperty("jdbc.environment");
 %> 
         <!-- top navigation -->
         <div class="top_nav">
@@ -196,6 +206,9 @@ if(user==null)
                   <div class="x_content">
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="expenseform.jsp" method="get" onsubmit="myButton.disabled = true;">
+                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-6">Branch<span class="required">*</span></label>
                         <%
@@ -370,20 +383,10 @@ if(user==null)
 	  connection = ds.getConnection(); */
 	  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
 	   //  connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");
-	Properties props = new Properties();
-    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
-    props.load(in);
-    in.close();
-
-    String driver = props.getProperty("jdbc.driver");
-    if (driver != null) {
+	 if (driver != null) {
         Class.forName(driver).newInstance();  
     }
-
-    String url = props.getProperty("jdbc.url");
-    String username = props.getProperty("jdbc.username");
-    String password = props.getProperty("jdbc.password");
-    String environment = props.getProperty("jdbc.environment");
+	  
     connection = DriverManager.getConnection(url, username, password);
               Statement st=connection.createStatement();
 
@@ -398,9 +401,6 @@ if(user==null)
          %>
                         </div>
                       </div>
-                       <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
-                   <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
 
                     </form>
                   </div>
@@ -494,6 +494,7 @@ $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	var environment=document.getElementById('uenv').value;
+
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');

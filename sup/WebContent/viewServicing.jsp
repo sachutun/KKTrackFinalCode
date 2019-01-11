@@ -32,7 +32,7 @@ ResultSet rs2 = null;
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/log.png"> 
 
-    <title>KK Track- Sales</title>
+    <title>KK Track- Servicing</title>
 
      <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -219,10 +219,10 @@ String environment = props.getProperty("jdbc.environment");
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Sales <!-- <small>Some examples to get you started</small> --></h1>
+                <h1>Servicing <!-- <small>Some examples to get you started</small> --></h1>
               </div>
               <div class="clearfix"></div>
- <form id="FormId" action="viewsale.jsp" method="post" class="form-horizontal form-label-left">
+ <form id="FormId" action="viewServicing.jsp" method="post" class="form-horizontal form-label-left">
      <div class="col-md-4 col-sm-6 col-xs-12">
                         <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -233,7 +233,7 @@ String environment = props.getProperty("jdbc.environment");
                       </div>
  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Code:</label>
                         <div class="col-md-1 col-sm-3 col-xs-3">
-                          <input type="text" id="code" class="form-control col-md-7 col-xs-12" name="code">
+                          <input type="text" id="SCode" class="form-control col-md-7 col-xs-12" name="SCode" value="9999" disabled>
                         </div>
                         <%
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
@@ -241,7 +241,7 @@ String environment = props.getProperty("jdbc.environment");
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
              <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
+                         <%--  <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
                             <option value="All">All Branches</option>
                              <!--  <option value="Bowenpally">Bowenpally</option>
@@ -277,8 +277,8 @@ String environment = props.getProperty("jdbc.environment");
 							<%
 								}
 							%> 
-                          </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                          </select> --%>
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="br" value="Workshop" disabled> 
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -301,7 +301,7 @@ if(branch!=null && branch.equals("All"))
     branch="";
 String std=request.getParameter("std");
  String end=request.getParameter("end");	
- String code=request.getParameter("code");	
+ String code="9999";	
                    %>
             <div class="hide4acc&man" style=" float:right; margin-right: 10px; margin-top:-50px">
 
@@ -309,7 +309,7 @@ String std=request.getParameter("std");
 
                   <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
 
-                 <a href="editSale.jsp" style="color:white;">   <button id="wedit" type="button" class="btn btn-warning ">Edit</button></a>
+<!--                  <a href="editSale.jsp" style="color:white;">   <button id="wedit" type="button" class="btn btn-warning ">Edit</button></a> -->
                   <a href="saleReturn.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Return</button></a>
              </div>        
 
@@ -369,13 +369,28 @@ try{
     connection = DriverManager.getConnection(url, username, password);		  
 statement=connection.createStatement();
 st=connection.createStatement();
+
+int primaryKey=0;
+
+String sql ="SELECT *, SUM(c.LC*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='9999') and b.Code='9999' and month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
+
+String sql3="SELECT *,SUM(c.LC*b.qty) as slc, b.Qty as 'tq' FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code and b.Code='9999' WHERE 1 ";
+String w="";
+String g="group by s.Id";
+if(std!=null && std.length()!=0)
+{
+	w+=" and Date between '"+std+"' and '"+end+"'";
+	//sql3+=w;
+}
+sql3+=w+g;
+/* 
 st2=connection.createStatement();
 st3=connection.createStatement();
-String sql1="";
-int primaryKey=0;
 String sqlc="";
+String sql1="";
 String g="group by s.Id";
 String sql ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
+
 if (branch!=null && branch.length()!=0 )
 	sql1 ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) ";
 
@@ -388,7 +403,7 @@ if (branch!=null && branch.length()!=0 )
 	String w="";
 	if((branch!=null && branch.equals("Workshop")) || (code!=null && code.equals("9999")))
 	{
-		String notWrkshpService= " and b.Code<>'"+9999+"'"+" ";
+		String notWrkshpService= " and b.Code<>'"+9999+"'";
 		sql1+=notWrkshpService;
 		sqlc+=notWrkshpService;
 		sql3+=notWrkshpService;
@@ -434,8 +449,17 @@ else
 resultSet = statement.executeQuery(sql);
 System.out.println(sql);
 
+} */
+if(std!=null && std.length()!=0)
+{
+	resultSet = statement.executeQuery(sql3);
+	System.out.println(sql3);
 }
-
+else
+{
+resultSet = statement.executeQuery(sql);
+System.out.println(sql);
+}
 if(role!="null" && role.equals("1"))
 {
 %>
@@ -482,10 +506,12 @@ while(resultSet.next()){
 	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
 	primaryKey = resultSet.getInt("s.Id");
+	//System.out.println("primary key: " +primaryKey);
 	String whr=primaryKey+"";
 	sql2+=whr;
 	/* if(code!=null && code.length()!=0)
 	sql2+=" and BillDetails.Code='"+code+"'"; */
+	//System.out.println(sql2);
 	rs = st.executeQuery(sql2);
 	String type=resultSet.getString("Type");
 	Date date=resultSet.getDate("Date");
@@ -858,12 +884,6 @@ $(document).ready(function() {
 			document.getElementById("mod").style.display="block";
 			document.getElementById("grping").style.display="block";
 			}
-	    if(ubran!=null && ubran=="Workshop")
-	    	{
-	    	document.getElementById("viewService").style.display="block";
-	    	}
-	    	
-	    
 	}
 	 if(role!=null && role=="3")
 	{
