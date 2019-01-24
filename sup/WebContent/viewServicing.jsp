@@ -805,7 +805,13 @@ finally {
     <script src="build/js/custom.min.js"></script>
      <script src="build/js/shortcut.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function showDet(i)
 {
@@ -824,7 +830,7 @@ function filterColumn ( i ) {
 }
 
 $(document).ready(function() {
-
+	 $.getScript("js/rolePermissions.js");
 	shortcut.add("Ctrl+Shift+X",function() {
 		hideprices();
 		if(role!=null && role!="1")
@@ -840,7 +846,7 @@ $(document).ready(function() {
 
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -859,7 +865,7 @@ $(document).ready(function() {
     	  document.getElementById('wedit').style.display="none";
     	}
 	
-		}//
+		} */
 	/* if(role!=null && role=="3")
 	{
 	var elements = document.getElementsByClassName('userv');
@@ -869,7 +875,7 @@ $(document).ready(function() {
     }
 	} */
  	
-	if(role!=null && role=="2")
+	/* if(role!=null && role=="2")
 	{
 		$( '[class*="branch"]' ).hide();
    		var elements = document.getElementsByClassName('user');
@@ -900,7 +906,7 @@ $(document).ready(function() {
 		$( '[class*="acc"]' ).hide();
 	    
 		//document.getElementById("br").style.display="block";
-	}
+	} */
 	
 	
 

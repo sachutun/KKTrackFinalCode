@@ -236,14 +236,14 @@ String std=request.getParameter("std");
  String end=request.getParameter("end");	
  String code=request.getParameter("code");	
                    %>
-            <div style=" float:right; margin-right: 10px; margin-top:-50px">
+            <div class="hide4acc&store&man" style=" float:right; margin-right: 10px; margin-top:-50px">
 
-            <a class="hide4man" href="addsale.jsp"><button type="button" class="btn btn-success">Add </button></a>
+            <a href="ibtform.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
-                  <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
+                  <a href="viewIBT.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
 
-                 <a class="hide4man" href="editSale.jsp" style="color:white;">   <button type="button" class="btn btn-warning admin">Edit</button></a>
-                  <a class="hide4man" href="saleReturn.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Return</button></a>
+                 <a href="editIBT.jsp" style="color:white;">   <button type="button" class="btn btn-warning admin">Edit</button></a>
+<!--                   <a class="hide4man" href="saleReturn.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Return</button></a> -->
              </div>        
 
             <br/>
@@ -461,7 +461,16 @@ finally {
      <script src="build/js/shortcut.js"></script>
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+	var bran=localStorage.getItem("branch");
+    if(ubran=="All")
+		ubran=bran;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function showDet(i)
 {
@@ -479,11 +488,11 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
-	
+	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var bran=localStorage.getItem("branch");
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+	/* var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -491,12 +500,12 @@ $(document).ready(function() {
 	else
 		{
 		$('.site_title').css('background-color', '');
-		}
+		} */
 	
 	if(ubran=="All")
 		ubran=bran;
 	
-	if(role!=null && role!="1")
+	/* if(role!=null && role!="1")
 	{
 		 $( '[class*="admin"]' ).hide();
 	
@@ -531,7 +540,7 @@ $(document).ready(function() {
 		 $( '[class*="acc"]' ).hide();
 	    
 		//document.getElementById("br").style.display="block";
-	}	   
+	}	    */
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,

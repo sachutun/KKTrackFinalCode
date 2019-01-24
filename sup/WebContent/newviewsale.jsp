@@ -432,6 +432,13 @@ if(role!=null && !(role.equals("1")))
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+     <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
     <script>
 jQuery(function(){
 $("#code").autocomplete("dem.jsp");
@@ -454,9 +461,10 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+	/* var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -495,7 +503,7 @@ $(document).ready(function() {
 	{
 		$( '[class*="acc"]' ).hide();
 		document.getElementById("br").style.display="block";
-	}	 
+	}	  */
 	var table=$('#ex').DataTable( {
         "bProcessing": true,
         /* "sDom": 'prtp',   */

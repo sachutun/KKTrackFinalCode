@@ -520,7 +520,16 @@ finally {
      <script src="build/js/shortcut.js"></script>
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var bran=localStorage.getItem("branch");
+	if(ubran=="All")
+		ubran=bran;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function showDet(i)
 {
@@ -538,11 +547,11 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
-	
+	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var bran=localStorage.getItem("branch");
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -550,11 +559,11 @@ $(document).ready(function() {
 	else
 		{
 		$('.site_title').css('background-color', '');
-		}
+		} */
 	
 	if(ubran=="All")
 		ubran=bran;
-	
+/* 	
 	if(role!=null && role!="1")
 	{
 		 $( '[class*="admin"]' ).hide();
@@ -591,7 +600,7 @@ $(document).ready(function() {
 		 $( '[class*="acc"]' ).hide();
 	    
 		//document.getElementById("br").style.display="block";
-	}	   
+	} */	   
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,

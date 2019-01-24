@@ -169,7 +169,9 @@ String environment = props.getProperty("jdbc.environment");
             <div>
          
            <form id="FormId" action="viewsalereturn.jsp" method="post" class="form-horizontal form-label-left">
-                  
+                                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
                   <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dc"> DCNumber:</label>
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input type="text" id="dc"  class="form-control col-md-7 col-xs-12" name="dc" >
@@ -222,13 +224,11 @@ String environment = props.getProperty("jdbc.environment");
 								}
 							%> 
                           </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 currentBranch" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                         <button type="submit" class="btn btn-success" onclick="d()">Go </button>
                         <button  class="btn btn-success" type="reset" onclick="window.location.reload(true)">Refresh </button>
-                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
-                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
+
                         </form>
                       
                            </br>
@@ -239,10 +239,10 @@ String environment = props.getProperty("jdbc.environment");
                   <div class="x_title">
                     <h2>View Sale Return</h2>
                    <%  String branch = request.getParameter("branch");
-                    		 if(role!=null && !(role.equals("1")))
-                    			   branch=uBranch; 
-                    		 if(branch==null && !(branch.equals("All")))
-                    			 branch="";
+                   if(branch!=null && branch.equals("All"))
+                	    branch="";
+                	if(role!=null && !(role.equals("1")))
+                		   branch=uBranch; 
                    %>
                        <%--  <label style="float:right" ><%= branch %></label> --%>
                     <div class="clearfix"></div>
@@ -443,6 +443,13 @@ e.printStackTrace();
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+     <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
     <script language="javascript" type="text/javascript">  
  var xmlHttp  
  var xmlHttp
@@ -479,11 +486,12 @@ xmlHttp.send(null);
  }
   
  </script> 
-<script type='text/javascript'>
+<script>
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+	/* var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -528,7 +536,7 @@ $(document).ready(function() {
 	    
 		document.getElementById("br").style.display="block";
 	}
-	
+	 */
 		
 		
 		var table=$('#ex').DataTable( {

@@ -343,7 +343,13 @@ String environment = props.getProperty("jdbc.environment");
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-    
+    <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script> 
 <script>
   $("#FormId").submit( function(e) {
 	  loadAjax();
@@ -351,10 +357,11 @@ String environment = props.getProperty("jdbc.environment");
 	  return false;
 	});  
   $(document).ready(function() {
+	  $.getScript("js/rolePermissions.js");
 		var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
 		var s=document.getElementById('branch');
-		var environment=document.getElementById('uenv').value;
+		/* var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -395,7 +402,7 @@ String environment = props.getProperty("jdbc.environment");
 		    
 			//document.getElementById("br").style.display="block";
 		}
-		
+		 */
 	   $('#ex tfoot th').each( function () {
 	        var title = $(this).text();
 	        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );

@@ -400,7 +400,13 @@ String role=(String)session.getAttribute("role");
     <script src="vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-   
+    <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 
 
@@ -440,7 +446,7 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
  } 
 
  $(document).ready(function() {
-	 	
+	 $.getScript("js/rolePermissions.js");
 	 $(window).keydown(function(event){
 		    if(event.keyCode == 13) {
 		      event.preventDefault();
@@ -449,7 +455,7 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
 		  });
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+	/* 	var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -457,17 +463,17 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
 		else
 			{
 			$('.site_title').css('background-color', '');
-			}
+			} */
 		
 		if(role!=null && role!="1")
 		{
-			$( '[class*="admin"]' ).hide();
+			/* $( '[class*="admin"]' ).hide();
 		var elements = document.getElementsByClassName('user');
 
 	    for (var i = 0; i < elements.length; i++){
 	        elements[i].style.display = "block";
 	    }
-
+ */
 	    var s=document.getElementById('branch');
          if(s!=null)
         	 {
@@ -500,7 +506,7 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
 		
 		}	 */
 		
-		if(role!=null && role=="2")
+		/* if(role!=null && role=="2")
 		{
 			$( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
@@ -520,7 +526,7 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
 			$( '[class*="acc"]' ).hide();	
 		    
 			document.getElementById("br").style.display="block";
-		}
+		} */
 	
 	    
 	 var h= $('.right_col').height()+150;

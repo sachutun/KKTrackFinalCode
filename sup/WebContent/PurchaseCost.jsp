@@ -413,6 +413,13 @@ finally {
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
 
 <!--     <script src="build/js/custom.min.js"></script> -->
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function d(){
 
@@ -481,9 +488,10 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 
 
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 var ubran=document.getElementById('ubran').value;
 var role=document.getElementById('urole').value;
-var environment=document.getElementById('uenv').value;
+/* var environment=document.getElementById('uenv').value;
 if(environment!=null && environment=="local")
 	{
 	$('.site_title').css('background-color', 'red');
@@ -527,7 +535,7 @@ if(role!=null && role=="5")
 	$( '[class*="acc"]' ).hide();
     
 	document.getElementById("br").style.display="block";
-}
+} */
 /*  var h= $('.right_col').min-height()+20;
 	 $('.right_col').animate({height:h}, 500); */
 var table=$('#ex').DataTable( {

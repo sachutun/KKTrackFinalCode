@@ -216,7 +216,9 @@ String environment = props.getProperty("jdbc.environment");
               </div>
               <div class="clearfix"></div>
  <form id="FormId" action="saleReturn.jsp" method="post" class="form-horizontal form-label-left">
-                  
+                              <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                    <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>             
           <div class="col-md-4 col-sm-6 col-xs-12">
                         <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -273,9 +275,6 @@ String environment = props.getProperty("jdbc.environment");
                            <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
-                        <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
-                    <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
                   </form>
                       
                            <br/>
@@ -554,6 +553,13 @@ finally {
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
      <script src="build/js/shortcut.js"></script>
+      <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function showDet(i)
 {
@@ -571,6 +577,7 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	shortcut.add("Ctrl+Shift+X",function() {
 		hideprices();
 		if(role!=null && role!="1")
@@ -584,7 +591,7 @@ $(document).ready(function() {
 	}); 
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -628,7 +635,7 @@ $(document).ready(function() {
 		$( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
-	}	   
+	} */	   
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,

@@ -383,6 +383,13 @@ var table= $('#ex').DataTable( {
     
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
   $("#FormId").submit( function(e) {
 	  loadAjax();
@@ -396,13 +403,13 @@ var table= $('#ex').DataTable( {
 	});
 	
   $(document).ready(function() {
-	
+	  $.getScript("js/rolePermissions.js");
 
 	//session mgmt
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	var s=document.getElementById('branch');
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -410,7 +417,7 @@ var table= $('#ex').DataTable( {
 	else
 		{
 		$('.site_title').css('background-color', '');
-		}
+		} */
 
 /*   	for (var i = 0; i< s.options.length; i++)
 
@@ -434,7 +441,7 @@ var table= $('#ex').DataTable( {
 	        $(this).html( '<input id=i'+title+' type="text" placeholder="Search '+title+'" />' );
 	    } );
 	$('#bran').html('');
-	if(role!=null && role!="1")
+/* 	if(role!=null && role!="1")
 	{
 		$( '[class*="admin"]' ).hide();
 	
@@ -465,7 +472,7 @@ var table= $('#ex').DataTable( {
 		$( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
-	}	
+	} */	
 
 var table=$('#ex').DataTable( {
 	        "bProcessing": true,

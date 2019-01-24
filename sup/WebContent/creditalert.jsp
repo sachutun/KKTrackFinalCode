@@ -610,7 +610,13 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script type='text/javascript'>
 function filterColumn ( i ) {
     $('#ex').DataTable().column( i ).search(
@@ -618,9 +624,10 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+		/* var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -628,16 +635,16 @@ $(document).ready(function() {
 		else
 			{
 			$('.site_title').css('background-color', '');
-			}
+			} */
 		
 		if(role!=null && role!="1")
 		{
-			 $( '[class*="admin"]' ).hide();
+			/*  $( '[class*="admin"]' ).hide();
 		var elements = document.getElementsByClassName('user');
 
 	    for (var i = 0; i < elements.length; i++){
 	        elements[i].style.display = "block";
-	    }
+	    } */
 	    
 	    var s=document.getElementById('branch');
       if(s!=null)
@@ -663,7 +670,7 @@ $(document).ready(function() {
 		}
 		
 		
-		if(role!=null && role=="2")
+		/* if(role!=null && role=="2")
 		{
 			 $( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
@@ -689,7 +696,7 @@ $(document).ready(function() {
 			 $( '[class*="acc"]' ).hide();
 		    
 			document.getElementById("br").style.display="block";
-		}
+		} */
 	   
 	var table=$('#ex').DataTable( {
 		     

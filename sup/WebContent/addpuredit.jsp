@@ -117,7 +117,7 @@ xmlHttp.send(null);
           </div>
         </div>
 <%   
-String role=(String)session.getAttribute("urole"); 
+String role=(String)session.getAttribute("role"); 
 String uBranch=(String)session.getAttribute("ubranch");  
 String user=(String)session.getAttribute("user"); 
 if(user==null)
@@ -371,6 +371,13 @@ String environment = props.getProperty("jdbc.environment");
     <script src="vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+      <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 
  function dch() 
@@ -493,6 +500,7 @@ var r=elt.id;
 
 
  $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	 $("select").change(function(){
 	        $(this).find("option:selected").each(function(){
 	            var optionValue = $(this).attr("value");
@@ -507,7 +515,7 @@ var r=elt.id;
 	 
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+		 /*	var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -547,7 +555,7 @@ var r=elt.id;
 			 $( '[class*="acc"]' ).hide();
 		    
 			document.getElementById("br").style.display="block";
-		}
+		} */
 	var c=1;
 $('.add').click(function() {
 	 c++; 

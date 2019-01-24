@@ -536,6 +536,13 @@ if(user==null)
     <script src="vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+      <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 
  function dch() 
@@ -677,10 +684,11 @@ var r=elt.id;
 
 
  $(document).ready(function() {
+	  $.getScript("js/rolePermissions.js");
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
 		var s=document.getElementById('branch');
-		var environment=document.getElementById('uenv').value;	
+		/*var environment=document.getElementById('uenv').value;	
 		if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -689,7 +697,7 @@ var r=elt.id;
 		{
 		$('.site_title').css('background-color', '');
 		}
-		if(role!=null && role!="1")
+	 if(role!=null && role!="1")
 		{
 			 $( '[class*="admin"]' ).hide();
 		
@@ -720,7 +728,7 @@ var r=elt.id;
 			 $( '[class*="acc"]' ).hide();
 		    
 			document.getElementById("br").style.display="block";
-		}
+		} */
 	 $("select").change(function(){
 	        $(this).find("option:selected").each(function(){
 	            var optionValue = $(this).attr("value");

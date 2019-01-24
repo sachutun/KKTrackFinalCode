@@ -412,13 +412,20 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
-    
+     <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function chsn(i)
 {
 	document.getElementById("i").value=i;
 }
  $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	 var table=$('#ex').DataTable( {
 	        "bProcessing": true,
 	        /* "sDom": 'prtp',   */
@@ -447,7 +454,7 @@ function chsn(i)
 	    } );
 		var ubran=document.getElementById('ubran').value;
 	 	var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+		/* var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -487,7 +494,7 @@ function chsn(i)
 			$( '[class*="acc"]' ).hide();
 
 			document.getElementById("br").style.display="block";
-		}
+		} */
 		
 } ); 
   $("#FormId").submit( function(e) {

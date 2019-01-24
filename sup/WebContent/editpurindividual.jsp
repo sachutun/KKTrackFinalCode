@@ -564,6 +564,13 @@ e.printStackTrace();
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
+     <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
     
 <script>
 function funcSelectAll()
@@ -653,9 +660,10 @@ function deleteCheckedRecords(){
 }
 
  $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 		var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+		/* var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -693,7 +701,7 @@ function deleteCheckedRecords(){
 			$( '[class*="acc"]' ).hide();
 		    
 			document.getElementById("br").style.display="block";
-		}
+		} */
     $('#ex').DataTable( {
     	"processing": true,
         "serverSide": true,

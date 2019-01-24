@@ -255,7 +255,7 @@ String environment = props.getProperty("jdbc.environment");
 							%> 
                             
                           </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 currentBranch" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -326,7 +326,7 @@ String std=request.getParameter("std");
                   <div class="x_content">
                   
        <div class="table-responsive"> 
-                    <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
+                    <table id="ex" class="table display table-striped table-bordered dt-responsive" width="100%">
                       <thead>
                         <tr>
                             <tr>
@@ -340,9 +340,9 @@ String std=request.getParameter("std");
                                             <th >Amount Paid</th>
                                             <th >Balance Amount</th>
                                             <th>Type</th>
-                                            <th>Bill Details</th> 
-                                            <th>Previous Payment Details</th> 
-                                            <th>New Payment</th>  
+                                            <th class="none" >Bill Details</th> 
+                                            <th class="none" >Previous Payment Details</th> 
+                                            <th class="none" >New Payment</th>  
                                            
                                         </tr>
                       </thead>
@@ -627,7 +627,13 @@ e.printStackTrace();
     <script src="build/js/custom.min.js"></script>
      <script src="build/js/shortcut.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 
 <script type='text/javascript'>
 function filterColumn ( i ) {
@@ -651,10 +657,10 @@ $(document).ready(function() {
 		}
 	});
 	
-	
+
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+/* 		var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -662,15 +668,15 @@ $(document).ready(function() {
 		else
 			{
 			$('.site_title').css('background-color', '');
-			}
+			} */
 		
 		if(role!=null && role!="1")
 		{
-			$( '[class*="admin"]' ).hide();
+			/* $( '[class*="admin"]' ).hide();
 			if(role!="3")
 				{
 				$( '[class*="user"]' ).show();
-				}
+				} */
 			
 	    
 	    var s=document.getElementById('branch');
@@ -696,7 +702,7 @@ $(document).ready(function() {
       /* s.disabled="true"; */
 		}
 	
-		if(role!=null && role=="2")
+	/* 	if(role!=null && role=="2")
 		{
 			$( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
@@ -722,8 +728,8 @@ $(document).ready(function() {
 			$( '[class*="acc"]' ).hide();
 
 			document.getElementById("br").style.display="block";
-		}
-	   
+		} */
+		 $.getScript("js/rolePermissions.js");
 	var table=$('#ex').DataTable( {
 		     
 		        "iDisplayStart":0,

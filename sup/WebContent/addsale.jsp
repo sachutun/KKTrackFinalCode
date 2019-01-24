@@ -779,7 +779,13 @@ String role=(String)session.getAttribute("role");
     <script src="vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
-   
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>  
 <script>
 function invoiceCheck() {
 
@@ -978,7 +984,7 @@ function cls(elt)
 		  });
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
-		var environment=document.getElementById('uenv').value;
+		/* var environment=document.getElementById('uenv').value;
 		if(environment!=null && environment=="local")
 			{
 			$('.site_title').css('background-color', 'red');
@@ -986,16 +992,16 @@ function cls(elt)
 		else
 			{
 			$('.site_title').css('background-color', '');
-			}
+			} */
 		
 		if(role!=null && role!="1")
 		{
-			 $( '[class*="admin"]' ).hide();
+			 /* $( '[class*="admin"]' ).hide();
 		var elements = document.getElementsByClassName('user');
 
 	    for (var i = 0; i < elements.length; i++){
 	        elements[i].style.display = "block";
-	    }
+	    } */
 
 	    var s=document.getElementById('branch');
          if(s!=null)
@@ -1029,7 +1035,7 @@ function cls(elt)
 		
 		}	 */
 		
-		if(role!=null && role=="2")
+		/* if(role!=null && role=="2")
 		{
 			 $( '[class*="branch"]' ).hide();
 	   		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
@@ -1056,8 +1062,8 @@ function cls(elt)
 		    
 			document.getElementById("br").style.display="block";
 		}
-	
-	    
+	 */
+	  $.getScript("js/rolePermissions.js"); 
 	 var h= $('.right_col').height()+150;
 	 $('.right_col').animate({height:h}, 500);
 	 $("select").change(function(){

@@ -517,6 +517,13 @@ finally {
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
+     <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
     <script>
 /*     function dch() { 
   	  var d=document.getElementById("single_cal3").value.toString();
@@ -630,10 +637,10 @@ $(document).ready(function() {
 	        closeText: "Clear"
 	        
 	    });	
-	
+	   $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -678,7 +685,7 @@ $(document).ready(function() {
 		 $( '[class*="acc"]' ).hide();
 	    
 		document.getElementById("br").style.display="block";
-	}
+	} */
 
 	
 	/*  var h= $('.right_col').min-height()+20;

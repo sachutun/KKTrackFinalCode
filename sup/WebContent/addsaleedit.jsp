@@ -1,13 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.io.*"%>
-<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.*"%>
 <%-- 
 <%
 /* String id = request.getParameter("userId"); */
@@ -153,6 +149,13 @@ ResultSet resultSet = null;
 				String role = (String) session.getAttribute("role");
 				if (user == null)
 					response.sendRedirect("login.jsp");
+			
+        		Properties props = new Properties();
+			InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+			props.load(in);
+			in.close();
+
+			String environment = props.getProperty("jdbc.environment");
 			%>
 			<!-- top navigation -->
 			<div class="top_nav">
@@ -452,6 +455,9 @@ ResultSet resultSet = null;
 												value=<%=uBranch%>> <input id="urole"
 												class="form-control col-md-7 col-xs-12" type="hidden"
 												value=<%=role%>>
+												<input id="uenv"
+												class="form-control col-md-7 col-xs-12" type="hidden"
+												value=<%=environment%>>
 											<div class="ln_solid"></div>
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
@@ -521,7 +527,13 @@ ResultSet resultSet = null;
 	<script src="vendors/starrr/dist/starrr.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="build/js/custom.min.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 	<script>
 		function dch() {
 			var d = document.getElementById("single_cal3").value.toString();
@@ -616,9 +628,8 @@ ResultSet resultSet = null;
 			}, 500);
 		}
 
-		$(document)
-				.ready(
-						function() {
+		$(document).ready(function() {
+			 $.getScript("js/rolePermissions.js");
 							var c = 1;
 							$('.add')
 									.click(
@@ -648,7 +659,7 @@ ResultSet resultSet = null;
 							var ubran = document.getElementById('ubran').value;
 							var role = document.getElementById('urole').value;
 
-							if (role != null && role != "1") {
+							/* if (role != null && role != "1") {
 								var elements = document
 										.getElementsByClassName('admin');
 
@@ -681,7 +692,7 @@ ResultSet resultSet = null;
 							 }
 							 } */
 
-							if (role != null && role == "4") {
+							/* if (role != null && role == "4") {
 								var elements = document
 										.getElementsByClassName('hide4store');
 
@@ -705,7 +716,7 @@ ResultSet resultSet = null;
 								}
 
 								document.getElementById("br").style.display = "block";
-							}
+							} */
 						});
 		$(window).load(function() {
 			$(".se-pre-con").fadeOut("slow");

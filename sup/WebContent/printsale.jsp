@@ -349,7 +349,7 @@ String sqlc="";
 int primaryKey=0;
 
 String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE()))";
-if (branch!=null && branch.length()!=0 )
+//if (branch!=null && branch.length()!=0 )
 
 
 	//sql1 ="SELECT s.Date, s.DCNumber, s.CustomerName,b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 ))";
@@ -367,7 +367,8 @@ if(branch!="" && branch!=null)
 {
 	w+=" and Branch='"+branch+"'";
 	//sql+=w;
-	sql1+=" and Branch='"+branch+"'";
+	//sql1+=" and Branch='"+branch+"'";
+	sql1=sql+w;
 }
 if(std!=null && std.length()!=0)
 {
@@ -380,33 +381,33 @@ sql3+=w;
 
 if(code!=null && code.length()!=0)
 {
+	System.out.println("sqlc: "+sqlc);
 	resultSet = statement.executeQuery(sqlc);
-	System.out.println(sqlc);
 }
 
 else if(std!=null && std.length()!=0)
 {
-	resultSet = statement.executeQuery(sql3);
-	System.out.println(sql3);
+	System.out.println("sql3: "+sql3);
+	resultSet = statement.executeQuery(sql3);	
 }
 
 
 else if(branch!="" && branch!=null)
-{
-	resultSet = statement.executeQuery(sql1);	
-	System.out.println(sql1);
+{		
+	System.out.println("sql1: "+sql1);
+	resultSet = statement.executeQuery(sql1);
 }
 else
 {
-resultSet = statement.executeQuery(sql);
-System.out.println(sql);
-
+	System.out.println("sql: "+sql);
+	resultSet = statement.executeQuery(sql);
 }
 while(resultSet.next()){
 	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 	primaryKey = resultSet.getInt("Sale.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
+	System.out.println("sql2: "+sql2);
 	rs = st.executeQuery(sql2);
 	String type=resultSet.getString("Type");
 	Date date=resultSet.getDate("Date");
@@ -549,7 +550,16 @@ finally {
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+ <script>
+    var ubran=document.getElementById('ubran').value;
+	var bran=localStorage.getItem("branch");
+	if(ubran=="All")
+		ubran=bran;
+    var role=document.getElementById('urole').value;
+    var environment=document.getElementById('uenv').value;
+    var path = window.location.pathname;
+    var callingJSP = path.split("/").pop();
+</script>
 <script>
 function showDet(i)
 {
@@ -567,6 +577,7 @@ function filterColumn ( i ) {
     ).draw();
 }
 $(document).ready(function() {
+	 $.getScript("js/rolePermissions.js");
 	function exportTableToCSV($table, filename) {
 		 
 	     //rescato los títulos y las filas
@@ -640,7 +651,7 @@ $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var bran=localStorage.getItem("branch");
 	var role=document.getElementById('urole').value;
-	var environment=document.getElementById('uenv').value;
+/* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
 		$('.site_title').css('background-color', 'red');
@@ -648,12 +659,12 @@ $(document).ready(function() {
 	else
 		{
 		$('.site_title').css('background-color', '');
-		}
+		} */
 	
 	if(ubran=="All")
 		ubran=bran;
 	
-	if(role!=null && role!="1")
+/* 	if(role!=null && role!="1")
 	{
 		$( '[class*="admin"]' ).hide();
     		var elements = document.getElementsByClassName('user');
@@ -687,7 +698,7 @@ $(document).ready(function() {
 	{
 		$( '[class*="acc"]' ).hide();
 		document.getElementById("br").style.display="block";
-	}	   
+	}	 */   
 var table=$('#ex').DataTable( {
 	     
 	        "iDisplayStart":0,
