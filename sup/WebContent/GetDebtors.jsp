@@ -30,7 +30,7 @@ String role=request.getParameter("role");
     String Aadhaar = "";
     String GST = "";
     String OB = "";
- 
+    String AdditionalMobile = "";
   
     String dir = "asc";
     String sStart = request.getParameter("iDisplayStart");
@@ -43,9 +43,10 @@ String role=request.getParameter("role");
     CustID = request.getParameter("sSearch_0");
     CustomerName = request.getParameter("sSearch_1");
     Mobile = request.getParameter("sSearch_2");
-    Aadhaar = request.getParameter("sSearch_3");
-    GST = request.getParameter("sSearch_4");
-    OB = request.getParameter("sSearch_5");
+    AdditionalMobile = request.getParameter("sSearch_3");
+    Aadhaar = request.getParameter("sSearch_4");
+    GST = request.getParameter("sSearch_5");
+    OB = request.getParameter("sSearch_6");
  
   
       
@@ -74,6 +75,10 @@ String role=request.getParameter("role");
     if (Mobile!="" && Mobile!=null) {
         String sMobile = " Mobile like '%" + Mobile + "%'";
         sArray.add(sMobile);
+    } 
+    if (AdditionalMobile!="" && AdditionalMobile!=null) {
+        String sAddMobile = " AdditionalMobile like '%" + AdditionalMobile + "%'";
+        sArray.add(sAddMobile);
     }
     if (Aadhaar!="" && Aadhaar!=null) {
         String sAadhaar = " Aadhaar like '%" + Aadhaar + "%'";
@@ -170,7 +175,7 @@ String role=request.getParameter("role");
         String sql = "SELECT * FROM "+table;
         
          String searchTerm = request.getParameter("sSearch");
-        String globeSearch =  " where CustID like '%"+searchTerm+"%'"+ " or CustomerName like '%"+searchTerm+"%'"+ " or Mobile like '%"+searchTerm+"%'"+ " or Aadhaar like '%"+searchTerm+"%'"+ " or GST like '%"+searchTerm+"%'"+ " or OB like '%"+searchTerm+"%'"; 
+        String globeSearch =  " where CustID like '%"+searchTerm+"%'"+ " or CustomerName like '%"+searchTerm+"%'"+ " or Mobile like '%"+searchTerm+"%'"+ " or AdditionalMobile like '%"+searchTerm+"%'"+ " or Aadhaar like '%"+searchTerm+"%'"+ " or GST like '%"+searchTerm+"%'"+ " or OB like '%"+searchTerm+"%'"; 
       
         if(searchTerm!="" && searchTerm!=null)
         	searchSQL=globeSearch;
@@ -199,6 +204,7 @@ String role=request.getParameter("role");
             ja.put(rs.getString("CustID"));
             ja.put(rs.getString("CustomerName"));
             ja.put(rs.getString("Mobile"));
+            ja.put(rs.getString("AdditionalMobile"));
             ja.put(rs.getString("Aadhaar"));
             ja.put(rs.getString("GST"));
             //System.out.println(rs.getString("CustID") + " -> " + rs.getInt("OB"));
