@@ -7,7 +7,7 @@ Role No : Description
  2      : branch
  3      : manager
  4      : store
- 5      : admin
+ 5      : accountant
 --------------------------------------------------------------------------------------------------------- */
 
 if (environment != null && environment == "local") 
