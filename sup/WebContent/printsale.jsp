@@ -381,25 +381,25 @@ sql3+=w;
 
 if(code!=null && code.length()!=0)
 {
-	System.out.println("sqlc: "+sqlc);
+	//System.out.println("sqlc: "+sqlc);
 	resultSet = statement.executeQuery(sqlc);
 }
 
 else if(std!=null && std.length()!=0)
 {
-	System.out.println("sql3: "+sql3);
+	//System.out.println("sql3: "+sql3);
 	resultSet = statement.executeQuery(sql3);	
 }
 
 
 else if(branch!="" && branch!=null)
 {		
-	System.out.println("sql1: "+sql1);
+//	System.out.println("sql1: "+sql1);
 	resultSet = statement.executeQuery(sql1);
 }
 else
 {
-	System.out.println("sql: "+sql);
+//	System.out.println("sql: "+sql);
 	resultSet = statement.executeQuery(sql);
 }
 while(resultSet.next()){
@@ -407,7 +407,7 @@ while(resultSet.next()){
 	primaryKey = resultSet.getInt("Sale.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
-	System.out.println("sql2: "+sql2);
+//	System.out.println("sql2: "+sql2);
 	rs = st.executeQuery(sql2);
 	String type=resultSet.getString("Type");
 	Date date=resultSet.getDate("Date");
@@ -452,8 +452,8 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getDouble("MaxPrice") %></td>
-<td><%=rs.getDouble("BillDetails.CostPrice") %></td>
+<td><%=rs.getString("MaxPrice") %></td>
+<td><%=rs.getString("BillDetails.CostPrice") %></td>
 <td><%=rs.getFloat("BillDetails.Qty") %></td>
 
 </tr>
