@@ -348,7 +348,7 @@ String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE()))";
+String sql ="SELECT DISTINCT Sale.Id, Sale.Branch, Sale.Date, Sale.DCNumber, Sale.CustomerName, Sale.CustomerNumber, Sale.Type, Sale.TotalPrice, Sale.AmountPaid FROM Sale where Month(Date) in( Month(CURDATE())) and year(Date) in (Year(CURDATE()))";
 //if (branch!=null && branch.length()!=0 )
 
 
