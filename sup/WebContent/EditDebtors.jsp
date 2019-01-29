@@ -296,6 +296,7 @@ var table= $('#ex').DataTable( {
                                             <th>CustID</th>
                                             <th>CustomerName</th>
                                             <th>Mobile</th>
+                                            <th>Additional Mobile</th>
                                             <th>Aadhaar</th>
                                             <th>GST</th>
                                             <th>OB</th>
@@ -311,6 +312,7 @@ var table= $('#ex').DataTable( {
                                             <th>CustID</th>
                                             <th>CustomerName</th>
                                             <th>Mobile</th>
+                                            <th>Additional Mobile</th>
                                             <th>Aadhaar</th>
                                             <th>GST</th>
                                             <th>OB</th>
@@ -555,7 +557,7 @@ var table=$('#ex').DataTable( {
 	           	 });
 	           	 var dat=da.split(",");
 	           	
-	         	window.location.href="autoDebtorEdit.jsp?custId="+dat[0]+"&custName="+dat[1]+"&mobile="+dat[2]+"&aadhaar="+dat[3]+"&gst="+dat[4]+"&ob="+dat[5];
+	         	window.location.href="autoDebtorEdit.jsp?custId="+dat[0]+"&custName="+dat[1]+"&mobile="+dat[2]+"&aadhaar="+dat[4]+"&gst="+dat[5]+"&ob="+dat[6]+"&addMob="+dat[3];
 	        			$(this).html(c);
 	        		 });
 	        		

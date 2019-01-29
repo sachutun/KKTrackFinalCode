@@ -344,7 +344,13 @@ while(resultSet.next()){
                                         <td><%=resultSet.getString("CustID")  %></td>
                                         
 <td><%=resultSet.getString("CustomerName") %></td>
-<td><%=resultSet.getString("Mobile") %></td>
+<%String mobile="";
+String additionalMobile=resultSet.getString("AdditionalMobile");
+if(additionalMobile!=null && additionalMobile!="")
+	mobile=resultSet.getString("Mobile") +","+ additionalMobile;
+else
+  	mobile=resultSet.getString("Mobile");%>
+<td><%=mobile %></td>
 
 <td><%=resultSet.getInt("OB") %></td>
    <td> 
