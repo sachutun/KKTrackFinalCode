@@ -522,14 +522,21 @@ var table=$('#ex').DataTable( {
 	 
 	    $('#ex tbody').on( 'click', '.ed', function () {
 	        var data = table.row( $(this).parents('tr') ).data();
+	        var columnNo=2;
 	        $(this).parents('tr').children('td:not(:first-child, :last-child)').each(function(){
-	       var content = $(this).html();
-	   	localStorage.setItem("content", content);
-	        $(this).html('<input class="col-md-12" type="text" value="' + content + '">');
-	        
-	      /* window.location.href="editCodeIndividual.jsp?c="+data[0]; */
-	      
-	        } );
+	       		var content = $(this).html();
+	   			localStorage.setItem("content", content);
+	   			if(columnNo=="3" || columnNo=="4")
+		   		{
+	   				$(this).html('<input class="col-md-12" type = "number" value="' + content + '" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />');	
+		   		}
+	   			else
+	   			{
+	   				$(this).html('<input class="col-md-12" type="text" value="' + content + '">');
+	   			}
+	   			columnNo++;
+	     		 /* window.location.href="editCodeIndividual.jsp?c="+data[0]; */	      
+	        	});
 	        $(this).parents('tr').children('td:last-child').each(function(){
 	        	
 	        	$(this).html('<button type=\"button\" class=\"sv btn btn-info\" style=\"margin-bottom: 1px;margin-left: 2%;\">Save</button><button type=\"button\" class=\"bck btn btn-warning\" style=\"margin-bottom: 1px;margin-left: 2%;\">Back</button>');

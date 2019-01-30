@@ -7,7 +7,7 @@
 <%
 String role=request.getParameter("role");
 /* System.out.println("role="+role); */
-    String[] cols = { "CustID","CustomerName","Mobile","Aadhaar", "GST", "OB"};
+    String[] cols = { "CustID","CustomerName","Mobile","AdditionalMobile","Aadhaar", "GST", "OB"};
     
    
   /*   	 String[] cols2= { "Branch","Code","Machine", "HSNCode",  "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity"}; */
