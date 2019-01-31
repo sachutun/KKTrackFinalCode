@@ -368,7 +368,7 @@ else
              </div>
                 <div class="col-md-3 col-sm-3 col-xs-4 ">
                <label for="pdate"> Date:</label>
-                <input  readonly="readonly" type="text" id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>" class="dateField datepicker" > 
+                <input  required  type="text" id="pdate<%=resultSet.getString("CustID")%>" name="pdate<%=resultSet.getString("CustID")%>" class="dateField datepicker" > 
 </div>
 
                        <div class="col-md-7 col-sm-3 col-xs-4">
@@ -543,7 +543,7 @@ finally {
         day  = ("0" + date.getDate()).slice(-2);
     return [ date.getFullYear(), mnth, day ].join("-");
 }
-
+  
  function d(){
 
 	 	var dr=document.getElementById('daterange').innerHTML;
@@ -632,17 +632,19 @@ $.fn.dataTable.ext.search.push(
 	        return false;
 	    }
 	);
+
 $(document).ready(function() {
-	
 	   $(".dateField").datepicker({
 	        autoclose: true,
 	        showOtherMonths: true,
 	        selectOtherMonths: true,
 	        gotoCurrent: true,
 	        dateFormat: 'yy-mm-dd',
-	        closeText: "Clear"
-	        
+	        closeText: "Clear"	        
 	    });	
+	   $(".dateField").keydown(function (event) {
+	        event.preventDefault();
+	    });
 	   $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
@@ -790,7 +792,9 @@ var table=$('#ex').DataTable( {
 	        $('.datepicker').val("");
 	        dataTable.columns(pdate).search("").draw();
 	    });
-	   
+	    $(".dateField").keydown(function (event) {
+	        event.preventDefault();
+	    });
 $('input.column_filter').on( 'keyup click', function () {
     filterColumn( $(this).attr('data-column') );
 } );
