@@ -212,10 +212,26 @@ String environment = props.getProperty("jdbc.environment");
                   <input id="end" name="end" class="form-control col-md-7 col-xs-12" type="hidden" > 
                         </div>
                       </div>
-                      
+  <%
+  if (driver != null) {
+      Class.forName(driver).newInstance();  
+  }
+  connection = DriverManager.getConnection(url, username, password);
+  st=connection.createStatement();
+  //String query1="Select DISTINCT(Grp) FROM CodeList where Grp <>''";
+  rs2 =st.executeQuery("Select DISTINCT(Grp) FROM CodeList where Grp <>''");%>
+                     
  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Group:</label>
-                        <div class="col-md-1 col-sm-3 col-xs-3">
-                          <input type="text" id="grp" class="form-control col-md-7 col-xs-12" name="grp">
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                         <!-- <input type="text" id="grp" class="form-control col-md-7 col-xs-12" name="grp"> -->
+							<select class="form-control col-md-7 col-xs-12" name="grp" id="grp">
+								<option value="">Select a Group</option> 
+        							<%  while(rs2.next())
+        								{
+        								String group=rs2.getString(1);%>
+            						<option value="<%=group%>"><%= group%></option>
+        							<% } %>
+        						</select>
                         </div>
                         <%
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
@@ -337,23 +353,18 @@ try{
 		 // Class.forName("com.mysql.jdbc.Driver").newInstance();  
 	 	  //   connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
 
-    if (driver != null) {
-        Class.forName(driver).newInstance();  
-    }
-    connection = DriverManager.getConnection(url, username, password);	 	      
 statement=connection.createStatement();
-st=connection.createStatement();
 st2=connection.createStatement();
 String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT *  FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date)= month(CURRENT_DATE) and year(Date)=year(CURDATE())";
+String sql ="SELECT *  FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date)= month(CURDATE()) and year(Date)=year(CURDATE())";
 
-if (branch!=null && branch.length()!=0 )
+//if (branch!=null && branch.length()!=0 )
 
-	sql1 ="SELECT * FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) = month(CURRENT_DATE) year(Date)=year(CURDATE())";
-
+	//sql1 ="SELECT * FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) = month(CURRENT_DATE) year(Date)=year(CURDATE())";
+sql1=sql;
 	
 	String sql3="SELECT * FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
 	String w="";
@@ -848,6 +859,7 @@ document.getElementById('da1').value=localStorage.getItem("pd");  */
 
 	    	}
 	    	localStorage.setItem("branch", "");
+	    	localStorage.setItem("grp", "");
 	     	localStorage.setItem("daterange", "Select Date Range"); 
 	  /*   	localStorage.setItem("sd", ""); */
 	  /*   	localStorage.setItem("dc", ""); */
