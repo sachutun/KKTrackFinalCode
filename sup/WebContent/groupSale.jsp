@@ -32,7 +32,7 @@ ResultSet rs2 = null;
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/log.png"> 
 
-    <title>KK Track- Audit Sales</title>
+    <title>KK Track- Group Sales</title>
 
      <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -808,7 +808,7 @@ function d(){
         	localStorage.setItem("end", "");
     		}
        	localStorage.setItem("branch", document.getElementById('branch').value);
-    	localStorage.setItem("code", document.getElementById('code').value);
+    	localStorage.setItem("grp", document.getElementById('grp').value);
      	localStorage.setItem("daterange", document.getElementById('daterange').innerHTML);
 /*    	localStorage.setItem("sd", document.getElementById('single_cal3').value);
 	localStorage.setItem("pd", document.getElementById('da1').value); */
@@ -821,7 +821,7 @@ $(window).load(function () {
 	 document.getElementById('daterange').innerHTML=localStorage.getItem("daterange"); 
 	 document.getElementById('std').value=localStorage.getItem("std"); 
 	 document.getElementById('end').value=localStorage.getItem("end"); 
-	 document.getElementById('code').value=localStorage.getItem("code"); 
+	 document.getElementById('grp').value=localStorage.getItem("grp"); 
 /* 
 document.getElementById('single_cal3').value=localStorage.getItem("sd"); 
 
