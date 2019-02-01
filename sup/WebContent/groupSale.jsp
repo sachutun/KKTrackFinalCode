@@ -73,6 +73,14 @@ ResultSet rs2 = null;
 	z-index: 600000000;
 	background: url(images/Preloader_2.gif) center no-repeat #fff;
 }
+#grpDiv {
+    position:relative;
+    height:30px;
+    width:200px;
+}
+#grpDiv select {
+    position:absolute;
+}
   </style>
   </head>
 <script language="javascript" type="text/javascript">  
@@ -222,9 +230,9 @@ String environment = props.getProperty("jdbc.environment");
   rs2 =st.executeQuery("Select DISTINCT(Grp) FROM CodeList where Grp <>''");%>
                      
  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Group:</label>
-                        <div class="col-md-2 col-sm-4 col-xs-4">
+                        <div id="grpDiv" class="col-md-2 col-sm-4 col-xs-4">
                          <!-- <input type="text" id="grp" class="form-control col-md-7 col-xs-12" name="grp"> -->
-							<select class="form-control col-md-7 col-xs-12" name="grp" id="grp">
+							<select class="form-control col-md-7 col-xs-12" name="grp" id="grp" onmousedown="if(this.options.length>6){this.size=6;}"  onchange='this.size=0;' onblur="this.size=0;">
 								<option value="">Select a Group</option> 
         							<%  while(rs2.next())
         								{
