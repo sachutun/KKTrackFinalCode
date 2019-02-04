@@ -380,7 +380,7 @@ String role=(String)session.getAttribute("role");
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
                         <div class="col-md-3 col-sm-3 col-xs-10">
-                          <select class="select2_single form-control admin" tabindex="-1" id="branch" name="branch" required="required">
+                          <select class="select2_single form-control admin" tabindex="-1" id="branch" name="branch" required="required" onchange="addInvoiceCode()">
                             <option></option>
                              <!--  <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
@@ -419,6 +419,7 @@ String role=(String)session.getAttribute("role");
                           </select>
                            <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
+                         
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
                         <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
@@ -787,6 +788,40 @@ String role=(String)session.getAttribute("role");
     var callingJSP = path.split("/").pop();
 </script>  
 <script>
+function addInvoiceCode()
+{
+	var code;
+	var branch = document.getElementById("branch").value;
+
+	  switch(branch) {
+	    case "Bowenpally"	: code = "BP";
+	    					   	break;
+	    case "Miyapur"   	: code = "MY";
+	    					   	break;
+	    case "LBNagar"   	:code = "LB";
+	   					  	break;
+	    case "Workshop"   	:code = "WS";
+			  			  	break;
+	    case "Rajahmundry"  :code = "RJ";
+			                	break;
+	    case "Vishakapatnam":code = "VZ";
+			  				break;
+	    case "Bhubhaneshwar":code = "BB";
+			  				break;
+	    case "Vijayawada"   :code = "VO";
+			  				break;
+	    case "Vijayawadan"  :code = "VN";
+			  				break;
+	    case "Tekkali"      :code = "TK";
+		  					break;
+	    case "Barhi"   		:code = "BH";
+		  					break;
+	    default:
+	    	code = "";
+	  }
+	  document.getElementById("dcnumber").value = code;
+}
+
 function invoiceCheck() {
 
     if (document.getElementById('taxInvoice').checked) {
