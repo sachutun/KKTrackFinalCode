@@ -321,7 +321,7 @@ statement=connection.createStatement();
 //SELECT d.CustId,d.Branch,d.CustomerName,d.OB,SUM(s.Amount) as Collections  FROM Debtors d , SaleCredit s  WHERE d.CustId=s.CustId and Date between '2018-12-01' and '2018-12-31' group by s.CustId
 //String sql ="SELECT d.CustId,d.Branch,d.CustomerName,d.OB,s.Amount,s.Date,s.Comments  FROM Debtors d , SaleCredit s WHERE d.CustId=s.CustId";
 //String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB FROM Debtors d WHERE 1";
-String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where month(Date)= month(CURRENT_DATE) and CustID=d.CustID group by CustId) as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target, (Select Datediff((CURRENT_DATE),Max(sc.Date)) from SaleCredit sc where sc.CustID=d.CustID ) as lastpayment  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1"; 
+String sql="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) and CustID=d.CustID group by CustId) as Collections, (Select SUM(BalanceAmount) from Sale sa where sa.CustID=d.CustID and  DATEDIFF(Last_Day(CURRENT_DATE), sa.Date)>50 group by d.CustID) as target, (Select Datediff((CURRENT_DATE),Max(sc.Date)) from SaleCredit sc where sc.CustID=d.CustID ) as lastpayment  FROM Debtors d left outer join SaleCredit s on d.CustID=s.CustID WHERE 1"; 
 String whr="";
 String primaryKey;
 String sql2="SELECT d.CustId,d.Branch,d.CustomerName,d.OB, (Select SUM(Amount) from SaleCredit where CustID=d.CustID";
@@ -422,7 +422,7 @@ while(resultSet.next()){
                           else 
                           {
  %>
-<td> Did not buy anything in 2018</td>
+<td> Did not buy anything recently</td>
                                        
                                         <% }
  									
