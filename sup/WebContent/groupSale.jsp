@@ -319,7 +319,7 @@ String std=request.getParameter("std");
                   <div class="x_content">
                 
                      <div class="table-responsive"> 
-                    <table id="ex" class="table table-striped table-bordered " >
+                    <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%" >
                       <thead>
                         <tr>
                             <tr>
