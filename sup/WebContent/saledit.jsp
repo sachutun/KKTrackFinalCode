@@ -22,9 +22,11 @@ PreparedStatement preparedStatement = null;
 PreparedStatement ps = null;
 PreparedStatement ps1 = null;
 PreparedStatement ps2 = null;
+PreparedStatement ps3 = null;
 ResultSet resultSet = null;
 Statement st=null;
 Statement st2=null;
+Statement st3=null;
 %>
 <%
 try{ 
@@ -39,9 +41,13 @@ try{
     String cno = request.getParameter("cusno");
     String com = request.getParameter("com");
     String gst = request.getParameter("GST");
+    String creditCustId=request.getParameter("creditCustId");
+    String CrediCustStatus=request.getParameter("CrediCustStatus");
 
     String custId=request.getParameter("custId");
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
+ if(custId!=null && custId!="")
+	 creditCustId=custId;
  String date=request.getParameter("date") ;
 
  SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy"); 
@@ -197,10 +203,14 @@ Date ndate=df.parse(dt);
        newBalAmt=ftot-ap;
  
    	   newOB=newBalAmt-oldBal;
-
-       s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+" WHERE Id="+Pid;
-       //System.out.println(s1);
-       ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? WHERE Id=?");
+   	//System.out.println("newBalAmt: " +newBalAmt);
+	//System.out.println("newOB: " +newOB);
+   
+       if(creditCustId!="" && creditCustId!=null)
+       {
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`=Credit WHERE Id="+Pid;
+    	      // System.out.println(s1);
+       	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=?  WHERE Id=?");
        ps.setDouble(1,ftot);
        ps.setDouble(2,newBalAmt);
        ps.setString(3,cname);
@@ -211,17 +221,61 @@ Date ndate=df.parse(dt);
        ps.setString(8,dis);
        ps.setString(9,com);
        ps.setString(10,gst);
-       ps.setInt(11,Pid);
-       ps.executeUpdate();     
+       ps.setString(11,creditCustId);    
+       ps.setString(12,"Credit"); 
+       ps.setInt(13,Pid);
+       ps.executeUpdate(); 
+       }
+       else
+       {
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+" WHERE Id="+Pid;
+    	      // System.out.println(s1);
+    	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? WHERE Id=?");
+    	       ps.setDouble(1,ftot);
+    	       ps.setDouble(2,newBalAmt);
+    	       ps.setString(3,cname);
+    	       ps.setString(4,cno);
+    	       ps.setDouble(5,ap);
+    	       ps.setString(6,nd);
+    	       ps.setString(7,tx);
+    	       ps.setString(8,dis);
+    	       ps.setString(9,com);
+    	       ps.setString(10,gst);    
+    	       ps.setInt(11,Pid);
+    	       ps.executeUpdate();
+       }
        if(custId!=null && custId!="")
        {
     	   String s5="UPDATE `Debtors` SET `OB`=`OB`+" +newOB+" WHERE CustId="+custId; 
-    	   System.out.println(s5);
+    	   //System.out.println(s5);
+    	  // System.out.println("existing credit cust: "+s5);
        ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
        ps1.setDouble(1,newOB);
        ps1.setString(2,custId);
        ps1.executeUpdate(); 
        }
+    		//System.out.println("CrediCustStatus: " +CrediCustStatus);
+    	   	if(CrediCustStatus.equals("update"))
+    	   	{
+    	   String s5="UPDATE `Debtors` SET `OB`=`OB`+" +newBalAmt+" WHERE CustId="+creditCustId; 
+    	  // System.out.println("update s5: "+s5);
+       ps3 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
+       ps3.setDouble(1,newBalAmt);
+       ps3.setString(2,creditCustId);
+       ps3.executeUpdate();
+       
+   	}
+   	if(CrediCustStatus.equals("insert"))
+   	{
+   		if(cno==null)
+   			cno="";
+   		String aadhaar="";
+   		 String sqlc="INSERT INTO Debtors (CustID, CustomerName, Mobile, OB, Branch, GST, Aadhaar) VALUES('"+ creditCustId+"', '"+ cname+"', '"+cno+"','"+newBalAmt+"', '"+branch+"', '"+gst+"', '"+aadhaar+"')";
+   		// System.out.println("add sqlc: " +sqlc); 
+   		      st3=conn.createStatement();
+   		 int z=st3.executeUpdate(sqlc);
+   	}
+       
     	 response.sendRedirect("editsalindividual.jsp?res=1&branch="+branch+"&dc="+dc+"&sd="+nd+"&pk="+Pid);
 
 //}
@@ -237,9 +291,11 @@ finally {
 	    if (preparedStatement != null)
 	    	   preparedStatement.close();
 	    if (ps != null)
-	    	   ps.close();
+	    	   ps.close();	    
 	    if (ps2 != null)
 	    	   ps2.close();
+	    if (ps3 != null)
+	    	   ps3.close();
 	    if (ps1 != null)
 	    	   ps1.close();
 	       }  catch (SQLException e) {}

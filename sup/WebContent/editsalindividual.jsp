@@ -80,7 +80,120 @@ int i=0;
 }
   </style>
   </head>
+<script language="javascript" type="text/javascript">
+var xmlHttp
+function showCustomer(custID){ 
+	if (typeof XMLHttpRequest != "undefined"){
+   		xmlHttp1= new XMLHttpRequest();
+       }
+    else if (window.ActiveXObject){
+   		xmlHttp1= new ActiveXObject("Microsoft.XMLHTTP");
+    }
+	if (xmlHttp1==null){
+    		alert ("Browser does not support XMLHTTP Request")
+		return
+	} 
+	var url="getCreditCustomers.jsp";
+	url += "?creditcustID=" +custID+"&branch="+document.getElementById("branch").value;
+	
+	xmlHttp1.onreadystatechange = getCustomer;
+	xmlHttp1.open("GET", url, true);
+	xmlHttp1.send(null);
+}
+  
+ function getCustomer(){  
+	 var res="";
+	 var creditMsg="";
+	 document.getElementById("creditMsg").style.color = "blue";
+	 document.getElementById("creditMsg").style.fontSize = "medium";
+	  if (xmlHttp1.readyState==4 || xmlHttp1.readyState=="complete"){   
+		  
+	 	 var data=xmlHttp1.responseText;
+	 	
+	 	 var dv=data.split(",");
+	 	//alert("dv[0]: "+dv[0]);
+	 	 document.getElementById("cusnam").value=dv[0];
+	 	 document.getElementById("cusno").value=dv[1];
+	       document.getElementById("cusnam").readOnly = true;
+			 document.getElementById("cusno").readOnly = true;
+	 /* 	if(dv[3]!="" && dv[3]!=null)
+	 		document.getElementById("aadhaar").value=dv[3];
+	 	else
+	 		document.getElementById("aadhaar").value=""; */
+		var gst=dv[4];
+		if(gst!="" && gst!=null)
+			{
+			document.getElementById("GST").value=gst;	
+			document.getElementById('taxInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'visible';
+	        document.getElementById('GSTLabel').style.visibility = 'visible';
+	        document.getElementById('GST').required = true;
 
+	       /*  document.getElementById("GST").readOnly = true; */
+
+	       // document.getElementById("GST").readOnly = true;
+
+			}
+		else
+			{
+			document.getElementById("GST").value="";	
+			document.getElementById('generalInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'hidden';
+	        document.getElementById('GSTLabel').style.visibility = 'hidden';
+	        document.getElementById('GST').required = false;
+	        //document.getElementById("GST").readOnly = false;
+			}
+	 	 res="update";
+	 	
+	 	creditMsg = "Existing credit balance:" +dv[2];
+       
+	 	 if(dv[5]==0)
+	 		 {
+	 		var answer = confirm("Credit Customer ID does not exists.\nDo you want to add the Credit Customer?");
+	 	
+	 		if (answer) {
+	 		     document.getElementById("cusnam").focus();
+	 			 document.getElementById("cusnam").readOnly = false;
+	 			 document.getElementById("cusno").readOnly = false;
+	 			// document.getElementById("aadhaar").readOnly = false;
+	 			 //document.getElementById("GST").readOnly = false;
+	 			  	document.getElementById('cusnam').value=localStorage.getItem("cusnam"); 
+	 			 	document.getElementById('cusno').value=localStorage.getItem("cusno"); 
+	 			document.getElementById("GST").value="";	 			
+				document.getElementById('generalInvoice').checked=true;
+		        document.getElementById('GSTdiv').style.visibility = 'hidden';
+		        document.getElementById('GSTLabel').style.visibility = 'hidden';
+		   	  document.getElementById('GST').required = false;
+	 			creditMsg="Add the above Customer!"
+	 			res="insert";
+	 		}
+	 		else {
+	 		document.getElementById("GST").value="";	 			
+			document.getElementById('generalInvoice').checked=true;
+	        document.getElementById('GSTdiv').style.visibility = 'hidden';
+	        document.getElementById('GSTLabel').style.visibility = 'hidden';
+	        document.getElementById('GST').required = false;
+	        document.getElementById("cusnam").readOnly = true;
+			 document.getElementById("cusno").readOnly = true;
+			// document.getElementById("aadhaar").readOnly = true;
+
+			/*  document.getElementById("GST").readOnly = true; */
+
+			 //document.getElementById("GST").readOnly = true;
+
+	 		 res="error";
+	 		creditMsg="Please enter valid Credit Customer Id to proceed."
+	 		document.getElementById("creditMsg").style.color = "#ff0000";
+	 		 }
+	 		 }
+	  }
+	  //alert(creditMsg);
+	  //alert(res);
+	  document.getElementById("creditMsg").innerHTML = creditMsg;
+	 
+	  document.getElementById("CrediCustStatus").value=res;
+	  }
+</script>
   <body class="nav-md">
   <div class="se-pre-con"></div>
     <div class="container body">
@@ -333,7 +446,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 }
 %>
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
-<td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" ></td>
+<td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
 <td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
 <td><strong> Amount Paid: </strong><input class="col-md-8" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %>></td>
 <td><strong> Tax Amount: </strong><input class="col-md-8" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %>></td>
@@ -488,16 +601,28 @@ gst ="";
                         			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst%>" >
                        		 </div>
 <%} %>
+<br/>
+<br/>
 
-                        		
-                       		
-                        </div>
+                         <div class="form-group creditDet" style="display:none;">               		
+  <label for="creditCustId" style="float:left;"><strong> Credit Customer ID: </strong></label><input class="col-md-4" type="text" id="creditCustId" name="creditCustId" style="margin-left:10px;" onfocusout="showCustomer(this.value)">                       		
 
+  </div>                      
+<br/>
+ <p id="creditMsg"></p> 
+                         </div>
+                          
+         <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
+                      
 <br/> 
 <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
-
+<button type="button"  id="creditButton" class="btn btn-success" style="float:right;">Convert to Credit</button></a> 
+<br/>
+<br/>
+<br/>
+<br/>
 
  </div>
   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
@@ -683,7 +808,10 @@ function d(){
      }          
 
 } 
- 
+ $("#creditButton").click(function() {
+	 $( '[class*="creditDet"]' ).show();
+ });
+
 $("#deleteButton").click(function() {
 	 $('#successMsg').hide();
 	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
@@ -783,6 +911,18 @@ $(document).ready(function() {
 	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	 var custId=document.getElementById("custId").value;
+	 var cusnam=document.getElementById("cusnam").value;
+	 var cusno=document.getElementById("cusno").value;
+	 //alert("custId: "+custId);
+	 if(custId!="")
+	{
+		 document.getElementById('creditButton').style.visibility = 'hidden';
+		 document.getElementById("cusnam").readOnly = true;
+			 document.getElementById("cusno").readOnly = true;
+	}
+	   	localStorage.setItem("cusnam", cusnam);
+	   	localStorage.setItem("cusno", cusno);
 /* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
