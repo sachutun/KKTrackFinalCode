@@ -30,7 +30,11 @@ int res=0;
 
           String[] code = request.getParameterValues("code");
         
-    String dcnumber = request.getParameter("dcnumber");
+    
+    String dcCode = request.getParameter("dcCode");
+    String dcno = request.getParameter("dcnumber");
+    String dcnumber =dcCode+dcno;
+   // System.out.println("dcnumber: "+dcnumber);
     String date = request.getParameter("date"); 
   
    String[] costprice = request.getParameterValues("costprice");

@@ -92,7 +92,8 @@ return
 } 
 document.getElementById("numb").value=i;
 var url="value.jsp";
-url += "?count=" +str+"&branch="+document.getElementById("branch").value+"&dt="+document.getElementById("da").value+"&dc="+document.getElementById("dcnumber").value;
+var dcnumber=document.getElementById("dcCode").value+document.getElementById("dcnumber").value;
+url += "?count=" +str+"&branch="+document.getElementById("branch").value+"&dt="+document.getElementById("da").value+"&dc="+dcnumber;
 	
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);
@@ -136,7 +137,8 @@ xmlHttp.send(null);
 	 return
 	 } 
 	 var url="checkInvoiceDetails.jsp";
-	 url += "?branch="+document.getElementById("branch").value+"&date="+document.getElementById("da").value+"&dcnumber="+document.getElementById("dcnumber").value	
+	 var dcnumber=document.getElementById("dcCode").value+document.getElementById("dcnumber").value;
+	 url += "?branch="+document.getElementById("branch").value+"&date="+document.getElementById("da").value+"&dcnumber="+dcnumber	
 	 xmlHttp2.onreadystatechange = checkOutput;
 	 xmlHttp2.open("GET", url, true);
 	 xmlHttp2.send(null);
@@ -448,7 +450,10 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" for="dcnumber">Invoice No<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-3">
-                          <input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" name="dcnumber" onchange="checkInvoice()">
+                        <!--   <input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" name="dcnumber" onchange="checkInvoice()"> -->
+                        <input type="text" id='dcCode' name="dcCode" class="form-control col-md-7 col-xs-12" style="width:30px;display:none;" readOnly>
+						<input type="text" id="dcnumber" required="required" class="form-control col-md-7 col-xs-12" style="width:150px;" name="dcnumber" onchange="checkInvoice()">
+                       
                         </div>
                       <button class="add col-md-1 col-xs-3" type="button" style="background: #26B99A;color: white;border: 1px solid #169F85; line-height: 2;">Add Item</button>
                      
@@ -819,7 +824,18 @@ function addInvoiceCode()
 	    default:
 	    	code = "";
 	  }
-	  document.getElementById("dcnumber").value = code;
+	  document.getElementById("dcCode").value = code;
+	  if(code!="")
+		 {
+		  document.getElementById("dcCode").style.display="block";
+		  document.getElementById("dcnumber").style.width = "120px";
+		 }
+	  else
+		  {
+		  document.getElementById("dcCode").style.display="none";
+		  document.getElementById("dcnumber").style.width = "150px";
+		  
+		  }
 }
 
 function invoiceCheck() {
