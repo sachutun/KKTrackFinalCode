@@ -175,6 +175,8 @@ function showCustomer(custID){
 	        document.getElementById('GST').required = false;
 	        document.getElementById("cusnam").readOnly = true;
 			 document.getElementById("cusno").readOnly = true;
+				document.getElementById('cusnam').value=localStorage.getItem("cusnam"); 
+ 			 	document.getElementById('cusno').value=localStorage.getItem("cusno"); 
 			// document.getElementById("aadhaar").readOnly = true;
 
 			/*  document.getElementById("GST").readOnly = true; */
@@ -448,9 +450,9 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
 <td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
-<td><strong> Amount Paid: </strong><input class="col-md-8" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %>></td>
-<td><strong> Tax Amount: </strong><input class="col-md-8" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %>></td>
-<td><strong> Discount: </strong><input class="col-md-8" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %>></td></tr>
+<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %>></td>
+<td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %>></td>
+<td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %>></td></tr>
 
                       </tbody>
                     </table>
@@ -467,7 +469,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
                                             <th>
-                                            <input type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            <input class="disableButton4Credit" type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
                                             Delete All
                                           </th>
 
@@ -495,8 +497,8 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><%=rs.getString("CodeList.Machine") %></td>
 <td><%=rs.getString("CodeList.PartNo") %></td>
 <td><%=rs.getString("CodeList.Grp") %></td>
-<td><input type="number" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
-<td><input type="number" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
+<td><input type="number" class="disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
+<td><input type="number" class="disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
           <%--        <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
@@ -520,7 +522,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
-  <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td>     
+  <td>  <input type="checkbox" class="chkbox disableButton4Credit" name="checkboxRow" value="<%=i %>">   </td>     
 </tr>
  <%
  
@@ -615,10 +617,11 @@ gst ="";
          <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
                       
 <br/> 
-<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
+<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger disableButton4Credit" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
 <button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
- <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success" style="float:right">Add More Items</button></a> 
-<button type="button"  id="creditButton" class="btn btn-success" style="float:right;">Convert to Credit</button></a> 
+ <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right">Add More Items</button></a> 
+<button type="button"  id="refreshButton" class="btn btn-success" style="float:right;" onClick="window.location.reload()">Refresh</button>
+<button type="button"  id="creditButton" class="btn btn-success" style="float:right;">Convert to Credit</button>
 <br/>
 <br/>
 <br/>
@@ -810,6 +813,9 @@ function d(){
 } 
  $("#creditButton").click(function() {
 	 $( '[class*="creditDet"]' ).show();
+		$("#creditCustId").prop('required',true);
+	 $( '[class*="disable4Credit"]' ).prop("readonly",true);
+	 $('.disableButton4Credit').attr('disabled', 'disabled');
  });
 
 $("#deleteButton").click(function() {
