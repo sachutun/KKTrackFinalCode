@@ -56,7 +56,7 @@ int res=0;
    String aadhaar = request.getParameter("aadhaar");
    String sqlb="";
    float[] q= new float[qty.length];
-
+//System.out.println("balanceamount: "+balanceamount);
 
    for(int i=0;i<qty.length;i++)
   {
@@ -162,33 +162,36 @@ qparts+=",";
 String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
 System.out.println(isql);
 int y=st2.executeUpdate(isql);
-
-if(type.equals("Neft"))
+//System.out.println("---type---" +type);
+if(type.contains("Neft"))
 {
 	   String cbankname=request.getParameter("cusbank");
 	   String kkbank=request.getParameter("kkbank");
 	   sqlb="INSERT INTO BankDetails (Id, Type, CSBankName, KKBankName) VALUES ('"+ id+"', 'sale', '"+cbankname+"','"+kkbank+"')";
+	   //System.out.println("---sqlb---" +sqlb);
 	   int z=st3.executeUpdate(sqlb);
 	  
 }
-else if(type.equals("Cheque"))
+else if(type.contains("Cheque"))
 {
 	   String bank=request.getParameter("bankname");
 	   String cd=request.getParameter("cd");
 	   String chkno=request.getParameter("chkno");
 	   sqlb="INSERT INTO ChequeDetails (Id, Type, ChequeNo, Date, BankName) VALUES('"+ id+"', 'sale', '"+chkno+"','"+cd+"', '"+bank+"')";
+	   //System.out.println("---sqlb---" +sqlb);
 	   int z=st3.executeUpdate(sqlb);
 }
-else if(type.equals("Credit"))
+if(type.contains("Credit"))
 {
 	int OBnew=0;
 	System.out.println("CrediCustStatus: " +CrediCustStatus);
+	//System.out.println("---balanceamount---: "+balanceamount);
 	if(CrediCustStatus.equals("update"))
 	{
 		
 		 OBnew=Integer.parseInt(balanceamount);
 		 sq="UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustID=?";
-//System.out.println("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustID=?");
+		// System.out.println("--update-sq---" +sq);
 		 preparedStatement1 = connection.prepareStatement(sq);
 		 preparedStatement1.setInt(1,OBnew);
 		 preparedStatement1.setString(2,creditCustId);
@@ -199,7 +202,7 @@ else if(type.equals("Credit"))
 		if(customernumber==null)
 			customernumber="";
 		 String sqlc="INSERT INTO Debtors (CustID, CustomerName, Mobile, OB, Branch, GST, Aadhaar) VALUES('"+ creditCustId+"', '"+ customername+"', '"+customernumber+"','"+Integer.parseInt(balanceamount)+"', '"+branch+"', '"+gst+"', '"+aadhaar+"')";
-		// System.out.println("add sqlc: " +sqlc); 
+		 //System.out.println("add sqlc: " +sqlc); 
 		 int z=st4.executeUpdate(sqlc);
 	}
 }

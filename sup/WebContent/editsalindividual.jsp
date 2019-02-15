@@ -26,6 +26,16 @@ ResultSet rs = null;
 ResultSet rs2 = null;
 int sno=1;
 int i=0;
+Properties props = new Properties();
+InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+props.load(in);
+in.close();
+
+String driver = props.getProperty("jdbc.driver");
+String url = props.getProperty("jdbc.url");
+String username = props.getProperty("jdbc.username");
+String password = props.getProperty("jdbc.password");
+String environment = props.getProperty("jdbc.environment");
 %>
 <html lang="en">
   <head>
@@ -352,6 +362,9 @@ if(user==null)
         <form action="saledit.jsp">   
         
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
+                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
+                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
               <div class="table-responsive"> 
        <table class="table  dt-responsive" width="100%">
                
@@ -377,21 +390,9 @@ System.out.println(branch); */
    
     //Class.forName("com.mysql.jdbc.Driver").newInstance();  
      //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-    Properties props = new Properties();
-    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
-    props.load(in);
-    in.close();
-
-    String driver = props.getProperty("jdbc.driver");
     if (driver != null) {
         Class.forName(driver).newInstance();  
     }
-
-    String url = props.getProperty("jdbc.url");
-    String username = props.getProperty("jdbc.username");
-    String password = props.getProperty("jdbc.password");
-    String environment = props.getProperty("jdbc.environment");
-
     conn = DriverManager.getConnection(url, username, password);
     st = conn.createStatement();
 String sql1 ="SELECT DISTINCT * FROM Sale";
@@ -650,9 +651,7 @@ gst ="";
                       </div>
                     </div>
                   </div>
-                   <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
-                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
+                
 </form>
  
  <% 

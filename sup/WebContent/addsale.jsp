@@ -570,11 +570,14 @@ String role=(String)session.getAttribute("role");
                             <option value="Cheque">Cheque</option>
                             <option value="Swipe">Swipe</option>
                              <option value="Credit">Credit</option>
+                             <option value="CreditNeft">Credit Bank Transfer</option>
+                              <option value="CreditCheque">Credit Cheque</option>
+                            <option value="CreditSwipe">Credit Swipe</option>
                           </select>
                         </div>
                       <!-- </div>
                        <div class="form-group"> -->
-                       <div class="form-group Credit creditDet" style="display:none;">
+                       <div class="form-group Credit" style="display:none;">
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Customer ID:<span class="required">*</span>
                          </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
@@ -601,7 +604,7 @@ String role=(String)session.getAttribute("role");
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
                         </div>
-                          <div class="form-group Credit creditDet"style="display:none;" id="aadhar">
+                          <div class="form-group Credit"style="display:none;" id="aadhar">
                            <label class="control-label col-md-2 col-sm-2 col-xs-5">Aadhaar:
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
@@ -1119,19 +1122,35 @@ function cls(elt)
 	 $('.right_col').animate({height:h}, 500);
 	 $("select").change(function(){
 	        $(this).find("option:selected").each(function(){
-	            var optionValue = $(this).attr("value");
-	           
-	            if(optionValue){
-	           
-	                $(".bankdet").not("." + optionValue).hide();
-	                $(".creditDet").not("." + optionValue).hide();           
-	                $("." + optionValue).show();
-	                
-	            } else{
+	        		var optionValue = $(this).attr("value");
+	           	var flag=false;
+	            if(optionValue)
+	            {	           	            	
+		        		if(optionValue=="CreditNeft" || optionValue=="CreditCheque" || optionValue=="CreditSwipe")
+		            	{
+		            		var option = optionValue.substr(6, optionValue.length);
+		            		$(".bankdet").not("." + option).hide();          
+		 	            $("." + option).show();
+		 	            $(".Credit").show();
+		 	            flag=true;
+		            	}
+		            	else
+		            	{
+		                $(".bankdet").not("." + optionValue).hide();
+		                //$(".creditDet").not("." + optionValue).hide(); 
+		                if(optionValue!="Credit")
+		                		$(".Credit").hide();
+		                $("." + optionValue).show();
+		                flag=false;
+		            	}	                
+	            } 
+	            else
+	            {
 	                $(".bankdet").hide();
-	                $(".creditDet").hide();	          
+	                $(".Credit").hide();
+	                flag=false;
 	            }
-	            if(optionValue=='Credit')
+	            if(optionValue=='Credit' || flag==true)
 	            	{
 	               	$("#customername").prop('readonly', true);
 	              	$("#customernumber").prop('readonly', true); 
@@ -1165,6 +1184,28 @@ function cls(elt)
          		    $("#GST").val("");
      
 	            	}
+ 	            /* if(optionValue.search("Neft")!=-1)
+	            	{
+	            		$("#cusbank").prop('required',true);
+	            		$("#kkbank").prop('required',true);
+	            	}
+	            else
+	            	{
+	            		$("#cusbank").prop('required',false);
+	            		$("#kkbank").prop('required',false);
+	            	}
+	            if(optionValue.search("Cheque")!=-1)
+            		{
+            			$("#bankname").prop('required',true);
+            			$("#chkno").prop('required',true);
+            			$("#single_cal4").prop('required',true);           			
+            		}
+            		else
+            		{
+            			$("#bankname").prop('required',false);
+            			$("#chkno").prop('required',false);
+            			$("#single_cal4").prop('required',false); 
+            		} */
 	        });
 	    }).change();
 	var c=1;
