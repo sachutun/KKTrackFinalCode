@@ -21,11 +21,13 @@ Statement st2 = null;
 Statement st3 = null;
 Statement st4 = null;
 Statement st5 = null;
+Statement st6 = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement preparedStatement1 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
 ResultSet rs1 = null;
+ResultSet rs2 = null;
 int res=0;
 
           String[] code = request.getParameterValues("code");
@@ -137,17 +139,29 @@ statement=connection.createStatement();
        
         st2=connection.createStatement();
         st3=connection.createStatement();
-     
+        st6=connection.createStatement(); 
+        rs2=st6.executeQuery("Select * from CodeList");
 
 int count=code.length;
 String qparts="";
 String sq="";
-
+String minPrice="";
+String LC="";
 for(int i=0;i<count;i++)
 {
-qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
+	while(rs2.next())
+	{
+		if(rs2.getString("Code").equals(code[i]))
+		{
+			minPrice=rs2.getString("MinPrice");
+			LC=rs2.getString("LC");
+			break;
+		}
+	}
+qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+minPrice+","+LC+")";
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
 /* System.out.println("Update NewInventory SET Quantity=Quantity-"+qty[i]+" WHERE Code="+code[i]+" and Branch="+branch); */
+System.out.println("---qparts---" +qparts);
 preparedStatement = connection.prepareStatement(sq);
 preparedStatement.setFloat(1,q[i]);
 preparedStatement.setString(2,code[i]);
@@ -159,8 +173,8 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
-System.out.println(isql);
+String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
+System.out.println("Bill Details: "+isql);
 int y=st2.executeUpdate(isql);
 //System.out.println("---type---" +type);
 if(type.contains("Neft"))
@@ -223,6 +237,8 @@ res=1;
            	        st.close();
            	    if (st2 != null)
            	        st2.close();
+           	 if (st6 != null)
+     	        st6.close();
            	 if (st3 != null)
         	        st3.close();
            	 if (preparedStatement != null)

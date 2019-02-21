@@ -306,25 +306,28 @@ String std=request.getParameter("std");
                       <thead>
                         <tr>
                             <tr>
-                   
                                             <th>Date</th>
                                             <th>Invoice No.</th>
                                             <th>Customer Name</th>
+                                            <th>Type</th>
                                             <th>Total price</th>
+                                            <th>Tax</th>
                                             <th>Amt Paid</th>
                                        
                                              <th>Details</th> 
                                         
                                         </tr>
                       </thead>
-                             <tfoot>
+        <!--                  <tfoot>
             <tr class="admin">
                 <th colspan="3" style="text-align:right">Total Sale:</th>
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
-        </tfoot>
+        </tfoot>  -->
                         <tbody id="country">
 <%
 try{ 
@@ -403,7 +406,7 @@ else
 	resultSet = statement.executeQuery(sql);
 }
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, BillDetails.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 	primaryKey = resultSet.getInt("Sale.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
@@ -416,12 +419,12 @@ while(resultSet.next()){
 %>
 
                                         <tr class="odd gradeX">
-
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("DCNumber") %></td>
 <td ><%=resultSet.getString("CustomerName") %></td>
+<td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getInt("TotalPrice") %></td>
-
+<td><%=resultSet.getInt("Tax") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 
 <td><table id="" class="table table-striped table-bordered">
@@ -432,7 +435,6 @@ while(resultSet.next()){
                                             <th>Code</th>
                                             <th>Description</th>
                                             <th>Machine</th>
-                                            <th>Part No</th>
                                             <th>Group</th> 
                                             <th>Max Price</th>
                                             <th>Sale Price</th>
@@ -450,7 +452,6 @@ while(resultSet.next()){
 <td><%=rs.getString("BillDetails.Code") %></td>
 <td><%=rs.getString("Description") %></td>
 <td><%=rs.getString("Machine") %></td>
-<td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><%=rs.getString("MaxPrice") %></td>
 <td><%=rs.getString("BillDetails.CostPrice") %></td>
@@ -708,7 +709,7 @@ var table=$('#ex').DataTable( {
 	     
 	        "language": {
 	            "sProcessing" : '<img src="images/Preloader_2.gif"  style="z-index:60000000; margin-top:20%"> '},
-	          /*   "footerCallback": function ( row, data, start, end, display ) {
+	           "footerCallback": function ( row, data, start, end, display ) {
 		              var api = this.api(), data;
 		   
 		              // Remove the formatting to get integer data for summation
@@ -721,7 +722,7 @@ var table=$('#ex').DataTable( {
 		   
 		              // Total over all pages
 		              total = api
-		                  .column( 3 )
+		                  .column( 4 )
 		                  .data()
 		                  .reduce( function (a, b) {
 		                      return intVal(a) + intVal(b);
@@ -729,14 +730,14 @@ var table=$('#ex').DataTable( {
 		   
 		              // Total over this page
 		              pageTotal = api
-		                  .column( 3, { page: 'current'} )
+		                  .column( 4, { page: 'current'} )
 		                  .data()
 		                  .reduce( function (a, b) {
 		                      return intVal(a) + intVal(b);
 		                  }, 0 );
 		   
 		              // Update footer
-		              $( api.column( 3 ).footer() ).html(
+		              $( api.column( 4 ).footer() ).html(
 		            		  pageTotal.toLocaleString('en-IN', {
 			                	    maximumFractionDigits: 2,
 			                	    style: 'currency',
@@ -747,7 +748,35 @@ var table=$('#ex').DataTable( {
 			                	    currency: 'INR'
 			                	}) +' total)'
 		              );
-		          }, */
+		              // Total over all pages
+		              total = api
+		                  .column( 5 )
+		                  .data()
+		                  .reduce( function (a, b) {
+		                      return intVal(a) + intVal(b);
+		                  }, 0 );
+		   
+		              // Total over this page
+		              pageTotal = api
+		                  .column( 5, { page: 'current'} )
+		                  .data()
+		                  .reduce( function (a, b) {
+		                      return intVal(a) + intVal(b);
+		                  }, 0 );
+		   
+		              // Update footer
+		              $( api.column( 5 ).footer() ).html(
+		            		  pageTotal.toLocaleString('en-IN', {
+			                	    maximumFractionDigits: 2,
+			                	    style: 'currency',
+			                	    currency: 'INR'
+			                	}) +' ( '+  total.toLocaleString('en-IN', {
+			                	    maximumFractionDigits: 2,
+			                	    style: 'currency',
+			                	    currency: 'INR'
+			                	}) +' total)'
+		              );
+		          }, 
 		          scrollY:        '50vh',
 			        scrollCollapse: true,
 	    /*     "createdRow": function ( row, data, index ) {

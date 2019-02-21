@@ -479,7 +479,7 @@ if(role!="null" && role.equals("1"))
 
 <%
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
 	primaryKey = resultSet.getInt("s.Id");
 	String whr=primaryKey+"";
@@ -548,7 +548,7 @@ while(resultSet.next()){
 <td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
 <td class=" admin price"><%=rs.getDouble("BillDetails.CostPrice")+rs.getDouble("BillDetails.CostPrice")*(0.18)%></td>
-<td class="admin price"><%=rs.getString("LC") %></td>
+<td class="admin price"><%=rs.getString("BillDetails.LC") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
 
 </tr>
@@ -614,7 +614,7 @@ else
 
 <%
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
 	primaryKey = resultSet.getInt("s.Id");
 	String whr=primaryKey+"";

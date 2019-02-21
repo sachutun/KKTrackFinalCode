@@ -352,14 +352,14 @@ String sql1="";
 String sqlc="";
 int primaryKey=0;
 
-String sql ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURDATE())";
+String sql ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURDATE())";
 if (branch!=null && branch.length()!=0 )
 
-	sql1 ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName,s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 )) year(Date)=year(CURDATE())";
+	sql1 ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName,s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 )) year(Date)=year(CURDATE())";
 
 
 	
-	String sql3="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, c.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
+	String sql3="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where 1";
 	String w="";
 	
 if(branch!="" && branch!=null)
@@ -399,7 +399,7 @@ System.out.println(sql);
 
 }
 while(resultSet.next()){
-	int price=resultSet.getInt("MinPrice");	
+	int price=resultSet.getInt("b.MinPrice");	
 	
 	Date date=resultSet.getDate("Date");
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
@@ -407,9 +407,12 @@ while(resultSet.next()){
 	String gst= resultSet.getString("GST");
 	if(gst== null)
 		gst="";
- 	
-	if(!gst.equals(""))
+/* 	System.out.println("gst " +gst);
+	System.out.println("gst length: " +gst.length()); */
+	if((gst.length()>1))
+	{
 		price=resultSet.getInt("b.CostPrice"); 
+	}
 	
 
 %>
