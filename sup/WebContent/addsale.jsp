@@ -70,6 +70,10 @@ ResultSet resultSet = null;
 	z-index: 600000000;
 	background: url(images/Preloader_2.gif) center no-repeat #fff;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
   </style>
   </head>
               <script language="javascript">var p = false;
@@ -544,7 +548,9 @@ String role=(String)session.getAttribute("role");
                         </label>
                         <div class="col-md-1 col-sm-2 col-xs-4">
                           <input id="tax" class="form-control col-md-7 col-xs-12" required="required" type="number" name="tax" onchange="calculatetax()" min="0">
+                        <p id="taxmsg"></p> 
                         </div>
+                        
                          <label class="control-label col-md-1 col-sm-1 col-xs-9">Discount:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-2 col-xs-4">
@@ -914,6 +920,11 @@ function calculate(i)
 		}
 
   var result2= tot;
+  
+	var phtax;
+  	phtax=0.18*totp;
+  	if(!isNaN(phtax))
+  	document.getElementById("taxmsg").innerHTML=phtax;
  
     if (!isNaN(result2)) {
         document.getElementById('totalq').value = result2;
@@ -931,6 +942,8 @@ function calculate(i)
     	calculatetax();
     calculatedis();
   	balcalc();
+  	
+  
     
 }
 
