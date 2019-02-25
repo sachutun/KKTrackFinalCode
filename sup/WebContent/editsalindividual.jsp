@@ -187,6 +187,8 @@ function showCustomer(custID){
 			 document.getElementById("cusno").readOnly = true;
 				document.getElementById('cusnam').value=localStorage.getItem("cusnam"); 
  			 	document.getElementById('cusno').value=localStorage.getItem("cusno"); 
+ 		
+ 				document.getElementById("creditCustId").value="";	 
 			// document.getElementById("aadhaar").readOnly = true;
 
 			/*  document.getElementById("GST").readOnly = true; */
