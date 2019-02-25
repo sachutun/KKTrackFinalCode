@@ -352,8 +352,8 @@ String std=request.getParameter("std");
                                             <th>Payment Mode</th> 
                                             <th>Code qty</th>
                                             <th>Invoice Details</th> 
-                                            <th>Additional Details</th>
-                                        <th>Comments</th> 
+                                            <th class="none">Additional Details</th>
+                                        <th class="none">Comments</th> 
                                         </tr>
                       </thead>
                              <tfoot>
@@ -442,7 +442,7 @@ System.out.println(sql);
 }
 
 while(resultSet.next()){
-	String sql2="SELECT InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,CodeList.Grp, CodeList.MaxPrice, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where Ino=";
+	String sql2="SELECT InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,CodeList.Grp, CodeList.MaxPrice, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice, InvoiceDetails.USD FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where Ino=";
 	int	primaryKey = resultSet.getInt("Purchases.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
@@ -479,7 +479,7 @@ while(resultSet.next()){
                                             <th>Quantity</th>
                                             <th class="price">Cost Price</th>
                                             <th class="price">Total</th>
-
+											<th class="price">USD</th>
                                         </tr>
                       </thead>
                         <tbody >
@@ -496,6 +496,7 @@ while(resultSet.next()){
 <td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
 <td class="price"><%=rs.getDouble("InvoiceDetails.Price") %></td>
 <td class="price"><%=rs.getDouble("InvoiceDetails.TotalPrice") %></td>
+<td class="price"><%=rs.getDouble("InvoiceDetails.USD") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>
@@ -729,7 +730,7 @@ $(document).ready(function() {
 		        "order": [[ 0, "desc" ]],
 		        "columnDefs": [
 		            { "visible": false, "targets": 0 },
-		            { "targets": [6,7], "visible": false }
+		            { "targets": [6,7,8], "visible": false }
 		          ],
 		          scrollY:        '53vh',
 			        scrollCollapse: true,
@@ -811,6 +812,7 @@ $(document).ready(function() {
 	  
        table.column(6).visible(true);
        table.column(7).visible(true);
+       table.column(8).visible(true);
         
 	}
 	$('input.column_filter').on( 'keyup click', function () {

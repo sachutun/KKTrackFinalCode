@@ -40,6 +40,7 @@ ResultSet resultSet = null;
    String type = request.getParameter("type");
    String amountpaid = request.getParameter("amountpaid");
    String balanceamount = request.getParameter("balanceamount");
+   String[] usd = request.getParameterValues("usd"); 
    String sqlb="";
    int updateQuery = 0;
    float[] q= new float[qty.length];
@@ -95,7 +96,13 @@ String sq="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ('"+innumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
+	//System.out.println("---usd[i]---: "+usd[i]);
+	String usdValue="";
+	if(usd[i]=="" || usd[i]==null)
+		usdValue="0";
+	else
+		usdValue=usd[i];
+qparts+=" ('"+innumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+usdValue+")";
 /* INSERT IGNORE INTO NewInventory (Code, Branch, Quantity) VALUES ('1', 'Bowenpally', 2) */
 /*  sq="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
 sq="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity+?";
@@ -109,14 +116,15 @@ preparedStatement.executeUpdate();
 
 int minp=(Integer.parseInt(costprice[i])+((5*Integer.parseInt(costprice[i]))/100));
 
-String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `SUP`=? WHERE Code=?"; 
+String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `SUP`=? , `USD/Loc`=? WHERE Code=?"; 
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement2 = connection.prepareStatement(s);
 preparedStatement2.setString(1,costprice[i]);
 preparedStatement2.setInt(2,minp);
 preparedStatement2.setString(3,suppliername);
-preparedStatement2.setString(4,code[i]);
+preparedStatement2.setString(4,usd[i]);
+preparedStatement2.setString(5,code[i]);
 preparedStatement2.executeUpdate();  
 
 if(i!=(count-1))
@@ -124,7 +132,7 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO InvoiceDetails (`InvoiceNo`, `Code`, `Qty`, `Price`, `TotalPrice`, `Ino`) VALUES"+ qparts;
+String isql= "INSERT INTO InvoiceDetails (`InvoiceNo`, `Code`, `Qty`, `Price`, `TotalPrice`, `Ino`, `USD`) VALUES"+ qparts;
 
 int y=st2.executeUpdate(isql);
 
