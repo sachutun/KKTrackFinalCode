@@ -158,6 +158,22 @@ xmlHttp.send(null);
 	 		 document.getElementById("dcnumber").value="";
 	 		 document.getElementById("dcnumber").focus();
 	 		 }
+	 	 var dcNo= document.getElementById("dcnumber").value;
+	 	 var taxInvoiceFlag = dcNo.startsWith("T");
+	 	 if(taxInvoiceFlag==true)
+	 	 {
+	 		document.getElementById('GSTdiv').style.visibility = 'visible';
+	        document.getElementById('GSTLabel').style.visibility = 'visible';
+	        document.getElementById('GST').required = 'true';
+	 	 }
+	 	 else
+	 	 {
+	 	 	document.getElementById('GST').required = 'false';
+	        document.getElementById('GST').removeAttribute("required");
+	        document.getElementById('GST').value = '';
+	    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+	 	 }
 	  }   
 	  }
  
@@ -1219,6 +1235,22 @@ function cls(elt)
             			$("#chkno").prop('required',false);
             			$("#single_cal4").prop('required',false); 
             		} */
+            	 	 var dcNo= document.getElementById("dcnumber").value;
+           	 	 var taxInvoiceFlag = dcNo.startsWith("T");
+           	 	 if(taxInvoiceFlag==true)
+           	 	 {
+           	 		document.getElementById('GSTdiv').style.visibility = 'visible';
+           	        document.getElementById('GSTLabel').style.visibility = 'visible';
+           	        document.getElementById('GST').required = 'true';
+           	 	 }
+           	 	 else
+           	 	 {
+           	 	 	document.getElementById('GST').required = 'false';
+           	        document.getElementById('GST').removeAttribute("required");
+           	        document.getElementById('GST').value = '';
+           	    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+           	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+           	 	 }
 	        });
 	    }).change();
 	var c=1;
