@@ -374,9 +374,9 @@ try{
 	 	   st2=connection.createStatement();
 	 	  /*  String sqlc=""; */
 	 	   String sql1="";
-	 	   String sql ="SELECT * FROM Purchases where Month(Date) in( Month(CURDATE()))";
+	 	   String sql ="SELECT * FROM Purchases where Month(Date) in( Month(CURDATE())) and Year(Date)= Year(CURDATE())";
 	 	   if (branch!=null && branch.length()!=0 )
-	 	   	sql1 ="SELECT * FROM Purchases where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1)";
+	 	   	sql1 ="SELECT * FROM Purchases where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1) and Year(Date)= Year(CURDATE())";
 
 	 	  /*  	if(code!=null && code.length()!=0)
 	 	   	{

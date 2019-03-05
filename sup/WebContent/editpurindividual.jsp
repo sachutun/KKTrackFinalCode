@@ -350,7 +350,7 @@ if(branch!=null && dc!=null && cn!=null)
 resultSet = st.executeQuery(sql1);
 
 while(resultSet.next()){
-	String sql2="SELECT InvoiceDetails.Id, InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, CodeList.MaxPrice, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where INo=";
+	String sql2="SELECT InvoiceDetails.Id, InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, CodeList.MaxPrice, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice, InvoiceDetails.USD FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where INo=";
 	int	primaryKey = resultSet.getInt("Purchases.Id");
 	String whr2=primaryKey+"";
 	sql2+=whr2;
@@ -384,6 +384,7 @@ while(resultSet.next()){
                                             <th>Group</th>
                                             <th>Cost Price</th>
                                             <th>Quantity</th>
+                                            <th>USD</th>
                                              <th>
                                             <input type=checkbox name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
                                             Delete All
@@ -415,7 +416,8 @@ while(resultSet.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td><input type="number" id="cp<%=i %>" name="cp<%=i %>" value="<%=rs.getString("InvoiceDetails.Price")%>"></td>
-<td><input type="number" id="nq<%=i %>" name="nq<%=i %>" step="any" value=<%=bqty%> >   
+<td><input type="number" id="nq<%=i %>" name="nq<%=i %>" step="any" value=<%=bqty%> ></td>
+<td><input type="number" id="usd<%=i %>" name="usd<%=i %>" value=<%=rs.getString("InvoiceDetails.USD")%> > 
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
                 <%--  <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
@@ -423,6 +425,7 @@ while(resultSet.next()){
                <%--  <input type="hidden" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("InvoiceDetails.Price")%> > --%>
                  <input type="hidden" id="bid<%=i %>" name="bid<%=i %>" value=<%=i%> >
                  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("InvoiceDetails.Code")%> >
+                 
                 <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
                 <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("InvoiceDetails.Price")%> > 

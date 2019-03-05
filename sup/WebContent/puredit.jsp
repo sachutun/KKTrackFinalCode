@@ -93,6 +93,7 @@ try{
    
     String newq = request.getParameter("nq"+sn);
     String ncp = request.getParameter("cp"+sn);
+    String nusd = request.getParameter("usd"+sn);
     String ocp = request.getParameter("ocp"+sn);
     String oldq = request.getParameter("q"+sn);
    
@@ -147,22 +148,24 @@ try{
   s1= "UPDATE `Purchases` SET `TotalPrice`="+ftot+",`BalanceAmount`="+(ftot-ap)+" WHERE Id="+Pid;
  String s2="UPDATE `InvoiceDetails` SET `TotalPrice`="+newtotalp+",`Qty`="+nq+", `Price`="+newcp+"  WHERE Id="+billid;
   
-    preparedStatement = conn.prepareStatement("UPDATE `InvoiceDetails` SET `TotalPrice`=?,`Qty`=?, `Price`=?  WHERE Id=?");
+    preparedStatement = conn.prepareStatement("UPDATE `InvoiceDetails` SET `TotalPrice`=?,`Qty`=?, `Price`=?, `USD`=?  WHERE Id=?");
     preparedStatement.setDouble(1,newtotalp);
     preparedStatement.setFloat(2,nq);
     preparedStatement.setDouble(3,newcp);
-    preparedStatement.setInt(4,billid);
+    preparedStatement.setString(4,nusd);
+    preparedStatement.setInt(5,billid);
     preparedStatement.executeUpdate();  
    
     double minp=(newcp+(10*newcp)/100);
 
-    String s="UPDATE `CodeList` SET `LC`=?, `minprice`=? WHERE Code=?"; 
+    String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
     /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
     /* System.out.println(s); */
     preparedStatement2 = conn.prepareStatement(s);
     preparedStatement2.setDouble(1,newcp);
     preparedStatement2.setDouble(2,minp);
-    preparedStatement2.setInt(3,code);
+    preparedStatement2.setString(3,nusd);
+    preparedStatement2.setInt(4,code);
     preparedStatement2.executeUpdate();  
     
     if(nq!=oq)
