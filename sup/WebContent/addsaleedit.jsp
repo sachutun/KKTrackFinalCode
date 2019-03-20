@@ -4,22 +4,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.io.*"%>
 <%@ page import="java.util.*"%>
-<%-- 
-<%
-/* String id = request.getParameter("userId"); */
-String driverName = "com.mysql.jdbc.Driver";
 
-
-try {
-Class.forName(driverName);
-} catch (ClassNotFoundException e) {
-e.printStackTrace();
-}
-
-Connection connection = null;
-Statement statement = null;
-ResultSet resultSet = null;
-%> --%>
 
 <html lang="en">
 <head>

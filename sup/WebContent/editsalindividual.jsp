@@ -336,12 +336,15 @@ if(user==null)
      <% String r=request.getParameter("res");
  String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale updated successfully.</strong></div></div>";
  String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale deleted successfully.</strong></div></div>";
+ String succ3="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Added to Invoice successfully.</strong></div></div>";
 %>
   <div id="successMsg" >
 <%  if(r!=null && r.equals("1"))
         	out.println(succ);
   else if(r!=null && r.equals("2"))
 	 out.println(succ2); 
+  else if(r!=null && r.equals("5"))
+		 out.println(succ3); 
      %>
      </div>
 <!--       <span id="errorMsg"></span>  -->
@@ -373,6 +376,7 @@ if(user==null)
                         <tbody>
                         <%
 try{ 
+	 int mflag=0;
 /* connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/KKTrack","root","root");
 statement=connection.createStatement(); */
 String dc=request.getParameter("dc");
@@ -418,12 +422,16 @@ if(pk!=null && pk.length()!=0 )
 }
 sql1+=whr;
  System.out.println(sql1); 
+ 
+ if(dc.startsWith("m"))
+mflag=1;
+ 
 if(branch!=null && dc!=null && cn!=null)
 {
 resultSet = st.executeQuery(sql1);
 
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code,BillDetails.Id, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code,BillDetails.Id, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total, BillDetails.Notes FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 	int	primaryKey = resultSet.getInt("Id");
 	String whr2=primaryKey+"";
 	sql2+=whr2;
@@ -433,6 +441,8 @@ while(resultSet.next()){
 	rs = st2.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
 	  String gst = resultSet.getString("GST");
+	  
+	
 %>
                                         <tr class="odd gradeX">
 
@@ -473,9 +483,11 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                                             <th>Quantity</th>
                                             <th>
                                             <input class="disableButton4Credit" type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
-                                            Delete All
+                                            Select All
                                           </th>
-
+              <%if(mflag==1) {%>
+              <th>Notes</th>
+              <%} %>
                                         </tr>
                       </thead>
                         <tbody >
@@ -526,6 +538,16 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
   <td>  <input type="checkbox" class="chkbox disableButton4Credit" name="checkboxRow" value="<%=i %>">   </td>     
+     <%if(mflag==1) {
+    	 String notes="";
+    	 if (rs.getString("BillDetails.Notes")==null || rs.getString("BillDetails.Notes").length()==0)
+    		 notes="";
+    	 else
+    		 notes=rs.getString("BillDetails.Notes");
+     %>
+  
+              <td class="notes"><%=notes%></td>
+              <%} %>
 </tr>
  <%
  
@@ -540,6 +562,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
  list.add(String.valueOf(i));
  list.add(custId);
+ list.add(type);
  map.put(i, list);
  sno++;
 } 
@@ -565,6 +588,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
 
  <br/> <br/> 
+ <br/> 
 <div class="form-group " >
                        		
 
@@ -615,16 +639,28 @@ gst ="";
   </div>                      
 <br/>
  <p id="creditMsg"></p> 
+ <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
+ 
+<div class="invDet " style="display:none;">
+        
+           <label class="" for="InvNo" style="float:left;"><strong>Invoice Number: </strong></label><input class=" col-md-2" type="text" id="InvNo" name="InvNo" style="margin-left:10px;">                       		
+      
+          <label class="" for="InvDt" style="float:left;margin-left: 50px;"><strong>Invoice Date: </strong></label><input class=" col-md-2" type="text" id="InvDt" name="InvDt" style="margin-left:10px;">    
+<a id="aid" href=""><button type="button"  onclick="addRecordsToInvoice(<%=i%>)" id="addto" class="btn btn-success" style="margin-left: 30px;margin-top: -5px;">Add</button></a> 
+  </div> 
                          </div>
                           
-         <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
+         
                       
 <br/> 
+<br/> 
+
 <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger disableButton4Credit" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
-<button type="submit" class="btn btn-success" style="float:right" onclick="chsn(<%=i%>)">Save</button>
- <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right">Add More Items</button></a> 
-<button type="button"  id="refreshButton" class="btn btn-success" style="float:right;" onClick="window.location.reload()">Refresh</button>
-<button type="button"  id="creditButton" class="btn btn-success" style="float:right;">Convert to Credit</button>
+<a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>)">Save</button></a>
+ <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
+<button type="button"  id="refreshButton" class="btn btn-warning" style="float:right;" onClick="window.location.reload()">Refresh</button>
+<button type="button"  id="creditButton" class="btn btn-info disable4inv" style="float:right;">Convert to Credit</button>
+<button type="button"  id="invbtn" class="btn btn-success" style="float:right;">Add to Invoice</button>
 <br/>
 <br/>
 <br/>
@@ -761,6 +797,8 @@ function d(){
 }
     $(window).load(function () {
     	$(".se-pre-con").fadeOut("slow");
+    	
+ 	
     	 var s = document.getElementById("branch");
    	 document.getElementById('single_cal3').value=localStorage.getItem("sd");
   /*   	 document.getElementById('single_cal4').value=localStorage.getItem("rd");  */
@@ -790,7 +828,12 @@ function d(){
     	   /*  	localStorage.setItem("rd", "");  */ 
     	 /*    	localStorage.setItem("dc", "");   */
 
+    	
+    	 
+    	 
     });
+    
+    
 </script>    
 <script>
 
@@ -812,11 +855,24 @@ function d(){
      }          
 
 } 
+
+ 
+ $("#invbtn").click(function() {
+	 $( '[class*="invDet"]' ).show();
+		$("#InvNo").prop('required',true);
+		 $( '[class*="disable4Credit"]' ).prop("readonly",true);
+		 $('.disableButton4Credit').attr('disabled', 'disabled');
+
+		 $('[class*="disable4inv"]').attr('disabled', 'disabled');
+ });
+ 
+ 
  $("#creditButton").click(function() {
+	// $( '[class*="InvDet"]' ).hide();
 	 $( '[class*="creditDet"]' ).show();
+	 
 		$("#creditCustId").prop('required',true);
 	 $( '[class*="disable4Credit"]' ).prop("readonly",true);
-	 $('.disableButton4Credit').attr('disabled', 'disabled');
  });
 
 $("#deleteButton").click(function() {
@@ -885,10 +941,70 @@ function deleteCheckedRecords(){
 	else
 		{
 	   	  var elements=document.getElementsByClassName('chkbox').length;
-    	  var count_checked = $('input[class="chkbox"]:checked').length;
+    	//  var count_checked = $('input[class="chkbox"]:checked').length;
+    	 	var count_checked = $('.chkbox:checked').size();
+    //	  alert(count_checked);
 	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked);
 	}
 }
+
+function addRecordsToInvoice(i){
+	//var did=document.getElementById("did").value;
+document.getElementById("i").value=i;
+	var pk=document.getElementById("payid").value;
+	var branch=document.getElementById("branch").value;
+	var dc=document.getElementById("dc").value;
+	var cn=document.getElementById("ddd").value;
+	var GST=document.getElementById("GST").value;
+//	alert(GST);
+	var cusnam=document.getElementById("cusnam").value;
+//	alert(cusnam);
+	var cusno=document.getElementById("cusno").value;
+//	alert(cusno);
+	
+	var items=document.getElementsByName('checkboxRow');
+	var selectedItems="";
+	var cp="";
+	for(var i=0; i<items.length; i++){
+		if(items[i].type=='checkbox' && items[i].checked==true)
+			if(selectedItems!="")				
+				{
+				selectedItems+=","+items[i].value+"\n";
+				cp+=","+document.getElementById("cp"+items[i].value).value+"\n";
+			
+		//		alert("cp="+document.getElementById("cp"+items[i].value).value);
+				
+				}
+			else
+				{
+			selectedItems+=items[i].value+"\n";
+			cp+=document.getElementById("cp"+items[i].value).value+"\n";
+			
+		//	alert("si"+items[i].value);
+		//	alert("cp="+document.getElementById("cp"+items[i].value).value);
+				}
+	}
+//	alert(selectedItems);
+
+	if(selectedItems=="")
+		{
+		 //alert("Please select an item to delete.");
+		 return;
+		}
+	else
+		{
+	   	  var elements=document.getElementsByClassName('chkbox').length;
+    //	  var count_checked = $('input[class="chkbox"]:checked').length;
+    	//	alert(count_checked);
+    	var count_checked = $('.chkbox:checked').size();
+    //	alert($('.chkbox:checked').size());
+    var InvNo=document.getElementById("InvNo").value;
+    var InvDt=document.getElementById("InvDt").value;
+ //  alert(InvDt);
+	document.getElementById('aid').href=('addtoinv.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked+'&cp='+cp+'&invno='+InvNo+'&invdt='+InvDt+'&cusnam='+cusnam+'&cusno='+cusno+'&GST='+GST);
+	}
+}
+
 function f(i)
 {
 	var i =i;
@@ -918,6 +1034,18 @@ $(document).ready(function() {
 	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
+	
+	//disable the items which have already been added to invoices
+	 var disit=document.getElementsByClassName('notes');
+	 var elements=document.getElementsByClassName('chkbox')
+
+	 for(var i=0; i<disit.length; i++){
+    
+    	if(disit[i].innerHTML.length>0)
+    		elements[i].disabled=true;
+    		
+    		
+  }
 	 var custId=document.getElementById("custId").value;
 	 var cusnam=document.getElementById("cusnam").value;
 	 var cusno=document.getElementById("cusno").value;
@@ -930,6 +1058,8 @@ $(document).ready(function() {
 	}
 	   	localStorage.setItem("cusnam", cusnam);
 	   	localStorage.setItem("cusno", cusno);
+	   	
+	   	
 /* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{

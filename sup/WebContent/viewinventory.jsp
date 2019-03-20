@@ -528,8 +528,11 @@ var table= $('#ex').DataTable( {
 	});
 	
   $(document).ready(function() {
+	
 	  $.getScript("js/rolePermissions.js");
+	  
 		shortcut.add("Ctrl+Shift+X",function() {
+			// printXml();
 			hideprices();
 			if(role!=null && role!="1")
 			{
@@ -732,6 +735,7 @@ var table=$('#ex').DataTable( {
 	    }
 	    var h= $('.right_col').height()+200;
 	    $('.right_col').animate({height:h}, 500);
+	   
 	  
 	} );
 function dch(val) { 
@@ -742,6 +746,35 @@ if(val=="single_cal3")
   document.getElementById('da1').value=da;
 else
 	document.getElementById('da2').value=da;
+}
+
+function printXml() {
+    var xml = '<?xml version="1.0" encoding="UTF-8"?><Root><Classes>';
+    var tritem = document.getElementById("ex").getElementsByTagName("tr");
+   
+    alert(tritem.length);
+    
+    for (i = 0; i < tritem.length; i++) 
+    {
+        var celldata = tritem[i];
+       
+        if (celldata.cells.length > 0) {
+       
+          //  xml += "<"+celldata.cells[0].textContent + "'>\n";
+            for (var m = 1; m < celldata.cells.length; ++m)
+            {
+              //  xml += "\t" + celldata.cells[m].textContent;
+              xml+=": "+celldata.cells[m].textContent+"\n";
+            }
+         //   xml += "</ "+celldata.cells[0].textContent+">\n";
+        }
+    }
+    xml += '</Classes></Root>';
+    window.alert(xml);
+    //here you can rewrite the xmlstring to a new document
+    //or use the hide control to store the xml text, call the text in code behind.
+    //also, you can call ajax to excuet codebehind and sava the xml file
+    // window.open('data:text/xml,' + xml);
 }
 </script>
 

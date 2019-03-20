@@ -338,11 +338,11 @@ xmlHttp.send(null);
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input id="description1" class="form-control col-md-7 col-xs-12" type="text" name="description" disabled>
                         </div>
-                         <!--  <label class="control-label col-md-1 col-sm-1 col-xs-2" >Sale Price:<span class="required">*</span>
+                          <label class="control-label col-md-1 col-sm-1 col-xs-2" >Sale Price:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-4">
                           <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="costprice">
-                        </div> -->
+                        </div> 
                  <!--      </div>
                       <div class="form-group"> -->
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
