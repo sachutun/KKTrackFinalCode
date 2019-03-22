@@ -35,7 +35,8 @@ int Id;
 <%
 try{ 
 	int i=0;
-	  String recordToUpdate = request.getParameter("deleteid");
+	
+	    String recordToUpdate = request.getParameter("deleteid");
 	    System.out.println(recordToUpdate); 
 	    
 	    String branch = request.getParameter("branch");
@@ -48,26 +49,28 @@ try{
         String cname=request.getParameter("cusnam");
         System.out.println(cname);  
         String cno=request.getParameter("cusno");
-        //System.out.println(cno);  
+        
+      //System.out.println(cno);  
+      
         String GST=request.getParameter("GST");
         String type="";
         String qparts="";
         
-    //    System.out.println(GST+type); 
+    //  System.out.println(GST+type); 
         
 	    int d=Integer.parseInt(recordToUpdate);
 	    
 	    
-String selectedItems = request.getParameter("selectedItems");
-String[] selectedItemsArray=selectedItems.split(",");
+        String selectedItems = request.getParameter("selectedItems");
+        String[] selectedItemsArray=selectedItems.split(",");
 
-String cp = request.getParameter("cp");
-String[] cpArray=cp.split(",");
+        String cp = request.getParameter("cp");
+        String[] cpArray=cp.split(",");
 
-	Properties props = new Properties();
-    InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
-    props.load(in);
-    in.close();
+	    Properties props = new Properties();
+        InputStream in = getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+        props.load(in);
+        in.close();
 
     String driver = props.getProperty("jdbc.driver");
     if (driver != null) {
@@ -144,7 +147,7 @@ else
     
 for(i=0;i<selectedItemsArray.length;i++)
 {
-	 //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
+  //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
     Map<Integer, List<String>> map = (HashMap<Integer, List<String>>)session.getAttribute("map");
   //Map<Integer, List<String>> map = (HashMap<Integer, List<String>>)request.getParameter("mapData");
  
@@ -156,21 +159,21 @@ for(i=0;i<selectedItemsArray.length;i++)
         {
         List<String> values = entry.getValue();
 
- recordToUpdate = values.get(0);
+     recordToUpdate = values.get(0);
 
-    branch=values.get(1);
+     branch=values.get(1);
    
      dc=values.get(2);
 
      sd=values.get(4);
 
-//String ba=values.get(5);
+     //String ba=values.get(5);
      custId=values.get(10);
      type=values.get(11);
 
      d=Integer.parseInt(recordToUpdate);
      
-  //  double bala=Double.parseDouble(ba);
+  // double bala=Double.parseDouble(ba);
   
    
     int code=0;
@@ -181,7 +184,7 @@ for(i=0;i<selectedItemsArray.length;i++)
     int billid=0;
   
     //memo
-    String s4="SELECT * FROM BillDetails WHERE DC="+d;
+       String s4="SELECT * FROM BillDetails WHERE DC="+d;
 
        String bb=values.get(9);
   
@@ -195,26 +198,28 @@ for(i=0;i<selectedItemsArray.length;i++)
     String cod = values.get(6);
 
     
-     code=Integer.parseInt(cod);
-     cost=Integer.parseInt(fcp);
-     qty=Float.parseFloat(q);
+    code=Integer.parseInt(cod);
+    cost=Integer.parseInt(fcp);
+    qty=Float.parseFloat(q);
    //  nq=0;
   
-     billid=Integer.parseInt(bid);
+    billid=Integer.parseInt(bid);
 
- float totp=cost*qty;
+    float totp=cost*qty;
     
  
     System.out.println(q+","+bid+","+cod+","+fcp+","+ndc+","+nd);  
- //   String s3= "";
+ 
+    // String s3= "";
 
-// Calculate total price of all selected items 
-ftot+=totp;
+    // Calculate total price of all selected items 
 
-//Add billdetails depending on whther the sale exists or not
+    ftot+=totp;
+
+   //Add billdetails depending on whther the sale exists or not
 
 
-qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+")";
+    qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+")";
 
 
 
