@@ -141,7 +141,8 @@ else
     Id=resultSet.getInt("Max(Id)");
 
 }
-    
+     st3=conn.createStatement();
+
 for(i=0;i<selectedItemsArray.length;i++)
 {
 	 //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
@@ -211,12 +212,24 @@ for(i=0;i<selectedItemsArray.length;i++)
 // Calculate total price of all selected items 
 ftot+=totp;
 
+//Get the existing minprice and LC based on code
+rs2=st3.executeQuery("Select * from CodeList");  
+     
+String minPrice="0";
+String LC="0";
+while(rs2.next())
+	{
+		if(rs2.getString("Code").equals(cod))
+		{
+			minPrice=rs2.getString("MinPrice");
+			LC=rs2.getString("LC");
+			break;
+		}
+	}
 //Add billdetails depending on whther the sale exists or not
 
 
-qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+")";
-
-
+qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+","+minPrice+","+LC+")";
 
 // insert each item into BillDetails along with the new invno and invdt in notes column
 //delete from memo bill details
@@ -252,7 +265,7 @@ ps2.setString(2,bid);
 ps2.executeUpdate(); 
         }
     }
-    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
+    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
     System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     
