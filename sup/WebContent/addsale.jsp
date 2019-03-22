@@ -937,10 +937,7 @@ function calculate(i)
 
   var result2= tot;
   
-	var phtax;
-  	phtax=0.18*totp;
-  	if(!isNaN(phtax))
-  	document.getElementById("taxmsg").innerHTML=phtax;
+	
  
     if (!isNaN(result2)) {
         document.getElementById('totalq').value = result2;
@@ -1039,6 +1036,10 @@ if(finalTotal==null)
 bal=finalTotal-document.getElementById("amountpaid").value;
 document.getElementById("balanceamount").value=bal;
 //document.getElementById("creditBal").value=bal;
+var phtax;
+	phtax=0.18*finalTotal;
+	if(!isNaN(phtax))
+	document.getElementById("taxmsg").innerHTML=phtax;
 }	 
 function cls(elt)
 {
