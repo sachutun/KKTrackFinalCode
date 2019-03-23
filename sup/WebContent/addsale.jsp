@@ -1036,8 +1036,10 @@ if(finalTotal==null)
 bal=finalTotal-document.getElementById("amountpaid").value;
 document.getElementById("balanceamount").value=bal;
 //document.getElementById("creditBal").value=bal;
+var totalprice=document.getElementById('total').value;
 var phtax;
-	phtax=0.18*finalTotal;
+	//phtax=0.18*finalTotal;
+	phtax=0.18*totalprice;
 	if(!isNaN(phtax))
 	document.getElementById("taxmsg").innerHTML=phtax;
 }	 
