@@ -77,10 +77,16 @@ try{
     String newq = request.getParameter("nq"+sn);
     String code = request.getParameter("code"+sn);
     
-   
+   if(newq=="")
+	   newq="0";
     float oq=Float.parseFloat(olq);
     float nq=Float.parseFloat(newq);
-    
+    String newsp=request.getParameter("nsp"+sn);
+    float nsp=Float.parseFloat(newsp);
+    String totalprice=request.getParameter("totalprice");
+    String tax=request.getParameter("tax");
+    //System.out.println("tax: "+tax);
+   // System.out.println("totalprice: "+totalprice);
     String sno = request.getParameter("i");
     int billid=Integer.parseInt(sno);
     //if new quantity> q i.e. more items
@@ -149,9 +155,10 @@ try{
 
     int[] cnt = preparedStatement.executeBatch();
     
-    ps2 = conn.prepareStatement("UPDATE `IBTDetails` SET `Qty`=? WHERE Id=?");
+    ps2 = conn.prepareStatement("UPDATE `IBTDetails` SET `Qty`=?,`SalePrice`=?  WHERE Id=?");
     ps2.setFloat(1,nq);
-    ps2.setInt(2,sn);
+    ps2.setFloat(2,nsp);
+    ps2.setInt(3,sn);
     ps2.executeUpdate(); 
      
     }
@@ -159,25 +166,40 @@ try{
     
   if(nq>oq)
   {
-     ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`+?  WHERE Id=?");
+     ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`+?,`TotalPrice`=?,`Tax`=? WHERE Id=?");
        ps.setString(1,date);
        ps.setString(2,ibtno);
        ps.setFloat(3,diffq);
-       ps.setInt(4,Pid);
+       ps.setString(4,totalprice);
+       ps.setString(5,tax);
+       ps.setInt(6,Pid);
        ps.executeUpdate();     
        conn.commit();
   }
   else if(nq<oq)
   {
-	     ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`-?  WHERE Id=?");
+	     ps = conn.prepareStatement("UPDATE `IBT` SET `Date`=?,`IBTNo`=?,`TotalQty`=`TotalQty`-? ,`TotalPrice`=?,`Tax`=? WHERE Id=?");
 	       ps.setString(1,date);
 	       ps.setString(2,ibtno);
 	       ps.setFloat(3,diffq);
-	       ps.setInt(4,Pid);
+	       ps.setString(4,totalprice);
+	       ps.setString(5,tax);
+	       ps.setInt(6,Pid);
 	       ps.executeUpdate();     
 	       conn.commit();
 	  }
-	  
+  else
+	 {
+		 //System.out.println("updating tax: ");	 
+		 ps = conn.prepareStatement("UPDATE `IBT` SET `TotalPrice`=?,`Tax`=? WHERE Id=?");
+	       ps.setString(1,totalprice);
+	       if(tax!="")
+	       ps.setString(2,tax);
+	       else
+	    	   ps.setString(2,"0");
+	       ps.setInt(3,Pid); 
+	       ps.executeUpdate(); 
+	 } 
        }    
 
       

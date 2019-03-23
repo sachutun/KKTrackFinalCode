@@ -270,26 +270,36 @@ if(branch!=null && dc!=null && cn!=null)
 {
 resultSet = statement.executeQuery(sql1);
 int sno=1;
+double finaltotal=0;
 while(resultSet.next()){
 	
-	String sql2="SELECT IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id FROM IBTDetails inner join CodeList on IBTDetails.Code=CodeList.Code where IBTDetails.IBT=";
+	String sql2="SELECT IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id,IBTDetails.SalePrice FROM IBTDetails inner join CodeList on IBTDetails.Code=CodeList.Code where IBTDetails.IBT=";
 	int	primaryKey = resultSet.getInt("Id");
 	String whr=primaryKey+"";
 	sql2+=whr;
 	int sno2=1;
 	rs = st.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
+	String ibt=resultSet.getString("IBTNo");
 
 %>
  <tr class="odd gradeX">
 
 <%-- <td><%=sno%></td>      --%>                                     
-<td width="4%"><strong> IBT Number: </strong><input class="" type="text" id="ibtno" name="ibtno" value=<%=resultSet.getString("IBTNo") %> readonly="readonly" style="border:none"></td>
+<td width="4%"><strong> IBT Number: </strong><input class="" type="text" id="ibtno" name="ibtno" value=<%=ibt %> readonly="readonly" style="border:none"></td>
 <td width="2%"><strong> Date: </strong><input class="" type="text" id="date" name="date" value=<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %> ></td>
 <td width="6%"><strong> From Branch: </strong><input class="" type="text" id="fbranch" name="fbranch" value=<%=resultSet.getString("FromBranch") %> readonly="readonly" style="border:none"></td>
 <td width="4%"><strong> To Branch: </strong><input class="" type="text" id="tbranch" name="tbranch" value=<%=resultSet.getString("ToBranch") %> readonly="readonly" style="border:none"></td>
-<td width="3%"><strong> Total Qty: </strong><%=resultSet.getFloat("TotalQty") %></td>
+<td width="3%"><strong> Total Qty: </strong>
+<input class="" type="text" id="totalqty" name="totalqty" value=<%=resultSet.getString("TotalQty") %> readonly="readonly" style="border:none"></td>
+<% if(ibt.startsWith("T"))
+{
+	finaltotal=resultSet.getDouble("TotalPrice")-resultSet.getDouble("tax");
+%> 
 
+<td width="4%"><strong> Tax: </strong><input class="" type="text" id="tax" name="tax" value=<%=resultSet.getString("Tax") %> onblur="calculateTotalPrice()"></td>
+<td width="4%"><strong> Total Price: </strong><input class="" type="text" id="totalprice" name="totalprice" value=<%=resultSet.getString("TotalPrice") %> readonly="readonly" style="border:none"></td>
+<%}%>
 </tr></tbody></table>
 <table id="" class="table table-striped table-bordered dt-responsive">
                       <thead>
@@ -320,7 +330,8 @@ while(resultSet.next()){
 {
                         	  List<String> list = new ArrayList<String>();
                         	  i=rs.getInt("IBTDetails.Id") ;
-                        	  //System.out.println(i);
+                        	 // System.out.println(i);
+                        	  
 	%>
 <td><%=sno2++%></td> 
 <td><%=rs.getString("IBTDetails.Code") %></td>
@@ -328,8 +339,15 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %> </td>
 <td ><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
+<% if(ibt.startsWith("T"))
+{%> 
+<td>
+<input class="col-md-4" type="text" id="nsp<%=i %>" name="nsp<%=i %>" value=<%=rs.getDouble("SalePrice") %> onblur="calculateTotalPrice()" >
+</td> 
+<%}else{ %>
 <td><%=rs.getDouble("MinPrice") %></td> 
-<td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty") %> >
+<%} %>
+<td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty") %> onblur="calculateTotalQty()">
 <input type="hidden" id="i" name="i">  
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >
  <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty")%> >
@@ -337,6 +355,8 @@ while(resultSet.next()){
     <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
   <input type="hidden" id="sd" name="sd" value=<%=cn %> > 
      <input type="hidden" id="dc" name="dc" value=<%=dc %> > 
+      <input type="hidden" id="id" name="id" class="idValues" value=<%=rs.getInt("IBTDetails.Id")  %> >
+      <input type="hidden" id="finaltotal" name="finaltotal" value=<%=finaltotal %> >
   
 </td>
 <%-- 
@@ -357,6 +377,7 @@ while(resultSet.next()){
  map.put(i, list);
  sno++;
 } 
+                         
                           //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
                           for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
                               int key = entry.getKey();
@@ -571,6 +592,62 @@ function deleteCheckedRecords(){
 function chsn(i)
 {
 	document.getElementById("i").value=i;
+}
+function calculateTotalPrice()
+{
+
+  var ids = document.getElementsByClassName('idValues');
+  var totPrice=0;
+  for(var i = 0; i < ids.length; i++)
+  {
+	var x=ids[i].value;
+	var nsp=parseFloat(document.getElementById("nsp"+x).value);
+	var nqty=parseFloat(document.getElementById("nq"+x).value);
+	var price=nsp*nqty;
+	if(isNaN(price))
+		totPrice+=0;
+	else
+		totPrice+=price;
+  } 
+	
+   var result2=totPrice;
+   if (!isNaN(result2)) {
+        
+        document.getElementById('finaltotal').value = result2;
+       
+        var tax=parseFloat(document.getElementById("tax").value);
+       // alert(tax);
+        if(isNaN(tax))
+        	 document.getElementById('totalprice').value = 0+result2;
+        else
+       	 document.getElementById('totalprice').value = parseInt(document.getElementById("tax").value)+result2;       
+    } 
+}
+
+function calculateTotalQty()
+{
+	 var ids = document.getElementsByClassName('idValues');
+	 var totalqty=0;
+	 for(var i = 0; i < ids.length; i++)
+	  {
+		  //alert("for");
+		  var x=ids[i].value;
+			  var nqty=parseFloat(document.getElementById("nq"+x).value);
+			  if(isNaN(nqty))
+				  totalqty+=0;
+			  else
+				  totalqty+=nqty;
+	  }
+	 document.getElementById('totalqty').value=totalqty;
+	 if(totalqty==0)
+		{
+		 document.getElementById('totalprice').value =0;
+		 document.getElementById('tax').value =0;
+		}
+	 else
+	{
+	 calculateTotalPrice();
+	}
 }
  $(document).ready(function() {
 	 $.getScript("js/rolePermissions.js");

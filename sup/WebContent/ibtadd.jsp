@@ -37,15 +37,40 @@ ResultSet resultSet = null;
    }
    String tobranch = request.getParameter("tobranch");
    String[] qty = request.getParameterValues("qty");
+   String[] saleprice = request.getParameterValues("saleprice");
    String totalqty=request.getParameter("totalq");
    float tqty=Float.parseFloat(totalqty);
    float[] q= new float[qty.length];
-
+   double[] sp=new double[saleprice.length];
+   String t=request.getParameter("tax");
+   double tax;
+   if(t==null || t=="")
+	   tax=0;
+   else
+       tax=Double.parseDouble(t);
+   String tp=request.getParameter("totalprice");
+   double totalprice;
+   if(tp==null || tp=="")
+	   totalprice=0;
+   else
+	   totalprice=Double.parseDouble(tp);
 
    for(int i=0;i<qty.length;i++)
   {
 	   q[i]=Float.parseFloat(qty[i]);  
-  } 
+  }
+   //System.out.println("saleprice.length: "+saleprice.length);
+
+   for(int i=0;i<saleprice.length;i++)
+   {
+	  // System.out.println("saleprice"+"["+i+"]: "+saleprice[i]);
+        String salep=saleprice[i];
+        if(salep!=null && salep!="")
+	   		sp[i]=Double.parseDouble(salep);  
+        //else
+        		//sp[i]=0;
+   } 
+   
    System.out.println(frombranch);
    System.out.println(tobranch);
    
@@ -83,8 +108,8 @@ Class.forName("com.mysql.jdbc.Driver").newInstance(); */
     		connection = DriverManager.getConnection(url, username, password);
 	    Statement st=connection.createStatement();
        statement=connection.createStatement();       
-      
-       int x=st.executeUpdate("INSERT INTO IBT (IBTNo, FromBranch,ToBranch, Date, TotalQty) values ('"+ ibtnumber+"', '"+frombranch+"', '"+tobranch+"','"+date+"', "+tqty+")");
+      //System.out.println("INSERT INTO IBT (IBTNo, FromBranch,ToBranch, Date, TotalQty, TotalPrice, Tax) values ('"+ ibtnumber+"', '"+frombranch+"', '"+tobranch+"','"+date+"', '"+tqty+"','"+totalprice+"','"+tax+"')");
+       int x=st.executeUpdate("INSERT INTO IBT (IBTNo, FromBranch,ToBranch, Date, TotalQty, TotalPrice, Tax) values ('"+ ibtnumber+"', '"+frombranch+"', '"+tobranch+"','"+date+"', '"+tqty+"','"+totalprice+"','"+tax+"')");
        
        String sql="Select Max(Id) from IBT";
        resultSet = statement.executeQuery(sql);
@@ -101,7 +126,7 @@ String sq2="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ("+code[i]+","+q[i]+","+id+")";
+qparts+=" ("+code[i]+","+q[i]+","+id+","+sp[i]+")";
 /*  sq1="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
  sq2="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
  
@@ -154,7 +179,7 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO IBTDetails (`Code`, `Qty`, `IBT`) VALUES"+ qparts;
+String isql= "INSERT INTO IBTDetails (`Code`, `Qty`, `IBT`, `SalePrice`) VALUES"+ qparts;
 
 int y=st2.executeUpdate(isql);
 connection.commit();

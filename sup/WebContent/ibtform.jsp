@@ -317,10 +317,27 @@ xmlHttp.send(null);
 							%> 
                           </select>                           
                         </div>
-                      <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 6%;">Add Item</button>
-                     
+
                       </div>
-                      
+                 
+                        <div class="form-group " style="margin-left:2%;">
+                       		<label class="control-label col-md-1 col-sm-1 col-xs-2" style="width:125px;">General IBT:</label>
+                        		<div class="col-md-2 col-sm-2 col-xs-3" style="margin-top: 0.7%;">
+                          		<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="generalIBT" value="general" checked="checked">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Tax IBT:</label>
+                       		 <div class="col-md-3 col-sm-3 col-xs-3" style="margin-top: 0.7%;">
+                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="taxIBT" value="tax">
+                       		 </div> 
+                       		<!--  <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
+                        		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
+                        			<input id="GST" style=";width:200px; "class="form-control col-md-7 col-xs-12" type="text" name="GST">
+                       		 </div> -->
+                     <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 76%;margin-top:-5%;">Add Item</button>
+                         		
+                        </div>
+                     
                       <div class="codedetails" id="id1" >
                       <ul class="nav navbar-right panel_toolbox">
                       <li style="float: right;"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -338,11 +355,7 @@ xmlHttp.send(null);
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input id="description1" class="form-control col-md-7 col-xs-12" type="text" name="description" disabled>
                         </div>
-                          <label class="control-label col-md-1 col-sm-1 col-xs-2" >Sale Price:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-2 col-sm-2 col-xs-4">
-                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="costprice">
-                        </div> 
+                       
                  <!--      </div>
                       <div class="form-group"> -->
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
@@ -351,7 +364,13 @@ xmlHttp.send(null);
                           <input id="qty1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="qty" step="any"  min=0 onblur="calculate(1)">
                         </div>
                     
-                        
+                      
+                          <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">Sale Price:<span class="required">*</span>
+                        </label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
+                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" onblur="calculateTotalPrice(1)">
+                        </div> 
+                       
                       </div>
                     
                       
@@ -402,7 +421,23 @@ xmlHttp.send(null);
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input id="totalq" class="form-control col-md-7 col-xs-12"  type="text" name="totalq" readonly="readonly">
                         </div>
-                      </div></div>
+                       
+                         <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Tax:</label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
+                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax" onchange="calculatetax()" min="0" >
+                          <p id="taxmsg"></p> 
+                        </div>
+                         
+                         <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Total Price:</label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
+                          <input id="totalprice" class="form-control col-md-7 col-xs-12"  type="text" name="totalprice" readonly="readonly">
+                        </div>
+                   
+                      </div>
+                      
+                      
+                      </div>
+                       <input id="finaltotal" class="form-control col-md-7 col-xs-12" type="hidden" >
                      <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
                    <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
@@ -484,7 +519,48 @@ xmlHttp.send(null);
 </script>
    
 <script>
+function ibtCheck() {
 
+    if (document.getElementById('taxIBT').checked) {
+    		var elements = document.getElementsByClassName('taxElements');    	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].style.display = "block";
+			}
+		}
+ 		var elements = document.getElementsByClassName('salepr');   	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].required = 'true';
+			}
+		}
+    	}
+    	else {
+         document.getElementById('tax').value = '';
+         document.getElementById('totalprice').value = '';
+     	 var elements = document.getElementsByClassName('taxElements');  	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].style.display = "none";
+			}
+		}
+		var elements = document.getElementsByClassName('salepr');   	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].removeAttribute("required");
+				elements[i].value='';
+			}
+		}    
+    	}
+}
  function dch() 
 { 
  var d=document.getElementById("single_cal3").value.toString();
@@ -501,20 +577,73 @@ function calculate(i)
 
   var itemc=document.getElementById("numb").value;
   var tot=0;
-  
 	  for(var x=1;x<=itemc;x++)
 	  {
+		  //alert(document.getElementById("id"+x).value);
 		  if(document.getElementById("id"+x)!=null)
-	  tot+=parseFloat(document.getElementById("qty"+x).value);
-	 
+		  {
+			  var qty=parseFloat(document.getElementById("qty"+x).value);
+			  if(isNaN(qty))
+				tot+=0;
+			  else
+			  	tot+=qty;
+		  }
+	
 	  }
    /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
    var result2=tot;
     if (!isNaN(result2)) {
         document.getElementById('totalq').value = result2;
     }
+    calculateTotalPrice(i);
+}
+function calculateTotalPrice(i)
+{
+
+  var itemc=document.getElementById("numb").value;
+  var totPrice=0;
+	  for(var x=1;x<=itemc;x++)
+	  {
+		  //alert(document.getElementById("id"+x).value);
+		  if(document.getElementById("id"+x)!=null)
+		  {
+			  var salePrice=parseFloat(document.getElementById("saleprice"+x).value);
+			  var qty=parseFloat(document.getElementById("qty"+x).value);
+			 
+			  var price=salePrice*qty;
+			  //alert(price);
+			  if(isNaN(price))
+				totPrice+=0;
+			  else
+			  	totPrice+=price;
+		  }
+	
+	  }
+   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
+   var result2=totPrice;
+    if (!isNaN(result2)) {
+        
+        document.getElementById('finaltotal').value = result2;
+       
+        var tax=parseFloat(document.getElementById("tax").value);
+        if(isNaN(tax))
+        	 document.getElementById('totalprice').value = 0+result2;
+        else
+       	 document.getElementById('totalprice').value = parseInt(document.getElementById("tax").value)+result2;
+        
+    }
+    var phtax;
+	phtax=0.18*totPrice;
+	if(!isNaN(phtax))
+	document.getElementById("taxmsg").innerHTML=phtax;
 }
 
+function calculatetax()
+{
+	 calculateTotalPrice(i);
+	 document.getElementById('totalprice').value=parseInt(document.getElementById("tax").value)+parseInt(document.getElementById("finaltotal").value);
+
+}
 function tot(i)
 {
 	
@@ -604,11 +733,14 @@ function cls(elt)
 $('.add').click(function() {
 	 c++; 
 	 
-   var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+   //var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+   var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div> <label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">Sale Price:<span class=\"required\">*</span> </label> <div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"> <input id=\"saleprice"+c+"\" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" onblur=\"calculateTotalPrice("+c+")\"></div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+   
    $('.codedetails:last').after(s1); 
 /*  $('#main').after(s1); */
  var h= $('.right_col').height()+200;
  $('.right_col').animate({height:h}, 500);
+ ibtCheck();
 });
 
  }); 

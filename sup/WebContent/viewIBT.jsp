@@ -273,6 +273,8 @@ String Tbranch = request.getParameter("Tbranch"); */
                                             <th>From Branch</th>
                                             <th>To Branch</th>
                                             <th>Total Quantity</th>
+                                            <th>Total Price</th>
+                                            <th>Tax</th>
                                              <th>Total IBT</th>
                                              <th>Invoice Details</th> 
 
@@ -280,7 +282,7 @@ String Tbranch = request.getParameter("Tbranch"); */
                       </thead>
                           <tfoot>
             <tr >
-                <th colspan="6" style="text-align:right">Total :</th>
+                <th colspan="8" style="text-align:right">Total :</th>
                 <th></th>
                 <th></th>
                 
@@ -339,7 +341,7 @@ resultSet = statement.executeQuery(sqlf);
 }
 
 while(resultSet.next()){
-	String sql2="SELECT IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id FROM IBTDetails inner join CodeList on IBTDetails.Code=CodeList.Code where IBTDetails.IBT=";
+	String sql2="SELECT IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id,IBTDetails.SalePrice FROM IBTDetails inner join CodeList on IBTDetails.Code=CodeList.Code where IBTDetails.IBT=";
 	
 	int	primaryKey = resultSet.getInt("Id");
 	String whr=primaryKey+"";
@@ -349,15 +351,24 @@ while(resultSet.next()){
 	int sno2=1;
 	rs = st.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
+	String ibtno=resultSet.getString("IBTNo");
 %>
                                         <tr class="odd gradeX">
                                         <td><%=resultSet.getString("Id") %></td>
 <%-- <td><%=sno%></td>      --%>                                     
-<td><%=resultSet.getString("IBTNo") %></td>
+<td><%=ibtno %></td>
 <td width="20%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td width="40%"><%=resultSet.getString("FromBranch") %></td>
 <td width="50%"><%=resultSet.getString("ToBranch") %></td>
 <td><%=resultSet.getFloat("TotalQty") %></td>
+<% if(ibtno.startsWith("T"))
+{%> 
+<td width="50%"><%=resultSet.getString("TotalPrice") %></td>
+<td width="50%"><%=resultSet.getString("Tax") %></td>
+<%}else{ %>
+<td></td> 
+<td></td>
+<%} %>
 <%if(code!=null && code.length()!=0){%>
 <td><%=resultSet.getInt("tq") %></td>
 <%}else {%>
@@ -393,7 +404,12 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("Machine") %></td>
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
+<% if(ibtno.startsWith("T"))
+{%> 
+<td><%=rs.getDouble("SalePrice") %></td> 
+<%}else{ %>
 <td><%=rs.getDouble("MinPrice") %></td> 
+<%} %>
 <td><%=rs.getFloat("IBTDetails.Qty") %></td>
 </tr>
  <% }%>
@@ -623,7 +639,7 @@ $(document).ready(function() {
    
               // Total over all pages
               total = api
-                  .column( 6 )
+                  .column( 8 )
                   .data()
                   .reduce( function (a, b) {
                       return intVal(a) + intVal(b);
@@ -631,14 +647,14 @@ $(document).ready(function() {
    
               // Total over this page
               pageTotal = api
-                  .column( 6, { page: 'current'} )
+                  .column( 8, { page: 'current'} )
                   .data()
                   .reduce( function (a, b) {
                       return intVal(a) + intVal(b);
                   }, 0 );
    
               // Update footer
-              $( api.column( 6 ).footer() ).html(
+              $( api.column( 8 ).footer() ).html(
             		  pageTotal+' ( '+ total+' total)'
               );
           },
