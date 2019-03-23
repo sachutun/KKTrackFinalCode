@@ -278,7 +278,15 @@ String environment = props.getProperty("jdbc.environment");
 								}
 							%> 
                           </select> --%>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="br" value="Workshop" disabled> 
+                        <!--  <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="br" value="Workshop" disabled> --> 
+                         <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="name">
+                            <option value="">Select Another Branch</option>
+                       
+                            <option value="Workshop">Workshop</option>
+                            <option value="Workshop2">Workshop 2</option>
+                            <option value="BarhiWS">Barhi Workshop</option>
+                         
+                             </select>
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -381,6 +389,11 @@ if(std!=null && std.length()!=0)
 {
 	w+=" and Date between '"+std+"' and '"+end+"'";
 	//sql3+=w;
+}
+if(branch!="" && branch!=null)
+{
+	w+=" and Branch='"+branch+"' ";
+	
 }
 sql3+=w+g;
 /* 
