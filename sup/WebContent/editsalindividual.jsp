@@ -557,7 +557,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 		String invdate = notes.substring(delimiter);%>
     		   <td class="notes" width="20%" >Added to Invoice
 <%--     		 <a href="viewInvoice.jsp?pk=<%=dc %>&recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-success btn-xs"><%=invNo%></a> --%>
-    		<a class="btn btn-success btn-xs" href="viewInvoice.jsp?dc=<%=invNo %>&sd=<%=invdate %>&branch=<%=branch %>&memodc=<%=dc%>&memodate=<%=cn%>&memopk=<%=primaryKey%>"> <%=invNo%></a> 
+    		<a class="btn btn-success btn-xs" href="viewInvoice.jsp?dc=<%=invNo %>&sd=<%=invdate %>&branch=<%=branch %>&memodc=<%=dc%>&memodate=<%=cn%>&memopk=<%=primaryKey%>&callingPage=editsalindividual.jsp"> <%=invNo%></a> 
     		
     		
     		, <br/> <%=invdate %> 

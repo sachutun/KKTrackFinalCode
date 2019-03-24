@@ -90,124 +90,7 @@ String environment = props.getProperty("jdbc.environment");
 }
   </style>
   </head>
-<script language="javascript" type="text/javascript">
-var xmlHttp
-function showCustomer(custID){ 
-	if (typeof XMLHttpRequest != "undefined"){
-   		xmlHttp1= new XMLHttpRequest();
-       }
-    else if (window.ActiveXObject){
-   		xmlHttp1= new ActiveXObject("Microsoft.XMLHTTP");
-    }
-	if (xmlHttp1==null){
-    		alert ("Browser does not support XMLHTTP Request")
-		return
-	} 
-	var url="getCreditCustomers.jsp";
-	url += "?creditcustID=" +custID+"&branch="+document.getElementById("branch").value;
-	
-	xmlHttp1.onreadystatechange = getCustomer;
-	xmlHttp1.open("GET", url, true);
-	xmlHttp1.send(null);
-}
-  
- function getCustomer(){  
-	 var res="";
-	 var creditMsg="";
-	 document.getElementById("creditMsg").style.color = "blue";
-	 document.getElementById("creditMsg").style.fontSize = "medium";
-	  if (xmlHttp1.readyState==4 || xmlHttp1.readyState=="complete"){   
-		  
-	 	 var data=xmlHttp1.responseText;
-	 	
-	 	 var dv=data.split(",");
-	 	//alert("dv[0]: "+dv[0]);
-	 	 document.getElementById("cusnam").value=dv[0];
-	 	 document.getElementById("cusno").value=dv[1];
-	       document.getElementById("cusnam").readOnly = true;
-			 document.getElementById("cusno").readOnly = true;
-	 /* 	if(dv[3]!="" && dv[3]!=null)
-	 		document.getElementById("aadhaar").value=dv[3];
-	 	else
-	 		document.getElementById("aadhaar").value=""; */
-		var gst=dv[4];
-		if(gst!="" && gst!=null)
-			{
-			document.getElementById("GST").value=gst;	
-			document.getElementById('taxInvoice').checked=true;
-	        document.getElementById('GSTdiv').style.visibility = 'visible';
-	        document.getElementById('GSTLabel').style.visibility = 'visible';
-	        document.getElementById('GST').required = true;
 
-	       /*  document.getElementById("GST").readOnly = true; */
-
-	       // document.getElementById("GST").readOnly = true;
-
-			}
-		else
-			{
-			document.getElementById("GST").value="";	
-			document.getElementById('generalInvoice').checked=true;
-	        document.getElementById('GSTdiv').style.visibility = 'hidden';
-	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        document.getElementById('GST').required = false;
-	        //document.getElementById("GST").readOnly = false;
-			}
-	 	 res="update";
-	 	
-	 	creditMsg = "Existing credit balance:" +dv[2];
-       
-	 	 if(dv[5]==0)
-	 		 {
-	 		var answer = confirm("Credit Customer ID does not exists.\nDo you want to add the Credit Customer?");
-	 	
-	 		if (answer) {
-	 		     document.getElementById("cusnam").focus();
-	 			 document.getElementById("cusnam").readOnly = false;
-	 			 document.getElementById("cusno").readOnly = false;
-	 			// document.getElementById("aadhaar").readOnly = false;
-	 			 //document.getElementById("GST").readOnly = false;
-	 			  	document.getElementById('cusnam').value=localStorage.getItem("cusnam"); 
-	 			 	document.getElementById('cusno').value=localStorage.getItem("cusno"); 
-	 			document.getElementById("GST").value="";	 			
-				document.getElementById('generalInvoice').checked=true;
-		        document.getElementById('GSTdiv').style.visibility = 'hidden';
-		        document.getElementById('GSTLabel').style.visibility = 'hidden';
-		   	  document.getElementById('GST').required = false;
-	 			creditMsg="Add the above Customer!"
-	 			res="insert";
-	 		}
-	 		else {
-	 		document.getElementById("GST").value="";	 			
-			document.getElementById('generalInvoice').checked=true;
-	        document.getElementById('GSTdiv').style.visibility = 'hidden';
-	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        document.getElementById('GST').required = false;
-	        document.getElementById("cusnam").readOnly = true;
-			 document.getElementById("cusno").readOnly = true;
-				document.getElementById('cusnam').value=localStorage.getItem("cusnam"); 
- 			 	document.getElementById('cusno').value=localStorage.getItem("cusno"); 
- 		
- 				document.getElementById("creditCustId").value="";	 
-			// document.getElementById("aadhaar").readOnly = true;
-
-			/*  document.getElementById("GST").readOnly = true; */
-
-			 //document.getElementById("GST").readOnly = true;
-
-	 		 res="error";
-	 		creditMsg="Please enter valid Credit Customer Id to proceed."
-	 		document.getElementById("creditMsg").style.color = "#ff0000";
-	 		 }
-	 		 }
-	  }
-	  //alert(creditMsg);
-	  //alert(res);
-	  document.getElementById("creditMsg").innerHTML = creditMsg;
-	 
-	  document.getElementById("CrediCustStatus").value=res;
-	  }
-</script>
   <body class="nav-md">
   <div class="se-pre-con"></div>
     <div class="container body">
@@ -331,15 +214,20 @@ if(user==null)
        String memodate = request.getParameter("memodate");
        String memopk = request.getParameter("memopk");
        String dc=request.getParameter("dc");
-/* System.out.println(dc); */
+       String callingPage=request.getParameter("callingPage");
+// System.out.println(callingPage); 
 String cn=request.getParameter("sd");
 String pk=request.getParameter("pk");%>            
  <div style=" float:right; margin-right: 10px; margin-top:-20px">
 
-
-                  <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
-
+<%if(callingPage.equals("editsalindividual.jsp")) 
+{%>
+                  <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View Sale</button></a>
+			
                  <a href="editsalindividual.jsp?dc=<%=memodc %>&sd=<%=memodate %>&branch=<%=branch %>&pk=<%=memopk %>" style="color:white;">   <button type="button" class="btn btn-warning">Go Back to Memo</button></a>
+ <%}if(callingPage.equals("ViewCollections.jsp")){  %>         
+             <a href="ViewCollections.jsp" style="color:white;">  <button type="button" class= "btn btn-info">View Collections</button></a>
+   <%} %>        
              </div>   
  
 
@@ -418,6 +306,9 @@ while(resultSet.next()){
 
 <td><strong> DCNumber: </strong><br/><%=resultSet.getString("DCNumber") %></td>
 <%String custId="";
+String discount=resultSet.getString("Discount");
+if(discount==null)
+	discount="";
 if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 {
 	custId=resultSet.getString("CustID");
@@ -431,7 +322,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><strong> TotalPrice: </strong><br/> <%=resultSet.getDouble("TotalPrice") %></td>
 <td><strong> Amount Paid: </strong><br/><%=resultSet.getString("AmountPaid") %></td>
 <td><strong> Tax Amount: </strong><br/><%=resultSet.getString("Tax") %></td>
-<td><strong> Discount: </strong><br/><%=resultSet.getString("Discount") %></td></tr>
+<td><strong> Discount: </strong><br/><%=discount %></td></tr>
 
                       </tbody>
                     </table>
@@ -485,8 +376,12 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 </tbody> 
 </table>
  
-
-<label for="com" style="float:left;"><strong> Comments: </strong></label> &nbsp; &nbsp;&nbsp; <%=resultSet.getString("Comments") %>    
+<%String comments=resultSet.getString("Comments");
+if(comments==null) 
+	comments=""; 
+if(gst==null)
+ gst="";%>
+<label for="com" style="float:left;"><strong> Comments: </strong></label> &nbsp; &nbsp;&nbsp; <%=comments %>    
 
  <br/> 
  <br/> 
@@ -598,7 +493,7 @@ e.printStackTrace();
     $(window).load(function () {
     	$(".se-pre-con").fadeOut("slow");
     	
- 	
+      
     	 var s = document.getElementById("branch");
    	 document.getElementById('single_cal3').value=localStorage.getItem("sd");
   /*   	 document.getElementById('single_cal4').value=localStorage.getItem("rd");  */
@@ -644,31 +539,10 @@ $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	
-	//disable the items which have already been added to invoices
-	 var disit=document.getElementsByClassName('notes');
-	 var elements=document.getElementsByClassName('chkbox')
-
-	 for(var i=0; i<disit.length; i++){
-    
-    	if(disit[i].innerHTML.length>0)
-    		elements[i].disabled=true;
-    		
-    		
-  }
-	 var custId=document.getElementById("custId").value;
-	 var cusnam=document.getElementById("cusnam").value;
-	 var cusno=document.getElementById("cusno").value;
-	 //alert("custId: "+custId);
-	 if(custId!="")
-	{
-		 document.getElementById('creditButton').style.visibility = 'hidden';
-		 document.getElementById("cusnam").readOnly = true;
-			 document.getElementById("cusno").readOnly = true;
-	}
+	
 	   	localStorage.setItem("cusnam", cusnam);
 	   	localStorage.setItem("cusno", cusno);
-	   	
-	   	
+	
 /* 	var environment=document.getElementById('uenv').value;
 	if(environment!=null && environment=="local")
 		{
@@ -722,15 +596,7 @@ $(document).ready(function() {
 	  e.returnValue = false;
 	  return false;
 	});  
-/* function dch(val) { 
-  var d=document.getElementById(val).value.toString();
-var dv=d.split("/");
-var da=dv[2]+'-'+dv[0]+'-'+dv[1];
-if(val=="single_cal3")
-  document.getElementById('da1').value=da;
-else
-	document.getElementById('da2').value=da;
-} */
+
 </script>
 
 
