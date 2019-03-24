@@ -289,7 +289,7 @@ if(user==null)
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h1>Sale Edit <!-- <small>Some examples to get you started</small> --></h1>
+                <h1>View Invoice <!-- <small>Some examples to get you started</small> --></h1>
               </div>
                <div style="overflow: auto">
              <div class="row">
@@ -325,49 +325,34 @@ if(user==null)
                     
                      </div>
                      
-       <br/>              
+       <br/>  <%
+       String branch = request.getParameter("branch");
+       String memodc = request.getParameter("memodc");
+       String memodate = request.getParameter("memodate");
+       String memopk = request.getParameter("memopk");
+       String dc=request.getParameter("dc");
+/* System.out.println(dc); */
+String cn=request.getParameter("sd");
+String pk=request.getParameter("pk");%>            
  <div style=" float:right; margin-right: 10px; margin-top:-20px">
 
 
                   <a href="viewsale.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
 
-                 <a href="editSale.jsp" style="color:white;">   <button type="button" class="btn btn-warning">Go Back to Edit</button></a>
+                 <a href="editsalindividual.jsp?dc=<%=memodc %>&sd=<%=memodate %>&branch=<%=branch %>&pk=<%=memopk %>" style="color:white;">   <button type="button" class="btn btn-warning">Go Back to Memo</button></a>
              </div>   
-     <% String r=request.getParameter("res");
- String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale updated successfully.</strong></div></div>";
- String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale deleted successfully.</strong></div></div>";
- String succ3="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Added to Invoice successfully.</strong></div></div>";
- String succ4="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Added to Memo successfully.</strong></div></div>";
-%>
-  <div id="successMsg" >
-<%  if(r!=null && r.equals("1"))
-        	out.println(succ);
-  else if(r!=null && r.equals("2"))
-	 out.println(succ2); 
-  else if(r!=null && r.equals("5"))
-		 out.println(succ3); 
-  else if(r!=null && r.equals("3"))
-		 out.println(succ4); 
-     %>
-     </div>
-<!--       <span id="errorMsg"></span>  -->
-      <div id="errorMsg" class="col-md-12" style= "float:left; display: none">
-      <div class="alert alert-danger alert-dismissible fade in" role="alert">
-      <button type="button" class="close" onclick="ref()" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span></button>
-      <strong>Please select atleast one checkbox to delete the record</strong>
-      </div>
-      </div>
+ 
+
           <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   
-                  <%  String branch = request.getParameter("branch"); %>
+<%--                   <%  String branch = request.getParameter("branch"); %> --%>
                  
                     <div class="clearfix"></div>
                   
                   <div class="x_content">
                  
-        <form action="saledit.jsp">   
+        <form >   
         
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -379,26 +364,7 @@ if(user==null)
                         <tbody>
                         <%
 try{ 
-	 int mflag=0;
-/* connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/KKTrack","root","root");
-statement=connection.createStatement(); */
-String dc=request.getParameter("dc");
-/* System.out.println(dc); */
-String cn=request.getParameter("sd");
-String pk=request.getParameter("pk");
-
-/* System.out.println(cn);
-System.out.println(branch); */
-/* st=connection.createStatement(); */
-
-/* Context context = new InitialContext();
-  Context envCtx = (Context) context.lookup("java:comp/env");
-  ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
-  if (ds != null) {
-    conn = ds.getConnection(); */
-   
-    //Class.forName("com.mysql.jdbc.Driver").newInstance();  
-     //conn = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+ 
     if (driver != null) {
         Class.forName(driver).newInstance();  
     }
@@ -425,10 +391,7 @@ if(pk!=null && pk.length()!=0 )
 }
 sql1+=whr;
  System.out.println(sql1); 
- 
- if(dc.startsWith("m")||dc.startsWith("M") )
-mflag=1;
- 
+
 if(branch!=null && dc!=null && cn!=null)
 {
 resultSet = st.executeQuery(sql1);
@@ -450,25 +413,25 @@ while(resultSet.next()){
                                         <tr class="odd gradeX">
 
 
-<td><strong> Branch: </strong> <%=resultSet.getString("Branch") %></td>
-<td><strong> Date: </strong><input class="col-md-12" type="text" id="date" name="date" value="<%=new SimpleDateFormat("dd-MM-yyyy").format(date) %>" ></td>
+<td><strong> Branch: </strong><br/> <%=resultSet.getString("Branch") %></td>
+<td><strong> Date: </strong><br/><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 
-<td><strong> DCNumber: </strong><%=resultSet.getString("DCNumber") %></td>
+<td><strong> DCNumber: </strong><br/><%=resultSet.getString("DCNumber") %></td>
 <%String custId="";
 if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 {
 	custId=resultSet.getString("CustID");
 	%>
-	<td width="10%"><strong> Credit CustId: </strong><%=custId %></td>
+	<td width="10%"><strong> Credit CustId: </strong><br/><%=custId %></td>
 	<% 
 }
 %>
-<td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
-<td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
-<td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
-<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %>></td>
-<td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %>></td>
-<td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %>></td></tr>
+<td><strong> Customer Name: </strong><br/><%=resultSet.getString("CustomerName") %></td>
+<td><strong> Customer No: </strong><br/><%=resultSet.getString("CustomerNumber") %></td>
+<td><strong> TotalPrice: </strong><br/> <%=resultSet.getDouble("TotalPrice") %></td>
+<td><strong> Amount Paid: </strong><br/><%=resultSet.getString("AmountPaid") %></td>
+<td><strong> Tax Amount: </strong><br/><%=resultSet.getString("Tax") %></td>
+<td><strong> Discount: </strong><br/><%=resultSet.getString("Discount") %></td></tr>
 
                       </tbody>
                     </table>
@@ -484,21 +447,14 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                                             <th>Group</th> 
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
-                                            <th>
-                                            <input class="disableButton4Credit" type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
-                                            Select All
-                                          </th>
-              <%if(mflag==1) {%>
-              <th>Notes</th>
-              <%} %>
+                                           
+             
                                         </tr>
                       </thead>
                         <tbody >
                           <tr class="odd gradeX">
                           <% 
-                          //System.out.println("i values: ");
-                       // create map to store
-                          Map<Integer, List<String>> map = new HashMap<Integer, List<String>>();                      
+                                       
                           while(rs.next())
 						{
                         	 
@@ -515,139 +471,29 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><%=rs.getString("CodeList.Machine") %></td>
 <td><%=rs.getString("CodeList.PartNo") %></td>
 <td><%=rs.getString("CodeList.Grp") %></td>
-<td><input type="number" class="disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
-<td><input type="number" class="disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
-               <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
-          <%--        <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
-                <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
-                <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=bqty%> > 
-               <%--  <input type="hidden" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > --%>
-                 <input type="hidden" id="bid<%=i %>" name="bid<%=i %>" value=<%=i%> >
-                 <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("BillDetails.Code")%> >
-                <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
-                <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
-                <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
-                <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
-                <input type="hidden" id="i" name="i">  
-         
-                
-       
-          <input type="hidden" id="custId" name="custId" value=<%=custId%> > 
-                <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
-                 <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
-</td>
-<%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
-
-<%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
-
-  <td>  <input type="checkbox" class="chkbox disableButton4Credit" name="checkboxRow" value="<%=i %>">   </td>     
-     <%if(mflag==1) {
-    	 String notes="";
-    	 if (rs.getString("BillDetails.Notes")==null || rs.getString("BillDetails.Notes").length()==0)
-    	 {
-    		 notes=""; %>
-    		  <td class="notes" width="20%"  ><%=notes%></td>
-    	<%  }
-    	 else
-    	 {
-    		 notes=rs.getString("BillDetails.Notes");
-    		 int delimiter = notes.indexOf(",");
-		String invNo = notes.substring(17, delimiter);
-		delimiter = delimiter + 2;
-		String invdate = notes.substring(delimiter);%>
-    		   <td class="notes" width="20%" >Added to Invoice
-<%--     		 <a href="viewInvoice.jsp?pk=<%=dc %>&recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-success btn-xs"><%=invNo%></a> --%>
-    		<a class="btn btn-success btn-xs" href="viewInvoice.jsp?dc=<%=invNo %>&sd=<%=invdate %>&branch=<%=branch %>&memodc=<%=dc%>&memodate=<%=cn%>&memopk=<%=primaryKey%>"> <%=invNo%></a> 
-    		
-    		
-    		, <br/> <%=invdate %> 
-    		   <a href="ConvertInvToMemo.jsp?recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-danger btn-xs">Undo</a>
- </td>
-    <%	 }
-   
-              } %>
+<td><%=rs.getString("BillDetails.CostPrice")%> </td>
+<td><%=bqty%>   
+ 
+    
 </tr>
  <%
  
- list.add(String.valueOf(primaryKey));
- list.add(branch);
- list.add(dc);
- list.add(String.valueOf(bqty));
- list.add(cn);
- list.add(resultSet.getString("BalanceAmount"));
- list.add(rs.getString("BillDetails.Code"));
- list.add(rs.getString("BillDetails.CostPrice"));
- list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
- list.add(String.valueOf(i));
- list.add(custId);
- list.add(type);
- map.put(i, list);
- sno++;
 } 
-                         // System.out.println("Fetching Keys and corresponding [Multiple] Values n");
-                          for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
-                              int key = entry.getKey();
-                              List<String> values = entry.getValue();
-                             // String bv=values.get(9);
-                             // System.out.println("Key = " + key);
-                             // System.out.println("Values = " + values + "n");
-                              
-                              //System.out.println("bv = " + bv);
-                          }
-                          session.setAttribute("map", map);
-                          //request.getRequestDispatcher("BulkDeleteSale.jsp").forward(request, response);
                         
  %>
 
 </tbody> 
 </table>
-   <input type="hidden" id="mapValues" name="<%=map%>">  
+ 
 
-<label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
+<label for="com" style="float:left;"><strong> Comments: </strong></label> &nbsp; &nbsp;&nbsp; <%=resultSet.getString("Comments") %>    
 
- <br/> <br/> 
+ <br/> 
  <br/> 
 <div class="form-group " >
                        		
+<label for="gst" style="float:left;"><strong> GST No: </strong></label> &nbsp; &nbsp;&nbsp; <%=gst %> 
 
-<% if(gst!= null && gst!="")
-{ 
-%>
-<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;"> UN-REG Invoice:</label>
-<div class="col-md-1 col-sm-1 col-xs-3" >
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general">
-                        		</div>
-                        
-                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
-                       		  <div class="col-md-1 col-sm-1 col-xs-3" >
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax" checked>
-                       		 </div> 
-                       		 
-                       		 <label id="GSTLabel" style="width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
-                        		<div id="GSTdiv" class="col-md-3 col-sm-3 col-xs-6">
-                        			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst %>" >
-                       		 </div>
-<%
-}
-else
-{
-gst ="";
-%>
-	<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;">UN-REG Invoice:</label>
-<div class="col-md-1 col-sm-1 col-xs-3">
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked>
-                        		</div>
-                        
-                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
-                       		  <div class="col-md-1 col-sm-1 col-xs-3">
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
-                       		 </div> 
-                       		 
-                       		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
-                        		<div id="GSTdiv" style="visibility:hidden;" class="col-md-3 col-sm-3 col-xs-6">
-                        			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst%>" >
-                       		 </div>
-<%} %>
 <br/>
 <br/>
 
@@ -659,71 +505,16 @@ gst ="";
  <p id="creditMsg"></p> 
  <input id="CrediCustStatus" class="form-control col-md-7 col-xs-12" type="hidden" name="CrediCustStatus" >
  
-<div class="invDet " style="display:none;">
-        
-           <label class="" for="InvNo" style="float:left;"><strong>Invoice Number: </strong></label><input class=" col-md-2" type="text" id="InvNo" name="InvNo" style="margin-left:10px;">                       		
-      
-          <label class="" for="InvDt" style="float:left;margin-left: 50px;"><strong>Invoice Date: </strong></label>
-<!--           <input class=" col-md-2" type="text" id="InvDt" name="InvDt" style="margin-left:10px;">     -->
-    <div class="col-md-3 col-xs-10" style="margin-left:-10px;">
-                         <div class="daterangepicker dropdown-menu ltr single opensright show-calendar picker_3 xdisplay"><div class="calendar left single" style="display: block;"><div class="daterangepicker_input"><input class="input-mini form-control active" type="text" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th><th colspan="5" class="month">Oct 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">25</td><td class="off available" data-title="r0c1">26</td><td class="off available" data-title="r0c2">27</td><td class="off available" data-title="r0c3">28</td><td class="off available" data-title="r0c4">29</td><td class="off available" data-title="r0c5">30</td><td class="weekend available" data-title="r0c6">1</td></tr><tr><td class="weekend available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="weekend available" data-title="r1c6">8</td></tr><tr><td class="weekend available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="weekend available" data-title="r2c6">15</td></tr><tr><td class="weekend available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="today active start-date active end-date available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="weekend available" data-title="r3c6">22</td></tr><tr><td class="weekend available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="weekend available" data-title="r4c6">29</td></tr><tr><td class="weekend available" data-title="r5c0">30</td><td class="available" data-title="r5c1">31</td><td class="off available" data-title="r5c2">1</td><td class="off available" data-title="r5c3">2</td><td class="off available" data-title="r5c4">3</td><td class="off available" data-title="r5c5">4</td><td class="weekend off available" data-title="r5c6">5</td></tr></tbody></table></div></div><div class="calendar right" style="display: none;"><div class="daterangepicker_input"><input class="input-mini form-control" type="text" name="daterangepicker_end" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">30</td><td class="off available" data-title="r0c1">31</td><td class="available" data-title="r0c2">1</td><td class="available" data-title="r0c3">2</td><td class="available" data-title="r0c4">3</td><td class="available" data-title="r0c5">4</td><td class="weekend available" data-title="r0c6">5</td></tr><tr><td class="weekend available" data-title="r1c0">6</td><td class="available" data-title="r1c1">7</td><td class="available" data-title="r1c2">8</td><td class="available" data-title="r1c3">9</td><td class="available" data-title="r1c4">10</td><td class="available" data-title="r1c5">11</td><td class="weekend available" data-title="r1c6">12</td></tr><tr><td class="weekend available" data-title="r2c0">13</td><td class="available" data-title="r2c1">14</td><td class="available" data-title="r2c2">15</td><td class="available" data-title="r2c3">16</td><td class="available" data-title="r2c4">17</td><td class="available" data-title="r2c5">18</td><td class="weekend available" data-title="r2c6">19</td></tr><tr><td class="weekend available" data-title="r3c0">20</td><td class="available" data-title="r3c1">21</td><td class="available" data-title="r3c2">22</td><td class="available" data-title="r3c3">23</td><td class="available" data-title="r3c4">24</td><td class="available" data-title="r3c5">25</td><td class="weekend available" data-title="r3c6">26</td></tr><tr><td class="weekend available" data-title="r4c0">27</td><td class="available" data-title="r4c1">28</td><td class="available" data-title="r4c2">29</td><td class="available" data-title="r4c3">30</td><td class="off available" data-title="r4c4">1</td><td class="off available" data-title="r4c5">2</td><td class="weekend off available" data-title="r4c6">3</td></tr><tr><td class="weekend off available" data-title="r5c0">4</td><td class="off available" data-title="r5c1">5</td><td class="off available" data-title="r5c2">6</td><td class="off available" data-title="r5c3">7</td><td class="off available" data-title="r5c4">8</td><td class="off available" data-title="r5c5">9</td><td class="weekend off available" data-title="r5c6">10</td></tr></tbody></table></div></div><div class="ranges" style="display: none;"><div class="range_inputs"><button class="applyBtn btn btn-sm btn-success" type="button">Apply</button> <button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button></div></div></div>
 
-                        <fieldset>
-                          <div class="control-group">
-                            <div class="controls">
-                              <div class="col-md-11 col-xs-10 xdisplay_inputx form-group has-feedback">
-                                <input onchange="dch()" name="dateval" type="text" class="form-control has-feedback-left" id="single_cal3" aria-describedby="inputSuccess2Status3">
-                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                <span id="inputSuccess2Status3" class="sr-only">(success)</span>
-                              </div>
-                            </div>
-                          </div>
-                        </fieldset>
-                         <input id="InvDt" class="form-control col-md-7 col-xs-12" type="hidden" name="InvDt" value="">
-                      </div>
-<a id="aid" href=""><button type="button"  onclick="addRecordsToInvoice(<%=i%>)" id="addto" class="btn btn-success" style="margin-left: 30px;margin-top: -5px;">Add</button></a> 
-  </div> 
                          </div>
                           
          
                       
 <br/> 
-<br/> 
 
-<button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger disableButton4Credit" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
-<a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>)">Save</button></a>
- <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
-<button type="button"  id="refreshButton" class="btn btn-warning" style="float:right;" onClick="window.location.reload()">Refresh</button>
-<button type="button"  id="creditButton" class="btn btn-info disable4inv" style="float:right;">Convert to Credit</button>
-<button type="button"  id="invbtn" class="btn btn-success" style="float:right;">Add to Invoice</button>
-<br/>
-<br/>
-<br/>
-<br/>
 
  </div>
-  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="deleteModal" >
-                    <div class="modal-dialog modal-sm">
-                      <div class="modal-content">
 
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel2">Are you sure?</h4>
-                        </div>
-                        <div class="modal-body">
-                          <!-- <h4>Text in a modal</h4> -->
-                          <p id="test">Do you really want to delete this item? Click Cancel if you do not wish to delete this item.</p>
-                         
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                      <a id="did" href=""><button type="button" class="btn btn-danger">Yes, Delete</button></a>  
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
                 
 </form>
  
@@ -803,33 +594,7 @@ e.printStackTrace();
     var callingJSP = path.split("/").pop();
 </script>
  <script type="text/javascript">
-function invoiceCheck() {
-if (document.getElementById('taxInvoice').checked) {
-    document.getElementById('GSTdiv').style.visibility = 'visible';
-    document.getElementById('GSTLabel').style.visibility = 'visible';
-    document.getElementById('GST').required = 'true';
-}
-else 
-	{
-	 document.getElementById('GST').required = 'false';
-     document.getElementById('GST').removeAttribute("required");
-     document.getElementById('GST').value = '';
-	document.getElementById('GSTdiv').style.visibility = 'hidden';
- 	document.getElementById('GSTLabel').style.visibility = 'hidden';
- 
-	}
 
-}
-function chsn(i)
-{
-	document.getElementById("i").value=i;
-}
-function d(){
-    	localStorage.setItem("branch", document.getElementById('branch').value);
-     	localStorage.setItem("sd", document.getElementById('single_cal3').value);
-   /*  	localStorage.setItem("rd", document.getElementById('single_cal4').value);  */
-     	localStorage.setItem("dc", document.getElementById('dc').value); 
-}
     $(window).load(function () {
     	$(".se-pre-con").fadeOut("slow");
     	
@@ -872,198 +637,7 @@ function d(){
 </script>    
 <script>
 
- function funcSelectAll()
-{
-   if(document.forms[0].selectAllCheck.checked==true)
-   {
-        var elements=document.getElementsByClassName('chkbox');
-       	for(var i=0; i<elements.length; i++){
-       		elements[i].checked = true;
-     }
-   }
-     else
-     {
-    	 var elements=document.getElementsByClassName('chkbox');
-        	for(var i=0; i<elements.length; i++){
-        		elements[i].checked = false;
-      }
-     }          
-
-} 
-
  
- $("#invbtn").click(function() {
-	 $( '[class*="invDet"]' ).show();
-		$("#InvNo").prop('required',true);
-		 $( '[class*="disable4Credit"]' ).prop("readonly",true);
-		 $('.disableButton4Credit').attr('disabled', 'disabled');
-
-		 $('[class*="disable4inv"]').attr('disabled', 'disabled');
- });
- 
- 
- $("#creditButton").click(function() {
-	// $( '[class*="InvDet"]' ).hide();
-	 $( '[class*="creditDet"]' ).show();
-	 
-		$("#creditCustId").prop('required',true);
-	 $( '[class*="disable4Credit"]' ).prop("readonly",true);
- });
-
-$("#deleteButton").click(function() {
-	 $('#successMsg').hide();
-	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
-	  var count_checked = $('input[type="checkbox"]:checked').length;
-	  //alert(count_checked);
-      if(count_checked == 0) 
-      {
-          //alert("Please select any record to delete.");
-           // $('#errorMsg').css({ 'color': 'red'});
-          //$('#errorMsg').html('Please select atleast one checkbox to delete a record');
-         
-         $('#errorMsg').show();
-          $("#deleteModal").modal("hide");
-          return false;
-      }
-      else
-    	  {
-    	
-        
-    	  //$('#errorMsg').html('');
-    	  $('#errorMsg').hide();
-    	  }
-});	
-function deleteCheckedRecords(){
-	//var did=document.getElementById("did").value;
-	var pk=document.getElementById("payid").value;
-	var branch=document.getElementById("branch").value;
-	var dc=document.getElementById("dc").value;
-	var cn=document.getElementById("ddd").value;
-	//alert(pk);
-	//alert(branch);
-	//alert(dc);
-	//alert(cn);
-	var items=document.getElementsByName('checkboxRow');
-	var selectedItems="";
-	for(var i=0; i<items.length; i++){
-		if(items[i].type=='checkbox' && items[i].checked==true)
-			if(selectedItems!="")				
-				{
-				selectedItems+=","+items[i].value+"\n";
-				}
-			else
-				{
-			selectedItems+=items[i].value+"\n";
-				}
-	}
-	//alert(selectedItems);
-
-
-
-/* 	$.ajax({
-	    url : "BulkDeleteSale.jsp?selectedItems="+selectedItems,
-	    		//  url : "BulkDeleteSale.jsp?selectedItems="+selectedItems+"mapData="+mapData,
-	    type : "POST",
-	    async : false,
-	    success : function(data) {
-	    }
-	}); */
-	if(selectedItems=="")
-		{
-		 //alert("Please select an item to delete.");
-		 return;
-		}
-	else
-		{
-	   	  var elements=document.getElementsByClassName('chkbox').length;
-    	//  var count_checked = $('input[class="chkbox"]:checked').length;
-    	 	var count_checked = $('.chkbox:checked').size();
-    //	  alert(count_checked);
-	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked);
-	}
-}
-
-function addRecordsToInvoice(i){
-	//var did=document.getElementById("did").value;
-document.getElementById("i").value=i;
-	var pk=document.getElementById("payid").value;
-	var branch=document.getElementById("branch").value;
-	var dc=document.getElementById("dc").value;
-	var cn=document.getElementById("ddd").value;
-	var GST=document.getElementById("GST").value;
-//	alert(GST);
-	var cusnam=document.getElementById("cusnam").value;
-//	alert(cusnam);
-	var cusno=document.getElementById("cusno").value;
-//	alert(cusno);
-	
-	var items=document.getElementsByName('checkboxRow');
-	var selectedItems="";
-	var cp="";
-	for(var i=0; i<items.length; i++){
-		if(items[i].type=='checkbox' && items[i].checked==true)
-			if(selectedItems!="")				
-				{
-				selectedItems+=","+items[i].value+"\n";
-				cp+=","+document.getElementById("cp"+items[i].value).value+"\n";
-			
-		//		alert("cp="+document.getElementById("cp"+items[i].value).value);
-				
-				}
-			else
-				{
-			selectedItems+=items[i].value+"\n";
-			cp+=document.getElementById("cp"+items[i].value).value+"\n";
-			
-		//	alert("si"+items[i].value);
-		//	alert("cp="+document.getElementById("cp"+items[i].value).value);
-				}
-	}
-//	alert(selectedItems);
-
-	if(selectedItems=="")
-		{
-		 //alert("Please select an item to delete.");
-		 return;
-		}
-	else
-		{
-	   	  var elements=document.getElementsByClassName('chkbox').length;
-    //	  var count_checked = $('input[class="chkbox"]:checked').length;
-    	//	alert(count_checked);
-    	var count_checked = $('.chkbox:checked').size();
-    //	alert($('.chkbox:checked').size());
-    var InvNo=document.getElementById("InvNo").value;
-    var InvDt=document.getElementById("InvDt").value;
- //  alert(InvDt);
-	document.getElementById('aid').href=('addtoinv.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked+'&cp='+cp+'&invno='+InvNo+'&invdt='+InvDt+'&cusnam='+cusnam+'&cusno='+cusno+'&GST='+GST);
-	}
-}
-
-function f(i)
-{
-	var i =i;
-	var pk=document.getElementById("payid").value;
-	var branch=document.getElementById("branch").value;
-	var dc=document.getElementById("dc").value;
-	var q=document.getElementById("q"+i).value;
-	var cn=document.getElementById("ddd").value;
-	var ba=document.getElementById("ba").value;
-	var code=document.getElementById("code"+i).value;
-	var cp=document.getElementById("ocp"+i).value;
-	var tp=document.getElementById("tp").value;
-	var bid=document.getElementById("bid"+i).value;
-	
- document.getElementById('did').href=('delsal.jsp?deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&ba='+ba+'&code'+i+'='+code+'&q'+i+'='+q+'&cp'+i+'='+cp+'&bid'+i+'='+i+'&tp='+tp+'&i='+i); 
-
-	}
-function dch() 
-{ 
- var d=document.getElementById("single_cal3").value.toString();
-var dv=d.split("/");
-var da=dv[1]+'-'+dv[0]+'-'+dv[2];
- document.getElementById('InvDt').value=da;
-}
 $(document).ready(function() {
 	
 	 $.getScript("js/rolePermissions.js");
