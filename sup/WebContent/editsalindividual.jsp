@@ -337,6 +337,7 @@ if(user==null)
  String succ="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale updated successfully.</strong></div></div>";
  String succ2="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Sale deleted successfully.</strong></div></div>";
  String succ3="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Added to Invoice successfully.</strong></div></div>";
+ String succ4="<div class=\"col-md-12\" style= margin-left:280px\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Added to Memo successfully.</strong></div></div>";
 %>
   <div id="successMsg" >
 <%  if(r!=null && r.equals("1"))
@@ -345,6 +346,8 @@ if(user==null)
 	 out.println(succ2); 
   else if(r!=null && r.equals("5"))
 		 out.println(succ3); 
+  else if(r!=null && r.equals("3"))
+		 out.println(succ4); 
      %>
      </div>
 <!--       <span id="errorMsg"></span>  -->
@@ -541,13 +544,20 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
      <%if(mflag==1) {
     	 String notes="";
     	 if (rs.getString("BillDetails.Notes")==null || rs.getString("BillDetails.Notes").length()==0)
-    		 notes="";
+    	 {
+    		 notes=""; %>
+    		  <td class="notes"><%=notes%></td>
+    	<%  }
     	 else
-    		 notes=rs.getString("BillDetails.Notes");
-     %>
-  
-              <td class="notes"><%=notes%></td>
-              <%} %>
+    	 {
+    		 notes=rs.getString("BillDetails.Notes"); %>
+    		   <td class="notes"><%=notes%>
+    		  
+    		   <a href="ConvertInvToMemo.jsp?recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-danger btn-xs">Undo</a>
+ </td>
+    <%	 }
+   
+              } %>
 </tr>
  <%
  
