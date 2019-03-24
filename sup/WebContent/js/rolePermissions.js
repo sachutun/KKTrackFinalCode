@@ -10,11 +10,34 @@ Role No : Description
  5      : accountant
 --------------------------------------------------------------------------------------------------------- */
 //disable shortcuts for view source
- document.onkeydown = function(e) {
-    if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 ||     e.keyCode === 117 || e.keycode === 17 || e.keycode === 85)) {//ctrl+u Alt+c, Alt+v will also be disabled sadly.
-        //alert('not allowed');
+
+/* 	   S No  Command  	-   KeyCode (Mac)
+		1.   shift    	-    16
+	    2.   control  	-    17
+		3.	 alt/option 	-	 18
+		4.	 command		-	 91
+		5.	 u			-	 85              */
+
+document.onkeydown = function(e) 
+{
+   //alert(e.keyCode);
+	// Disable Alt+Command+U shortcut for viewsource in mac
+    	if(e.altKey && (e.keyCode === 91 || e.keyCode === 85))
+    	{
+       // alert('not allowed');  		
+        return false;
     }
-    return false;
+    	// Disable Contol+U shortcut for viewsource in windows
+    	if(e.ctrlKey && e.keyCode === 85)
+    	{
+    		return false;
+    	}
+    	//Do nothing if the above shortcuts are not used
+    else
+    	{
+    return true; 
+    	}
+    	
 };
 
 //disable right click on page
