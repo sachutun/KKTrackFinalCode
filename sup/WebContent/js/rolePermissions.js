@@ -9,7 +9,26 @@ Role No : Description
  4      : store
  5      : accountant
 --------------------------------------------------------------------------------------------------------- */
+//disable shortcuts for view source
+ document.onkeydown = function(e) {
+    if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 ||     e.keyCode === 117 || e.keycode === 17 || e.keycode === 85)) {//ctrl+u Alt+c, Alt+v will also be disabled sadly.
+        //alert('not allowed');
+    }
+    return false;
+};
 
+//disable right click on page
+if (document.addEventListener) {
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    }, false);
+} else {
+    document.attachEvent('oncontextmenu', function () {
+        window.event.returnValue = false;
+    });
+}
+
+//display menu based on roles
 if (environment != null && environment == "local") 
 {
 	$('.site_title').css('background-color', 'red');
