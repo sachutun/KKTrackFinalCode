@@ -426,7 +426,7 @@ if(pk!=null && pk.length()!=0 )
 sql1+=whr;
  System.out.println(sql1); 
  
- if(dc.startsWith("m")||dc.startsWith("M") )
+ if(dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M") )
 mflag=1;
  
 if(branch!=null && dc!=null && cn!=null)
