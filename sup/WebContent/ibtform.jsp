@@ -424,7 +424,7 @@ xmlHttp.send(null);
                        
                          <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Tax:</label>
                         <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
-                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax" onchange="calculatetax()" min="0" readonly="readonly">
+                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax"  min="0" readonly="readonly">
 <!--                           <p id="taxmsg"></p>  -->
                         </div>
                          
@@ -625,26 +625,26 @@ function calculateTotalPrice(i)
         
         document.getElementById('finaltotal').value = result2;
        
-        var tax=parseFloat(document.getElementById("tax").value);
-        if(isNaN(tax))
-        	 document.getElementById('totalprice').value = 0+result2;
-        else
-       	 document.getElementById('totalprice').value = parseInt(document.getElementById("tax").value)+result2;
+        
         
     }
-    var phtax;
-	phtax=0.18*totPrice;
-	if(!isNaN(phtax))
-	//document.getElementById("taxmsg").innerHTML=phtax;
-	document.getElementById("tax").value=phtax;
+    var tax;
+	tax=0.18*totPrice;
+	if(!isNaN(tax))
+	//document.getElementById("taxmsg").innerHTML=tax;
+	document.getElementById("tax").value=tax;
+    if(isNaN(tax))
+    	 document.getElementById('totalprice').value = 0+result2;
+    else
+   	 document.getElementById('totalprice').value = tax+result2;
 }
 
-function calculatetax()
+/* function calculatetax()
 {
 	 calculateTotalPrice(i);
 	 document.getElementById('totalprice').value=parseInt(document.getElementById("tax").value)+parseInt(document.getElementById("finaltotal").value);
 
-}
+} */
 function tot(i)
 {
 	
