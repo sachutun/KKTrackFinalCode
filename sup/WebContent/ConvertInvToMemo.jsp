@@ -21,11 +21,12 @@
 	ResultSet resultSet = null;
 	ResultSet rs1 = null;
 	ResultSet rs2 = null;
+	ResultSet rs3 = null;
 	Statement st = null;
 	Statement st2 = null;
 	Statement st3 = null;
 	int Id = 0;
-	;
+	
 %>
 <%
 	try {
@@ -72,6 +73,7 @@
 
 		st = conn.createStatement();
 		st2 = conn.createStatement();
+		st3 = conn.createStatement();
 
 		// Insert update in Sale with new inv number and inv dt
 
@@ -94,7 +96,7 @@
 
 			if (rs2.next()) {
 				int invId = rs2.getInt("Id");
-				// System.out.println("DELETE FROM BillDetails WHERE id = " +invId);
+				//System.out.println("DELETE FROM BillDetails WHERE id = " +invId);
 				ps = conn.prepareStatement("DELETE FROM BillDetails WHERE id = ?");
 				ps.setInt(1, invId);
 				ps.executeUpdate();
@@ -105,19 +107,23 @@
 				ps2.executeUpdate();
 			}
 		}
+		// System.out.println("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
+		rs3 = st3.executeQuery("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
 
-		if (totalprice == 0) {
-			//  System.out.println("DELETE FROM Sale WHERE id = " +Id);   
-			ps3 = conn.prepareStatement("DELETE FROM Sale WHERE id = ?");
-			ps3.setInt(1, Id);
-			ps3.executeUpdate();
-		} else {
+		if (rs3.next())
+		{
 			// System.out.println("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=? WHERE Id= "+totalprice +" " +balanceamount +" "+Id);
-
 			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=? WHERE Id=?");
 			ps3.setDouble(1, totalprice);
 			ps3.setDouble(2, balanceamount);
 			ps3.setInt(3, Id);
+			ps3.executeUpdate();
+		}
+		else 
+		{
+		  	//System.out.println("DELETE FROM Sale WHERE id = " +Id);   
+			ps3 = conn.prepareStatement("DELETE FROM Sale WHERE id = ?");
+			ps3.setInt(1, Id);
 			ps3.executeUpdate();
 		}
 

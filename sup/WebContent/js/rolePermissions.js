@@ -18,7 +18,7 @@ Role No : Description
 		4.	 command		-	 91
 		5.	 u			-	 85              */
 
-document.onkeydown = function(e) 
+/*document.onkeydown = function(e) 
 {
    //alert(e.keyCode);
 	// Disable Alt+Command+U shortcut for viewsource in mac
@@ -49,7 +49,7 @@ if (document.addEventListener) {
     document.attachEvent('oncontextmenu', function () {
         window.event.returnValue = false;
     });
-}
+}*/
 
 //display menu based on roles
 if (environment != null && environment == "local") 

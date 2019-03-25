@@ -424,8 +424,8 @@ xmlHttp.send(null);
                        
                          <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Tax:</label>
                         <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
-                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax" onchange="calculatetax()" min="0" >
-                          <p id="taxmsg"></p> 
+                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax" onchange="calculatetax()" min="0" readonly="readonly">
+<!--                           <p id="taxmsg"></p>  -->
                         </div>
                          
                          <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Total Price:</label>
@@ -635,7 +635,8 @@ function calculateTotalPrice(i)
     var phtax;
 	phtax=0.18*totPrice;
 	if(!isNaN(phtax))
-	document.getElementById("taxmsg").innerHTML=phtax;
+	//document.getElementById("taxmsg").innerHTML=phtax;
+	document.getElementById("tax").value=phtax;
 }
 
 function calculatetax()
