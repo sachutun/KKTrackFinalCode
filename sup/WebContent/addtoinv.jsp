@@ -268,7 +268,7 @@ ps2.executeUpdate();
         }
     }
     String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
-  //  System.out.println("Bill Details: "+isql);
+    System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     
 qparts="";
