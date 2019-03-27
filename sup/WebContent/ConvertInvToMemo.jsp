@@ -46,8 +46,8 @@
 		// System.out.println("branch: " +branch); 
 		//  System.out.println("notes: " +notes); 
 		// System.out.println("code: " +code);  
-		//  System.out.println("qty: " +qty); 
-		//  System.out.println("cp: " +cp); 
+	//	  System.out.println("qty: " +qty); 
+	//	  System.out.println("cp: " +cp); 
 		int delimiter = notes.indexOf(",");
 		String invNo = notes.substring(17, delimiter);
 		delimiter = delimiter + 2;
@@ -82,14 +82,20 @@
 				+ "'and DCNumber='" + invNo + "'");
 		double totalprice = 0;
 		double balanceamount = 0;
+		double tax = 0;
 		if (rs1.next()) {
 
 			Id = rs1.getInt("Id");
 			totalprice = rs1.getDouble("TotalPrice");
+			//System.out.println(totalprice);
+			
 			balanceamount = rs1.getDouble("BalanceAmount");
+			balanceamount = rs1.getDouble("Tax");
+			System.out.println(tax);
 			totalprice = totalprice - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
 			balanceamount = balanceamount - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
-
+			tax=0.18*totalprice;
+			
 			//System.out.println("Select * from BillDetails where dc='"+Id+"'and Code='"+code+"'and DCNumber='"+invNo+"'");
 			rs2 = st2.executeQuery("Select * from BillDetails where dc='" + Id + "'and Code='" + code
 					+ "'and DCNumber='" + invNo + "'");
@@ -109,15 +115,17 @@
 		}
 		// System.out.println("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
 		rs3 = st3.executeQuery("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
-
+//System.out.println(totalprice);
 		if (rs3.next())
 		{
 			// System.out.println("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=? WHERE Id= "+totalprice +" " +balanceamount +" "+Id);
-			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=? WHERE Id=?");
+			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?, `Tax`=? WHERE Id=?");
 			ps3.setDouble(1, totalprice);
 			ps3.setDouble(2, balanceamount);
-			ps3.setInt(3, Id);
+			ps3.setDouble(3, tax);
+			ps3.setInt(4, Id);
 			ps3.executeUpdate();
+			//System.out.println("Hi"+totalprice);
 		}
 		else 
 		{

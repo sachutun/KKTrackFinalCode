@@ -37,7 +37,7 @@ try{
 	int i=0;
 	
 	    String recordToUpdate = request.getParameter("deleteid");
-	    System.out.println(recordToUpdate); 
+	  //  System.out.println(recordToUpdate); 
 	    
 	    String branch = request.getParameter("branch");
 	    String totRecs=request.getParameter("totRecs");
@@ -47,7 +47,7 @@ try{
 	    String dc = request.getParameter("dc"); 
 	    String sd = request.getParameter("sd");
         String cname=request.getParameter("cusnam");
-        System.out.println(cname);  
+      //  System.out.println(cname);  
         String cno=request.getParameter("cusno");
         
       //System.out.println(cno);  
@@ -86,6 +86,7 @@ try{
     String custId="";
     double bal=0;
     double ftot=0;
+    double tax=0;
     if(totRecs.equals(checkedRecs))
     { 
    	   flag=true;
@@ -116,7 +117,7 @@ try{
    
     // Insert update in Sale with new inv number and inv dt
       
-    System.out.println("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
+  //  System.out.println("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
      
     rs1=st.executeQuery("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
 
@@ -134,7 +135,7 @@ else
 	exists=0;
 	//insert new sale
 	
-	System.out.println("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, GST) values ('"+ ndc+"', 'Workshop', '"+nd+"','0', '"+cname+"', '"+cno+"', '"+type+"', '0', '0', '0', '0','"+GST+"')");
+	//System.out.println("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, GST) values ('"+ ndc+"', 'Workshop', '"+nd+"','0', '"+cname+"', '"+cno+"', '"+type+"', '0', '0', '0', '0','"+GST+"')");
 	int x=st2.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, GST) values ('"+ ndc+"', 'Workshop', '"+nd+"','0', '"+cname+"', '"+cno+"', '"+type+"', '0', '0', '0', '0','"+GST+"')");
     
     String sql="Select Max(Id) from Sale";
@@ -208,13 +209,15 @@ for(i=0;i<selectedItemsArray.length;i++)
     float totp=cost*qty;
     
  
-    System.out.println(q+","+bid+","+cod+","+fcp+","+ndc+","+nd);  
+   // System.out.println(q+","+bid+","+cod+","+fcp+","+ndc+","+nd);  
  
     // String s3= "";
 
     // Calculate total price of all selected items 
 
     ftot+=totp;
+    tax=0.18*ftot;
+    
 
    //Add billdetails depending on whther the sale exists or not
 
@@ -224,6 +227,7 @@ for(i=0;i<selectedItemsArray.length;i++)
 
 
 // insert each item into BillDetails along with the new invno and invdt in notes column
+
 //delete from memo bill details
 
  /*   ps = conn.prepareStatement("DELETE FROM BillDetails WHERE id = ?");
@@ -251,14 +255,20 @@ for(i=0;i<selectedItemsArray.length;i++)
         
 //update notes in memo for selected item
 
-ps2 = conn.prepareStatement( "UPDATE `BillDetails` SET `Notes`=?  WHERE Id=?");
+ps2 = conn.prepareStatement( "UPDATE `BillDetails` SET `Notes`=?,`Total`=?,`Qty`=?, `CostPrice`=?  WHERE Id=?");
 ps2.setString(1,"Added to Invoice "+ndc+ ", "+nd);
-ps2.setString(2,bid);
+ps2.setDouble(2, totp);
+ps2.setDouble(3,qty);
+ps2.setDouble(4,cost);
+ps2.setString(5,bid);
 ps2.executeUpdate(); 
+
+ 
+
         }
     }
     String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
-    System.out.println("Bill Details: "+isql);
+  //  System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     
 qparts="";
@@ -267,13 +277,14 @@ qparts="";
 
 //update sale bal amt, ftot, custId, type
 
- 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+ ?,`BalanceAmount`=`BalanceAmount` + ?,`Comments`=? ,`CustID`=?, `Type`=?  WHERE Id=?");
+ 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+ ?,`BalanceAmount`=`BalanceAmount` + ?,`Comments`=? ,`CustID`=?, `Type`=?, `Tax`=`Tax`+?  WHERE Id=?");
      ps.setDouble(1,ftot);
      ps.setDouble(2,ftot);
      ps.setString(3,"Reference Memo: "+dc+", "+sd);
      ps.setString(4,custId);
      ps.setString(5,type);
-     ps.setInt(6,Id);
+     ps.setDouble(6,tax);
+     ps.setInt(7,Id);
      ps.executeUpdate(); 
      
 

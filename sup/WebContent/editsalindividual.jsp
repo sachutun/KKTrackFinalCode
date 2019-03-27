@@ -561,8 +561,10 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
   
    <a style="color: #35c335;" href="editsalindividual.jsp?dc=<%=invNo %>&sd=<%=invdate %>&branch=<%=branch %>"> <%=invNo%></a>   		
     		
-    		, <br/> <%=invdate %> 
-    		   <a href="ConvertInvToMemo.jsp?recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-danger btn-xs">Undo</a>
+    		, <br/><br/> <%=invdate %> 
+    		<br/>
+    		<br/>
+    		   <a style="color: red;" href="ConvertInvToMemo.jsp?recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="fa fa-undo"> Undo</a>
  </td>
     <%	 }
    

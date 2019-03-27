@@ -214,10 +214,21 @@ xmlHttp.send(null);
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="ibtadd.jsp" method="post" onsubmit="myButton.disabled = true;">
                     <div id="main">
-                      <div class="form-group">
-                      
-                      <!-- </div>
-                       <div class="form-group"> -->
+                      <div class="form-group" style="width: 50%;margin-left: 30%;">
+                      <label class="control-label col-md-1 col-sm-1 col-xs-2" style="width:125px;">General IBT:</label>
+                        		<div class="col-md-2 col-sm-2 col-xs-3" style="margin-top: 0.7%;">
+                          		<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="generalIBT" value="general" checked="checked">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Tax IBT:</label>
+                       		 <div class="col-md-3 col-sm-3 col-xs-3" style="margin-top: 0.7%;">
+                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="taxIBT" value="tax">
+                       		 </div> 
+                       		 </div>
+                   <br>
+                   <br>
+                       <div class="form-group" style="margin-left: 15%;"> 
+                       
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Date:<span class="required">*</span>
                         </label>
                       <div class="col-md-3" style="margin-left:-10px;">
@@ -244,8 +255,8 @@ xmlHttp.send(null);
                           <input type="text" id="ibtnumber" required="required" class="form-control col-md-7 col-xs-12" name="ibtnumber">
                         </div>
                         </div>
-                         <div class="form-group">
-                          <label class="control-label col-md-1 col-sm-1 col-xs-2">From Branch:<span class="required">*</span></label>
+                         <div class="form-group" style="margin-left: 6.5%;">
+                          <label class="control-label col-md-2 col-sm-1 col-xs-2">From Branch:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                         <%--   <input class="" type="text" id="fbranch" name="fbranch" value=<%=uBranch%> readonly="readonly" style="border:none"> --%>
 
@@ -283,10 +294,10 @@ xmlHttp.send(null);
                           <%-- <input type="text" id="name" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled> --%>
 
                         </div>
-                          <label class="control-label col-md-2 col-sm-2 col-xs-3">To Branch:<span class="required">*</span></label>
+                          <label class="control-label col-md-2 col-sm-2 col-xs-3" style="margin-left: -4%;" >To Branch:<span class="required">*</span></label>
                          
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                          <select class="select2_single form-control" tabindex="-1" name="tobranch" required="required">
+                          <select class="select2_single form-control" tabindex="-1" name="tobranch" required="required" style="margin-left: -5.5%;">
                             <option></option>
                                  <!--  <option value="Bowenpally">Bowenpally</option>
                             <option value="Miyapur">Miyapur</option>
@@ -321,20 +332,12 @@ xmlHttp.send(null);
                       </div>
                  
                         <div class="form-group " style="margin-left:2%;">
-                       		<label class="control-label col-md-1 col-sm-1 col-xs-2" style="width:125px;">General IBT:</label>
-                        		<div class="col-md-2 col-sm-2 col-xs-3" style="margin-top: 0.7%;">
-                          		<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="generalIBT" value="general" checked="checked">
-                        		</div>
-                        
-                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Tax IBT:</label>
-                       		 <div class="col-md-3 col-sm-3 col-xs-3" style="margin-top: 0.7%;">
-                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="taxIBT" value="tax">
-                       		 </div> 
+                       		
                        		<!--  <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
                         		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
                         			<input id="GST" style=";width:200px; "class="form-control col-md-7 col-xs-12" type="text" name="GST">
                        		 </div> -->
-                     <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 76%;margin-top:-5%;">Add Item</button>
+                     <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 82%;margin-top: -4%;">Add Item</button>
                          		
                         </div>
                      
@@ -358,6 +361,13 @@ xmlHttp.send(null);
                        
                  <!--      </div>
                       <div class="form-group"> -->
+                      
+                          <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">IBT Price:<span class="required">*</span>
+                        </label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
+                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" onblur="calculateTotalPrice(1)">
+                        </div> 
+                        
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-2">
@@ -365,11 +375,6 @@ xmlHttp.send(null);
                         </div>
                     
                       
-                          <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">Sale Price:<span class="required">*</span>
-                        </label>
-                        <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
-                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" onblur="calculateTotalPrice(1)">
-                        </div> 
                        
                       </div>
                     

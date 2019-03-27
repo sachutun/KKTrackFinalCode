@@ -195,9 +195,10 @@ String ba=values.get(5);
     ps2.executeUpdate(); 
     //System.out.println(s3);
     
-    preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-? WHERE Id=?");
+    preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?, `Tax`=`Tax`-? WHERE Id=?");
     preparedStatement.setDouble(1,cost*qty);
     preparedStatement.setDouble(2,cost*qty);
+    preparedStatement.setDouble(3,cost*qty*0.18);
     preparedStatement.setInt(3,d);
     preparedStatement.executeUpdate(); 
     //System.out.println(s1);
