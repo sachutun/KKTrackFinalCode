@@ -82,6 +82,7 @@ xmlHttp.send(null);
  if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete"){   
 	 var data=xmlHttp.responseText;
 	 var dv=data.split(",");
+	// alert(document.getElementById("numb").value);
 	 var i=document.getElementById("numb").value;
 	 document.getElementById("mac"+i).value=dv[0];
 	 document.getElementById("description"+i).value=dv[1];
@@ -212,7 +213,17 @@ String environment = props.getProperty("jdbc.environment");
                     <input type="hidden" name="ibt" value=<%=dc %>>
                       <!-- </div>
                        <div class="form-group"> -->
-                       
+                           <label class="control-label col-md-1 col-sm-1 col-xs-2" style="width:125px;">General IBT:</label>
+                        		<div class="col-md-2 col-sm-2 col-xs-3" style="margin-top: 0.7%;">
+                          		<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="generalIBT" value="general" checked="checked">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Tax IBT:</label>
+                       		 <div class="col-md-3 col-sm-3 col-xs-3" style="margin-top: 0.7%;">
+                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="taxIBT" value="tax">
+                       		 </div> 
+                   <br>
+                   <br>
                       <button class="add " type="button" style="background: #26B99A;color: white;border: 1px solid #169F85;width: 10%;line-height: 2;margin-left: 15%;">Add Item</button>
                      
                       </div>
@@ -234,13 +245,13 @@ String environment = props.getProperty("jdbc.environment");
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input id="description1" class="form-control col-md-7 col-xs-12" type="text" name="description" disabled>
                         </div>
-                         <!--  <label class="control-label col-md-1 col-sm-1 col-xs-2" >Sale Price:<span class="required">*</span>
+                        
+                         <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">IBT Price:<span class="required">*</span>
                         </label>
-                        <div class="col-md-2 col-sm-2 col-xs-4">
-                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="costprice">
-                        </div> -->
-                 <!--      </div>
-                      <div class="form-group"> -->
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
+                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" >
+                        </div> 
+                        
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-2">
@@ -300,8 +311,20 @@ String environment = props.getProperty("jdbc.environment");
                         <div class="col-md-2 col-sm-2 col-xs-3">
                           <input id="totalq" class="form-control col-md-7 col-xs-12"  type="text" name="totalq" readonly="readonly">
                         </div>
+                        
+                         <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Tax:</label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
+                          <input id="tax" class="form-control col-md-7 col-xs-12"  type="text" name="tax"  min="0" readonly="readonly">
+<!--                           <p id="taxmsg"></p>  -->
+                        </div>
+                         
+                         <label class="taxElements control-label col-md-2 col-sm-2 col-xs-3" style="display:none;">Total Price:</label>
+                        <div class="taxElements col-md-2 col-sm-2 col-xs-3" style="display:none;">
+                          <input id="totalprice" class="form-control col-md-7 col-xs-12"  type="text" name="totalprice" readonly="readonly">
+                        </div>
                      
                       </div></div>
+                      <input id="finaltotal" class="form-control col-md-7 col-xs-12" type="hidden" >
                      <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
                   <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
                     <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
@@ -382,7 +405,91 @@ String environment = props.getProperty("jdbc.environment");
     var callingJSP = path.split("/").pop();
 </script> 
 <script>
+function ibtCheck() {
 
+    if (document.getElementById('taxIBT').checked) {
+    		var elements = document.getElementsByClassName('taxElements');    	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].style.display = "block";
+			}
+		}
+ 		var elements = document.getElementsByClassName('salepr');   	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].required = 'true';
+			}
+		}
+    	}
+    	else {
+         document.getElementById('tax').value = '';
+         document.getElementById('totalprice').value = '';
+     	 var elements = document.getElementsByClassName('taxElements');  	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].style.display = "none";
+			}
+		}
+		var elements = document.getElementsByClassName('salepr');   	
+		if(elements!=null)
+		{
+			for (var i = 0; i < elements.length; i++) 
+			{
+				elements[i].removeAttribute("required");
+				elements[i].value='';
+			}
+		}    
+    	}
+}
+function calculateTotalPrice(i)
+{
+
+  var itemc=document.getElementById("numb").value;
+//  alert(document.getElementById("numb").value);
+  var totPrice=0;
+	  for(var x=1;x<=itemc;x++)
+	  {
+		  
+		  if(document.getElementById("id"+x)!=null)
+		  {
+			  var salePrice=parseFloat(document.getElementById("saleprice"+x).value);
+			 // alert(salePrice);
+			  var qty=parseFloat(document.getElementById("qty"+x).value);
+			//  alert(qty);
+			  var price=salePrice*qty;
+			  //alert(price);
+			  if(isNaN(price))
+				totPrice+=0;
+			  else
+			  	totPrice+=price;
+		  }
+	
+	  }
+   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
+   var result2=totPrice;
+    if (!isNaN(result2)) {
+        
+        document.getElementById('finaltotal').value = result2;
+       
+        
+        
+    }
+    var tax;
+	tax=0.18*totPrice;
+	if(!isNaN(tax))
+	//document.getElementById("taxmsg").innerHTML=tax;
+	document.getElementById("tax").value=tax;
+    if(isNaN(tax))
+    	 document.getElementById('totalprice').value = 0+result2;
+    else
+   	 document.getElementById('totalprice').value = tax+result2;
+}
  function dch() 
 { 
  var d=document.getElementById("single_cal3").value.toString();
@@ -411,6 +518,7 @@ function calculate(i)
     if (!isNaN(result2)) {
         document.getElementById('totalq').value = result2;
     }
+    calculateTotalPrice(i);
 }
 
 function tot(i)
@@ -493,7 +601,7 @@ function cls(elt)
 
 											var s1 = "<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"
 													+ c
-													+ ")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"
+													+ ")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">IBT Price:<span class=\"required\">*</span></label><div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"><input id=\"saleprice\""+c+" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" ></div> <label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"
 													+ c
 													+ "\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("
 													+ c
@@ -504,6 +612,7 @@ function cls(elt)
 											$('.right_col').animate({
 												height : h
 											}, 500);
+											 ibtCheck();
 										});
 
 					});
