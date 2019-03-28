@@ -217,6 +217,7 @@ for(i=0;i<selectedItemsArray.length;i++)
 
     ftot+=totp;
     tax=0.18*ftot;
+    ftot+=tax;
     
 
    //Add billdetails depending on whther the sale exists or not

@@ -103,6 +103,7 @@ while(rs2.next()){
 	 pp+=rs2.getDouble("Price");  
 }
  b+=mac+","+des+","+part+","+min+","+max+","+grp+","+pp+","+iq+","+res+","+res2; 
+ //System.out.println(b);
  response.getWriter().println(b);    
 //}
 } catch (Exception e) {

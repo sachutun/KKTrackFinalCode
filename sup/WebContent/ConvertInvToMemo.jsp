@@ -90,7 +90,7 @@
 			//System.out.println(totalprice);
 			
 			balanceamount = rs1.getDouble("BalanceAmount");
-			balanceamount = rs1.getDouble("Tax");
+			tax = rs1.getDouble("Tax");
 			System.out.println(tax);
 			totalprice = totalprice - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
 			balanceamount = balanceamount - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
