@@ -292,7 +292,7 @@ while(resultSet.next()){
 <td width="4%"><strong> To Branch: </strong><input class="" type="text" id="tbranch" name="tbranch" value=<%=resultSet.getString("ToBranch") %> readonly="readonly" style="border:none"></td>
 <td width="3%"><strong> Total Qty: </strong>
 <input class="" type="text" id="totalqty" name="totalqty" value=<%=resultSet.getString("TotalQty") %> readonly="readonly" style="border:none"></td>
-<% if(ibt.startsWith("T"))
+<% if(ibt.contains("T"))
 {
 	finaltotal=resultSet.getDouble("TotalPrice")-resultSet.getDouble("tax");
 %> 
@@ -339,7 +339,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %> </td>
 <td ><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<% if(ibt.startsWith("T"))
+<% if(ibt.contains("T"))
 {%> 
 <td>
 <input class="col-md-4" type="text" id="nsp<%=i %>" name="nsp<%=i %>" value=<%=rs.getDouble("SalePrice") %> onblur="calculateTotalPrice()" >
@@ -374,6 +374,9 @@ while(resultSet.next()){
  list.add(rs.getString("IBTDetails.Code"));
  list.add(String.valueOf(rs.getFloat("IBTDetails.Qty")));
  list.add(String.valueOf(i));
+ list.add(String.valueOf(rs.getDouble("IBTDetails.SalePrice")));
+ list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
+ list.add(String.valueOf(resultSet.getDouble("tax")));
  map.put(i, list);
  sno++;
 } 

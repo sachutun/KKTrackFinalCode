@@ -40,6 +40,9 @@ try{
 //System.out.println(fbranch + " , " +dc+ " , " +sd+" , " +d);
     int code=0;
     float qty=0;
+    double tax=0;
+    double totp=0;
+    double ibtprice=0;
     int billid=0;
     String s4="SELECT * FROM IBTDetails WHERE INo="+d;
    
@@ -106,6 +109,22 @@ String[] selectedItemsArray=selectedItems.split(",");
      
      qty=Float.parseFloat(q);
  
+  String sp= values.get(9);
+  ibtprice=Float.parseFloat(sp);
+  
+  String taxamt= values.get(11);
+  tax= Float.parseFloat(taxamt);
+  
+  String totalprice= values.get(10);
+  totp=Float.parseFloat(totalprice);
+  
+  //updated prices
+  
+  totp=ibtprice*qty+ibtprice*qty*0.18;
+  
+  tax=ibtprice*qty*0.18;
+  
+  //System.out.println(totp+","+tax);
   
      billid=Integer.parseInt(bid);
    /*  String up=Integer.toString(d);  */
@@ -157,11 +176,13 @@ String[] selectedItemsArray=selectedItems.split(",");
     ps3.executeUpdate(); 
     //System.out.println(isql2);
     
-    preparedStatement = conn.prepareStatement("UPDATE `IBT` SET `TotalQty`=`TotalQty`-? WHERE Id=?");
+    preparedStatement = conn.prepareStatement("UPDATE `IBT` SET `TotalQty`=`TotalQty`-?, `TotalPrice`=`TotalPrice`-?, `tax`=`tax`-? WHERE Id=?");
     preparedStatement.setFloat(1,qty);
-    preparedStatement.setInt(2,d);
+    preparedStatement.setDouble(2,totp);
+    preparedStatement.setDouble(3,tax);
+    preparedStatement.setInt(4,d);
     preparedStatement.executeUpdate(); 
-    //System.out.println(s1);
+  //  System.out.println("hi"+totp+","+tax);
     
     st2=conn.createStatement();
     resultSet = st2.executeQuery("SELECT * FROM IBT where Id="+d);
@@ -184,6 +205,7 @@ String[] selectedItemsArray=selectedItems.split(",");
             
             }
         }
+     
     }
     //System.out.println("fbranch="+fbranch+"&dc="+dc+"&sd="+sd);
     	 response.sendRedirect("editibtindividual.jsp?res=2&fbranch="+fbranch+"&dc="+dc+"&sd="+sd);
