@@ -31,6 +31,20 @@ ResultSet resultSet = null;
    String sd=request.getParameter("sd");
    String ibt=request.getParameter("ibt");
    int id= Integer.parseInt(request.getParameter("pid"));
+   String[] saleprice = request.getParameterValues("saleprice");
+   double[] sp=new double[saleprice.length];
+   String t=request.getParameter("tax");
+   double tax;
+   if(t==null || t=="")
+	   tax=0;
+   else
+       tax=Double.parseDouble(t);
+   String tp=request.getParameter("totalprice");
+   double totalprice;
+   if(tp==null || tp=="")
+	   totalprice=0;
+   else
+	   totalprice=Double.parseDouble(tp);
 float tq=Float.parseFloat(totalqty);
 float[] q= new float[qty.length];
 
@@ -38,6 +52,15 @@ float[] q= new float[qty.length];
 for(int i=0;i<qty.length;i++)
 {
    q[i]=Float.parseFloat(qty[i]);  
+} 
+for(int i=0;i<saleprice.length;i++)
+{
+	  // System.out.println("saleprice"+"["+i+"]: "+saleprice[i]);
+     String salep=saleprice[i];
+     if(salep!=null && salep!="")
+	   		sp[i]=Double.parseDouble(salep);  
+     //else
+     		//sp[i]=0;
 } 
    
  /*   String connectionURL = "jdbc:mysql://localhost:8889/KKTrack";
@@ -86,7 +109,7 @@ String sq2="";
 
 for(int i=0;i<count;i++)
 {
-qparts+=" ("+code[i]+","+q[i]+","+id+")";
+qparts+=" ("+code[i]+","+q[i]+","+id+","+sp[i]+")";
 /*  sq1="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
  sq2="Update NewInventory SET Quantity=Quantity+? WHERE Code=?and Branch=?";	 */
 sq1="INSERT INTO NewInventory (Code, Branch, Quantity) VALUES (?,?,?) ON DUPLICATE KEY UPDATE Quantity=Quantity-?";
@@ -128,16 +151,18 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO IBTDetails (`Code`, `Qty`, `IBT`) VALUES"+ qparts;
+String isql= "INSERT INTO IBTDetails (`Code`, `Qty`, `IBT`, `SalePrice`) VALUES"+ qparts;
 
 int y=st2.executeUpdate(isql);
 
-String s="UPDATE `IBT` SET `TotalQty`=`TotalQty`+?  WHERE Id=?"; 
+String s="UPDATE `IBT` SET `TotalQty`=`TotalQty`+? , `TotalPrice`=`TotalPrice`+?, `Tax`=`Tax`+? WHERE Id=?"; 
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement3 = connection.prepareStatement(s);
 preparedStatement3.setFloat(1,tq);
-preparedStatement3.setInt(2,id);
+preparedStatement3.setDouble(2,totalprice);
+preparedStatement3.setDouble(3,tax);
+preparedStatement3.setInt(4,id);
 preparedStatement3.executeUpdate();  
 connection.commit();
        response.sendRedirect("editibtindividual.jsp?res=1&fbranch="+frombranch+"&dc="+ibt+"&sd="+sd);

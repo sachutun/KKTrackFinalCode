@@ -21,8 +21,9 @@ PreparedStatement preparedStatement2 = null;
 ResultSet resultSet = null;
 
           String[] code = request.getParameterValues("code");
-        
-    String ibtnumber = request.getParameter("ibtnumber");
+          String ibtcode= request.getParameter("ibtcode");    
+    String ibtno = request.getParameter("ibtnumber");
+    String ibtnumber=ibtcode+ibtno;
     String date = request.getParameter("date"); 
    String uBranch=(String)session.getAttribute("ubranch");
    String role=(String)session.getAttribute("role"); 

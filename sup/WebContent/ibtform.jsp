@@ -93,8 +93,8 @@ if( role!=null && role=="2" && uBranch!="Bowenpally" && uBranch!="Workshop")
 	branchName = document.getElementById("fromBranchName").value;
 else
 	branchName = document.getElementById("frombranch").value;
-
-url += "?count=" +str+"&branch="+branchName+"&dt="+document.getElementById("da").value+"&ibt="+document.getElementById("ibtnumber").value;
+var ibtnumber=document.getElementById("ibtcode").value+document.getElementById("ibtnumber").value;
+url += "?count=" +str+"&branch="+branchName+"&dt="+document.getElementById("da").value+"&ibt="+ibtnumber;
 xmlHttp.onreadystatechange = stateChange;
 xmlHttp.open("GET", url, true);
 xmlHttp.send(null);
@@ -252,7 +252,8 @@ xmlHttp.send(null);
                         <label class="control-label col-md-2 col-sm-2 col-xs-3" for="ibtnumber">IBT Number<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input type="text" id="ibtnumber" required="required" class="form-control col-md-7 col-xs-12" name="ibtnumber">
+                            <input type="text" id='ibtcode' name="ibtcode" class="form-control col-md-7 col-xs-12" style="width:30px;display:none;" readOnly>
+                          <input type="text" id="ibtnumber" required="required" class="form-control col-md-7 col-xs-12" style="width:190px;"name="ibtnumber">
                         </div>
                         </div>
                          <div class="form-group" style="margin-left: 6.5%;">
@@ -265,7 +266,7 @@ xmlHttp.send(null);
 							Enumeration resourceKeys = resources.getKeys();
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
-                          <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch">
+                          <select class="select2_single form-control hide4branch" tabindex="-1" id="frombranch" name="frombranch" onchange="ibtCheck()">
 
                  
                        <%
@@ -365,7 +366,7 @@ xmlHttp.send(null);
                           <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">IBT Price:<span class="required">*</span>
                         </label>
                         <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
-                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" >
+                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" onblur="calculateTotalPrice(1)">
                         </div> 
                         
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
@@ -524,6 +525,54 @@ xmlHttp.send(null);
 </script>
    
 <script>
+function addInvoiceCode()
+{
+	var code;
+	if( role!=null && role=="2" && ubran!="Bowenpally" && ubran!="Workshop")
+		branch = document.getElementById("fromBranchName").value;
+	else
+		var branch = document.getElementById("frombranch").value;
+		
+
+	  switch(branch) {
+	    case "Bowenpally"	: code = "BP";
+	    					   	break;
+	    case "Miyapur"   	: code = "MY";
+	    					   	break;
+	    case "LBNagar"   	:code = "LB";
+	   					  	break;
+	    case "Workshop"   	:code = "WS";
+			  			  	break;
+	    case "Rajahmundry"  :code = "RJ";
+			                	break;
+	    case "Vishakapatnam":code = "VZ";
+			  				break;
+	    case "Bhubhaneshwar":code = "BB";
+			  				break;
+	    case "Vijayawada"   :code = "VO";
+			  				break;
+	    case "Vijayawadan"  :code = "VN";
+			  				break;
+	    case "Tekkali"      :code = "TK";
+		  					break;
+	    case "Barhi"   		:code = "BH";
+		  					break;
+	    default:
+	    	code = "";
+	  }
+	  document.getElementById("ibtcode").value = code;
+	  if(code!="")
+		 {
+		  document.getElementById("ibtcode").style.display="block";
+		  document.getElementById("ibtnumber").style.width = "160px";
+		 }
+	  else
+		  {
+		  document.getElementById("ibtcode").style.display="none";
+		  document.getElementById("ibtnumber").style.width = "190px";
+		  
+		  }
+}
 function ibtCheck() {
 
     if (document.getElementById('taxIBT').checked) {
@@ -543,6 +592,9 @@ function ibtCheck() {
 				elements[i].required = 'true';
 			}
 		}
+		addInvoiceCode();
+		document.getElementById("ibtcode").style.display="block";
+		  document.getElementById("ibtnumber").style.width = "160px";
     	}
     	else {
          document.getElementById('tax').value = '';
@@ -563,7 +615,10 @@ function ibtCheck() {
 				elements[i].removeAttribute("required");
 				elements[i].value='';
 			}
-		}    
+		}
+		  document.getElementById("ibtcode").value = "";
+			document.getElementById("ibtcode").style.display="none";
+			  document.getElementById("ibtnumber").style.width = "190px";
     	}
 }
  function dch() 
@@ -579,67 +634,60 @@ var da=dv[2]+'-'+dv[0]+'-'+dv[1];
  }
 function calculate(i)
 {
-	//calculateTotalPrice(i);
-  var itemc=document.getElementById("numb").value;
-  var tot=0;
-	  for(var x=1;x<=itemc;x++)
-	  {
-		  //alert(document.getElementById("id"+x).value);
-		  if(document.getElementById("id"+x)!=null)
-		  {
-			  var qty=parseFloat(document.getElementById("qty"+x).value);
-			  if(isNaN(qty))
+	calculateTotalPrice(i);
+  	var itemc=document.getElementById("numb").value;
+  	var tot=0;
+	for(var x=1;x<=itemc;x++)
+	{
+		//alert(document.getElementById("id"+x).value);
+		if(document.getElementById("id"+x)!=null)
+		 {
+			var qty=parseFloat(document.getElementById("qty"+x).value);
+			if(isNaN(qty))
 				tot+=0;
-			  else
+			else
 			  	tot+=qty;
-		  }
-	
-	  }
-   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
-   var result2=tot;
-    if (!isNaN(result2)) {
+		 }	
+	}
+   	/*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
+   	var result2=tot;
+    	if (!isNaN(result2)) {
         document.getElementById('totalq').value = result2;
     }
     calculateTotalPrice(i);
 }
+
 function calculateTotalPrice(i)
 {
-
-  var itemc=document.getElementById("numb").value;
-  var totPrice=0;
-	  for(var x=1;x<=itemc;x++)
-	  {
-		  //alert(document.getElementById("id"+x).value);
-		  if(document.getElementById("id"+x)!=null)
-		  {
-			  var salePrice=parseFloat(document.getElementById("saleprice"+x).value);
-			  var qty=parseFloat(document.getElementById("qty"+x).value);
-			 
-			  var price=salePrice*qty;
+  	var itemc=document.getElementById("numb").value;
+  	var totPrice=0;
+	for(var x=1;x<=itemc;x++)
+	{
+		//alert(document.getElementById("id"+x).value);
+		if(document.getElementById("id"+x)!=null)
+		{
+			var salePrice=parseFloat(document.getElementById("saleprice"+x).value);
+			var qty=parseFloat(document.getElementById("qty"+x).value);			 
+			var price=salePrice*qty;
 			  //alert(price);
-			  if(isNaN(price))
+			if(isNaN(price))
 				totPrice+=0;
-			  else
+			else
 			  	totPrice+=price;
-		  }
-	
-	  }
-   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
-   var result2=totPrice;
-    if (!isNaN(result2)) {
-        
-        document.getElementById('finaltotal').value = result2;
-       
-        
-        
+		}	
+	 }
+   	/*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
+   	var result2=totPrice;
+    	if (!isNaN(result2)) {
+    		document.getElementById('finaltotal').value = result2;       
     }
     var tax;
 	tax=0.18*totPrice;
 	if(!isNaN(tax))
-	//document.getElementById("taxmsg").innerHTML=tax;
-	document.getElementById("tax").value=tax;
+		//document.getElementById("taxmsg").innerHTML=tax;
+		document.getElementById("tax").value=tax;
     if(isNaN(tax))
-    	 document.getElementById('totalprice').value = 0+result2;
+    	 	document.getElementById('totalprice').value = 0+result2;
     else
    	 document.getElementById('totalprice').value = tax+result2;
 }
@@ -740,7 +788,7 @@ $('.add').click(function() {
 	 c++; 
 	 
    //var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
-   var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">IBT Price:<span class=\"required\">*</span> </label> <div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"> <input id=\"saleprice"+c+"\" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" ></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div></div>  <div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+   var s1="<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"+c+")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">IBT Price:<span class=\"required\">*</span> </label> <div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"> <input id=\"saleprice"+c+"\" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" onblur=\"calculateTotalPrice("+c+")\"></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("+c+")\"> </div></div>  <div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
    
    $('.codedetails:last').after(s1); 
 /*  $('#main').after(s1); */

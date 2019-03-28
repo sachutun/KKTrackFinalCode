@@ -249,7 +249,7 @@ String environment = props.getProperty("jdbc.environment");
                          <label class="taxElements control-label col-md-1 col-sm-1 col-xs-2" style="display:none;">IBT Price:<span class="required">*</span>
                         </label>
                         <div class="taxElements col-md-2 col-sm-2 col-xs-4" style="display:none;">
-                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" >
+                          <input id="saleprice1" class="salepr form-control col-md-7 col-xs-12" type="number" name="saleprice" onblur="calculateTotalPrice(1)">
                         </div> 
                         
                         <label class="control-label col-md-1 col-sm-1 col-xs-2" >Quantity:<span class="required">*</span>
@@ -447,6 +447,42 @@ function ibtCheck() {
 		}    
     	}
 }
+
+ function dch() 
+{ 
+ var d=document.getElementById("single_cal3").value.toString();
+var dv=d.split("/");
+var da=dv[2]+'-'+dv[0]+'-'+dv[1];
+ document.getElementById('da').value=da;
+} 
+ function ref()
+ {
+	 window.location.href="ibtform.jsp";
+ }
+ 
+function calculate(i)
+{
+	calculateTotalPrice(i);
+  	var itemc=document.getElementById("numb").value;
+  	var tot=0;
+  	for(var x=1;x<=itemc;x++)
+	{
+		if(document.getElementById("id"+x)!=null)
+		{
+	  		var qty=parseInt(document.getElementById("qty"+x).value);	 
+			if(isNaN(qty))
+				tot+=0;
+			else
+		  		tot+=qty;
+		}
+	 }
+   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
+   var result2=tot;
+    if (!isNaN(result2)) {
+        document.getElementById('totalq').value = result2;
+    }
+    calculateTotalPrice(i);
+}
 function calculateTotalPrice(i)
 {
 
@@ -490,37 +526,6 @@ function calculateTotalPrice(i)
     else
    	 document.getElementById('totalprice').value = tax+result2;
 }
- function dch() 
-{ 
- var d=document.getElementById("single_cal3").value.toString();
-var dv=d.split("/");
-var da=dv[2]+'-'+dv[0]+'-'+dv[1];
- document.getElementById('da').value=da;
-} 
- function ref()
- {
-	 window.location.href="ibtform.jsp";
- }
-function calculate(i)
-{
-
-  var itemc=document.getElementById("numb").value;
-  var tot=0;
-  
-	  for(var x=1;x<=itemc;x++)
-	  {
-		  if(document.getElementById("id"+x)!=null)
-	  tot+=parseInt(document.getElementById("qty"+x).value);
-	 
-	  }
-   /*  var result2 = parseInt(txtSNumberValue) + parseInt(txtS2NumberValue); */
-   var result2=tot;
-    if (!isNaN(result2)) {
-        document.getElementById('totalq').value = result2;
-    }
-    calculateTotalPrice(i);
-}
-
 function tot(i)
 {
 	
@@ -601,7 +606,7 @@ function cls(elt)
 
 											var s1 = "<div class=\"codedetails\" id=id"+c+"><div class=\"x_content\" style=\"padding-left: 38px; padding-right: 50px;padding-top: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);\"> <a style=\"float:right; margin-right:-4%; margin-top:-1%;color: rgba(169, 68, 66, 0.6);font-size: large; cursor:pointer\" class=\"cls\" onclick=\"cls(this);\"><i class=\"fa fa-close\"></i></a><div class=\"form-group\" style=\"margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"code\"> Code:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"code\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"code\" onchange=\"showState(this.value,"
 													+ c
-													+ ")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">IBT Price:<span class=\"required\">*</span></label><div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"><input id=\"saleprice\""+c+" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" ></div> <label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"
+													+ ")\"></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Description:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"description"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"description\" disabled></div><label class=\"taxElements control-label col-md-1 col-sm-1 col-xs-2\" style=\"display:none;\">IBT Price:<span class=\"required\">*</span></label><div class=\"taxElements col-md-2 col-sm-2 col-xs-4\" style=\"display:none;\"><input id=\"saleprice"+c+"\" class=\"salepr form-control col-md-7 col-xs-12\" type=\"number\" name=\"saleprice\" onblur=\"calculateTotalPrice("+c+")\"></div> <label class=\"control-label col-md-1 col-sm-1 col-xs-2\" >Quantity:<span class=\"required\">*</span></label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"qty"
 													+ c
 													+ "\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("
 													+ c
