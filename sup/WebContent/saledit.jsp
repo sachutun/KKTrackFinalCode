@@ -36,7 +36,7 @@ try{
 
     String branch = request.getParameter("branch");
     String ba = request.getParameter("ba");
-    String dc = request.getParameter("dc");
+    String dc = request.getParameter("dcno");
     String cname = request.getParameter("cusnam");
     String cno = request.getParameter("cusno");
     String com = request.getParameter("com");

@@ -407,7 +407,7 @@ while(resultSet.next()){
 
 <%-- <td><%=rs.getString("DCNumber") %> --%>
 <td>
-	<a class="btn btn-success btn-xs" href="viewInvoice.jsp?dc=<%=rs.getString("DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) %>&branch=<%=rs.getString("Branch") %>&callingPage=ViewCollections.jsp"> <%=rs.getString("DCNumber")%></a> 
+	<a style="color: #35c335;" href="viewInvoice.jsp?dc=<%=rs.getString("DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) %>&branch=<%=rs.getString("Branch") %>&callingPage=ViewCollections.jsp"> <%=rs.getString("DCNumber")%></a> 
     	
 
 </td>

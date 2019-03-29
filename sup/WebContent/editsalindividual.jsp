@@ -485,7 +485,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                                             <th>Sale Price</th>
                                             <th>Quantity</th>
                                             <th>
-                                            <input class="disableButton4Credit" type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
+                                            <input class=" cboxes disableButton4Credit" type='checkbox' name='selectAllCheck' onClick='funcSelectAll()' value='Select All'></input>
                                             Select All
                                           </th>
               <%if(mflag==1) {%>
@@ -515,32 +515,33 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><%=rs.getString("CodeList.Machine") %></td>
 <td><%=rs.getString("CodeList.PartNo") %></td>
 <td><%=rs.getString("CodeList.Grp") %></td>
-<td><input type="number" class="disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
-<td><input type="number" class="disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
+<td><input type="number" class="cp disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
+<td><input type="number" class=" qnty disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
           <%--        <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
+         
                 <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=bqty%> > 
                <%--  <input type="hidden" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > --%>
                  <input type="hidden" id="bid<%=i %>" name="bid<%=i %>" value=<%=i%> >
-                 <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("BillDetails.Code")%> >
+                 <input type="hidden" class="cde" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("BillDetails.Code")%> >
                 <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
                 <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
                 <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
-         
-                
+
        
           <input type="hidden" id="custId" name="custId" value=<%=custId%> > 
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
+                 <input type="hidden" id="dcno" name="dcno" value=<%=resultSet.getString("DCNumber")%> > 
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
 </td>
 <%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
 
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
-  <td>  <input type="checkbox" class="chkbox disableButton4Credit" name="checkboxRow" value="<%=i %>">   </td>     
+  <td>  <input type="checkbox" class="cboxes chkbox disableButton4Credit" name="checkboxRow" value="<%=i %>">   </td>     
      <%if(mflag==1) {
     	 String notes="";
     	 if (rs.getString("BillDetails.Notes")==null || rs.getString("BillDetails.Notes").length()==0)
@@ -554,7 +555,8 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
     		 int delimiter = notes.indexOf(",");
 		String invNo = notes.substring(17, delimiter);
 		delimiter = delimiter + 2;
-		String invdate = notes.substring(delimiter);%>
+		String invdate = notes.substring(delimiter);
+	%>
     		   <td class="notes" width="20%" >Added to Invoice
 <%--     		 <a href="viewInvoice.jsp?pk=<%=dc %>&recordtoupdate=<%=i %>&sd=<%=cn %>&dc=<%=dc%>&branch=<%=branch %>&code=<%=rs.getString("BillDetails.Code")%>&qty=<%=bqty%>&cp=<%=rs.getString("BillDetails.CostPrice")%>&notes=<%=notes %>" class="btn btn-success btn-xs"><%=invNo%></a> --%>
 <%--     		<a class="btn btn-success btn-xs" href="viewInvoice.jsp?dc=<%=invNo %>&sd=<%=invdate %>&branch=<%=branch %>&memodc=<%=dc%>&memodate=<%=cn%>&memopk=<%=primaryKey%>&callingPage=editsalindividual.jsp"> <%=invNo%></a>  --%>
@@ -587,13 +589,13 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  map.put(i, list);
  sno++;
 } 
-                         // System.out.println("Fetching Keys and corresponding [Multiple] Values n");
+                          //System.out.println("Fetching Keys and corresponding [Multiple] Values n");
                           for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
                               int key = entry.getKey();
                               List<String> values = entry.getValue();
                              // String bv=values.get(9);
-                             // System.out.println("Key = " + key);
-                             // System.out.println("Values = " + values + "n");
+                            // System.out.println("Key = " + key);
+                              //System.out.println("Values = " + values + "n");
                               
                               //System.out.println("bv = " + bv);
                           }
@@ -608,6 +610,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
 
+   <input class="col-md-4" type="hidden" id="comments" name="comments" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">             
  <br/> <br/> 
  <br/> 
 <div class="form-group " >
@@ -697,8 +700,10 @@ gst ="";
 <a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>)">Save</button></a>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
 <button type="button"  id="refreshButton" class="btn btn-warning" style="float:right;" onClick="window.location.reload()">Refresh</button>
+<%if(mflag!=1) {%>
 <button type="button"  id="creditButton" class="btn btn-info disable4inv" style="float:right;">Convert to Credit</button>
-<button type="button"  id="invbtn" class="btn btn-success" style="float:right;">Add to Invoice</button>
+<%} %>
+<button type="button"  id="invbtn" class="btn btn-success disableButton4Credit" style="float:right;">Add to Invoice</button>
 <br/>
 <br/>
 <br/>
@@ -895,20 +900,70 @@ function d(){
 } 
 
  
- $("#invbtn").click(function() {
-	 $( '[class*="invDet"]' ).show();
-		$("#InvNo").prop('required',true);
-		 $( '[class*="disable4Credit"]' ).prop("readonly",true);
-		 $('.disableButton4Credit').attr('disabled', 'disabled');
-
-		 $('[class*="disable4inv"]').attr('disabled', 'disabled');
+$("#invbtn").click(function() { 
+	var count_checked = $('input[type="checkbox"]:checked').length;
+	if(count_checked == 0) 
+	{
+		$('#errorMsg').css({ 'color': 'red'});
+		$('#errorMsg').html('Please select atleast one checkbox to add to invoice');	         
+		$('#errorMsg').show();
+		$("#deleteModal").modal("hide");
+	    return false;
+	}
+	else
+	{
+		var elements=document.getElementsByClassName('chkbox');
+	    	var cpElements=document.getElementsByClassName('cp');
+	    	var qtyElements=document.getElementsByClassName('qnty');
+	    	var codeElements=document.getElementsByClassName('cde');
+	    	var cpflag=false;
+	    	var qtyflag=false;
+	    	var eMessage="";
+	    for(var i=0; i<elements.length; i++)
+	    {
+	    		if(elements[i].checked == true)
+	        {
+		     	if(cpElements[i].value==0 || cpElements[i].value=="" || cpElements[i].value==null)
+		        {
+		         	eMessage='Please enter sale price for code: ' +codeElements[i].value;
+		         	cpflag=true;
+		         	break;
+		        }
+		         			
+				if(qtyElements[i].value==0 || qtyElements[i].value=="" || qtyElements[i].value==null)
+		    		{
+		         	eMessage='Please enter quantity for code: ' +codeElements[i].value;
+		         	qtyflag=true;
+		         	break;
+		         }
+	        	}	         			         			
+		 }
+	     if(cpflag==true || qtyflag==true)
+	     {
+	     	$('#errorMsg').css({ 'color': 'red'});
+	        $('#errorMsg').html(eMessage);		         	         
+	        $('#errorMsg').show();
+	        $("#deleteModal").modal("hide");	
+	        return;
+	     }
+	     else
+	     { 	
+	     	$( '[class*="invDet"]' ).show();
+	        $("#InvNo").prop('required',true);
+	        $( '[class*="disable4Credit"]' ).prop("readonly",true);
+	        $('.disableButton4Credit').attr('disabled', 'disabled');
+			$('[class*="disable4inv"]').attr('disabled', 'disabled'); 
+	        //$('#errorMsg').html('');
+	        $('#errorMsg').hide();
+	     }
+	}
  });
  
  
  $("#creditButton").click(function() {
 	// $( '[class*="InvDet"]' ).hide();
 	 $( '[class*="creditDet"]' ).show();
-	 
+	 $('.disableButton4Credit').attr('disabled', 'disabled');
 		$("#creditCustId").prop('required',true);
 	 $( '[class*="disable4Credit"]' ).prop("readonly",true);
  });
@@ -936,16 +991,33 @@ $("#deleteButton").click(function() {
     	  $('#errorMsg').hide();
     	  }
 });	
+/* input.onfocus = function() {
+	 
+		        var input = $(this);
+		        alert('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
+		  
+	  } */
+	  $( "input" ).focusin(function() {
+		  if($(this).attr('type')!="checkbox")
+			  {
+			  $('.cboxes').attr('disabled', 'disabled');
+			 $('#deleteButton').attr('disabled', 'disabled');
+			  }
+		
+		});
+	  
 function deleteCheckedRecords(){
 	//var did=document.getElementById("did").value;
 	var pk=document.getElementById("payid").value;
 	var branch=document.getElementById("branch").value;
 	var dc=document.getElementById("dc").value;
 	var cn=document.getElementById("ddd").value;
+	var comments=document.getElementById("comments").value;
+	var ap=document.getElementById("ap").value;
 	//alert(pk);
 	//alert(branch);
 	//alert(dc);
-	//alert(cn);
+	//alert(comments);
 	var items=document.getElementsByName('checkboxRow');
 	var selectedItems="";
 	for(var i=0; i<items.length; i++){
@@ -982,7 +1054,7 @@ function deleteCheckedRecords(){
     	//  var count_checked = $('input[class="chkbox"]:checked').length;
     	 	var count_checked = $('.chkbox:checked').size();
     //	  alert(count_checked);
-	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked);
+	document.getElementById('did').href=('BulkDeleteSale.jsp?selectedItems='+selectedItems+'&deleteid='+pk+'&branch='+branch+'&dc='+dc+'&sd='+cn+'&totRecs='+elements+'&checkedRecs='+count_checked+'&comments='+comments+'&amtpaid='+ap);
 	}
 }
 

@@ -20,10 +20,13 @@ PreparedStatement preparedStatement = null;
 PreparedStatement ps = null;
 PreparedStatement ps1 = null;
 PreparedStatement ps2 = null;
+PreparedStatement ps3 = null;
 PreparedStatement ps4 = null;
 ResultSet resultSet = null;
+ResultSet resultSet2 = null;
 Statement st=null;
 Statement st2=null;
+Statement st3=null;
 %>
 <%
 try{ 
@@ -38,7 +41,22 @@ try{
 	    
 	     String dc = request.getParameter("dc"); 
 	    String sd = request.getParameter("sd");
-
+	    //System.out.println("sd: "+sd);
+	    String ap = request.getParameter("amtpaid");
+	    double amountpaid=Double.parseDouble(ap);
+	   // System.out.println("amountpaid: "+amountpaid);
+	    String comments=request.getParameter("comments");
+	    boolean mflag=false;
+	    //System.out.println("comments if: "+comments);
+	     if(comments.contains("Reference Memo"))
+		    {
+	    	 		mflag=true;
+		    }
+	    int delimiter1; 
+	    int delimiter2; 
+	   
+	    String memoNo; 	    
+	    String memodate; 
 
 	    int d=Integer.parseInt(recordToUpdate);
 String selectedItems = request.getParameter("selectedItems");
@@ -179,7 +197,7 @@ String ba=values.get(5);
      st=conn.createStatement();
 
    
- String s1= "UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-"+cost*qty+",`BalanceAmount`=`BalanceAmount`-"+(cost*qty)+" WHERE Id="+d;
+ 
    String s2="DELETE FROM BillDetails WHERE id ="+billid;
 
 
@@ -187,21 +205,30 @@ String ba=values.get(5);
     ps.setInt(1,billid);
     ps.executeUpdate();   
     //System.out.println(s2);
+   if(!mflag)
+   {
+	   //System.out.println(s3);
+    		ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`+? WHERE Code= ? AND Branch=?");
+    		ps2.setFloat(1,qty);
+    		ps2.setInt(2,code);
+    		ps2.setString(3,branch);
+    		ps2.executeUpdate(); 
    
-    ps2 = conn.prepareStatement("UPDATE `NewInventory` SET `Quantity`=`Quantity`+? WHERE Code= ? AND Branch=?");
-    ps2.setFloat(1,qty);
-    ps2.setInt(2,code);
-    ps2.setString(3,branch);
-    ps2.executeUpdate(); 
-    //System.out.println(s3);
-    
+   }
+   double totalprice= cost*qty;
+  
+   double tax=cost*qty*0.18;
+   totalprice=totalprice+tax;
+
+   String s1= "UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-"+totalprice+",`BalanceAmount`=`BalanceAmount`-"+(totalprice)+" ,`Tax`="+tax+" WHERE Id="+d;
+  // System.out.println(s1);
     preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?, `Tax`=`Tax`-? WHERE Id=?");
-    preparedStatement.setDouble(1,cost*qty);
-    preparedStatement.setDouble(2,cost*qty);
-    preparedStatement.setDouble(3,cost*qty*0.18);
+    preparedStatement.setDouble(1,totalprice);
+    preparedStatement.setDouble(2,totalprice);
+    preparedStatement.setDouble(3,tax);
     preparedStatement.setInt(4,d);
     preparedStatement.executeUpdate(); 
-    //System.out.println(s1);
+    
     
     st2=conn.createStatement();
     resultSet = st2.executeQuery("SELECT count(*) as c FROM Sale s inner join BillDetails b on s.Id=b.DC where s.Id="+d);
@@ -223,16 +250,46 @@ String ba=values.get(5);
      else  */
      if(flag==false && custId!=null && custId!="")
      {
-String s="UPDATE `Debtors` SET `OB`=`OB`-"+(cost*qty)+" WHERE CustId="+custId;
-System.out.println("single: " +s);
-     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-     ps1.setDouble(1,cost*qty);
-     ps1.setString(2,custId);
-     ps1.executeUpdate();
+		String s="UPDATE `Debtors` SET `OB`=`OB`-"+(totalprice)+" WHERE CustId="+custId;
+		//System.out.println("single: " +s);
+     	ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
+     	ps1.setDouble(1,totalprice);
+     	ps1.setString(2,custId);
+     	ps1.executeUpdate();
      
      }
-  
+  st3=conn.createStatement();
+  //System.out.println("comments if: "+comments);
+     if(comments.contains("Reference Memo"))
+	    {
+	    delimiter1 = comments.indexOf(":");
+	    delimiter2 = comments.indexOf(",");
+	    //System.out.println("delimiter1: "+delimiter1);
+	    //System.out.println("delimiter2: "+delimiter2);
+	    delimiter1=delimiter1+2;
+	    //System.out.println("delimiter1 +1 : "+delimiter1);
+	    memoNo = comments.substring(delimiter1, delimiter2);
+	    delimiter2=delimiter2+2;	
+	    //System.out.println("delimiter2 +1: "+delimiter2);
+	    memodate = comments.substring(delimiter2);
+	   // System.out.println("memoNo : "+memoNo);
+	    //System.out.println("memodate : "+memodate);
+	   // System.out.println("Select * from Sale where Date='" + memodate + "'and Branch='" + branch+ "'and DCNumber='" + memoNo + "'");
+	    resultSet2 = st3.executeQuery("Select * from Sale where Date='" + memodate + "'and Branch='" + branch
+				+ "'and DCNumber='" + memoNo + "'");
+	    if (resultSet2.next()) {
 
+			int memoId = resultSet2.getInt("Id");
+			 // System.out.println("UPDATE `BillDetails` SET `Notes`=?  WHERE DCNumber=? and Code=? and DC=?" +": " +memoNo +" , "+ +code +" , " +memoId);
+		     ps3 = conn.prepareStatement("UPDATE `BillDetails` SET `Notes`=?  WHERE DCNumber=? and Code=? and DC=?");
+		     ps3.setString(1,"");
+		     ps3.setString(2,memoNo);
+		     ps3.setInt(3,code);
+		     ps3.setInt(4,memoId);
+
+		     ps3.executeUpdate();
+	    }
+	    }
 //}
         }
     }
@@ -242,14 +299,16 @@ System.out.println("single: " +s);
 
 	  if(flag==true && custId!=null && custId!="")
 	     {
-	String s="UPDATE `Debtors` SET `OB`=`OB`-"+(bal)+" WHERE CustId="+custId;
-	System.out.println("all checked: " +s);
+	String s="UPDATE `Debtors` SET `OB`=`OB`-"+(bal+amountpaid)+" WHERE CustId="+custId;
+	//System.out.println("all checked: " +s);
 	     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-	     ps1.setDouble(1,bal);
+	     ps1.setDouble(1,bal+amountpaid);
 	     ps1.setString(2,custId);
 	     ps1.executeUpdate();
 	     
 	     }
+	  
+	 
 
 	 response.sendRedirect("editsalindividual.jsp?res=2&branch="+branch+"&dc="+dc+"&sd="+sd+"&pk="+d);
 }catch (Exception e) {
@@ -262,6 +321,8 @@ finally {
 	        st.close();
 	    if (st2 != null)
 	        st2.close();
+	    if (st3 != null)
+	        st3.close();
 	    if (preparedStatement != null)
 	    	   preparedStatement.close();
 	    if (ps != null)
@@ -271,6 +332,8 @@ finally {
 	       
 	     if (ps4 != null)
 	    	   ps4.close();
+	     if (ps3 != null)
+	    	   ps3.close();
 	       }catch (SQLException e) {}
 	       try {
 	        if (conn != null)

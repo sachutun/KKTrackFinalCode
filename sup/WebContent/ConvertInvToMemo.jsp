@@ -18,6 +18,7 @@
 	PreparedStatement ps = null;
 	PreparedStatement ps2 = null;
 	PreparedStatement ps3 = null;
+	PreparedStatement ps4 = null;
 	ResultSet resultSet = null;
 	ResultSet rs1 = null;
 	ResultSet rs2 = null;
@@ -42,6 +43,9 @@
 		String cp = request.getParameter("cp");
 		String code = request.getParameter("code");
 		String notes = request.getParameter("notes");
+		double discount=0;
+		String creditCustId="";
+		boolean saleDeleteFlag=false;
 
 		// System.out.println("branch: " +branch); 
 		//  System.out.println("notes: " +notes); 
@@ -77,25 +81,26 @@
 
 		// Insert update in Sale with new inv number and inv dt
 
-		// System.out.println("Select * from Sale where Date='"+date+"'and Branch='"+branch+"'and DCNumber='"+invNo+"'");   
+		//System.out.println("Select * from Sale where Date='"+date+"'and Branch='"+branch+"'and DCNumber='"+invNo+"'");   
 		rs1 = st.executeQuery("Select * from Sale where Date='" + date + "'and Branch='" + branch
 				+ "'and DCNumber='" + invNo + "'");
 		double totalprice = 0;
-		double balanceamount = 0;
+		//double balanceamount = 0;
 		double tax = 0;
 		if (rs1.next()) {
 
 			Id = rs1.getInt("Id");
-			totalprice = rs1.getDouble("TotalPrice");
-			//System.out.println(totalprice);
+			creditCustId=rs1.getString("CustID");
+			discount=rs1.getDouble("Discount");
+			//System.out.println("creditCustId" +creditCustId);
+	
+			totalprice = (Double.parseDouble(cp) * (Double.parseDouble(qty)));
+			tax = 0.18*totalprice;
 			
-			balanceamount = rs1.getDouble("BalanceAmount");
-			tax = rs1.getDouble("Tax");
-			System.out.println(tax);
-			totalprice = totalprice - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
-			balanceamount = balanceamount - (Double.parseDouble(cp) * (Double.parseDouble(qty)));
-			tax=0.18*totalprice;
-			
+			totalprice=totalprice+tax;
+			//System.out.println("tax: " +tax);
+			//System.out.println("totalprice: " +totalprice);
+					
 			//System.out.println("Select * from BillDetails where dc='"+Id+"'and Code='"+code+"'and DCNumber='"+invNo+"'");
 			rs2 = st2.executeQuery("Select * from BillDetails where dc='" + Id + "'and Code='" + code
 					+ "'and DCNumber='" + invNo + "'");
@@ -113,15 +118,23 @@
 				ps2.executeUpdate();
 			}
 		}
+		else
+		{
+			//System.out.println("if: " );
+			ps2 = conn.prepareStatement("UPDATE `BillDetails` SET `Notes`=?  WHERE Id=?");
+			ps2.setString(1, "");
+			ps2.setString(2, recordtoupdate);
+			ps2.executeUpdate();
+		}
 		// System.out.println("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
 		rs3 = st3.executeQuery("Select * from BillDetails where dc='" + Id + "'and DCNumber='" + invNo + "'");
-//System.out.println(totalprice);
+		//System.out.println(totalprice);
 		if (rs3.next())
 		{
-			// System.out.println("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=? WHERE Id= "+totalprice +" " +balanceamount +" "+Id);
-			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?, `Tax`=? WHERE Id=?");
+			// System.out.println("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?,`Tax`=`Tax`-?  WHERE Id= "+totalprice +" " +totalprice +" "+Id);
+			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?, `Tax`=`Tax`-? WHERE Id=?");
 			ps3.setDouble(1, totalprice);
-			ps3.setDouble(2, balanceamount);
+			ps3.setDouble(2, totalprice);
 			ps3.setDouble(3, tax);
 			ps3.setInt(4, Id);
 			ps3.executeUpdate();
@@ -133,6 +146,22 @@
 			ps3 = conn.prepareStatement("DELETE FROM Sale WHERE id = ?");
 			ps3.setInt(1, Id);
 			ps3.executeUpdate();
+			saleDeleteFlag=true;
+		}
+
+		if(saleDeleteFlag)
+		{
+			totalprice=totalprice-discount;
+		}
+		if(creditCustId!=null && creditCustId!="")
+		{
+			String s="UPDATE `Debtors` SET `OB`=`OB`-"+(totalprice)+" WHERE CustId="+creditCustId;
+			//System.out.println("all checked: " +s);
+			     ps4 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
+			     ps4.setDouble(1,totalprice);
+			     ps4.setString(2,creditCustId);
+			     ps4.executeUpdate();
+			     
 		}
 
 		response.sendRedirect("editsalindividual.jsp?res=3&branch=" + branch + "&dc=" + dc + "&sd=" + sd);

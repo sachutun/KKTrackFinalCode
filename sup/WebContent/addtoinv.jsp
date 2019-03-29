@@ -55,6 +55,7 @@ try{
         String GST=request.getParameter("GST");
         String type="";
         String qparts="";
+        String creditcustId="";
         
     //  System.out.println(GST+type); 
         
@@ -83,7 +84,7 @@ try{
 
     conn = DriverManager.getConnection(url, username, password);
     boolean flag;
-    String custId="";
+    //String custId="";
     double bal=0;
     double ftot=0;
     double tax=0;
@@ -117,7 +118,7 @@ try{
    
     // Insert update in Sale with new inv number and inv dt
       
-  //  System.out.println("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
+    //System.out.println("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
      
     rs1=st.executeQuery("Select * from Sale where Date='"+nd+"'and Branch='"+branch+"'and DCNumber='"+ndc+"'");
 
@@ -128,7 +129,7 @@ try{
     		//sale already exists so retrieve the Id and add to billdetails with DC=Id
     	    	exists=1;
     		 Id=rs1.getInt("Id");
-	
+    		 creditcustId=rs1.getString("CustID");
 }
 else 
 {
@@ -169,7 +170,7 @@ for(i=0;i<selectedItemsArray.length;i++)
      sd=values.get(4);
 
      //String ba=values.get(5);
-     custId=values.get(10);
+     //custId=values.get(10);
      type=values.get(11);
 
      d=Integer.parseInt(recordToUpdate);
@@ -217,15 +218,16 @@ for(i=0;i<selectedItemsArray.length;i++)
 
     ftot+=totp;
     tax=0.18*ftot;
-    ftot+=tax;
-    
+  
+    //System.out.println("total price: " +ftot);
+    //System.out.println("tax: " +tax);
 
    //Add billdetails depending on whther the sale exists or not
 
 
     qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+")";
 
-
+    System.out.println("qparts: " +qparts);
 
 // insert each item into BillDetails along with the new invno and invdt in notes column
 
@@ -269,7 +271,7 @@ ps2.executeUpdate();
         }
     }
     String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
-    System.out.println("Bill Details: "+isql);
+    //System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     
 qparts="";
@@ -277,16 +279,28 @@ qparts="";
 
 
 //update sale bal amt, ftot, custId, type
-
- 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+ ?,`BalanceAmount`=`BalanceAmount` + ?,`Comments`=? ,`CustID`=?, `Type`=?, `Tax`=`Tax`+?  WHERE Id=?");
-     ps.setDouble(1,ftot);
-     ps.setDouble(2,ftot);
+double totalprice=ftot+tax;
+ 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+ ?,`BalanceAmount`=`BalanceAmount` + ?,`Comments`=? , `Type`=?, `Tax`=`Tax`+?  WHERE Id=?");
+     ps.setDouble(1,totalprice);
+     ps.setDouble(2,totalprice);
      ps.setString(3,"Reference Memo: "+dc+", "+sd);
-     ps.setString(4,custId);
-     ps.setString(5,type);
-     ps.setDouble(6,tax);
-     ps.setInt(7,Id);
+     //ps.setString(4,custId);
+     ps.setString(4,type);
+     ps.setDouble(5,tax);
+     ps.setInt(6,Id);
      ps.executeUpdate(); 
+   
+     //System.out.println("creditcustId: " +creditcustId);
+     if(creditcustId!=null && creditcustId!="")
+     {
+String s="UPDATE `Debtors` SET `OB`=`OB`+"+(totalprice)+" WHERE CustId="+creditcustId;
+//System.out.println("single: " +s);
+     ps4 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
+     ps4.setDouble(1,totalprice);
+     ps4.setString(2,creditcustId);
+     ps4.executeUpdate();
+     
+     }
      
 
 	 response.sendRedirect("editsalindividual.jsp?res=5&branch="+branch+"&dc="+dc+"&sd="+sd+"&pk="+d);
