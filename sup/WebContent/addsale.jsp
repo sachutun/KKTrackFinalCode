@@ -189,7 +189,8 @@ function showCustomer(custID){
 		return
 	} 
 	var url="getCreditCustomers.jsp";
-	url += "?creditcustID=" +custID+"&branch="+document.getElementById("branch").value;
+	var creditcustID=document.getElementById("custIdCode").value+custID;
+	url += "?creditcustID=" +creditcustID+"&branch="+document.getElementById("branch").value; 
 	
 	xmlHttp1.onreadystatechange = getCustomer;
 	xmlHttp1.open("GET", url, true);
@@ -585,7 +586,7 @@ String role=(String)session.getAttribute("role");
                     <div class="form-group" style="margin-top:2%;">
                     <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <select id="type" class="select2_single form-control" tabindex="-1" name="type" required="required">
+                          <select id="type" class="select2_single form-control" tabindex="-1" name="type" required="required" onchange="addCreditCustCode()">
                             <option></option>
                                <option value="Cash">Cash</option>
                             <option value="Neft">Bank Transfer</option>
@@ -603,6 +604,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Customer ID:<span class="required">*</span>
                          </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
+                         <input type="text" id='custIdCode' name="custIdCode" class="form-control col-md-7 col-xs-12" style="width:30px;display:none;" readOnly>
                           <input id="creditCustId" class="form-control col-md-7 col-xs-12" type="text" name="creditCustId" onfocusout="showCustomer(this.value)">
                         </div>
                         </div>
@@ -862,7 +864,59 @@ function addInvoiceCode()
 		  
 		  }
 }
-
+function addCreditCustCode()
+{
+	var code;
+	var branch = document.getElementById("branch").value;
+    var type=document.getElementById("type").value;
+    if(type=="Credit" || type=="CreditNeft" || type=="CreditCheque" || type=="CreditSwipe")
+    	{
+	  switch(branch) {
+	    case "Bowenpally"	: code = "BP";
+	    					   	break;
+	    case "Miyapur"   	: code = "MY";
+	    					   	break;
+	    case "LBNagar"   	:code = "LB";
+	   					  	break;
+	    case "Workshop"   	:code = "WS";
+			  			  	break;
+	    case "Rajahmundry"  :code = "RJ";
+			                	break;
+	    case "Vishakapatnam":code = "VZ";
+			  				break;
+	    case "Bhubhaneshwar":code = "BB";
+			  				break;
+	    case "Vijayawada"   :code = "VO";
+			  				break;
+	    case "Vijayawadan"  :code = "VN";
+			  				break;
+	    case "Tekkali"      :code = "TK";
+		  					break;
+	    case "Barhi"   		:code = "BH";
+		  					break;
+	    default:
+	    	code = "";
+	  }
+	  document.getElementById("custIdCode").value = code;
+	  if(code!="")
+		 {
+		  document.getElementById("custIdCode").style.display="block";
+		  document.getElementById("creditCustId").style.width = "120px";
+		 }
+	  else
+		  {
+		  document.getElementById("custIdCode").style.display="none";
+		  document.getElementById("creditCustId").style.width = "150px";
+		  
+		  }
+    	}
+    else
+	  {
+	  document.getElementById("custIdCode").style.display="none";
+	  document.getElementById("creditCustId").style.width = "150px";
+	  
+	  }
+	}
 function invoiceCheck() {
 
     if (document.getElementById('taxInvoice').checked) {

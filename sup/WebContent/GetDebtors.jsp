@@ -229,7 +229,7 @@ String role=request.getParameter("role");
         result.put("aaData", array);
         response.setContentType("application/json");
         response.setHeader("Cache-Control", "no-store");
-        System.out.println("---------------");	
+        //System.out.println("---------------");	
         out.print(result);
         conn.close();
     } catch (Exception e) {

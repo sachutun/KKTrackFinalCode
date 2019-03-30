@@ -426,7 +426,7 @@ if(pk!=null && pk.length()!=0 )
 sql1+=whr;
  System.out.println(sql1); 
  
- if(dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M") )
+ if(dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M") && !(dc.substring(0,2).equals("MY"))) 
 mflag=1;
  
 if(branch!=null && dc!=null && cn!=null)
@@ -997,14 +997,14 @@ $("#deleteButton").click(function() {
 		        alert('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
 		  
 	  } */
-	  $( "input" ).focusin(function() {
+	/*   $( "input" ).focusin(function() {
 		  if($(this).attr('type')!="checkbox")
 			  {
-			  $('.cboxes').attr('disabled', 'disabled');
+			  //$('.cboxes').attr('disabled', 'disabled');
 			 $('#deleteButton').attr('disabled', 'disabled');
 			  }
 		
-		});
+		}); */
 	  
 function deleteCheckedRecords(){
 	//var did=document.getElementById("did").value;
@@ -1217,6 +1217,14 @@ $(document).ready(function() {
         "deferLoading": 57,
         "iDisplayLength":10
     } );
+	
+	  $("input").change(function(){
+		  if($(this).attr('type')!="checkbox")
+		  {
+		  //$('.cboxes').attr('disabled', 'disabled');
+		 $('#deleteButton').attr('disabled', 'disabled');
+		  }
+	  });
 } ); 
   $("#FormId").submit( function(e) {
 	  loadAjax();
