@@ -375,16 +375,16 @@ String sql1="";
 int primaryKey=0;
 String sqlc="";
 String g="group by s.Id";
-String sql ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
+String sql ="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) ";
+	sql1 ="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) ";
 
 	if(code!=null && code.length()!=0)
 	{
-		sqlc="SELECT *, SUM(c.LC*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
+		sqlc="SELECT *, SUM(b.LC*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
 	}
 	
-	String sql3="SELECT *,SUM(c.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
+	String sql3="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
 	String w="";
 	if((branch!=null && branch.equals("Workshop")) || (code!=null && code.equals("9999")))
 	{
@@ -453,6 +453,8 @@ if(role!="null" && role.equals("1"))
                                             <th>Code qty</th>
                                             <th >Total price</th>
                                             <th >LC</th>
+                                            <th >Tax</th>
+                                            <th >Discount</th>
                                             <th >Amount Paid</th>
                                             <th>Type</th>
                                             <th>Customer Number</th>
@@ -465,6 +467,8 @@ if(role!="null" && role.equals("1"))
                            <tfoot>
             <tr >
                 <th colspan="6" style="text-align:right">Total Sale:</th>
+                <th ></th>
+                <th ></th>
                 <th ></th>
                 <th ></th>
                 <th ></th>
@@ -506,6 +510,8 @@ while(resultSet.next()){
 <%} %>
 <td ><%=resultSet.getInt("TotalPrice") %></td>
 <td ><%=resultSet.getInt("slc") %></td>
+<td ><%=resultSet.getInt("Tax") %></td>
+<td ><%=resultSet.getInt("Discount") %></td>
 <td ><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
@@ -593,6 +599,7 @@ else
                                             
                                             <th>Code qty</th>
                                             <th >Total price</th>
+                                            <th >Tax</th>
                                             <th >Amount Paid</th>
                                             <th>Customer Number</th>
                                             <th>Type</th>
@@ -604,6 +611,7 @@ else
                               <tfoot>
             <tr >
                 <th colspan="5" style="text-align:right">Total Qty:</th>
+                <th ></th>
                 <th ></th>
                 <th ></th>
                 <th colspan="6" class="admin " ></th>
@@ -640,6 +648,7 @@ while(resultSet.next()){
 <td></td>
 <%} %>
 <td ><%=resultSet.getInt("TotalPrice") %></td>
+<td ><%=resultSet.getInt("Tax") %></td>
 <td ><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
 <td><%=resultSet.getString("Type") %></td>
@@ -897,7 +906,7 @@ var table=$('#ex').DataTable( {
 	            
 	        "columnDefs": [
 	         /*    { "visible": false, "targets": 0 }, */
-	        	{ "targets": [0,6,7,8], "visible": false }
+	        	{ "targets": [0,6,7,8,9,10], "visible": false }
 	          
 	            
 	          ],
@@ -1020,7 +1029,7 @@ table2=$('#ex4').DataTable( {
         
     "columnDefs": [
         { "visible": false, "targets": 0 },
-     	{ "targets": [6,7], "visible": false }
+     	{ "targets": [6,7,8], "visible": false }
       
         
       ],
@@ -1080,9 +1089,12 @@ function hideprices()
     table.column(6).visible(true);
     table.column(7).visible(true);
     table.column(8).visible(true);
+    table.column(9).visible(true);
+    table.column(10).visible(true);
     
      table2.column(6).visible(true);
      table2.column(7).visible(true);
+     table2.column(8).visible(true);
 }
 
 	    
