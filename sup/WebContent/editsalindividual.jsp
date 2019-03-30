@@ -104,7 +104,8 @@ function showCustomer(custID){
 		return
 	} 
 	var url="getCreditCustomers.jsp";
-	url += "?creditcustID=" +custID+"&branch="+document.getElementById("branch").value;
+	var creditcustID=document.getElementById("custIdCode").value+custID;
+	url += "?creditcustID=" +creditcustID+"&branch="+document.getElementById("branch").value;
 	
 	xmlHttp1.onreadystatechange = getCustomer;
 	xmlHttp1.open("GET", url, true);
@@ -657,8 +658,11 @@ gst ="";
 <br/>
 <br/>
 
-                         <div class="form-group creditDet" style="display:none;">               		
-  <label for="creditCustId" style="float:left;"><strong> Credit Customer ID: </strong></label><input class="col-md-4" type="text" id="creditCustId" name="creditCustId" style="margin-left:10px;" onfocusout="showCustomer(this.value)">                       		
+                         <div class="form-group creditDet" style="display:none;">       
+       		
+  <label for="creditCustId" style="float:left;"><strong> Credit Customer ID: </strong></label>
+                            <input type="text" id='custIdCode' name="custIdCode" class="form-control col-md-7 col-xs-12" style="margin-left:10px;width:30px;height:25px;display:none;" readOnly> 
+  <input class="col-md-4" type="text" id="creditCustId" name="creditCustId"  onfocusout="showCustomer(this.value)">                       		
 
   </div>                      
 <br/>
@@ -966,6 +970,50 @@ $("#invbtn").click(function() {
 	 $('.disableButton4Credit').attr('disabled', 'disabled');
 		$("#creditCustId").prop('required',true);
 	 $( '[class*="disable4Credit"]' ).prop("readonly",true);
+		var code;
+		var branch = document.getElementById("branch").value;
+	  
+	  
+		  switch(branch) {
+		    case "Bowenpally"	: code = "BP";
+		    					   	break;
+		    case "Miyapur"   	: code = "MY";
+		    					   	break;
+		    case "LBNagar"   	:code = "LB";
+		   					  	break;
+		    case "Workshop"   	:code = "WS";
+				  			  	break;
+		    case "Rajahmundry"  :code = "RJ";
+				                	break;
+		    case "Vishakapatnam":code = "VZ";
+				  				break;
+		    case "Bhubhaneshwar":code = "BB";
+				  				break;
+		    case "Vijayawada"   :code = "VO";
+				  				break;
+		    case "Vijayawadan"  :code = "VN";
+				  				break;
+		    case "Tekkali"      :code = "TK";
+			  					break;
+		    case "Barhi"   		:code = "BH";
+			  					break;
+		    default:
+		    	code = "";
+		  }
+		  document.getElementById("custIdCode").value = code;
+		  if(code!="")
+			 {
+			  document.getElementById("custIdCode").style.display="block";
+			  document.getElementById("creditCustId").style.width = "120px";
+			 }
+		  else
+			  {
+			  document.getElementById("custIdCode").style.display="none";
+			  document.getElementById("creditCustId").style.marginLeft = "10px"
+			  document.getElementById("creditCustId").style.width = "150px";
+			  
+			  }
+	    	
  });
 
 $("#deleteButton").click(function() {

@@ -43,9 +43,12 @@ try{
     String gst = request.getParameter("GST");
     String creditCustId=request.getParameter("creditCustId");
     String CrediCustStatus=request.getParameter("CrediCustStatus");
+    String custIdCode=request.getParameter("custIdCode");
+   
 
     String custId=request.getParameter("custId");
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
+ creditCustId=custIdCode+creditCustId;
  if(custId!=null && custId!="")
 	 creditCustId=custId;
  String date=request.getParameter("date") ;
