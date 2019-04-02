@@ -717,7 +717,7 @@ gst ="";
 
 <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger disableButton4Credit" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
 <a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>)">Save</button></a>
- <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
+ <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>&custId=<%=custId%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
 <button type="button"  id="refreshButton" class="btn btn-warning" style="float:right;" onClick="window.location.reload()">Refresh</button>
 <%if(mflag!=1) {%>
 <button type="button"  id="creditButton" class="btn btn-info disable4inv" style="float:right;">Convert to Credit</button>

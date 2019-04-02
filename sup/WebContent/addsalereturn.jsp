@@ -234,7 +234,7 @@
 									<div class="clearfix"></div>
 
 									<div class="x_content">
-										<form action="balancepay2.jsp?sno=<%=sno%>">
+										<form action="newbalancepay2.jsp?sno=<%=sno%>">
 											 <label class="control-label"
 												style="float: left;">Return Date</label>
 											<div class="col-md-3">
@@ -579,6 +579,10 @@
 															max="<%=bqty%>" type="number" step="any"> <%-- <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
 															<input type="hidden" id="ba" name="ba"
 															value=<%=resultSet.getString("BalanceAmount")%>>
+															<input type="hidden" id="ap" name="ap"
+															value=<%=resultSet.getString("AmountPaid")%>>
+															<input type="hidden" id="tp" name="tp"
+															value=<%=resultSet.getString("Totalprice")%>>
 															<input type="hidden" id="custId" name="custId"
 															value=<%=resultSet.getString("CustId")%>>
 															<input type="hidden" id="q<%=i%>" name="q<%=i%>"
