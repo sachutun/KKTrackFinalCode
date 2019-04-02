@@ -689,18 +689,30 @@ String role=(String)session.getAttribute("role");
                         <div class="col-md-2 col-sm-3 col-xs-6">
                         <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank">
                         </div> </div>
-                        <br/>
-                          
+                       
                         
-                   		<div class="form-group ">
+                        <div class="form-group" style="margin-top:2%;">
+                    			<label class="control-label col-md-2 col-sm-2 col-xs-5">Tax Type:<span class="required">*</span></label>
+                        		<div class="ttype col-md-3 col-sm-3 col-xs-6">
+                          		<select id="taxtype" class="select3_single form-control" tabindex="-1" name="taxtype" required="required" >
+                            			<option></option>
+                               		<option value="CGST">CGST+SGST</option>
+                            			<option value="IGST">IGST</option>
+                                 </select>
+                        		</div>                
+                        </div>
+                        
+                   
+                        
+                   		<div class="form-group " style="margin-left: 60px;">
                        		<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;">UN-REG Invoice:</label>
                         		<div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked="checked">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general" checked="checked">
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		 <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax">
                        		 </div> 
                        		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
                         		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
@@ -851,14 +863,16 @@ function addInvoiceCode()
 	    default:
 	    	code = "";
 	  }
-	  document.getElementById("dcCode").value = code;
+	 
 	  if(code!="")
 		 {
+		  document.getElementById("dcCode").value = code;
 		  document.getElementById("dcCode").style.display="block";
 		  document.getElementById("dcnumber").style.width = "120px";
 		 }
 	  else
 		  {
+		  document.getElementById("dcCode").value = "";
 		  document.getElementById("dcCode").style.display="none";
 		  document.getElementById("dcnumber").style.width = "150px";
 		  
@@ -897,14 +911,17 @@ function addCreditCustCode()
 	    default:
 	    	code = "";
 	  }
-	  document.getElementById("custIdCode").value = code;
+	 
+	
 	  if(code!="")
 		 {
+		  document.getElementById("custIdCode").value = code;
 		  document.getElementById("custIdCode").style.display="block";
 		  document.getElementById("creditCustId").style.width = "120px";
 		 }
 	  else
 		  {
+		  document.getElementById("custIdCode").value = "";
 		  document.getElementById("custIdCode").style.display="none";
 		  document.getElementById("creditCustId").style.width = "150px";
 		  
@@ -912,10 +929,12 @@ function addCreditCustCode()
     	}
     else
 	  {
+    	 document.getElementById("custIdCode").value = "";
 	  document.getElementById("custIdCode").style.display="none";
 	  document.getElementById("creditCustId").style.width = "150px";
 	  
 	  }
+  
 	}
 function invoiceCheck() {
 
@@ -1206,9 +1225,11 @@ function cls(elt)
 	  $.getScript("js/rolePermissions.js"); 
 	 var h= $('.right_col').height()+150;
 	 $('.right_col').animate({height:h}, 500);
-	 $("select").change(function(){
+	 $(".select2_single").change(function(){
+		
 	        $(this).find("option:selected").each(function(){
 	        		var optionValue = $(this).attr("value");
+	        	
 	           	var flag=false;
 	            if(optionValue)
 	            {	           	            	
@@ -1309,6 +1330,8 @@ function cls(elt)
            	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
            	 	 }
 	        });
+	        
+	        $("div.ttype select").val("");
 	    }).change();
 	var c=1;
 	

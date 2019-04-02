@@ -217,12 +217,12 @@ xmlHttp.send(null);
                       <div class="form-group" style="width: 50%;margin-left: 30%;">
                       <label class="control-label col-md-1 col-sm-1 col-xs-2" style="width:125px;">General IBT:</label>
                         		<div class="col-md-2 col-sm-2 col-xs-3" style="margin-top: 0.7%;">
-                          		<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="generalIBT" value="general" checked="checked">
+                          		<input type="radio" onclick="javascript:ibtCheck();" name="generalIBT" id="generalIBT" value="general" checked="checked">
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Tax IBT:</label>
                        		 <div class="col-md-3 col-sm-3 col-xs-3" style="margin-top: 0.7%;">
-                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxtype" id="taxIBT" value="tax">
+                        			<input type="radio" onclick="javascript:ibtCheck();" name="taxIBT" id="taxIBT" value="tax">
                        		 </div> 
                        		 </div>
                    <br>

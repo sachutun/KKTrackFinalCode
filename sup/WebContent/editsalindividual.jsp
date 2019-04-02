@@ -608,12 +608,26 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 </tbody> 
 </table>
    <input type="hidden" id="mapValues" name="<%=map%>">  
-
+   
+<input type="hidden" id="existingTaxtype" name="existingTaxtype" value="<%=resultSet.getString("TaxType") %>"> 
 <label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
 
    <input class="col-md-4" type="hidden" id="comments" name="comments" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">             
- <br/> <br/> 
- <br/> 
+<br/> 
+
+   <div class="form-group" style="margin-top:3%;">
+                    			<label class="control-label col-md-2 col-sm-2 col-xs-5">Tax Type:<span class="required">*</span></label>
+                        		<div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-100px;">
+                          		<select id="taxtype" class="select2_single form-control" tabindex="-1" name="taxtype" required="required" >
+                            			<option></option>
+                               		<option value="CGST">CGST+SGST</option>
+                            			<option value="IGST">IGST</option>
+                                 </select>
+                        		</div>                
+                        </div> 
+ 
+  <br/> <br/> 
+ <br/>                        
 <div class="form-group " >
                        		
 
@@ -622,12 +636,12 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 %>
 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;"> UN-REG Invoice:</label>
 <div class="col-md-1 col-sm-1 col-xs-3" >
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general">
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		  <div class="col-md-1 col-sm-1 col-xs-3" >
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax" checked>
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax" checked>
                        		 </div> 
                        		 
                        		 <label id="GSTLabel" style="width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
@@ -642,12 +656,12 @@ gst ="";
 %>
 	<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;">UN-REG Invoice:</label>
 <div class="col-md-1 col-sm-1 col-xs-3">
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="generalInvoice" value="general" checked>
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general" checked>
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		  <div class="col-md-1 col-sm-1 col-xs-3">
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxtype" id="taxInvoice" value="tax">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax">
                        		 </div> 
                        		 
                        		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
@@ -694,7 +708,8 @@ gst ="";
 <a id="aid" href=""><button type="button"  onclick="addRecordsToInvoice(<%=i%>)" id="addto" class="btn btn-success" style="margin-left: 30px;margin-top: -5px;">Add</button></a> 
   </div> 
                          </div>
-                          
+                         
+                        
          
                       
 <br/> 
@@ -1204,6 +1219,8 @@ $(document).ready(function() {
     		
     		
   }
+	 var existingTaxtype=document.getElementById('existingTaxtype').value; 
+	 $("#taxtype option:contains(" + existingTaxtype + ")").attr('selected', 'selected');
 	 var custId=document.getElementById("custId").value;
 	 var cusnam=document.getElementById("cusnam").value;
 	 var cusno=document.getElementById("cusno").value;

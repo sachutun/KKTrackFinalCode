@@ -44,7 +44,9 @@ try{
     String creditCustId=request.getParameter("creditCustId");
     String CrediCustStatus=request.getParameter("CrediCustStatus");
     String custIdCode=request.getParameter("custIdCode");
-   
+    String taxtype = request.getParameter("taxtype");
+    if(taxtype==null)
+ 	   taxtype="";
 
     String custId=request.getParameter("custId");
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
@@ -211,9 +213,9 @@ Date ndate=df.parse(dt);
    
        if(creditCustId!="" && creditCustId!=null)
        {
-    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`=Credit WHERE Id="+Pid;
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`=Credit, `TaxType`="+taxtype+" WHERE Id="+Pid;
     	      // System.out.println(s1);
-       	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=?  WHERE Id=?");
+       	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=? , `TaxType`=?   WHERE Id=?");
        ps.setDouble(1,ftot);
        ps.setDouble(2,newBalAmt);
        ps.setString(3,cname);
@@ -226,14 +228,15 @@ Date ndate=df.parse(dt);
        ps.setString(10,gst);
        ps.setString(11,creditCustId);    
        ps.setString(12,"Credit"); 
-       ps.setInt(13,Pid);
+       ps.setString(13,taxtype); 
+       ps.setInt(14,Pid);
        ps.executeUpdate(); 
        }
        else
        {
-    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+" WHERE Id="+Pid;
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `TaxType`="+taxtype+" WHERE Id="+Pid;
     	      // System.out.println(s1);
-    	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? WHERE Id=?");
+    	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=?, `TaxType`=? WHERE Id=?");
     	       ps.setDouble(1,ftot);
     	       ps.setDouble(2,newBalAmt);
     	       ps.setString(3,cname);
@@ -243,8 +246,9 @@ Date ndate=df.parse(dt);
     	       ps.setString(7,tx);
     	       ps.setString(8,dis);
     	       ps.setString(9,com);
-    	       ps.setString(10,gst);    
-    	       ps.setInt(11,Pid);
+    	       ps.setString(10,gst); 
+    	       ps.setString(11,taxtype); 
+    	       ps.setInt(12,Pid);
     	       ps.executeUpdate();
        }
        if(custId!=null && custId!="")

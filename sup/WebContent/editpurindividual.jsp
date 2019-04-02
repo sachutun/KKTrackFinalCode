@@ -713,6 +713,14 @@ function deleteCheckedRecords(){
         "deferLoading": 57,
         "iDisplayLength":10
     } );
+		
+    $("input").change(function(){
+		  if($(this).attr('type')!="checkbox")
+		  {
+		  //$('.cboxes').attr('disabled', 'disabled');
+		 $('#deleteButton').attr('disabled', 'disabled');
+		  }
+	  });
 } ); 
   $("#FormId").submit( function(e) {
 	  loadAjax();

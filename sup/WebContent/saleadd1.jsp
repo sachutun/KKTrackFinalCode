@@ -58,6 +58,9 @@ int res=0;
    String creditCustId=custIdCode+custId;
    String CrediCustStatus=request.getParameter("CrediCustStatus");
    String aadhaar = request.getParameter("aadhaar");
+   String taxtype = request.getParameter("taxtype");
+   if(taxtype==null)
+	   taxtype="";
    String sqlb="";
    float[] q= new float[qty.length];
 //System.out.println("balanceamount: "+balanceamount);
@@ -131,7 +134,7 @@ else
 {
 statement=connection.createStatement();       
         	
-    	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"')");
+    	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID, TaxType) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"','"+taxtype+"')");
        
        String sql="Select Max(Id) from Sale";
        resultSet = statement.executeQuery(sql);

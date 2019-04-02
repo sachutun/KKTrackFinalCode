@@ -458,10 +458,11 @@ if(role!="null" && role.equals("1"))
                                             <th >Amount Paid</th>
                                             <th>Type</th>
                                             <th>Customer Number</th>
-                                            <th>Details</th> 
+                                            <th class="none" >Details</th> 
+                                             <th class="none" >Tax Details</th> 
                                             <!-- <th>Previous Payment Details</th>  -->
-                                            <th>Comments</th> 
-                                            <th>Customer GST Number </th>
+                                            <th class="none">Comments</th> 
+                                            <th class="none">Customer GST Number </th>
                                         </tr>
                       </thead>
                            <tfoot>
@@ -473,6 +474,7 @@ if(role!="null" && role.equals("1"))
                 <th ></th>
                 <th ></th>
                 <th ></th>
+                <th> </th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -495,6 +497,18 @@ while(resultSet.next()){
 	Date date=resultSet.getDate("Date");
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
 	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
+	String tx= resultSet.getString("Tax");
+	double tax=0;
+	double cgst=0;
+	double sgst=0;
+	String taxValue="";
+	if(!tx.equals("0"))
+	{
+	tax=Double.parseDouble(tx);
+    cgst=tax/2;
+    sgst=tax/2;
+	}
+	String taxtype=resultSet.getString("TaxType");
 %>
 
                                         <tr class="odd gradeX">
@@ -517,8 +531,6 @@ while(resultSet.next()){
 <td><%=resultSet.getString("CustomerNumber") %></td>
 
 
-
-
 <td><table id="ex2" class="table table-striped table-bordered dt-responsive">
                       <thead>
                         <tr>
@@ -531,7 +543,7 @@ while(resultSet.next()){
                                             <th>Group</th>
                                             <th>Quantity</th>
                                             <th class="price">Sale Price</th>
-                                            <th class="price">Total</th>
+                                            <th class="price">Total</th>                                        
                                             <th class="admin price">Sale Price with tax</th>
                                             <th class="admin price">LC</th> 
                                             <th class="price">Max Price</th>
@@ -553,14 +565,28 @@ while(resultSet.next()){
 <td><%=rs.getFloat("BillDetails.Qty") %></td>
 <td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
+
 <td class=" admin price"><%=rs.getDouble("BillDetails.CostPrice")+rs.getDouble("BillDetails.CostPrice")*(0.18)%></td>
 <td class="admin price"><%=rs.getString("BillDetails.LC") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
 
 </tr>
 <%} %>
-</tbody> </table></td>
 
+</tbody> </table></td>
+<%  
+if(taxtype==null || taxtype == ""){
+taxValue=tx;
+}
+else {if(taxtype.equals("CGST")) {
+	taxValue="<br/> CGST: " + String.valueOf(cgst) + " , SGST: " + String.valueOf(sgst) ;
+}
+else { 
+	taxValue="<br/> IGST: " + tx; 
+}
+}
+%>
+<td><%=taxValue %></td>
  <td><%=resultSet.getString("Comments") %></td>                                      
  <%String gst= resultSet.getString("GST");
  if(gst== null)
@@ -603,9 +629,9 @@ else
                                             <th >Amount Paid</th>
                                             <th>Customer Number</th>
                                             <th>Type</th>
-                                            <th>Details</th>  
-                                            <th>Comments</th> 
-                                           <th>Customer GST Number </th>
+                                            <th class="none">Details</th>  
+                                            <th class="none">Comments</th> 
+                                           <th class="none">Customer GST Number </th>
                                         </tr>
                       </thead>
                               <tfoot>
@@ -906,7 +932,7 @@ var table=$('#ex').DataTable( {
 	            
 	        "columnDefs": [
 	         /*    { "visible": false, "targets": 0 }, */
-	        	{ "targets": [0,6,7,8,9,10], "visible": false }
+	        	{ "targets": [0,6,7,8,9,10,14], "visible": false }
 	          
 	            
 	          ],
@@ -1076,7 +1102,7 @@ table2=$('#ex4').DataTable( {
         'copy', 'excel', 'pdf', 'print'
     ] */
 } );
-
+ 
 function hideprices()
 {
 	var elements = document.getElementsByClassName('price');
@@ -1091,10 +1117,12 @@ function hideprices()
     table.column(8).visible(true);
     table.column(9).visible(true);
     table.column(10).visible(true);
+    table.column(14).visible(true);
     
      table2.column(6).visible(true);
      table2.column(7).visible(true);
      table2.column(8).visible(true);
+
 }
 
 	    

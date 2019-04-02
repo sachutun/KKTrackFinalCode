@@ -82,7 +82,9 @@ try{
     float oq=Float.parseFloat(olq);
     float nq=Float.parseFloat(newq);
     String newsp=request.getParameter("nsp"+sn);
-    float nsp=Float.parseFloat(newsp);
+    float nsp=0;
+    if(newsp!= null && newsp!="")
+    		nsp=Float.parseFloat(newsp);
     String totalprice=request.getParameter("totalprice");
     String tax=request.getParameter("tax");
     //System.out.println("tax: "+tax);
