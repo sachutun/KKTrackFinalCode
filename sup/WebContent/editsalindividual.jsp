@@ -426,22 +426,58 @@ if(pk!=null && pk.length()!=0 )
 }
 sql1+=whr;
  System.out.println(sql1); 
- 
- if(dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M") && !(dc.substring(0,2).equals("MY"))) 
-mflag=1;
- 
+ if((dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M")) && !(dc.substring(0,2).equals("MY"))) 
+	mflag=1;
+
 if(branch!=null && dc!=null && cn!=null)
 {
 resultSet = st.executeQuery(sql1);
 
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code,BillDetails.Id, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total, BillDetails.Notes FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code,BillDetails.Id,BillDetails.DC, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp,CodeList.MinPrice, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total, BillDetails.Notes FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 	int	primaryKey = resultSet.getInt("Id");
 	String whr2=primaryKey+"";
 	sql2+=whr2;
-	String type=resultSet.getString("Type");
+	String existingtype=resultSet.getString("Type");
 	   st2 = conn.createStatement();
 	   st3 = conn.createStatement();
+	   String sql3="";
+	   String cusbank="";
+	   String kkbank="";
+	   String bankname="";
+	   String chkno="";
+	   String chkdate="";
+	   //Date chkdate=new Date();
+	     //System.out.println("---existingtype---" +existingtype);
+	   if(existingtype.contains("Neft"))
+	   {
+		   sql3="SELECT * from BankDetails where Type='sale' and Id="+primaryKey;
+		   //System.out.println("---sql3 neft---" +sql3);
+		   rs2=st3.executeQuery(sql3);
+		   while(rs2.next())
+		   {
+			   cusbank=rs2.getString("CSBankName");
+			   kkbank=rs2.getString("KKBankName");
+		   }
+		   //System.out.println("---cusbank neft---" +cusbank);
+		   //System.out.println("---kkbank neft---" +kkbank);
+	   }
+	   if(existingtype.contains("Cheque"))
+	   {
+		   sql3="SELECT * from ChequeDetails where Type='sale' and Id="+primaryKey;
+		  // System.out.println("---sql3 cheque---" +sql3);
+		   rs2=st3.executeQuery(sql3);
+		   while(rs2.next())
+		   {
+			   bankname=rs2.getString("BankName");
+			   chkno=rs2.getString("ChequeNo");
+			   chkdate=new SimpleDateFormat("MM-dd-yyyy").format(rs2.getDate("Date"));
+		   }
+		  // System.out.println("---bankname cheque---" +bankname);
+		  // System.out.println("---chkno cheque---" +chkno);
+		  // System.out.println("---chkdate cheque---" +chkdate);
+	   }
+	  
 	rs = st2.executeQuery(sql2);
 	Date date=resultSet.getDate("Date");
 	  String gst = resultSet.getString("GST");
@@ -507,6 +543,8 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         	  float bqty=rs.getFloat("BillDetails.Qty") ;
                         	   i=rs.getInt("BillDetails.Id") ;
                         	  // System.out.println(i);
+                        	  
+                        	   //System.out.println(rs.getString("BillDetails.DC") );
                         	   
 	%>
 
@@ -586,7 +624,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
  list.add(String.valueOf(i));
  list.add(custId);
- list.add(type);
+ list.add(existingtype);
  map.put(i, list);
  sno++;
 } 
@@ -610,15 +648,83 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
    <input type="hidden" id="mapValues" name="<%=map%>">  
    
 <input type="hidden" id="existingTaxtype" name="existingTaxtype" value="<%=resultSet.getString("TaxType") %>"> 
-<label for="com" style="float:left;"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
+<input type="hidden" id="existingTranstype" name="existingTranstype" value="<%=existingtype %>"> 
+<label for="com" style="float:left;margin-left:10px"><strong> Comments: </strong></label><input class="col-md-4" type="text" id="com" name="com" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">     
 
    <input class="col-md-4" type="hidden" id="comments" name="comments" style="margin-left:10px;" value="<%=resultSet.getString("Comments") %>">             
 <br/> 
+ 
+ <div class="form-group" style="margin-top:3%;">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-100px;">
+                          <select id="transtype" class="select2_single form-control" tabindex="-1" name="transtype" required="required">
+                            <option></option>
+                            <%if(custId=="") {%>
+                               <option value="Cash">Cash</option>
+                            <option value="Neft">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Swipe">Swipe</option>
+                            <%}else{ %>
+                             <option value="Credit">Credit</option>
+                             <option value="CreditNeft">Credit Bank Transfer</option>
+                              <option value="CreditCheque">Credit Cheque</option>
+                            <option value="CreditSwipe">Credit Swipe</option>
+                            <%} %>
+                          </select>
+                        </div>
+                
+                        </div>
+                       <br/>
+                             <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;"> <br/> 
+                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname">Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                          <input id="bankname" class="form-control col-md-7 col-xs-12" type="text" name="bankname" value="<%=bankname %>" >
+                        </div>
+                        
+                        <label class="control-label col-md-1 col-sm-2 col-xs-3" for="chkno">Cheque Number:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                        <input id="chkno" class="form-control col-md-7 col-xs-12" type="text" name="chkno" value="<%=chkno %>" >
+                        </div> 
+                        <label class="control-label col-md-1 col-sm-2 col-xs-3" for="chkdate">Cheque Date:<span class="required">*</span>
+                        </label>
+                       <div class="col-md-3" style="margin-left:-10px;">
+                           <div class="daterangepicker dropdown-menu ltr single opensright show-calendar picker_3 xdisplay"><div class="calendar left single" style="display: block;"><div class="daterangepicker_input"><input class="input-mini form-control active" type="text" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th><th colspan="5" class="month">Oct 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">25</td><td class="off available" data-title="r0c1">26</td><td class="off available" data-title="r0c2">27</td><td class="off available" data-title="r0c3">28</td><td class="off available" data-title="r0c4">29</td><td class="off available" data-title="r0c5">30</td><td class="weekend available" data-title="r0c6">1</td></tr><tr><td class="weekend available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="weekend available" data-title="r1c6">8</td></tr><tr><td class="weekend available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="weekend available" data-title="r2c6">15</td></tr><tr><td class="weekend available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="today active start-date active end-date available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="weekend available" data-title="r3c6">22</td></tr><tr><td class="weekend available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="weekend available" data-title="r4c6">29</td></tr><tr><td class="weekend available" data-title="r5c0">30</td><td class="available" data-title="r5c1">31</td><td class="off available" data-title="r5c2">1</td><td class="off available" data-title="r5c3">2</td><td class="off available" data-title="r5c4">3</td><td class="off available" data-title="r5c5">4</td><td class="weekend off available" data-title="r5c6">5</td></tr></tbody></table></div></div><div class="calendar right" style="display: none;"><div class="daterangepicker_input"><input class="input-mini form-control" type="text" name="daterangepicker_end" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">30</td><td class="off available" data-title="r0c1">31</td><td class="available" data-title="r0c2">1</td><td class="available" data-title="r0c3">2</td><td class="available" data-title="r0c4">3</td><td class="available" data-title="r0c5">4</td><td class="weekend available" data-title="r0c6">5</td></tr><tr><td class="weekend available" data-title="r1c0">6</td><td class="available" data-title="r1c1">7</td><td class="available" data-title="r1c2">8</td><td class="available" data-title="r1c3">9</td><td class="available" data-title="r1c4">10</td><td class="available" data-title="r1c5">11</td><td class="weekend available" data-title="r1c6">12</td></tr><tr><td class="weekend available" data-title="r2c0">13</td><td class="available" data-title="r2c1">14</td><td class="available" data-title="r2c2">15</td><td class="available" data-title="r2c3">16</td><td class="available" data-title="r2c4">17</td><td class="available" data-title="r2c5">18</td><td class="weekend available" data-title="r2c6">19</td></tr><tr><td class="weekend available" data-title="r3c0">20</td><td class="available" data-title="r3c1">21</td><td class="available" data-title="r3c2">22</td><td class="available" data-title="r3c3">23</td><td class="available" data-title="r3c4">24</td><td class="available" data-title="r3c5">25</td><td class="weekend available" data-title="r3c6">26</td></tr><tr><td class="weekend available" data-title="r4c0">27</td><td class="available" data-title="r4c1">28</td><td class="available" data-title="r4c2">29</td><td class="available" data-title="r4c3">30</td><td class="off available" data-title="r4c4">1</td><td class="off available" data-title="r4c5">2</td><td class="weekend off available" data-title="r4c6">3</td></tr><tr><td class="weekend off available" data-title="r5c0">4</td><td class="off available" data-title="r5c1">5</td><td class="off available" data-title="r5c2">6</td><td class="off available" data-title="r5c3">7</td><td class="off available" data-title="r5c4">8</td><td class="off available" data-title="r5c5">9</td><td class="weekend off available" data-title="r5c6">10</td></tr></tbody></table></div></div><div class="ranges" style="display: none;"><div class="range_inputs"><button class="applyBtn btn btn-sm btn-success" type="button">Apply</button> <button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button></div></div></div>
 
+                        <fieldset>
+                          <div class="control-group">
+                            <div class="controls">
+                              <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                <input onchange="dch1()" name="chkdate" type="text" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status3" value="<%=chkdate %>" >
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status3" class="sr-only">(success)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                         <input id="cd" class="form-control col-md-7 col-xs-12" type="hidden" name="cd" value="2017-11-16">
+                      </div> <br/> 
+                      </div>
+                   
+                         <div class="form-group Neft bankdet" style="margin-top: 2%; display: none;"> <br/>
+                       <label class="control-label col-md-3 col-sm-2 col-xs-3">Customer Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank" value="<%=cusbank %>" >
+                        </div>
+                        
+                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank" value="<%=kkbank %>" >
+                        </div> <br/> </div>
+                                      
+                        
    <div class="form-group" style="margin-top:3%;">
                     			<label class="control-label col-md-2 col-sm-2 col-xs-5">Tax Type:<span class="required">*</span></label>
                         		<div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-100px;">
-                          		<select id="taxtype" class="select2_single form-control" tabindex="-1" name="taxtype" required="required" >
+                          		<select id="taxtype" class="select3_single form-control" tabindex="-1" name="taxtype" required="required" >
                             			<option></option>
                                		<option value="CGST">CGST+SGST</option>
                             			<option value="IGST">IGST</option>
@@ -628,13 +734,13 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  
   <br/> <br/> 
  <br/>                        
-<div class="form-group " >
+<div class="form-group "  style="margin-left: 10px;">
                        		
 
 <% if(gst!= null && gst!="")
 { 
 %>
-<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;"> UN-REG Invoice:</label>
+<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;"> UN-REG Invoice:</label>
 <div class="col-md-1 col-sm-1 col-xs-3" >
                           		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general">
                         		</div>
@@ -669,9 +775,9 @@ gst ="";
                         			<input id="GST" style="width:200px;margin-top:-7px" class="form-control col-md-7 col-xs-12" type="text" name="GST" value="<%=gst%>" >
                        		 </div>
 <%} %>
-<br/>
-<br/>
-
+                  
+                        <br/> 
+                           <br/> 
                          <div class="form-group creditDet" style="display:none;">       
        		
   <label for="creditCustId" style="float:left;"><strong> Credit Customer ID: </strong></label>
@@ -851,6 +957,13 @@ function chsn(i)
 {
 	document.getElementById("i").value=i;
 }
+function dch1() 
+{ 
+ var d=document.getElementById("single_cal4").value.toString();
+var dv=d.split("/");
+var cd=dv[2]+'-'+dv[0]+'-'+dv[1];
+ document.getElementById('cd').value=cd;
+} 
 function d(){
     	localStorage.setItem("branch", document.getElementById('branch').value);
      	localStorage.setItem("sd", document.getElementById('single_cal3').value);
@@ -1220,7 +1333,11 @@ $(document).ready(function() {
     		
   }
 	 var existingTaxtype=document.getElementById('existingTaxtype').value; 
-	 $("#taxtype option:contains(" + existingTaxtype + ")").attr('selected', 'selected');
+	// $("#taxtype option:contains(" + existingTaxtype + ")").attr('selected', 'selected');
+	 $('#taxtype').val(existingTaxtype);
+	 var existingTranstype=document.getElementById('existingTranstype').value; 
+	  $('#transtype').val(existingTranstype);
+	
 	 var custId=document.getElementById("custId").value;
 	 var cusnam=document.getElementById("cusnam").value;
 	 var cusno=document.getElementById("cusno").value;
@@ -1290,6 +1407,90 @@ $(document).ready(function() {
 		 $('#deleteButton').attr('disabled', 'disabled');
 		  }
 	  });
+	  
+		 $(".select2_single").change(function(){
+				
+		        $(this).find("option:selected").each(function(){
+		        		var optionValue = $(this).attr("value");
+		        	
+		           	var flag=false;
+		            if(optionValue)
+		            {	           	            	
+			        		if(optionValue=="CreditNeft" || optionValue=="CreditCheque" || optionValue=="CreditSwipe")
+			            	{
+			            		var option = optionValue.substr(6, optionValue.length);
+			            		$(".bankdet").not("." + option).hide();          
+			 	            $("." + option).show();
+			 	            $(".Credit").show();
+			 	            flag=true;
+			            	}
+			            	else
+			            	{
+			                $(".bankdet").not("." + optionValue).hide();
+			                //$(".creditDet").not("." + optionValue).hide(); 
+			                if(optionValue!="Credit")
+			                		$(".Credit").hide();
+			                $("." + optionValue).show();
+			                flag=false;
+			            	}	                
+		            } 
+		            else
+		            {
+		                $(".bankdet").hide();
+		                $(".Credit").hide();
+		                flag=false;
+		            }
+		            /* if(optionValue=='Credit' || flag==true)
+		            	{
+		               	$("#customername").prop('readonly', true);
+		              	$("#customernumber").prop('readonly', true); 
+
+		              	$("#aadhaar").prop('readonly', true); 
+
+		              	$("#creditCustId").prop('required',true);
+		            		$("#creditCustId").val("");
+		            		$("#customername").val("");
+		            		$("#customernumber").val("");
+		            		
+		            		balcalc();
+		            	}
+		            else
+		            	{
+		             	$("#customername").prop('readonly', false);
+		              	$("#customernumber").prop('readonly', false); 
+		              	$("#creditCustId").prop('required',false);
+		              	document.getElementById("creditMsg").innerHTML = "";
+		              	document.getElementById('generalInvoice').checked=true;
+				        document.getElementById('GSTdiv').style.visibility = 'hidden';
+				        document.getElementById('GSTLabel').style.visibility = 'hidden';
+				       // $("#GST").prop('readonly', false); 
+				   		$("#aadhaar").prop('readonly', false); 
+				   	    $("#customername").val("");
+	         		    $("#customernumber").val("");
+	         		    $("#GST").val("");
+	     
+		            	}
+	 	     
+	            	 	 var dcNo= document.getElementById("dcnumber").value;
+	           	 	 var taxInvoiceFlag = dcNo.startsWith("T");
+	           	 	 if(taxInvoiceFlag==true)
+	           	 	 {
+	           	 		document.getElementById('GSTdiv').style.visibility = 'visible';
+	           	        document.getElementById('GSTLabel').style.visibility = 'visible';
+	           	        document.getElementById('GST').required = 'true';
+	           	 	 }
+	           	 	 else
+	           	 	 {
+	           	 	 	document.getElementById('GST').required = 'false';
+	           	        document.getElementById('GST').removeAttribute("required");
+	           	        document.getElementById('GST').value = '';
+	           	    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+	           	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+	           	 	 } */
+		        });
+		        
+		        //$("div.ttype select").val("");
+		    }).change();
 } ); 
   $("#FormId").submit( function(e) {
 	  loadAjax();
