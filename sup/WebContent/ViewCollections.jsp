@@ -411,10 +411,10 @@ while(resultSet.next()){
                         	  String dt=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) ;
                         	  String br=rs.getString("Branch"); */
                           
-                        	  String sql6="SELECT DISTINCT s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) and sa.Id =";
-                        	  sql6+=rs.getString("s.Id");
+                        	  String sql6="SELECT DISTINCT *, s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId, sa.DCNumber FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) ";
+                        	 // sql6+=rs.getString("s.Id");
                         	  sql6+=" and sa.CustId='"+primaryKey+"'";
-                        	 // System.out.println(sql6);
+                        	/// System.out.println(sql6);
                         	  st3=connection.createStatement();
 					      rs3= st3.executeQuery(sql6);
                        	  
@@ -426,6 +426,7 @@ while(resultSet.next()){
     	
 
 </td>
+
 <td width="60%"><%=new SimpleDateFormat("dd-MM-yyyy").format(rs.getDate("Date") )%></td>
 <td width="60%"><%=rs.getString("CustomerName") %></td>
 <td><%=rs.getInt("Totalprice") %></td>
@@ -496,8 +497,8 @@ while(resultSet.next()){
                                         <thead>
                                           <tr>
                                                <tr> 
-                                                              
-                                                              <th>Return Date</th>
+                                            <th>Invoice No.</th>                 
+                                            <th>Return Date</th>
                                             <th>Code</th>
                                             <th>Description</th>
                                             <th>No.Of Items Returned </th>
@@ -510,6 +511,7 @@ while(resultSet.next()){
                                             <tr class="odd gradeX">
                                             <%while(rs3.next()){
                                           		 %>
+                                          		 <td> <a style="color: #35c335;" target="_blank" href="viewInvoice.jsp?dc=<%=rs3.getString("sa.DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs3.getDate("sa.Date") ) %>&branch=<%=rs3.getString("sa.Branch") %>&callingPage=ViewCollections.jsp"> <%=rs3.getString("sa.DCNumber")%></a></td>
                                             <td><%=rs3.getString("s.ReturnDate") %></td>
 <td><%=rs3.getString("s.Code") %></td>
 <td><%=rs3.getString("c.Description") %></td>

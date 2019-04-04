@@ -23,7 +23,7 @@ DataSource ds = null;
 Connection conn = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
-ResultSet rs2 = null;
+ResultSet rs2,rs3 = null;
 int sno=1;
 int i=0;
 Properties props = new Properties();
@@ -296,7 +296,11 @@ while(resultSet.next()){
 	Date date=resultSet.getDate("Date");
 	  String gst = resultSet.getString("GST");
 	  
-	
+	  String sql6="SELECT DISTINCT s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) and sa.Id=";
+	  sql6+=primaryKey;
+	  System.out.println(sql6);
+	  st3=conn.createStatement();
+      rs3= st3.executeQuery(sql6);
 %>
                                         <tr class="odd gradeX">
 
@@ -353,6 +357,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         	  float bqty=rs.getFloat("BillDetails.Qty") ;
                         	   i=rs.getInt("BillDetails.Id") ;
                         	  // System.out.println(i);
+                        	  
                         	   
 	%>
 
@@ -391,7 +396,51 @@ if(gst==null)
 
 <br/>
 <br/>
+ <% 
+ 									if(!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst()))	
+ 									{
+ 										
+ 										%>
+ 										 <label>Sale Return </label>
+ 										<table width="100%" id="" class="table table-striped table-bordered">
+                                        <thead>
+                                          <tr>
+                                               <tr> 
+                                                              
+                                                              <th>Return Date</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>No.Of Items Returned </th>
+                                            <th>Excess Qty</th>
+                                            <th>Damaged Qty</th>
 
+                                                          </tr>
+                                        </thead>
+                                          <tbody >
+                                            <tr class="odd gradeX">
+                                            <%
+                                            while(rs3.next()){
+                                          		 %>
+                                            <td><%=rs3.getString("s.ReturnDate") %></td>
+<td><%=rs3.getString("s.Code") %></td>
+<td><%=rs3.getString("c.Description") %></td>
+<td><%=rs3.getInt("s.ExcessQty+s.DamagedQty") %></td>
+<td><%=rs3.getInt("s.ExcessQty") %></td>
+<td><%=rs3.getInt("s.DamagedQty") %></td>
+                 </tr>
+                <%}
+                                            %>
+                                             </tbody> </table>
+                                             <% 
+                                             } 
+                else
+                {
+          
+                %>
+             <label>  No Sale Return </label>
+                                    
+                                     <% }
+ 									%>
                          <div class="form-group creditDet" style="display:none;">               		
   <label for="creditCustId" style="float:left;"><strong> Credit Customer ID: </strong></label><input class="col-md-4" type="text" id="creditCustId" name="creditCustId" style="margin-left:10px;" onfocusout="showCustomer(this.value)">                       		
 
