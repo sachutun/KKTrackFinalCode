@@ -236,7 +236,7 @@ String environment = props.getProperty("jdbc.environment");
 							%> 
                             
                           </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled>
+                           <input type="text" id="br" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch%> disabled>
                         </div>
                        <button type="submit" class="btn btn-success " >Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -274,7 +274,7 @@ String environment = props.getProperty("jdbc.environment");
         <!--     </tr>
             <tr id="filter_col3" data-column="3"> -->
                <!--  <td>Name</td> -->
-                <td align="center">Name: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Voucher No: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
         
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
@@ -352,7 +352,7 @@ String environment = props.getProperty("jdbc.environment");
                                             <th>Id</th>
                                             <th>Sno</th>
                                             <th>Branch</th>
-                                            <th>Name</th>
+                                            <th>Voucher No</th>
                                             <th>Date</th>
                                             <th>Type</th>
                                             <th>Description</th>
@@ -407,7 +407,7 @@ while(resultSet.next()){
                                         <td><%=resultSet.getString("Date") %></td>
                                         <td><%=resultSet.getString("Id")  %></td>
                                           <td><%=resultSet.getString("Branch") %></td>
-<td><%=resultSet.getString("Name") %></td>
+<td><%=resultSet.getString("VoucherNo") %></td>
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("Description") %></td>

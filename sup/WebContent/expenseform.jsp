@@ -255,15 +255,15 @@ String environment = props.getProperty("jdbc.environment");
 								}
 							%> 
                           </select>
-                     <input type="text" id="name" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                     <input type="text" id="br" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                       </div>
                       <div class="form-group">
                      
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name"> Name <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="voucherNo"> Voucher No <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12" name="name">
+                          <input type="text" id="voucherNo" required="required" class="form-control col-md-7 col-xs-12" name="voucherNo">
                         </div>
                       </div>
                       <div class="form-group">
@@ -344,7 +344,7 @@ String environment = props.getProperty("jdbc.environment");
           if(!role.equals("1"))
         	  branch=uBranch;
        /*    System.out.println(role+branch); */
-   String name = request.getParameter("name");
+   String voucherNo = request.getParameter("voucherNo");
     String date = request.getParameter("date"); 
 /*   System.out.println(branch); */
    /* String date="2017-07-18"; */
@@ -365,9 +365,9 @@ String environment = props.getProperty("jdbc.environment");
           int updateQuery = 0;
      
      	 // check if the text box is empty
-	 if(name!=null && branch!=null ){
+	 if(voucherNo!=null && branch!=null ){
 	 		 // check if the text box having only blank spaces
-	     if(name!="" && branch!="") {
+	     if(voucherNo!="" && branch!="") {
 	                 try {
               /* Create a connection by using getConnection()
               method that takes parameters of string type 
@@ -390,12 +390,12 @@ String environment = props.getProperty("jdbc.environment");
     connection = DriverManager.getConnection(url, username, password);
               Statement st=connection.createStatement();
 
-              String s="insert into Expenses (Branch, Name, Date, Type, Description, Amount)values('"+branch+"','"+name+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
+              String s="insert into Expenses (Branch, VoucherNo, Date, Type, Description, Amount)values('"+branch+"','"+voucherNo+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
               if(type.equals("CashTransfer"))
-            	  s="insert into CashTransfer (Branch, Name, Date, Type, Description, Amount)values('"+branch+"','"+name+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
+            	  s="insert into CashTransfer (Branch, Name, Date, Type, Description, Amount)values('"+branch+"','"+voucherNo+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
           /*   System.out.println(s); */
           else  if(type.equals("Steel") || type.equals("Repair"))
-            	  s="insert into PurchaseCost (Branch, Name, Date, Type, Description, Amount)values('"+branch+"','"+name+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
+            	  s="insert into PurchaseCost (Branch, Name, Date, Type, Description, Amount)values('"+branch+"','"+voucherNo+"','"+date+"','"+type+"','"+description+"','"+amount+"')";
           
                 int i=st.executeUpdate(s);
          %>

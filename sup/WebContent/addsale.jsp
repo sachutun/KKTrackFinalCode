@@ -592,7 +592,7 @@ String role=(String)session.getAttribute("role");
                             <option value="Neft">Bank Transfer</option>
                             <option value="Cheque">Cheque</option>
                             <option value="Swipe">Swipe</option>
-                             <option value="Credit">Credit</option>
+                             <option value="CreditCash">Credit Cash</option>
                              <option value="CreditNeft">Credit Bank Transfer</option>
                               <option value="CreditCheque">Credit Cheque</option>
                             <option value="CreditSwipe">Credit Swipe</option>
@@ -739,7 +739,7 @@ String role=(String)session.getAttribute("role");
                           <button class="btn btn-primary" type="button">Cancel</button>
                           <button class="btn btn-primary" type="reset">Reset</button>
   
-                         <button type="submit" name="myButton" class="btn btn-success" onClick = "javascript: p=true;" >Submit</button> 
+                         <button type="submit" name="myButton" class="btn btn-success" onclick="javascript:validatePage();" >Submit</button> 
                          
 
   
@@ -883,7 +883,7 @@ function addCreditCustCode()
 	var code;
 	var branch = document.getElementById("branch").value;
     var type=document.getElementById("type").value;
-    if(type=="Credit" || type=="CreditNeft" || type=="CreditCheque" || type=="CreditSwipe")
+    if(type=="CreditCash" || type=="CreditNeft" || type=="CreditCheque" || type=="CreditSwipe")
     	{
 	  switch(branch) {
 	    case "Bowenpally"	: code = "BP";
@@ -953,7 +953,38 @@ function invoiceCheck() {
      
     	}
 
-}	
+}
+
+function validatePage() 
+{ 
+	
+	var amountpaid= document.getElementById('amountpaid').value;
+	var ftotal= document.getElementById('ftotal').value;
+	var type= document.getElementById('type').value;
+	if(type!=null && type!="")
+	{
+		if((type.search("Credit")== "-1"))
+		{
+			if(amountpaid<ftotal)
+		 	{
+		 		alert("Amount paid cannot be less than Final Total. Choose 'Credit " +type+ "'");
+		 		//document.getElementById("amountpaid").focus();
+		 		return;
+		 	}
+		 	else
+		 	{
+		 		p = true;
+		 		return true;
+		 	}
+		}
+		else
+		{
+			p = true;
+		 	return true;
+		}
+	 }
+	
+}
 
  function dch() 
 { 
@@ -1233,7 +1264,7 @@ function cls(elt)
 	           	var flag=false;
 	            if(optionValue)
 	            {	           	            	
-		        		if(optionValue=="CreditNeft" || optionValue=="CreditCheque" || optionValue=="CreditSwipe")
+		        		if(optionValue=="CreditCash" ||optionValue=="CreditNeft" || optionValue=="CreditCheque" || optionValue=="CreditSwipe")
 		            	{
 		            		var option = optionValue.substr(6, optionValue.length);
 		            		$(".bankdet").not("." + option).hide();          

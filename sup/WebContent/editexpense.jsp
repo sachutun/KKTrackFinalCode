@@ -210,7 +210,7 @@ String environment = props.getProperty("jdbc.environment");
 							%> 
                            
                           </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
+                           <input type="text" id="br" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                         <button type="submit" class="btn btn-success " >Go </button>
                         </div>
@@ -269,7 +269,7 @@ String environment = props.getProperty("jdbc.environment");
                                             <th>Id</th>
                                             <th>Sno</th>
                                             <th>Branch</th>
-                                            <th>Name</th>
+                                            <th>Voucher No</th>
                                             <th>Date</th>
                                             <th>Type</th>
                                             <th>Description</th>
@@ -315,7 +315,7 @@ Date date=resultSet.getDate("Date");
 <td><%=resultSet.getString("Date") %></td>
 <td><%=resultSet.getString("Id")  %></td>
 <td><%=resultSet.getString("Branch")  %></td>
-<td><%=resultSet.getString("Name") %></td>
+<td><%=resultSet.getString("VoucherNo") %></td>
 <td><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("Description") %></td>

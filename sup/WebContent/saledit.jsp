@@ -32,7 +32,9 @@ Statement st4=null;
 %>
 <%
 try{ 
-
+  String[] billIds=request.getParameterValues("billIds");
+  
+  System.out.println("saleedit billIds:"+billIds );
     String recordToUpdate = request.getParameter("payid");
     String i = request.getParameter("i");
 
@@ -74,7 +76,7 @@ try{
 		
  
 
- if(type.equals("Credit") && !existingtype.equals("Cash") && !existingtype.contains("Credit"))
+ if(type.equals("Credit") && !existingtype.contains("Credit"))
  {
 	   type=type+existingtype;
 	   

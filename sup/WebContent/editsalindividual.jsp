@@ -665,7 +665,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                             <option value="Cheque">Cheque</option>
                             <option value="Swipe">Swipe</option>
                             <%}else{ %>
-                             <option value="Credit">Credit</option>
+                             <option value="CreditCash">Credit Cash</option>
                              <option value="CreditNeft">Credit Bank Transfer</option>
                               <option value="CreditCheque">Credit Cheque</option>
                             <option value="CreditSwipe">Credit Swipe</option>
@@ -1428,7 +1428,7 @@ $(document).ready(function() {
 			            	{
 			                $(".bankdet").not("." + optionValue).hide();
 			                //$(".creditDet").not("." + optionValue).hide(); 
-			                if(optionValue!="Credit")
+			                if(optionValue!="CreditCash")
 			                		$(".Credit").hide();
 			                $("." + optionValue).show();
 			                flag=false;
