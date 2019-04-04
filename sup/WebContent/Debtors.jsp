@@ -263,7 +263,7 @@ String environment = props.getProperty("jdbc.environment");
                     
                <%  String branch = request.getParameter("branch");
             
-               if(role!=null && !(role.equals("1")))
+               if(role!=null && !(role.equals("1")) && !(role.equals("3")) )
             	   branch=uBranch; 
                if(branch==null || branch.equals("All"))
                branch="";

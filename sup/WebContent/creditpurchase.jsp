@@ -293,7 +293,7 @@ String environment = props.getProperty("jdbc.environment");
                     <h2>View Credit Purchases</h2>
                    <%  String branch = request.getParameter("branch");
                    
-                	if(role!=null && !(role.equals("1")))
+                	if(role!=null && !(role.equals("1")) && !(role.equals("3")))
                 		   branch=uBranch;
                 	if(branch!=null && branch.equals("All"))
                 	    branch="";

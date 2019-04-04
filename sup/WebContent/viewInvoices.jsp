@@ -238,8 +238,8 @@ String environment = props.getProperty("jdbc.environment");
 							Enumeration resourceKeys = resources.getKeys();
 							ArrayList<String> listOfBranches = new ArrayList<String>();
 						%>
-             <div class="col-md-3 col-sm-3 col-xs-4 admin">
-                          <select class="select2_single form-control" tabindex="-1" name="branch" id="branch">
+             <div class="col-md-3 col-sm-3 col-xs-4 ">
+                          <select class="select2_single form-control hide4branch" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
                             <option value="All">All Branches</option>
                             <!--   <option value="Bowenpally">Bowenpally</option>
@@ -278,6 +278,7 @@ String environment = props.getProperty("jdbc.environment");
  
                             
                           </select>
+                            <input type="text" id="id" required="required" class="form-control col-md-7 col-xs-12 user" name="br" style="display:none;" value=<%=uBranch %> disabled> 
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -292,9 +293,12 @@ String environment = props.getProperty("jdbc.environment");
 <%  String branch = request.getParameter("branch");
                    /* if(branch ==null)
                 	   branch="Select a Branch"; */
-                	   if(branch!=null && branch.equals("All"))
-                		    branch="";if(role!=null && !(role.equals("1")))
+                	 
+                	   
+                	   if(role!=null && !(role.equals("1")) &&!(role.equals("3")) && !(role.equals("5")))
                 		 	   branch=uBranch; 
+                	   if(branch!=null && branch.equals("All"))
+               		    branch="";
                 	   
                 	   String std=request.getParameter("std");
                 	   String end=request.getParameter("end");	
@@ -432,6 +436,7 @@ else
 System.out.println("sql: "+sql);
 
 } */
+System.out.println("sql3: "+sql3);
 if(resultSet!=null)
 {
 while(resultSet.next()){

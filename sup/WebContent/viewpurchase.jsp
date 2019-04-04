@@ -278,7 +278,10 @@ String environment = props.getProperty("jdbc.environment");
 <%  String branch = request.getParameter("branch");
 
 if(role!=null && !(role.equals("1")))
+{
+	if(!(role.equals("3")))
 	   branch=uBranch; 
+}
 if(branch!=null && branch.equals("All"))
     branch="";
 String std=request.getParameter("std");

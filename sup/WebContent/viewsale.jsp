@@ -294,7 +294,7 @@ String environment = props.getProperty("jdbc.environment");
 
 if(role!=null && !(role.equals("1")))
 {
-	if(!(role.equals("5")))
+	if(role.equals("2") || role.equals("4"))
 	   branch=uBranch; 
 }
 if(branch!=null && branch.equals("All"))

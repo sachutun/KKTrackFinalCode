@@ -272,7 +272,7 @@ String environment = props.getProperty("jdbc.environment");
 
 if(role!=null && !(role.equals("1")))
 {
-	if(!(role.equals("5")))
+	if(role.equals("2") || role.equals("4"))
 	   branch=uBranch; 
 }
 if(branch!=null && branch.equals("All"))
@@ -355,7 +355,7 @@ int primaryKey=0;
 String sql ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName, s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in( Month(CURDATE())) and year(Date)=year(CURDATE())";
 if (branch!=null && branch.length()!=0 )
 
-	sql1 ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName,s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 )) year(Date)=year(CURDATE())";
+	sql1 ="SELECT *, s.Date, s.DCNumber, s.Branch, s.CustomerName,s.GST, b.Code,c.Description, b.MinPrice, b.Qty FROM BillDetails b inner join Sale s on b.DC= s.Id inner join CodeList c on b.Code=c.Code where Month(Date) in (Month(CURDATE()), Month(CURDATE()-1 )) and year(Date)=year(CURDATE())";
 
 
 	

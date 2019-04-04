@@ -302,11 +302,12 @@ String environment = props.getProperty("jdbc.environment");
 
 if(role!=null && !(role.equals("1")))
 {
-	if(!(role.equals("5")))
+	if(role.equals("2") || role.equals("4"))
 	   branch=uBranch; 
 }
-if(branch!=null && branch.equals("All"))
+if(branch==null || branch.equals("All"))
     branch="";
+
 String std=request.getParameter("std");
  String end=request.getParameter("end");	
  String code="9999";	
