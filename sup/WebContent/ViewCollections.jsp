@@ -24,9 +24,9 @@ e.printStackTrace();
  DataSource ds = null;
 Connection connection = null;
 Statement statement = null;
-Statement st,st2 = null;
+Statement st,st2,st3 = null;
 ResultSet resultSet = null;
-ResultSet rs,rs2 = null;
+ResultSet rs,rs2,rs3 = null;
 int sno=1;
 %>
 <html lang="en">
@@ -285,6 +285,7 @@ String environment = props.getProperty("jdbc.environment");
                                      <th>Last Payment</th>
                                      <th class="none" >Sale History</th>
                                      <th class="none" >Payment History</th>
+                                     <th class="none" >Sale Return History</th>
                             </tr>
                                         
                       </thead>
@@ -293,6 +294,7 @@ String environment = props.getProperty("jdbc.environment");
           
 
 <th colspan="3" style="text-align:right"></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -345,11 +347,11 @@ if(std!=null && std.length()!=0)
 resultSet = statement.executeQuery(sql2);
  System.out.println("sql: "+sql2); 
 }
-else
+/* else
 {
 	resultSet = statement.executeQuery(sql);	
 	 System.out.println("sql: "+sql); 
-}
+} */
 while(resultSet.next()){
 	primaryKey = resultSet.getString("d.CustId");
 	int target=resultSet.getInt("target") ;
@@ -370,6 +372,7 @@ while(resultSet.next()){
  									String sql4="select *, DATEDIFF(CURRENT_DATE, Date) as 'days' from Debtors d inner join Sale s on d.CustID=s.CustID where d.CustId='";
                                      String sql5="select * from SaleCredit where CustId='";
  									String whr2=primaryKey+"' ";
+ 									
  									sql4+=whr2;
  									sql5+=whr2;
  									st=connection.createStatement();
@@ -403,11 +406,23 @@ while(resultSet.next()){
                           <% 
                         	  
                           while(rs.next()){
+                        /* 	  
+                        	  String dcn=rs.getString("DCNumber");
+                        	  String dt=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) ;
+                        	  String br=rs.getString("Branch"); */
+                          
+                        	  String sql6="SELECT DISTINCT s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) and sa.Id =";
+                        	  sql6+=rs.getString("s.Id");
+                        	  sql6+=" and sa.CustId='"+primaryKey+"'";
+                        	 // System.out.println(sql6);
+                        	  st3=connection.createStatement();
+					      rs3= st3.executeQuery(sql6);
+                       	  
 	%>
 
 <%-- <td><%=rs.getString("DCNumber") %> --%>
 <td>
-	<a style="color: #35c335;" href="viewInvoice.jsp?dc=<%=rs.getString("DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) %>&branch=<%=rs.getString("Branch") %>&callingPage=ViewCollections.jsp"> <%=rs.getString("DCNumber")%></a> 
+	<a style="color: #35c335;" target="_blank" href="viewInvoice.jsp?dc=<%=rs.getString("DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate("Date") ) %>&branch=<%=rs.getString("Branch") %>&callingPage=ViewCollections.jsp"> <%=rs.getString("DCNumber")%></a> 
     	
 
 </td>
@@ -471,8 +486,49 @@ while(resultSet.next()){
              
                    %>
                    <td></td>
-                                        </tr>
+                                        
                                         <% }
+ 									if(!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst()))	
+ 									{
+ 										
+ 										%>
+ 										<td><table width="100%" id="" class="table table-striped table-bordered">
+                                        <thead>
+                                          <tr>
+                                               <tr> 
+                                                              
+                                                              <th>Return Date</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>No.Of Items Returned </th>
+                                            <th>Excess Qty</th>
+                                            <th>Damaged Qty</th>
+
+                                                          </tr>
+                                        </thead>
+                                          <tbody >
+                                            <tr class="odd gradeX">
+                                            <%while(rs3.next()){
+                                          		 %>
+                                            <td><%=rs3.getString("s.ReturnDate") %></td>
+<td><%=rs3.getString("s.Code") %></td>
+<td><%=rs3.getString("c.Description") %></td>
+<td><%=rs3.getInt("s.ExcessQty+s.DamagedQty") %></td>
+<td><%=rs3.getInt("s.ExcessQty") %></td>
+<td><%=rs3.getInt("s.DamagedQty") %></td>
+                 </tr>
+                <%}
+                                            %>
+                                             </tbody> </table></td>
+                                             <% 
+                                             } 
+                else
+                {
+          
+                %>
+                <td>No Sale Return</td>
+                                     </tr>
+                                     <% }
 }
 
 //} 
