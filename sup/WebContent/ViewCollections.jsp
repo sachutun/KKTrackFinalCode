@@ -352,6 +352,9 @@ resultSet = statement.executeQuery(sql2);
 	resultSet = statement.executeQuery(sql);	
 	 System.out.println("sql: "+sql); 
 } */
+
+if(resultSet!=null)
+{
 while(resultSet.next()){
 	primaryKey = resultSet.getString("d.CustId");
 	int target=resultSet.getInt("target") ;
@@ -531,6 +534,7 @@ while(resultSet.next()){
                 <td>No Sale Return</td>
                                      </tr>
                                      <% }
+}
 }
 
 //} 
