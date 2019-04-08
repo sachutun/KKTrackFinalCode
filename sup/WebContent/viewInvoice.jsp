@@ -301,7 +301,7 @@ while(resultSet.next()){
 	  System.out.println(sql6);
 	  st3=conn.createStatement();
       rs3= st3.executeQuery(sql6);
-%>
+%> 
                                         <tr class="odd gradeX">
 
 
