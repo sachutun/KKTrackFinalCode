@@ -20,12 +20,11 @@ Statement statement = null;
 Statement st = null;
 Statement st2 = null;
 Statement st3 = null;
-Statement st4 = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement preparedStatement2 = null;
 PreparedStatement preparedStatement3 = null;
-ResultSet resultSet = null;
 ResultSet rs = null;
+
 
           String[] code = request.getParameterValues("code");
         
@@ -91,15 +90,37 @@ ResultSet rs = null;
        int id= Integer.parseInt(request.getParameter("sid"));
        
         st2=connection.createStatement();
-    /*     st3=connection.createStatement(); */
+        st3=connection.createStatement();
+         rs=st3.executeQuery("Select * from CodeList");
+        
+        Map<Integer,String> codeList = new HashMap<Integer,String>();
+
+        // parsing the column each time is a linear search
+        int column1Pos = rs.findColumn("Code");
+        int column2Pos = rs.findColumn("MinPrice");
+        int column3Pos = rs.findColumn("LC");
+        while (rs.next()) {
+            int codeKey = rs.getInt(column1Pos);
+            String mp = rs.getString(column2Pos);
+            String lc = rs.getString(column3Pos);
+            String mplcValue=mp+","+lc;
+            codeList.put(codeKey, mplcValue);
+        }
+
 
 int count=code.length;
 String qparts="";
 String sq="";
 int ft=0;
+String mapValue="";
+int cde=0;
 for(int i=0;i<count;i++)
 {
-qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+")";
+	cde=Integer.parseInt(code[i]);
+	mapValue=codeList.get(cde);
+	String[] values = mapValue.split(",");
+//	values[0] is minPrice  and values[1] is LC
+qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+values[0]+","+values[1]+")";
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
 /* System.out.println("Update NewInventory SET Quantity=Quantity-"+qty[i]+" WHERE Code="+code[i]+"and Branch="+branch); */
  preparedStatement = connection.prepareStatement(sq);
@@ -114,7 +135,7 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
+String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
 /* System.out.println(isql); */
  int y=st2.executeUpdate(isql); 
 

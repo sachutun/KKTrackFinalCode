@@ -146,14 +146,29 @@ statement=connection.createStatement();
         st3=connection.createStatement();
         st6=connection.createStatement(); 
         rs2=st6.executeQuery("Select * from CodeList");
+        
+        Map<Integer,String> codeList = new HashMap<Integer,String>();
+
+        // parsing the column each time is a linear search
+        int column1Pos = rs2.findColumn("Code");
+        int column2Pos = rs2.findColumn("MinPrice");
+        int column3Pos = rs2.findColumn("LC");
+        while (rs2.next()) {
+            int codeKey = rs2.getInt(column1Pos);
+            String mp = rs2.getString(column2Pos);
+            String lc = rs2.getString(column3Pos);
+            String mplcValue=mp+","+lc;
+            codeList.put(codeKey, mplcValue);
+        }
 
 int count=code.length;
 String qparts="";
 String sq="";
-String minPrice="";
-String LC="";
+String mapValue="";
+int cde=0;
 for(int i=0;i<count;i++)
 {
+	/* 
 	while(rs2.next())
 	{
 		if(rs2.getString("Code").equals(code[i]))
@@ -162,8 +177,13 @@ for(int i=0;i<count;i++)
 			LC=rs2.getString("LC");
 			break;
 		}
-	}
-qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+minPrice+","+LC+")";
+	} */
+	cde=Integer.parseInt(code[i]);
+	mapValue=codeList.get(cde);
+	String[] values = mapValue.split(",");
+//	values[0] is minPrice  and values[1] is LC
+	
+qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+values[0]+","+values[1]+")";
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
 /* System.out.println("Update NewInventory SET Quantity=Quantity-"+qty[i]+" WHERE Code="+code[i]+" and Branch="+branch); */
 System.out.println("---qparts---" +qparts);

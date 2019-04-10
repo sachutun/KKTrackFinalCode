@@ -146,6 +146,23 @@ else
     Id=resultSet.getInt("Max(Id)");
 
 }
+     
+     st3=conn.createStatement(); 
+     rs2=st3.executeQuery("Select * from CodeList");
+     
+     Map<Integer,String> codeList = new HashMap<Integer,String>();
+
+     // parsing the column each time is a linear search
+     int column1Pos = rs2.findColumn("Code");
+     int column2Pos = rs2.findColumn("MinPrice");
+     int column3Pos = rs2.findColumn("LC");
+     while (rs2.next()) {
+         int codeKey = rs2.getInt(column1Pos);
+         String mp = rs2.getString(column2Pos);
+         String lc = rs2.getString(column3Pos);
+         String mplcValue=mp+","+lc;
+         codeList.put(codeKey, mplcValue);
+     }
     
 for(i=0;i<selectedItemsArray.length;i++)
 {
@@ -184,7 +201,7 @@ for(i=0;i<selectedItemsArray.length;i++)
    // int nq=0;
     int newtotal=0;
     int billid=0;
-  
+    String mapValue="";
     //memo
        String s4="SELECT * FROM BillDetails WHERE DC="+d;
 
@@ -221,11 +238,14 @@ for(i=0;i<selectedItemsArray.length;i++)
   
     //System.out.println("total price: " +ftot);
     //System.out.println("tax: " +tax);
+    
+	mapValue=codeList.get(code);
+	String[] mplcValues = mapValue.split(",");
+//	mplcValues[0] is minPrice  and mplcValues[1] is LC
 
    //Add billdetails depending on whther the sale exists or not
 
-
-    qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+")";
+    qparts+=" ('"+ndc+"',"+code+","+qty+","+cost+","+totp+","+Id+","+mplcValues[0]+","+mplcValues[1]+")";
 
     System.out.println("qparts: " +qparts);
 
@@ -270,7 +290,7 @@ ps2.executeUpdate();
 
         }
     }
-    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`) VALUES"+ qparts;
+    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
     //System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     
@@ -314,6 +334,8 @@ finally {
 	        st.close();
 	    if (st2 != null)
 	        st2.close();
+	    if (st3 != null)
+	        st3.close();
 	    if (preparedStatement != null)
 	    	   preparedStatement.close();
 	    if (ps != null)
