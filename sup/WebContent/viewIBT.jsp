@@ -282,7 +282,9 @@ String Tbranch = request.getParameter("Tbranch"); */
                       </thead>
                           <tfoot>
             <tr >
-                <th colspan="8" style="text-align:right">Total :</th>
+                <th colspan="6" style="text-align:right">Total :</th>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 
@@ -361,10 +363,10 @@ while(resultSet.next()){
 <td width="40%"><%=resultSet.getString("FromBranch") %></td>
 <td width="50%"><%=resultSet.getString("ToBranch") %></td>
 <td><%=resultSet.getFloat("TotalQty") %></td>
-<% if(ibtno.startsWith("T"))
+<% if(ibtno.contains("T")||ibtno.contains("t"))
 {%> 
-<td width="50%"><%=resultSet.getString("TotalPrice") %></td>
-<td width="50%"><%=resultSet.getString("Tax") %></td>
+<td width="50%"><%=resultSet.getInt("TotalPrice") %></td>
+<td width="50%"><%=resultSet.getInt("Tax") %></td>
 <%}else{ %>
 <td></td> 
 <td></td>
@@ -404,11 +406,11 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("Machine") %></td>
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<% if(ibtno.startsWith("T"))
+<% if(ibtno.contains("T")||ibtno.contains("t"))
 {%> 
-<td><%=rs.getDouble("SalePrice") %></td> 
+<td><%=rs.getInt("SalePrice") %></td> 
 <%}else{ %>
-<td><%=rs.getDouble("MinPrice") %></td> 
+<td><%=rs.getInt("MinPrice") %></td> 
 <%} %>
 <td><%=rs.getFloat("IBTDetails.Qty") %></td>
 </tr>
@@ -636,6 +638,64 @@ $(document).ready(function() {
                       typeof i === 'number' ?
                           i : 0;
               };
+              
+              // Total over all pages
+              total = api
+                  .column( 6 )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Total over this page
+              pageTotal = api
+                  .column( 6, { page: 'current'} )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Update footer
+                $( api.column( 6 ).footer() ).html(
+	            		  pageTotal.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' ( '+  total.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' total)'
+	              );
+              
+              // Total over all pages
+              total = api
+                  .column( 7 )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Total over this page
+              pageTotal = api
+                  .column( 7, { page: 'current'} )
+                  .data()
+                  .reduce( function (a, b) {
+                      return intVal(a) + intVal(b);
+                  }, 0 );
+   
+              // Update footer
+               $( api.column( 7 ).footer() ).html(
+	            		  pageTotal.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' ( '+  total.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' total)'
+	              );
    
               // Total over all pages
               total = api

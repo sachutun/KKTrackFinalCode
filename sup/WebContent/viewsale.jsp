@@ -336,7 +336,7 @@ String std=request.getParameter("std");
            <!--  </tr>
             <tr id="filter_col6" data-column="6"> -->
                 <!-- <td>Description</td> -->
-                <td align="center">Type: <input type="text" class="column_filter" id="col9_filter" data-column="9"></td>
+                <td align="center">Type: <input type="text" class="column_filter" id="col11_filter" data-column="11"></td>
   
        
   
@@ -467,7 +467,8 @@ if(role!="null" && role.equals("1"))
                       </thead>
                            <tfoot>
             <tr >
-                <th colspan="6" style="text-align:right">Total Sale:</th>
+                <th colspan="5" style="text-align:right">Total Sale:</th>
+                <th ></th>
                 <th ></th>
                 <th ></th>
                 <th ></th>
@@ -993,6 +994,33 @@ var table=$('#ex').DataTable( {
 	   
 	              // Update footer
 	              $( api.column( 7 ).footer() ).html(
+	            		  pageTotal.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' ( '+  total.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' total)'
+	              );
+	              // Total over all pages
+	              total = api
+	                  .column( 8 )
+	                  .data()
+	                  .reduce( function (a, b) {
+	                      return intVal(a) + intVal(b);
+	                  }, 0 );
+	           // Total over this page
+	              pageTotal = api
+	                  .column( 8, { page: 'current'} )
+	                  .data()
+	                  .reduce( function (a, b) {
+	                      return intVal(a) + intVal(b);
+	                  }, 0 );
+	   
+	              // Update footer
+	              $( api.column( 8 ).footer() ).html(
 	            		  pageTotal.toLocaleString('en-IN', {
 		                	    maximumFractionDigits: 2,
 		                	    style: 'currency',
