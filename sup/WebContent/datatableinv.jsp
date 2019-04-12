@@ -60,17 +60,17 @@ String role=request.getParameter("role");
    
    
     Code = request.getParameter("sSearch_1");
-    HSNCode = request.getParameter("sSearch_3");
+  //  HSNCode = request.getParameter("sSearch_3");
     Machine = request.getParameter("sSearch_2");
-    PartNo = request.getParameter("sSearch_4");
-    Description = request.getParameter("sSearch_5");
-    Grp = request.getParameter("sSearch_6");
+    PartNo = request.getParameter("sSearch_5");
+    Description = request.getParameter("sSearch_3");
+    Grp = request.getParameter("sSearch_4");
  /*    MaxPrice = request.getParameter("sSearch_7");
     MinPrice = request.getParameter("sSearch_8"); */
-    Quantity = request.getParameter("sSearch_7");
+    Quantity = request.getParameter("sSearch_6");
     Location = request.getParameter("sSearch_8");
     MinLevel = request.getParameter("sSearch_9");
-    LC = request.getParameter("sSearch_10");
+    LC = request.getParameter("sSearch_7");
       
      List<String> sArray = new ArrayList<String>();
      
@@ -92,10 +92,10 @@ String role=request.getParameter("role");
         String sCode = " n.Code ="+Code;
         sArray.add(sCode);
     }
-    if (HSNCode!="" && HSNCode!=null) {
+  /*   if (HSNCode!="" && HSNCode!=null) {
         String sHSNCode = " HSNCode like '%" + HSNCode + "%'";
         sArray.add(sHSNCode);
-    }
+    } */
     if (Machine!="" && Machine!=null) {
         String sMachine = " Machine like '%" + Machine + "%'";
         sArray.add(sMachine);
@@ -235,18 +235,21 @@ String role=request.getParameter("role");
             ja.put(rs.getString("Branch"));
             ja.put(rs.getString("n.Code"));
             ja.put(rs.getString("Machine"));
-            ja.put(rs.getString("HSNCode"));
-            ja.put(rs.getString("PartNo"));
+            /* ja.put(rs.getString("HSNCode")); */
             ja.put(rs.getString("Description"));
             ja.put(rs.getString("Grp"));
+
+            ja.put(rs.getString("PartNo"));
        /*      ja.put(rs.getString("MaxPrice"));
             if(role.equals("1"))
             ja.put(rs.getString("MinPrice")); */
             ja.put(rs.getString("Quantity"));
+            if(role.equals("1"))
+            ja.put(rs.getString("LC"));
             ja.put(rs.getString("Location"));
             ja.put(rs.getString("MinLevel"));
            /*  if(role.equals("1")) */
-            ja.put(rs.getString("LC"));
+           
             array.put(ja);
         }
          String sql2 = "SELECT DISTINCT count(*) FROM "+table;

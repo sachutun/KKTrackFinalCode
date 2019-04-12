@@ -25,7 +25,7 @@ String role=request.getParameter("role");
   /*   
     System.out.println("Branch="+Branch+" branch="+branch+ "role="+role);  */
     String Code = "";
-    String HSNCode = "";
+   /*  String HSNCode = ""; */
     String Machine = "";
     String PartNo = "";
     String Description = "";
@@ -43,7 +43,7 @@ String role=request.getParameter("role");
    
    
     Code = request.getParameter("sSearch_0");
-    HSNCode = request.getParameter("sSearch_2");
+   /*  HSNCode = request.getParameter("sSearch_2"); */
     Machine = request.getParameter("sSearch_1");
     PartNo = request.getParameter("sSearch_3");
     Description = request.getParameter("sSearch_4");
@@ -71,10 +71,7 @@ String role=request.getParameter("role");
         String sCode = "Code ="+Code;
         sArray.add(sCode);
     }
-    if (HSNCode!="" && HSNCode!=null) {
-        String sHSNCode = " HSNCode like '%" + HSNCode + "%'";
-        sArray.add(sHSNCode);
-    }
+
     if (Machine!="" && Machine!=null) {
         String sMachine = " Machine like '%" + Machine + "%'";
         sArray.add(sMachine);
@@ -204,7 +201,7 @@ String role=request.getParameter("role");
             JSONArray ja = new JSONArray();
             ja.put(rs.getString("Code"));
             ja.put(rs.getString("Machine"));
-            ja.put(rs.getString("HSNCode"));
+          /*   ja.put(rs.getString("HSNCode")); */
             ja.put(rs.getString("PartNo"));
             ja.put(rs.getString("Description"));
             ja.put(rs.getString("Grp"));

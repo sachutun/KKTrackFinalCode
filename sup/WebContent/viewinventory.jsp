@@ -367,10 +367,9 @@ var table= $('#ex').DataTable( {
                             <th>Branch</th>
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
-                                            <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
+                                            <th>PartNo</th>
                                            
           <%--                                   <th>Max</th>
                                                                                   <%
@@ -383,9 +382,7 @@ var table= $('#ex').DataTable( {
             }
             %> --%>
                                             <th>Quantity</th>
-                                             <th>Bin Location</th>
-                                             <th>Min Level</th>
-                                           <%
+                                                                                 <%
             if(role!=null && role.equals("1"))
             {
            
@@ -394,6 +391,9 @@ var table= $('#ex').DataTable( {
                                             	<%
             }
             %>
+                                             <th>Bin Location</th>
+                                             <th>Min Level</th>
+      
                                         </tr>
                       </thead>
                         <tfoot>
@@ -413,10 +413,9 @@ var table= $('#ex').DataTable( {
             %>
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
-                                            <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
+                                            <th>PartNo</th>
                                            
                                            <%--  <th>Max</th>
                                                                                   <%
@@ -429,9 +428,7 @@ var table= $('#ex').DataTable( {
             }
             %> --%>
                                             <th>Quantity</th>
-                                             <th>Bin Location</th>
-                                             <th>Min Level</th>
-                                                                                <%
+                                                                                                                  <%
             if(role!=null && role.equals("1"))
             {
            
@@ -440,6 +437,9 @@ var table= $('#ex').DataTable( {
                                             	<%
             }
             %> 
+                                             <th>Bin Location</th>
+                                             <th>Min Level</th>
+          
             </tr>
         </tfoot> 
                         <tbody id="country">

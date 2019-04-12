@@ -300,7 +300,7 @@ var table= $('#ex').DataTable( {
                             
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
+                                           <!--  <th>HSN Code</th> -->
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
@@ -337,7 +337,7 @@ var table= $('#ex').DataTable( {
           
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
+                                          <!--   <th>HSN Code</th> -->
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
