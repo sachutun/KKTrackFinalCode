@@ -20,7 +20,7 @@ Statement st2 = null;
 Statement st3 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
-ResultSet rs2 = null;
+ResultSet rs2,rs3 = null;
 
 %>
 <html lang="en">
@@ -336,9 +336,38 @@ String std=request.getParameter("std");
            <!--  </tr>
             <tr id="filter_col6" data-column="6"> -->
                 <!-- <td>Description</td> -->
-                <td align="center">Type: <input type="text" class="column_filter" id="col11_filter" data-column="11"></td>
-  
-       
+              <!--   <td align="center">Type: <input type="text" class="column_filter" id="col11_filter" data-column="11"></td> -->
+  <%  if(role!="null" && role.equals("1"))
+{             
+       %>          <td align="center">Type:   <select class="column_filter " tabindex="-1"  id="col11_filter" data-column="11" style="border: 1px solid #ccc;background-color: white;">
+                            <option></option>
+                                 <option value="Cash">Cash</option>
+                            <option value="Neft">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Swipe">Swipe</option>
+                            <option value="Credit">Credit</option>
+                             <option value="CreditCash">Credit Cash</option>
+                             <option value="CreditNeft">Credit Bank Transfer</option>
+                              <option value="CreditCheque">Credit Cheque</option>
+                            <option value="CreditSwipe">Credit Swipe</option>
+                          </select></td>
+<% }
+        else{
+             
+       %>          <td align="center">Type:   <select class="column_filter " tabindex="-1"  id="col10_filter" data-column="10" style="border: 1px solid #ccc;background-color: white;">
+                            <option></option>
+                                 <option value="Cash">Cash</option>
+                            <option value="Neft">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Swipe">Swipe</option>
+                            <option value="Credit">Credit</option>
+                             <option value="CreditCash">Credit Cash</option>
+                             <option value="CreditNeft">Credit Bank Transfer</option>
+                              <option value="CreditCheque">Credit Cheque</option>
+                            <option value="CreditSwipe">Credit Swipe</option>
+                          </select></td>
+<% }
+       %>
   
             </tr>
         </tbody></table></div>
@@ -463,11 +492,13 @@ if(role!="null" && role.equals("1"))
                                             <!-- <th>Previous Payment Details</th>  -->
                                             <th class="none">Comments</th> 
                                             <th class="none">Customer GST Number </th>
+                                            <th class="none" >Sale Return History</th>
                                         </tr>
                       </thead>
                            <tfoot>
             <tr >
-                <th colspan="5" style="text-align:right">Total Sale:</th>
+                <th colspan="4" style="text-align:right">Total Sale:</th>
+                <th ></th>
                 <th ></th>
                 <th ></th>
                 <th ></th>
@@ -477,6 +508,7 @@ if(role!="null" && role.equals("1"))
                 <th ></th>
                 <th> </th>
                 <th></th>
+                <th ></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -556,6 +588,13 @@ while(resultSet.next()){
                           <tr class="odd gradeX">
                           <% while(rs.next())
 {
+                        	 
+                        	  String sql6="SELECT DISTINCT *, s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId, sa.DCNumber FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) and sa.Id= ";
+                          	 // sql6+=rs.getString("s.Id");
+                          	  sql6+="'"+primaryKey+"'";
+                          	// System.out.println(sql6);
+                          	  st3=connection.createStatement();
+  					      rs3= st3.executeQuery(sql6);
 	%>
 
 <td><%=rs.getString("BillDetails.Code") %></td>
@@ -593,7 +632,52 @@ else {
  if(gst== null)
 		gst="";  %>                             
   <td><%=gst %></td>                                     
-                   
+                   <% if(!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst()))	
+ 									{
+ 										
+ 										%>
+ 										<td><table width="100%" id="" class="table table-striped table-bordered">
+                                        <thead>
+                                          <tr>
+                                               <tr> 
+                                            <th>Invoice No.</th>                 
+                                            <th>Return Date</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>No.Of Items Returned </th>
+                                            <th>Excess Qty</th>
+                                            <th>Damaged Qty</th>
+
+                                                          </tr>
+                                        </thead>
+                                          <tbody >
+                                            <tr class="odd gradeX">
+                                            <%while(rs3.next()){
+                                          		 %>
+                                          		 <td> <a style="color: #35c335;" target="_blank" href="viewInvoice.jsp?dc=<%=rs3.getString("sa.DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs3.getDate("sa.Date") ) %>&branch=<%=rs3.getString("sa.Branch") %>&callingPage=ViewCollections.jsp"> <%=rs3.getString("sa.DCNumber")%></a></td>
+                                            <td><%=rs3.getString("s.ReturnDate") %></td>
+<td><%=rs3.getString("s.Code") %></td>
+<td><%=rs3.getString("c.Description") %></td>
+<td><%=rs3.getInt("s.ExcessQty+s.DamagedQty") %></td>
+<td><%=rs3.getInt("s.ExcessQty") %></td>
+<td><%=rs3.getInt("s.DamagedQty") %></td>
+                 </tr>
+                <%}
+                                            %>
+                                             </tbody> </table></td>
+                                             <% 
+                                             } 
+                else
+                {
+          
+                %>
+                <td>No Sale Return</td>
+                                     </tr>
+                                     <% }
+
+
+
+ %>
                                         <%
 
                                         whr="";
@@ -633,11 +717,13 @@ else
                                             <th class="none">Details</th>  
                                             <th class="none">Comments</th> 
                                            <th class="none">Customer GST Number </th>
+                                           <th class="none" >Sale Return History</th>
                                         </tr>
                       </thead>
                               <tfoot>
             <tr >
                 <th colspan="5" style="text-align:right">Total Qty:</th>
+                <th ></th>
                 <th ></th>
                 <th ></th>
                 <th ></th>
@@ -704,6 +790,13 @@ while(resultSet.next()){
                           <tr class="odd gradeX">
                           <% while(rs.next())
 {
+                        	  String sql6="SELECT DISTINCT *, s.ReturnDate, s.Code, c.Description, s.ExcessQty+s.DamagedQty, s.ExcessQty, s.DamagedQty, sa.CustId, sa.DCNumber FROM SaleReturn s INNER JOIN Sale sa ON s.Branch=sa.Branch AND s.DCNumber=sa.DCNumber AND s.SaleDate=sa.Date INNER JOIN CodeList c ON c.Code=s.Code  where (DamagedQty>0 || ExcessQty>0) and sa.Id= ";
+                           	 // sql6+=rs.getString("s.Id");
+                           	  sql6+="'"+primaryKey+"'";
+                           	// System.out.println(sql6);
+                           	  st3=connection.createStatement();
+   					      rs3= st3.executeQuery(sql6);
+
 	%>
 
 <td><%=rs.getString("BillDetails.Code") %></td>
@@ -725,6 +818,52 @@ while(resultSet.next()){
  if(gst== null)
 		gst="";  %>                             
   <td><%=gst %></td>  
+  <% if(!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst()))	
+ 									{
+ 										
+ 										%>
+ 										<td><table width="100%" id="" class="table table-striped table-bordered">
+                                        <thead>
+                                          <tr>
+                                               <tr> 
+                                            <th>Invoice No.</th>                 
+                                            <th>Return Date</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>No.Of Items Returned </th>
+                                            <th>Excess Qty</th>
+                                            <th>Damaged Qty</th>
+
+                                                          </tr>
+                                        </thead>
+                                          <tbody >
+                                            <tr class="odd gradeX">
+                                            <%while(rs3.next()){
+                                          		 %>
+                                          		 <td> <a style="color: #35c335;" target="_blank" href="viewInvoice.jsp?dc=<%=rs3.getString("sa.DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(rs3.getDate("sa.Date") ) %>&branch=<%=rs3.getString("sa.Branch") %>&callingPage=ViewCollections.jsp"> <%=rs3.getString("sa.DCNumber")%></a></td>
+                                            <td><%=rs3.getString("s.ReturnDate") %></td>
+<td><%=rs3.getString("s.Code") %></td>
+<td><%=rs3.getString("c.Description") %></td>
+<td><%=rs3.getInt("s.ExcessQty+s.DamagedQty") %></td>
+<td><%=rs3.getInt("s.ExcessQty") %></td>
+<td><%=rs3.getInt("s.DamagedQty") %></td>
+                 </tr>
+                <%}
+                                            %>
+                                             </tbody> </table></td>
+                                             <% 
+                                             } 
+                else
+                {
+          
+                %>
+                <td>No Sale Return</td>
+                                     </tr>
+                                     <% }
+
+
+
+ %>
     </tr>
                                         
                    
@@ -857,68 +996,7 @@ $(document).ready(function() {
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	 $.getScript("js/rolePermissions.js");
-/*   var environment=document.getElementById('uenv').value;
-	if(environment!=null && environment=="local")
-		{
-		$('.site_title').css('background-color', 'red');
-		}
-	else
-		{
-		$('.site_title').css('background-color', '');
-		}
-	if(role!=null && role!="1")
-		{
-		$( '[class*="admin"]' ).hide();
 
-	    if(ubran!='Workshop' && ubran!='Barhi' && ubran!='All')
-    	{
- 
-    	  document.getElementById('wedit').style.display="none";
-    	}
-	
-		}
-	
-
- 	
-	if(role!=null && role=="2")
-	{
-		$( '[class*="branch"]' ).hide();
-   		var elements = document.getElementsByClassName('user');
-
-	    for (var i = 0; i < elements.length; i++){
-	        elements[i].style.display = "block";
-	    }
-	    if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
-			document.getElementById("invAdj").style.display="block";
-	    if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
-			{
-			document.getElementById("mod").style.display="block";
-			document.getElementById("grping").style.display="block";
-			}
-	    if(ubran!=null && ubran=="Workshop")
-	    	{
-	    	document.getElementById("viewService").style.display="block";
-	    	}
-	    	
-	    
-	}
-	 if(role!=null && role=="3")
-	{
-		 $( '[class*="man"]' ).hide();
-	} 
-
-	if(role!=null && role=="4")
-	{
-		$( '[class*="store"]' ).hide();
-	    
-	}
-	if(role!=null && role=="5")
-	{
-		$( '[class*="acc"]' ).hide();
-	    
-		//document.getElementById("br").style.display="block";
-	}  */
-	 
 	
 
 	   
@@ -1052,6 +1130,33 @@ var table=$('#ex').DataTable( {
 	              $( api.column( 5 ).footer() ).html(
 	            		  pageTotal+' ( '+ total+' total)'
 	              );
+	              // Total over all pages
+	              total = api
+	                  .column( 10 )
+	                  .data()
+	                  .reduce( function (a, b) {
+	                      return intVal(a) + intVal(b);
+	                  }, 0 );
+	           // Total over this page
+	              pageTotal = api
+	                  .column( 10, { page: 'current'} )
+	                  .data()
+	                  .reduce( function (a, b) {
+	                      return intVal(a) + intVal(b);
+	                  }, 0 );
+	   
+	              // Update footer
+	              $( api.column( 10 ).footer() ).html(
+	            		  pageTotal.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' ( '+  total.toLocaleString('en-IN', {
+		                	    maximumFractionDigits: 2,
+		                	    style: 'currency',
+		                	    currency: 'INR'
+		                	}) +' total)'
+	              );
 	          },
 	          scrollY:        '53vh',
 		        scrollCollapse: true,
@@ -1130,7 +1235,12 @@ table2=$('#ex4').DataTable( {
         'copy', 'excel', 'pdf', 'print'
     ] */
 } );
- 
+$('input.column_filter').on( 'keyup click', function () {
+    filterColumn( $(this).attr('data-column') );
+} );
+$('select.column_filter').on( 'change', function () {
+    filterColumn( $(this).attr('data-column') );
+} );
 function hideprices()
 {
 	var elements = document.getElementsByClassName('price');
