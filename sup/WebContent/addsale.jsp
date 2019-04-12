@@ -564,7 +564,7 @@ String role=(String)session.getAttribute("role");
                            <label class="control-label col-md-1 col-sm-1 col-xs-9">Tax:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-2 col-xs-4">
-                          <input id="tax" class="form-control col-md-7 col-xs-12" required="required" type="number" name="tax" onchange="calculatetax()" min="0">
+                          <input id="tax" class="form-control col-md-7 col-xs-12" required="required" type="number" name="tax" onchange="calculatetax()" min="1">
                         <p id="taxmsg"></p> 
                         </div>
                         
