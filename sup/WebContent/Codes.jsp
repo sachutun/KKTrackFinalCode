@@ -45,12 +45,12 @@ String role=request.getParameter("role");
     Code = request.getParameter("sSearch_0");
    /*  HSNCode = request.getParameter("sSearch_2"); */
     Machine = request.getParameter("sSearch_1");
-    PartNo = request.getParameter("sSearch_3");
-    Description = request.getParameter("sSearch_4");
-    Grp = request.getParameter("sSearch_5");
-    MaxPrice = request.getParameter("sSearch_6");
-    MinPrice = request.getParameter("sSearch_7");
-    LC = request.getParameter("sSearch_8");
+    PartNo = request.getParameter("sSearch_2");
+    Description = request.getParameter("sSearch_3");
+    Grp = request.getParameter("sSearch_4");
+    MaxPrice = request.getParameter("sSearch_5");
+    MinPrice = request.getParameter("sSearch_6");
+    LC = request.getParameter("sSearch_7");
   
       
      List<String> sArray = new ArrayList<String>();
@@ -194,7 +194,7 @@ String role=request.getParameter("role");
          }
      /*   sql += " order by " + colName + " " + dir; */
          sql += " limit " + start + ", " + amount; 
-      /*  System.out.println(sql);  */
+        System.out.println(sql);  
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {

@@ -300,7 +300,6 @@ var table= $('#ex').DataTable( {
                             
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
@@ -330,7 +329,6 @@ var table= $('#ex').DataTable( {
           
                                             <th>Code</th>
                                             <th>Machine</th>
-                                            <th>HSN Code</th>
                                             <th>PartNo</th>
                                             <th>Description</th>
                                             <th>Group</th>
@@ -586,7 +584,7 @@ var table=$('#ex').DataTable( {
 	           	 });
 	           	 var dat=da.split(",");
 	           	
-	         	window.location.href="autocodeedit.jsp?c="+dat[0]+"&mac="+dat[1]+"&hsn="+dat[2]+"&pno="+dat[3]+"&des="+dat[4]+"&grp="+dat[5]+"&max="+dat[6]+"&min="+dat[7]+"&lc="+dat[8]+"&USD="+dat[9]+"&sup="+dat[10]+"&wt="+dat[11]+"&date="+dat[12]+"&qty="+dat[13];
+	         	window.location.href="autocodeedit.jsp?c="+dat[0]+"&mac="+dat[1]+"&pno="+dat[2]+"&des="+dat[3]+"&grp="+dat[4]+"&max="+dat[5]+"&min="+dat[6]+"&lc="+dat[7]+"&USD="+dat[8]+"&sup="+dat[9]+"&wt="+dat[10]+"&date="+dat[11]+"&qty="+dat[12];
 	        			$(this).html(c);
 	        		 });
 	        		
