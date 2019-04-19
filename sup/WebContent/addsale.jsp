@@ -500,7 +500,7 @@ String role=(String)session.getAttribute("role");
                           <label class="control-label col-md-1 col-sm-1 col-xs-9">Sale Price:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-4">
-                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="costprice" onchange="calculate(1)" min="0">
+                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="text" name="costprice"  onchange="calculate(1)" min="0">
                         </div>
                  <!--      </div>
                       <div class="form-group"> -->
@@ -508,7 +508,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-1 col-sm-1 col-xs-9">Quantity:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-4">
-                          <input id="qty1" class="form-control col-md-7 col-xs-12" style="padding:0" required="required" type="number" name="qty" step="any" onchange="calculate(1)" >
+                          <input id="qty1" class="form-control col-md-7 col-xs-12" style="padding:0" required="required" type="text" name="qty"  onchange="calculate(1)" >
                         </div>
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Total:</label>
                         <div class="col-md-1 col-sm-1 col-xs-4">

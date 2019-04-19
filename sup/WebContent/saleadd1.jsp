@@ -68,6 +68,7 @@ int res=0;
    for(int i=0;i<qty.length;i++)
   {
 	   q[i]=Float.parseFloat(qty[i]);  
+	   System.out.println("qty: "+q[i]);
   } 
    DataSource ds = null;
    int updateQuery = 0;
