@@ -368,7 +368,7 @@ if(user==null)
                   
                   <div class="x_content">
                  
-        <form action="saledit.jsp">   
+        <form id="form1" action="saledit.jsp">   
         
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
@@ -426,7 +426,7 @@ if(pk!=null && pk.length()!=0 )
 }
 sql1+=whr;
  System.out.println(sql1); 
- if((dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M")) && !(dc.substring(0,2).equals("MY"))) 
+ if((dc.startsWith("m")||dc.startsWith("M")||dc.startsWith("WSM")||dc.startsWith("WS M") ||dc.startsWith("WSm")||dc.startsWith("WS m")) && !(dc.substring(0,2).equals("MY"))) 
 	mflag=1;
 
 if(branch!=null && dc!=null && cn!=null)
@@ -447,8 +447,9 @@ while(resultSet.next()){
 	   String bankname="";
 	   String chkno="";
 	   String chkdate="";
+
 	   //Date chkdate=new Date();
-	     //System.out.println("---existingtype---" +existingtype);
+	    // System.out.println("---existingtype---" +existingtype);
 	   if(existingtype.contains("Neft"))
 	   {
 		   sql3="SELECT * from BankDetails where Type='sale' and Id="+primaryKey;
@@ -458,6 +459,7 @@ while(resultSet.next()){
 		   {
 			   cusbank=rs2.getString("CSBankName");
 			   kkbank=rs2.getString("KKBankName");
+			   
 		   }
 		   //System.out.println("---cusbank neft---" +cusbank);
 		   //System.out.println("---kkbank neft---" +kkbank);
@@ -502,10 +504,10 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 %>
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
-<td><strong> TotalPrice: </strong> <%=resultSet.getDouble("TotalPrice") %></td>
-<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %>></td>
-<td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %>></td>
-<td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %>></td></tr>
+<td><strong> TotalPrice: </strong><input class="col-md-12" type="text" style="border:none;" id="totalprice" name="totalprice" value="<%=resultSet.getDouble("TotalPrice") %> "> </td>
+<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %> onchange="balcalc()"></td>
+<td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %> onchange="calculatetax()"></td>
+<td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %> onchange="calculatedis()"></td></tr>
 
                       </tbody>
                     </table>
@@ -545,6 +547,10 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         	  // System.out.println(i);
                         	  
                         	   //System.out.println(rs.getString("BillDetails.DC") );
+                        	   String cp="";
+                      
+                        	   cp=rs.getString("BillDetails.CostPrice");
+                        	   double total=Double.parseDouble(cp) * bqty;
                         	   
 	%>
 
@@ -554,8 +560,8 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><%=rs.getString("CodeList.Machine") %></td>
 <td><%=rs.getString("CodeList.PartNo") %></td>
 <td><%=rs.getString("CodeList.Grp") %></td>
-<td><input type="number" class="cp disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> ></td>
-<td><input type="number" class=" qnty disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> >   
+<td><input type="number" class="cp disable4Credit" id="cp<%=i %>" name="cp<%=i %>" value=<%=cp%> onchange="calculate(<%=i %>)"  ></td>
+<td><input type="number" class=" qnty disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> onchange="calculate(<%=i %>)" >   
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
           <%--        <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
                 <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
@@ -569,12 +575,13 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
                 <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
-
+               <input type="hidden" id="total<%=i %>" name="total<%=i %>" value=<%=total %>>  
        
           <input type="hidden" id="custId" name="custId" value=<%=custId%> > 
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
                  <input type="hidden" id="dcno" name="dcno" value=<%=resultSet.getString("DCNumber")%> > 
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
+               <input type="hidden"  name="ids[]" class="billIds"  value="<%=i %>" />
 </td>
 <%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
 
@@ -656,7 +663,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  
  <div class="form-group" style="margin-top:3%;">
                     <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
-                        <div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-100px;">
+                      <%--   <div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-100px;">
                           <select id="transtype" class="select2_single form-control" tabindex="-1" name="transtype" required="required">
                             <option></option>
                             <%if(custId=="") {%>
@@ -671,12 +678,60 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                             <option value="CreditSwipe">Credit Swipe</option>
                             <%} %>
                           </select>
-                        </div>
+                        </div> --%>
+                        
+                         <div class="col-md-6 col-sm-3 col-xs-6" style="margin-left:-100px;">
+                         <input type="checkbox" name="transtype" value="Cash"> <b>Cash </b>  &nbsp;  &nbsp;  &nbsp;
+ 						 <input type="checkbox" name="transtype" value="Neft"> <b> Bank Transfer </b> &nbsp; &nbsp; &nbsp;
+  					<input type="checkbox" name="transtype" value="Cheque"> <b> Cheque </b> &nbsp; &nbsp; &nbsp;
+  					<input type="checkbox" name="transtype" value="Swipe"><b> Swipe </b>
+  					</div> 
                 
                         </div>
                        <br/>
-                             <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;"> <br/> 
-                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname">Bank Name:<span class="required">*</span>
+                          <div class="form-group Cash bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <b> <p id="Cashlabel"></p> </b>
+                      
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Cash):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="cashAP" class="form-control col-md-7 col-xs-12" type="number" name="cashAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cash")%>">
+                        </div> 
+                    </div>
+                    <br/>
+                    
+                   
+                      <div class="form-group Neft bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                            <b> <p id="Neftlabel"></p> </b> 
+                       <label class="control-label col-md-3 col-sm-2 col-xs-3" style="margin-left:1%;width:200px;">Customer Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank" value="<%=cusbank %>" >
+                        </div>
+                        
+                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank" value="<%=kkbank %>" >
+                        </div> <br/> 
+                                            
+<br/>
+<br/>
+              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(NEFT/RTGS):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="neftAP" class="form-control col-md-7 col-xs-12" type="number" name="neftAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Neft")%>">
+                        </div>
+                        
+                        
+                        
+                        </div>
+                        
+                        
+                        
+                              <div class="form-group Cheque bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                                 <b> <p id="Chequelabel"></p> </b> 
+                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname" style="margin-left:1%;width:200px;">Bank Name:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-3 col-xs-6">
                           <input id="bankname" class="form-control col-md-7 col-xs-12" type="text" name="bankname" value="<%=bankname %>" >
@@ -705,20 +760,25 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         </fieldset>
                          <input id="cd" class="form-control col-md-7 col-xs-12" type="hidden" name="cd" value="2017-11-16">
                       </div> <br/> 
+                      
+<br/>
+<br/>
+              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Cheque):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="chequeAP" class="form-control col-md-7 col-xs-12" type="number" name="chequeAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cheque")%>">
+                        </div>
                       </div>
                    
-                         <div class="form-group Neft bankdet" style="margin-top: 2%; display: none;"> <br/>
-                       <label class="control-label col-md-3 col-sm-2 col-xs-3">Customer Bank Name:<span class="required">*</span>
+                   <div class="form-group Swipe bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <b> <p id="Swipelabel"></p> </b>
+                      
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Swipe):<span class="required">*</span>
                         </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank" value="<%=cusbank %>" >
-                        </div>
-                        
-                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank" value="<%=kkbank %>" >
-                        </div> <br/> </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="swipeAP" class="form-control col-md-7 col-xs-12" type="number" name="swipeAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Swipe")%>">
+                        </div> 
+                    </div>      
                                       
                         
    <div class="form-group" style="margin-top:3%;">
@@ -822,7 +882,7 @@ gst ="";
 <br/> 
 
 <button id="deleteButton" onclick="deleteCheckedRecords()" type="button" style= "float:right" class="btn btn-danger disableButton4Credit" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i> Delete</button>
-<a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>)">Save</button></a>
+<a href= "saledit.jsp"><button type="submit" id="sub" class="btn btn-success disable4inv" style="float:right" onclick="chsn(<%=i%>);return false;">Save</button></a>
  <a href="addsaleedit.jsp?branch=<%=branch %>&sid=<%=primaryKey%>&dc=<%=dc%>&sd=<%=cn%>&custId=<%=custId%>"><button type="button" class="btn btn-success disableButton4Credit" style="float:right;background: #f19292;border: 1px solid #f19292;">Add More Items</button></a> 
 <button type="button"  id="refreshButton" class="btn btn-warning" style="float:right;" onClick="window.location.reload()">Refresh</button>
 <%if(mflag!=1) {%>
@@ -934,6 +994,10 @@ e.printStackTrace();
     var environment=document.getElementById('uenv').value;
     var path = window.location.pathname;
     var callingJSP = path.split("/").pop();
+
+	var array = $('input:hidden.billIds').map(function(){
+        return $(this).val()
+    }).get();
 </script>
  <script type="text/javascript">
 function invoiceCheck() {
@@ -953,9 +1017,321 @@ else
 	}
 
 }
+function calculateTotalAP()
+{
+var cashAP;
+var neftAP;
+var chequeAP;
+var swipeAP;
+var totalAP;
+cashAP=document.getElementById("cashAP").value;	
+neftAP=document.getElementById("neftAP").value;	
+chequeAP=document.getElementById("chequeAP").value;	
+swipeAP=document.getElementById("swipeAP").value;	
+
+if(cashAP=="")
+	cashAP=0;	
+if(neftAP=="")
+	neftAP=0;	
+if(chequeAP=="")
+	chequeAP=0;	
+if(swipeAP=="")
+	swipeAP=0;	
+
+totalAP=parseInt(cashAP)+parseInt(neftAP)+parseInt(chequeAP)+parseInt(swipeAP);
+//alert("totalAP: "+totalAP);
+document.getElementById("ap").value=totalAP;
+balcalc();
+}
+
+function calculate(i)
+{
+	//alert("hello: "+i);
+	//alert(document.getElementById("nq"+i).value);
+	/* var array = getElementsByClassName("billIds");
+	for(i = 0; i < array.length; i++) {
+	    alert(array[i]);
+	} */
+	
+
+	
+	var billId=0;
+	var total=0;
+	
+	    
+	
+	if(document.getElementById("nq"+i).value!=null && document.getElementById("nq"+i).value!="")
+		{
+	 //	alert(document.getElementById("qty"+i).value);
+	//	alert(document.getElementById("qmax").value);
+	/* 	if(document.getElementById("qty"+i).value>document.getElementById("qmax").value)
+			{
+			alert("Insufficient quantity in Inventory. Current balance="+document.getElementById("qmax").value+"Enter a value less than "+ document.getElementById("qmax").value);
+			
+			return;
+			}  */
+			//alert("hi");
+			//alert(document.getElementById("nq"+i).value);
+			//alert(document.getElementById("cp"+i).value);
+
+			var a;
+	total=document.getElementById("nq"+i).value*document.getElementById("cp"+i).value;
+	//alert("total: " +total);
+	document.getElementById("total"+i).value=total;
+		}
+	  //var itemc=document.getElementById("i").value;
+	  //var tot=0;
+	  var totp=0;
+	  
+	  for(var j = 0; j < array.length; j++) {
+		  {
+			  //if(document.getElementById("id"+x)!=null)
+			  //{
+				  billId=array[j];
+	
+		  //tot+=parseFloat(document.getElementById("nq"+billId).value);
+		  totp+=parseInt(document.getElementById("total"+billId).value);
+		  
+			 // }
+		  }
+//alert(totp);
+   var result= totp;
+   if (!isNaN(result)) {
+        document.getElementById('totalprice').value = result;
+    }
+		}
+
+/*   var result2= tot;
+  
+	
+ 
+    if (!isNaN(result2)) {
+        //document.getElementById('totalq').value = result2;
+        
+        if(document.getElementById("balanceamount").value!=null)
+        	balcalc();
+        
+        document.getElementById("amountpaid").max=result;
+    }   */
+    
+    var tax=document.getElementById("tax").value;
+    var dis=document.getElementById("dis").value;
+    if(tax=="")
+    	  tax=0;
+   if(dis=="")
+    	dis=0;
+  
+  	
+	document.getElementById('totalprice').value=totp+parseFloat(tax)-parseFloat(dis);
+	document.getElementById("ap").max=document.getElementById('totalprice').value;
+	balcalc();
+}
+
+function calculatetax()
+{
+	
+	var billId=0;
+	 var totp=0; 
+	  for(var j = 0; j < array.length; j++) 
+		  {
+			  //if(document.getElementById("id"+x)!=null)
+			  //{
+				  billId=array[j];
+	
+		  //tot+=parseFloat(document.getElementById("nq"+billId).value);
+		  totp+=parseInt(document.getElementById("total"+billId).value);
+		  
+			 // }
+		  }
+	  
+	document.getElementById('totalprice').value=totp+parseFloat(document.getElementById("tax").value)-parseFloat( document.getElementById('dis').value);
+	
+	document.getElementById("ap").max=document.getElementById('totalprice').value;
+	balcalc();
+}
+
+function calculatedis()
+{
+	
+	var billId=0;
+	 var totp=0; 
+	  for(var j = 0; j < array.length; j++) 
+		  {
+			  //if(document.getElementById("id"+x)!=null)
+			  //{
+				  billId=array[j];
+	
+		  //tot+=parseFloat(document.getElementById("nq"+billId).value);
+		  totp+=parseInt(document.getElementById("total"+billId).value);
+		  
+			 // }
+		  }
+	
+	document.getElementById('totalprice').value=totp+parseInt(document.getElementById("tax").value)-parseInt(document.getElementById("dis").value);
+	document.getElementById("ap").max=document.getElementById('totalprice').value;
+	balcalc();
+}
+	  
+	  function balcalc()
+	  {
+	  var bal;
+	  var finalTotal;
+	  finalTotal=document.getElementById("totalprice").value;
+	  if(finalTotal==null)
+	  	finalTotal=0;	
+	  bal=finalTotal-document.getElementById("ap").value;
+	  document.getElementById("ba").value=bal;
+	  //alert("bal: "+bal);
+	  //document.getElementById("creditBal").value=bal;
+	/*   var totalprice=document.getElementById('total').value;
+	  var phtax;
+	  	//phtax=0.18*finalTotal;
+	  	phtax=0.18*totalprice;
+	  	if(!isNaN(phtax))
+	  	document.getElementById("taxmsg").innerHTML=phtax; */
+	  }
 function chsn(i)
 {
-	document.getElementById("i").value=i;
+	
+
+	var amountpaid= parseFloat(document.getElementById('ap').value);
+	var ftotal= parseFloat(document.getElementById('totalprice').value);
+	//var type= document.getElementById('transtype').value;
+	//alert("amountpaid: "+amountpaid);
+	//alert("ftotal: "+ftotal);
+	/* if(type!=null && type!="")
+	{
+		if((type.search("Credit")== "-1"))
+		{
+			if(amountpaid<ftotal)
+		 	{
+		 		alert("Amount paid cannot be less than Final Total. Choose 'Credit " +type+ "'");
+		 		//document.getElementById("amountpaid").focus();
+		 		return;
+		 	}
+		 	else
+		 	{
+		 		document.getElementById("i").value=i;
+		 		 document.getElementById("form1").submit();
+		 		return true;
+		 	}
+		}
+		else
+		{
+			document.getElementById("i").value=i;
+			 document.getElementById("form1").submit();
+		 	return true;
+		}
+	 } */
+	 var transtype=$("input[name='transtype']:checked"). val();
+	 var uncheckedTypes = [];  
+	   var flag=false;
+	 	$.each($("input[name='transtype']:not(:checked)"), function(){            
+	 		uncheckedTypes.push($(this).val());
+	 });  
+
+	 var creditCustId=document.getElementById("creditCustId").value;
+	 var custId=	document.getElementById("custId").value;
+	 var creditTrans=false;
+	if(custId!="")	
+	{
+		creditTrans=true;
+	}
+	else
+	{
+	  if(creditCustId!="")
+	  {
+		  creditTrans=true;
+	  }
+	}
+	//alert("creditTrans: "+creditTrans);
+	 if(uncheckedTypes.length==4)
+	 {
+	 		document.getElementById("cashAP").value="";
+	 		document.getElementById("neftAP").value="";
+	 		document.getElementById("chequeAP").value="";
+	 		document.getElementById("swipeAP").value="";
+	 		document.getElementById("amountpaid").value="0";
+	 	
+	 		document.getElementById("cashAP").required='false';
+	 		document.getElementById("neftAP").required='false';
+	 		document.getElementById("chequeAP").required='false';
+	 		document.getElementById("swipeAP").required='false';
+		     document.getElementById("cashAP").removeAttribute("required");
+		     document.getElementById("neftAP").removeAttribute("required");
+		     document.getElementById("chequeAP").removeAttribute("required");
+		     document.getElementById("swipeAP").removeAttribute("required");
+		     if(creditTrans==false)
+		 	{
+		  	  alert("Please select Type.");
+		  	  flag=true;
+		  	  return;
+		 	}
+		   
+	 }
+	 if(flag==false)
+	 {
+	 		
+	 		for(var i=0;i<uncheckedTypes.length;i++)
+	 		{ 
+	 			var label1="";
+	      	if(uncheckedTypes[i]=="Cash")
+	 		 	{
+	     	    		label1 = "cashAP";
+	 		 	}
+	      	else if(uncheckedTypes[i]=="Neft")
+	      	{ 
+	      		label1 = "neftAP";
+	      	}
+	      	else if(uncheckedTypes[i]=="Cheque")
+	      	{ 
+	      		label1 = "chequeAP";
+	      	}
+	       	else if(uncheckedTypes[i]=="Swipe")
+	      	{ 
+	       		label1 = "swipeAP";
+	      	}
+	 		    if(label1!="")
+	 		    	{
+	 		    		document.getElementById(label1).value="";
+	 		    		document.getElementById(label1).required='false';
+	 		    	     document.getElementById(label1).removeAttribute("required");
+	 		    		calculateTotalAP();
+	 		    	}
+	 		  }
+
+	 		if(amountpaid=="" || amountpaid==null)
+	 		{
+	 			amountpaid="0";
+	 		}
+	 		if(transtype!=null && transtype!="")
+			{ 
+				if(creditTrans==false)
+				{
+					if(parseFloat(amountpaid)<parseFloat(ftotal))
+				 	{
+				 		alert("Amount paid cannot be less than Final Total. Convert to 'Credit'");
+				 		//document.getElementById("amountpaid").focus();
+				 		return;
+				 	}
+				 	else
+				 	{
+				 		document.getElementById("i").value=i;
+				 		 document.getElementById("form1").submit();
+				 		return true;
+				 		
+				 	}
+				}
+				else
+				{
+					document.getElementById("i").value=i;
+			 		 document.getElementById("form1").submit();
+			 		return true;
+
+				}
+	      	 }
+	 	   }	    	   
+	
 }
 function dch1() 
 { 
@@ -1033,7 +1409,7 @@ function d(){
 
  
 $("#invbtn").click(function() { 
-	var count_checked = $('input[type="checkbox"]:checked').length;
+	var count_checked = $('input:checkbox[name="checkboxRow"]:checked').length;
 	if(count_checked == 0) 
 	{
 		$('#errorMsg').css({ 'color': 'red'});
@@ -1094,6 +1470,13 @@ $("#invbtn").click(function() {
  
  $("#creditButton").click(function() {
 	// $( '[class*="InvDet"]' ).hide();
+	 var bal= document.getElementById("ba").value;
+	 if(bal=="0")
+	{
+		 alert("Existing balance is 0. \n So you cannot convert to credit.")
+	}
+	 else
+	{
 	 $( '[class*="creditDet"]' ).show();
 	 $('.disableButton4Credit').attr('disabled', 'disabled');
 		$("#creditCustId").prop('required',true);
@@ -1141,13 +1524,13 @@ $("#invbtn").click(function() {
 			  document.getElementById("creditCustId").style.width = "150px";
 			  
 			  }
-	    	
+	}
  });
 
 $("#deleteButton").click(function() {
 	 $('#successMsg').hide();
 	  //var count_checked = $("[name='checkboxRow[]']:checked").length; // count the checked rows
-	  var count_checked = $('input[type="checkbox"]:checked').length;
+	  var count_checked = $('input:checkbox[name="checkboxRow"]:checked').length;
 	  //alert(count_checked);
       if(count_checked == 0) 
       {
@@ -1318,6 +1701,90 @@ var da=dv[1]+'-'+dv[0]+'-'+dv[2];
 $(document).ready(function() {
 	
 	 $.getScript("js/rolePermissions.js");
+	 $('input[type="checkbox"]').click(function(){
+		   
+		 	var checkedTypes = [];
+		   
+		 	var j=1;
+	    	    var labelname;
+	    	    $(".bankdet").hide();
+	        	$.each($("input[name='transtype']:checked"), function(){            
+	        		checkedTypes.push($(this).val());
+	        });
+	        
+	       	 var uncheckedTypes = [];  
+	  	
+	  	 	$.each($("input[name='transtype']:not(:checked)"), function(){            
+	  	 		uncheckedTypes.push($(this).val());
+	  	 }); 
+	        	for(var i=0;i<checkedTypes.length;i++)
+			{ 
+		 		var labelId="label";
+		 		var label="";
+		  		$("." + checkedTypes[i]).show();
+		  		labelId= checkedTypes[i]+labelId;
+		  		
+		  		if(checkedTypes[i]=="Neft")
+		  		{
+			  		labelname=j+". Bank Transfer(NEFT/RTGS)" + " Details"; 		  
+		  		}
+		  		else
+		  		{
+			  		labelname=j+". "+checkedTypes[i]+ " Details"; 		  
+		  		}
+		  		
+		  		document.getElementById(labelId).innerHTML=labelname;
+	         	if(checkedTypes[i]=="Cash")
+	    		 	{
+	        	    		label = "cashAP";
+	    		 	}
+	         	else if(checkedTypes[i]=="Neft")
+	         	{ 
+	         		label = "neftAP";
+	         	}
+	         	else if(checkedTypes[i]=="Cheque")
+	         	{ 
+	         		label = "chequeAP";
+	         	}
+	          	else if(checkedTypes[i]=="Swipe")
+	         	{ 
+	          		label = "swipeAP";
+	         	}
+		  		document.getElementById(label).required='true';
+		  	
+		  		j++;
+			}
+	        	
+	        	
+		 		for(var i=0;i<uncheckedTypes.length;i++)
+		 		{ 
+		 			var label1="";
+		      	if(uncheckedTypes[i]=="Cash")
+		 		 	{
+		     	    		label1 = "cashAP";
+		 		 	}
+		      	else if(uncheckedTypes[i]=="Neft")
+		      	{ 
+		      		label1 = "neftAP";
+		      	}
+		      	else if(uncheckedTypes[i]=="Cheque")
+		      	{ 
+		      		label1 = "chequeAP";
+		      	}
+		       	else if(uncheckedTypes[i]=="Swipe")
+		      	{ 
+		       		label1 = "swipeAP";
+		      	}
+		 		    if(label1!="")
+		 		    	{
+		 		    		document.getElementById(label1).value="";
+		 		    		document.getElementById(label1).required='false';
+		 		    	     document.getElementById(label1).removeAttribute("required");
+		 		    		calculateTotalAP();
+		 		    	}
+		 		  }
+	        	
+		    });
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
 	
@@ -1337,7 +1804,56 @@ $(document).ready(function() {
 	 $('#taxtype').val(existingTaxtype);
 	 var existingTranstype=document.getElementById('existingTranstype').value; 
 	  $('#transtype').val(existingTranstype);
-	
+	//alert("existingTranstype" +existingTranstype);
+	var lablnme="";
+	var k=1;
+	var lblId="";
+	var lbl="";
+ if( existingTranstype.indexOf( "Cash" ) != -1 )
+{
+	 lbl="Cash";
+	 $('input[name="transtype"]')[0].checked = true; 
+	 $("." + lbl).show();
+	 document.getElementById("cashAP").required='true';
+	 lblId= lbl+"label";
+	 lablnme=k+". "+lbl+ " Details"; 
+	 document.getElementById(lblId).innerHTML=lablnme;
+	 k++;
+	 }
+ if( existingTranstype.indexOf( "Neft" ) != -1 )
+ {
+	 lbl="Neft";
+ 	 $('input[name="transtype"]')[1].checked = true; 
+	 $("." + lbl).show();
+	 document.getElementById("neftAP").required='true';
+	 lblId= lbl+"label";
+	 lablnme=k+". Bank Transfer(NEFT/RTGS)" + " Details"; 
+	 document.getElementById(lblId).innerHTML=lablnme;
+	 k++;
+ 	 }
+
+ if( existingTranstype.indexOf( "Cheque" ) != -1 )
+ {
+	 lbl="Cheque";
+ 	 $('input[name="transtype"]')[2].checked = true; 
+	 $("." + lbl).show();
+	 document.getElementById("chequeAP").required='true';
+	 lblId= lbl+"label";
+	 lablnme=k+". "+lbl+ " Details"; 
+	 document.getElementById(lblId).innerHTML=lablnme;
+	 k++;
+ 	 }
+ if( existingTranstype.indexOf( "Swipe" ) != -1 )
+ {
+	 lbl="Swipe"; 
+ 	 $('input[name="transtype"]')[3].checked = true; 
+	 $("." + lbl).show();
+	 document.getElementById("swipeAP").required='true';
+	 lblId= lbl+"label";
+	 lablnme=k+". "+lbl+ " Details"; 
+	 document.getElementById(lblId).innerHTML=lablnme;
+	 k++;
+ 	 }
 	 var custId=document.getElementById("custId").value;
 	 var cusnam=document.getElementById("cusnam").value;
 	 var cusno=document.getElementById("cusno").value;
@@ -1401,8 +1917,10 @@ $(document).ready(function() {
     } );
 	
 	  $("input").change(function(){
-		  if($(this).attr('type')!="checkbox")
+		  //alert($(this).attr("name"));
+		  if($(this).attr('type')!="checkbox" && ($(this).attr("name")!="transtype"))
 		  {
+			 
 		  //$('.cboxes').attr('disabled', 'disabled');
 		 $('#deleteButton').attr('disabled', 'disabled');
 		  }

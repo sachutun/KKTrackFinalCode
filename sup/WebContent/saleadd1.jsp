@@ -24,6 +24,7 @@ Statement st5 = null;
 Statement st6 = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement preparedStatement1 = null;
+PreparedStatement preparedStatement2 = null;
 ResultSet resultSet = null;
 ResultSet rs = null;
 ResultSet rs1 = null;
@@ -49,7 +50,7 @@ int res=0;
    String comments=request.getParameter("comments");
    String customername = request.getParameter("customername");
    String customernumber = request.getParameter("customernumber");
-   String type = request.getParameter("type");
+   String[] typeArray = request.getParameterValues("type");
    String amountpaid = request.getParameter("amountpaid");
    String balanceamount = request.getParameter("balanceamount");
    String gst = request.getParameter("GST");
@@ -59,17 +60,62 @@ int res=0;
    String CrediCustStatus=request.getParameter("CrediCustStatus");
    String aadhaar = request.getParameter("aadhaar");
    String taxtype = request.getParameter("taxtype");
+   String transtype = request.getParameter("transType");
+   String cashAP = request.getParameter("cashAP");
+   String neftAP = request.getParameter("neftAP");
+   String chequeAP = request.getParameter("chequeAP");
+   String swipeAP = request.getParameter("swipeAP");
+   String type="";
+/*    System.out.println("typeArray: " +typeArray);
+   System.out.println("transtype: " +transtype);
+   System.out.println("cashAP: " +cashAP);
+   System.out.println("neftAP: " +neftAP);
+   System.out.println("chequeAP: " +chequeAP);
+   System.out.println("swipeAP: " +swipeAP); */
    if(taxtype==null)
 	   taxtype="";
+   if(cashAP=="" || cashAP==null)
+	   cashAP="0";
+   if(neftAP=="" || neftAP==null)
+	   neftAP="0";
+   if(chequeAP=="" || chequeAP==null)
+	   chequeAP="0";
+   if(swipeAP=="" || swipeAP==null)
+	   swipeAP="0";
    String sqlb="";
    float[] q= new float[qty.length];
 //System.out.println("balanceamount: "+balanceamount);
 
    for(int i=0;i<qty.length;i++)
   {
-	   q[i]=Float.parseFloat(qty[i]);  
+	   q[i]=Float.parseFloat(qty[i]);
 	   System.out.println("qty: "+q[i]);
   } 
+   
+   
+   if(transtype.equals("credit"))
+   {
+	   type="Credit";
+   }
+   else
+   {
+	   type="";
+   }
+   if(typeArray!=null)
+   {
+   		for(int i=0;i<typeArray.length;i++)
+   		{
+ 	   		if(type=="")
+ 	   		{
+	   			type=typeArray[i]; 
+ 	   		}
+ 	   		else
+ 	   		{
+ 		  		type+=","+ typeArray[i];
+ 	   		}
+   		} 
+   }
+   //System.out.println("type: " +type);
    DataSource ds = null;
    int updateQuery = 0;
 
@@ -135,8 +181,8 @@ else
 {
 statement=connection.createStatement();       
         	
-    	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID, TaxType) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"','"+taxtype+"')");
-       
+    	  int x=st.executeUpdate("INSERT INTO Sale (DCNumber, Branch, Date, TotalPrice, CustomerName, CustomerNumber, Type, AmountPaid, BalanceAmount, Tax, Discount, Comments, GST, CustID, TaxType, Cash, Neft, Cheque, Swipe) values ('"+ dcnumber+"', '"+branch+"', '"+date+"','"+total+"', '"+customername+"', '"+customernumber+"', '"+type+"', '"+amountpaid+"', '"+balanceamount+"', '"+tax+"', '"+dis+"', '"+comments+"', '"+gst+"', '"+creditCustId+"','"+taxtype+"','"+cashAP+"','"+neftAP+"','"+chequeAP+"','"+swipeAP+"')");
+
        String sql="Select Max(Id) from Sale";
        resultSet = statement.executeQuery(sql);
      

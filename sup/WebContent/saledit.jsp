@@ -34,7 +34,7 @@ Statement st4=null;
 try{ 
   String[] billIds=request.getParameterValues("billIds");
   
-  System.out.println("saleedit billIds:"+billIds );
+  //System.out.println("saleedit billIds:"+billIds );
     String recordToUpdate = request.getParameter("payid");
     String i = request.getParameter("i");
 
@@ -48,39 +48,71 @@ try{
     String creditCustId=request.getParameter("creditCustId");
     String CrediCustStatus=request.getParameter("CrediCustStatus");
     String custIdCode=request.getParameter("custIdCode");   
-    String type = request.getParameter("transtype");
+   // String type = request.getParameter("transtype");
+    String[] typeArray = request.getParameterValues("transtype");
     String taxtype = request.getParameter("taxtype");
     String existingtype = request.getParameter("existingTranstype");
+    String cashAP = request.getParameter("cashAP");
+    String neftAP = request.getParameter("neftAP");
+    String chequeAP = request.getParameter("chequeAP");
+    String swipeAP = request.getParameter("swipeAP");
+    String type="";
     if(taxtype==null)
  	   taxtype="";
-
+    if(creditCustId==null)
+    	creditCustId="";
+    if(cashAP=="" || cashAP==null)
+ 	   cashAP="0";
+    if(neftAP=="" || neftAP==null)
+ 	   neftAP="0";
+    if(chequeAP=="" || chequeAP==null)
+ 	   chequeAP="0";
+    if(swipeAP=="" || swipeAP==null)
+ 	   swipeAP="0";
     String custId=request.getParameter("custId");
     //System.out.println("type 1: " +type);
     //System.out.println("existingtype 1: " +existingtype);
  /*    String date=new SimpleDateFormat("MM-dd-yyyy").format(request.getParameter("date")) ; */
  
  //System.out.println("creditCustId: " +creditCustId);
-		    if(creditCustId!="" && creditCustId!=null )
+		  /*   if(creditCustId!="" && creditCustId!=null )
 	       {			  
 			   if(!(existingtype.contains("Credit")))
 			  		type="Credit";
-	       } 
+	       }  */
 		 
 	       //System.out.println("type changed: " +type);
  creditCustId=custIdCode+creditCustId;
  if(custId!=null && custId!="")
  {
+	 //System.out.println("set creditcustID: " +custId);
 	 creditCustId=custId;
  }
- 
-		
- 
+ if(!(creditCustId.isEmpty()))
+ {			  
+	  		type="Credit";
+ } 
+ //System.out.println("type changed: " +type);		
+ if(typeArray!=null)
+ {
+ 		for(int j=0;j<typeArray.length;j++)
+ 		{
+	   		if(type=="")
+	   		{
+	   			type=typeArray[j]; 
+	   		}
+	   		else
+	   		{
+		  		type+=","+ typeArray[j];
+	   		}
+ 		} 
+ }
 
- if(type.equals("Credit") && !existingtype.contains("Credit"))
+/*  if(type.equals("Credit") && !existingtype.contains("Credit"))
  {
 	   type=type+existingtype;
 	   
- }
+ } */
  //System.out.println("type 2: " +type);
  String date=request.getParameter("date") ;
 
@@ -242,9 +274,9 @@ Date ndate=df.parse(dt);
 
        if(creditCustId!="" && creditCustId!=null)
        {
-    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`="+type+", `TaxType`="+taxtype+" WHERE Id="+Pid;
-    	       //System.out.println(s1);
-       	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=? , `TaxType`=?   WHERE Id=?");
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`="+type+", `TaxType`="+taxtype+", `Cash`="+cashAP+", `Neft`="+neftAP+", `Cheque`="+chequeAP+", `Swipe`="+swipeAP+" WHERE Id="+Pid;
+    	       System.out.println(s1);
+       	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=? , `TaxType`=? , `Cash`=?, `Neft`=?, `Cheque`=?, `Swipe`=?  WHERE Id=?");
        ps.setDouble(1,ftot);
        ps.setDouble(2,newBalAmt);
        ps.setString(3,cname);
@@ -258,14 +290,19 @@ Date ndate=df.parse(dt);
        ps.setString(11,creditCustId);    
        ps.setString(12,type); 
        ps.setString(13,taxtype); 
-       ps.setInt(14,Pid);
+       ps.setString(14,cashAP); 
+       ps.setString(15,neftAP); 
+       ps.setString(16,chequeAP); 
+       ps.setString(17,swipeAP); 
+       ps.setInt(18,Pid);
        ps.executeUpdate(); 
        }
        else
        {
-    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+",`Type`="+type+", `TaxType`="+taxtype+" WHERE Id="+Pid;
-    	      // System.out.println(s1);
-    	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=?, `Type`=? ,`TaxType`=? WHERE Id=?");
+    	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+",`Type`="+type+", `TaxType`="+taxtype+" , `Cash`="+cashAP+", `Neft`="+neftAP+", `Cheque`="+chequeAP+", `Swipe`="+swipeAP+" WHERE Id="+Pid;
+ 	       //System.out.println(s1);
+    	       System.out.println(s1);
+    	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=?, `Type`=? ,`TaxType`=?, `Cash`=?, `Neft`=?, `Cheque`=?, `Swipe`=?  WHERE Id=?");
     	       ps.setDouble(1,ftot);
     	       ps.setDouble(2,newBalAmt);
     	       ps.setString(3,cname);
@@ -278,7 +315,11 @@ Date ndate=df.parse(dt);
     	       ps.setString(10,gst);
     	       ps.setString(11,type); 
     	       ps.setString(12,taxtype); 
-    	       ps.setInt(13,Pid);
+    	       ps.setString(13,cashAP); 
+    	       ps.setString(14,neftAP); 
+    	       ps.setString(15,chequeAP); 
+    	       ps.setString(16,swipeAP); 
+    	       ps.setInt(17,Pid);
     	       ps.executeUpdate();
        }
        if(custId!=null && custId!="")
@@ -317,11 +358,11 @@ Date ndate=df.parse(dt);
    	{
    		   String cbankname=request.getParameter("cusbank");
    		   String kkbank=request.getParameter("kkbank");
-   		   if(existingtype.equals(type))
+   		   if(existingtype.contains("Neft"))
    		   {
    		 	   String s6="UPDATE `BankDetails` SET `CSBankName`=?,`KKBankName`=? WHERE Id="  +cbankname +" , " +kkbank +" , "+Pid; 
    	    	   //System.out.println("update neft: " +s6);
-   	    	  // System.out.println("existing credit cust: "+s5);
+   	    	  //System.out.println("existing credit cust: "+s5);
    	       		ps4 = conn.prepareStatement("UPDATE `BankDetails` SET `CSBankName`=?,`KKBankName`=? WHERE Id=?");
    	       		ps4.setString(1,cbankname);
    	       		ps4.setString(2,kkbank);
@@ -336,12 +377,12 @@ Date ndate=df.parse(dt);
    		   }
    		  
    	}
-   	else if(type.contains("Cheque"))
+   	if(type.contains("Cheque"))
    	{
    		   String bank=request.getParameter("bankname");
    		   String cd=request.getParameter("cd");
    		   String chkno=request.getParameter("chkno");
-   		   if(existingtype.equals(type))
+   		   if(existingtype.contains("Cheque"))
  		   {
    			String s6="UPDATE `ChequeDetails` SET `ChequeNo`=?,`Date`=?,`BankName`=? WHERE Id="  +chkno +" , "+cd +" , " +bank +" , "+Pid; 
 	    	   	//System.out.println("update cheque: " +s6);

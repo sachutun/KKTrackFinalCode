@@ -374,7 +374,17 @@ String role=(String)session.getAttribute("role");
                  <a href="saleReturn.jsp" style="color:white;">   <button type="button" class="btn btn-info" style="background: #f19292;border: 1px solid #f19292;">Return</button></a>
              </div>  
              <br/>
-        
+     <div>      
+     <% String r=request.getParameter("res");
+  
+ String succ="<div class=\"col-md-6\" ><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong><br/></div>";
+ String err="<div class=\"col-md-6\" ><div class=\"alert alert-error alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
+ 
+ if(r!=null && r.equals("1"))
+        	out.println(succ);
+  else if(r!=null && r.equals("2"))
+ 	System.out.println(err);	%> 
+ 	</div> 
                 <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -500,7 +510,7 @@ String role=(String)session.getAttribute("role");
                           <label class="control-label col-md-1 col-sm-1 col-xs-9">Sale Price:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-2 col-xs-4">
-                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="text" name="costprice"  onchange="calculate(1)" min="0">
+                          <input id="costprice1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="costprice" onchange="calculate(1)" min="0">
                         </div>
                  <!--      </div>
                       <div class="form-group"> -->
@@ -508,7 +518,7 @@ String role=(String)session.getAttribute("role");
                         <label class="control-label col-md-1 col-sm-1 col-xs-9">Quantity:<span class="required">*</span>
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-4">
-                          <input id="qty1" class="form-control col-md-7 col-xs-12" style="padding:0" required="required" type="text" name="qty"  onchange="calculate(1)" >
+                          <input id="qty1" class="form-control col-md-7 col-xs-12" style="padding:0" required="required" type="number" name="qty" step="any" onchange="calculate(1)" >
                         </div>
                         <label class="control-label col-md-1 col-sm-1 col-xs-2">Total:</label>
                         <div class="col-md-1 col-sm-1 col-xs-4">
@@ -581,32 +591,31 @@ String role=(String)session.getAttribute("role");
                     
                     <br/>
                       
-                     
-                      
-                    <div class="form-group" style="margin-top:2%;">
-                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <select id="type" class="select2_single form-control" tabindex="-1" name="type" required="required" onchange="addCreditCustCode()">
-                            <option></option>
-                               <option value="Cash">Cash</option>
-                            <option value="Neft">Bank Transfer</option>
-                            <option value="Cheque">Cheque</option>
-                            <option value="Swipe">Swipe</option>
-                             <option value="CreditCash">Credit Cash</option>
-                             <option value="CreditNeft">Credit Bank Transfer</option>
-                              <option value="CreditCheque">Credit Cheque</option>
-                            <option value="CreditSwipe">Credit Swipe</option>
-                          </select>
+                     	<div class="form-group " style="margin-left: 60px;">
+                       		<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;">No-Credit:</label>
+                        		<div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                          		<input type="radio" onclick="javascript:creditCheck();" name="transType" id="noCreditType" value="nocredit" checked="checked">
+                        		</div>
+                        
+                       		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">Credit:</label>
+                       		 <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
+                        			<input type="radio" onclick="javascript:creditCheck();" name="transType" id="creditType" value="credit">
+                       		 </div> 
+                       		
                         </div>
-                      <!-- </div>
-                       <div class="form-group"> -->
-                       <div class="form-group Credit" style="display:none;">
+                        
+                           <div class="form-group Credit" style="display:none;">
                         <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Customer ID:<span class="required">*</span>
                          </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                          <input type="text" id='custIdCode' name="custIdCode" class="form-control col-md-7 col-xs-12" style="width:30px;display:none;" readOnly>
                           <input id="creditCustId" class="form-control col-md-7 col-xs-12" type="text" name="creditCustId" onfocusout="showCustomer(this.value)">
                         </div>
+                        
+                              <label class="control-label col-md-2 col-sm-2 col-xs-5">Aadhaar:
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar" >
                         </div>
                         </div>
                          <div class="form-group custDet">
@@ -622,32 +631,79 @@ String role=(String)session.getAttribute("role");
                           <input id="customernumber" class="form-control col-md-7 col-xs-12" type="number" name="customernumber">
                         </div>
                       </div>
-                           <div class="form-group">
-                        <label class="control-label col-md-2 col-sm-2 col-xs-5">Amount Paid:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="amountpaid" class="form-control col-md-7 col-xs-12" type="number" name="amountpaid" onchange="balcalc();" min="0" required="required">
-                        </div>
-                          <div class="form-group Credit"style="display:none;" id="aadhar">
-                           <label class="control-label col-md-2 col-sm-2 col-xs-5">Aadhaar:
-                        </label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="aadhaar" class="form-control col-md-7 col-xs-12" type="text" name="aadhaar" >
-                        </div>
-                        </div> 
-                        
-                      <!--   <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
-                           <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
-                        </label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
-                        </div>
-                        </div>  -->
-                        
-                      </div>
+                      
                         <p id="creditMsg"></p> 
-                      <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;">
-                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname">Bank Name:<span class="required">*</span>
+                      
+                    <div class="form-group" style="margin-top:2%;">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-5">Type:<span class="required">*</span></label>
+                       <!--  <div class="col-md-3 col-sm-3 col-xs-6">
+                          <select id="type" class="select2_single form-control" tabindex="-1" name="type" required="required" onchange="addCreditCustCode()">
+                            <option></option>
+                               <option value="Cash">Cash</option>
+                            <option value="Neft">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Swipe">Swipe</option>
+                             <option value="CreditCash">Credit Cash</option>
+                             <option value="CreditNeft">Credit Bank Transfer</option>
+                              <option value="CreditCheque">Credit Cheque</option>
+                            <option value="CreditSwipe">Credit Swipe</option>
+                          </select>
+                        </div> -->
+                        <div class="col-md-3 col-sm-3 col-xs-6" style="width:600px;margin-top:0.8%;">
+                         <input type="checkbox" name="type" value="Cash"> <b>Cash </b>  &nbsp;  &nbsp;  &nbsp;
+ 						 <input type="checkbox" name="type" value="Neft"> <b> Bank Transfer </b> &nbsp; &nbsp; &nbsp;
+  					<input type="checkbox" name="type" value="Cheque"> <b> Cheque </b> &nbsp; &nbsp; &nbsp;
+  					<input type="checkbox" name="type" value="Swipe"><b> Swipe </b>
+  					</div> 
+                      <!-- </div>
+                       <div class="form-group"> -->
+                      
+                        </div> 
+                    
+                     <div class="form-group Cash bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <b> <p id="Cashlabel"></p> </b>
+                      
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:-21.2%;width:400px;">Amount Paid(Cash):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="cashAP" class="form-control col-md-7 col-xs-12" type="number" name="cashAP" onchange="calculateTotalAP();" min="0">
+                        </div> 
+                    </div>
+                    
+                    
+                          <div class="form-group Neft bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                      
+<!--                       <div class="form-group Neft bankdet" style="margin-top: 2%; display: none;"> 
+  <input id="typeCounter" class="form-control col-md-7 col-xs-12" type="text" name="typeCounter"> -->
+       <b> <p id="Neftlabel"></p> </b>
+<!--                      <b> Bank Transfer(NEFT/RTGS): </b> <br/><br/> -->
+                       <label class="control-label col-md-3 col-sm-2 col-xs-3" style="margin-left:-10.2%;">Customer Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank">
+                        </div>
+                        
+                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-3 col-xs-6">
+                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank">
+                        </div> 
+                        <br/>
+<br/>
+<br/>
+              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:-21.2%;width:400px;">Amount Paid(NEFT/RTGS):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="neftAP" class="form-control col-md-7 col-xs-12" type="number" name="neftAP" onchange="calculateTotalAP();" min="0" >
+                        </div>
+                        
+                        
+                        </div>  
+                     
+                            <div class="form-group Cheque bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+<!--                       <div class="form-group Cheque bankdet" style="margin-top: 2%; display: none;"> -->
+    <b> <p id="Chequelabel"></p> </b>
+                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname" style="margin-left:-8%;">Bank Name:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-3 col-xs-6">
                           <input id="bankname" class="form-control col-md-7 col-xs-12" type="text" name="bankname">
@@ -676,20 +732,47 @@ String role=(String)session.getAttribute("role");
                         </fieldset>
                          <input id="cd" class="form-control col-md-7 col-xs-12" type="hidden" name="cd" value="2017-11-16">
                       </div>
-                      </div>
-                      <div class="form-group Neft bankdet" style="margin-top: 2%; display: none;">
-                       <label class="control-label col-md-3 col-sm-2 col-xs-3">Customer Bank Name:<span class="required">*</span>
+<!--                       </div> -->
+
+<br/>
+<br/>
+<br/>
+              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:-2%;">Amount Paid(Cheque):<span class="required">*</span>
                         </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank">
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="chequeAP" class="form-control col-md-7 col-xs-12" type="number" name="chequeAP" onchange="calculateTotalAP();" min="0" >
+                        </div>
+                      </div>
+                  
+                      
+                     <div class="form-group Swipe bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 20px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <b> <p id="Swipelabel"></p> </b>
+                      
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:-21.2%;width:400px;">Amount Paid(Swipe):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="swipeAP" class="form-control col-md-7 col-xs-12" type="number" name="swipeAP" onchange="calculateTotalAP();" min="0" >
+                        </div> 
+                    </div> 
+                  
+                  
+                          <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-5">Total Amount Paid:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="amountpaid" class="form-control col-md-7 col-xs-12" readOnly type="number" name="amountpaid" onchange="balcalc();" min="0" >
                         </div>
                         
-                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
+                        
+                      <!--   <div class="form-group Credit creditDet"style="display:none;" id="displayCreditBal">
+                           <label class="control-label col-md-2 col-sm-2 col-xs-5">Credit Balance:
                         </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank">
-                        </div> </div>
-                       
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="creditBal" class="form-control col-md-7 col-xs-12" type="number" name="creditBal"  min="0" disabled>
+                        </div>
+                        </div>  -->
+                        
+                      </div>
                         
                         <div class="form-group" style="margin-top:2%;">
                     			<label class="control-label col-md-2 col-sm-2 col-xs-5">Tax Type:<span class="required">*</span></label>
@@ -707,12 +790,12 @@ String role=(String)session.getAttribute("role");
                    		<div class="form-group " style="margin-left: 60px;">
                        		<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;">UN-REG Invoice:</label>
                         		<div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general" checked="checked">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="generalInvoice" value="general" checked="checked">
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		 <div class="col-md-1 col-sm-1 col-xs-3" style="margin-top: 0.7%;">
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="taxInvoice" value="tax">
                        		 </div> 
                        		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
                         		<div id="GSTdiv" style="visibility:hidden" class="col-md-3 col-sm-3 col-xs-6">
@@ -753,16 +836,7 @@ String role=(String)session.getAttribute("role");
          </div>
        </div>
      </div>
-     <br> 
-     <% String r=request.getParameter("res");
-  
- String succ="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \" margin-top:-71%\"><div class=\"alert alert-error alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
- 
- if(r!=null && r.equals("1"))
-        	out.println(succ);
-  else if(r!=null && r.equals("2"))
- 	System.out.println(err);	%>
+
         	
  <%--      <% String r=request.getParameter("res");
       System.out.println(r);	
@@ -877,14 +951,15 @@ function addInvoiceCode()
 		  document.getElementById("dcnumber").style.width = "150px";
 		  
 		  }
+	 
 }
 function addCreditCustCode()
 {
 	var code;
 	var branch = document.getElementById("branch").value;
-    var type=document.getElementById("type").value;
-    if(type=="CreditCash" || type=="CreditNeft" || type=="CreditCheque" || type=="CreditSwipe")
-    	{
+   // var type=document.getElementById("type").value;
+    //if(type=="CreditCash" || type=="CreditNeft" || type=="CreditCheque" || type=="CreditSwipe")
+    //	{
 	  switch(branch) {
 	    case "Bowenpally"	: code = "BP";
 	    					   	break;
@@ -917,23 +992,23 @@ function addCreditCustCode()
 		 {
 		  document.getElementById("custIdCode").value = code;
 		  document.getElementById("custIdCode").style.display="block";
-		  document.getElementById("creditCustId").style.width = "120px";
+		  document.getElementById("creditCustId").style.width = "233.5px";
 		 }
 	  else
 		  {
 		  document.getElementById("custIdCode").value = "";
 		  document.getElementById("custIdCode").style.display="none";
-		  document.getElementById("creditCustId").style.width = "150px";
+		  document.getElementById("creditCustId").style.width = "263.5px";
 		  
 		  }
-    	}
+   /*  	}
     else
 	  {
     	 document.getElementById("custIdCode").value = "";
 	  document.getElementById("custIdCode").style.display="none";
 	  document.getElementById("creditCustId").style.width = "150px";
 	  
-	  }
+	  } */
   
 	}
 function invoiceCheck() {
@@ -955,34 +1030,148 @@ function invoiceCheck() {
 
 }
 
+function creditCheck() {
+
+    if (document.getElementById('creditType').checked) {	
+    	addCreditCustCode();
+    	$(".Credit").show();
+     	$("#customername").prop('readonly', true);
+      	$("#customernumber").prop('readonly', true); 
+
+      //	$("#GST").prop('readonly', true);  
+      // 	$("#aadhaar").prop('readonly', true);  
+
+      	//$("#GST").prop('readonly', true); 
+      	$("#aadhaar").prop('readonly', true); 
+
+      	$("#creditCustId").prop('required',true);
+    		$("#creditCustId").val("");
+    		$("#customername").val("");
+    		$("#customernumber").val("");
+    		
+   
+    }
+    else 
+    	{
+    	$(".Credit").hide();
+    	$("#customername").prop('readonly', false);
+      	$("#customernumber").prop('readonly', false); 
+      	$("#creditCustId").prop('required',false);
+      	document.getElementById("creditMsg").innerHTML = "";
+      	document.getElementById('generalInvoice').checked=true;
+        document.getElementById('GSTdiv').style.visibility = 'hidden';
+        document.getElementById('GSTLabel').style.visibility = 'hidden';
+       // $("#GST").prop('readonly', false); 
+   		$("#aadhaar").prop('readonly', false); 
+   	    $("#customername").val("");
+		    $("#customernumber").val("");
+		    $("#GST").val("");
+     
+    	}
+
+}
+
+
 function validatePage() 
 { 
 	
 	var amountpaid= document.getElementById('amountpaid').value;
 	var ftotal= document.getElementById('ftotal').value;
-	var type= document.getElementById('type').value;
-	if(type!=null && type!="")
-	{
-		if((type.search("Credit")== "-1"))
-		{
-			if(amountpaid<ftotal)
-		 	{
-		 		alert("Amount paid cannot be less than Final Total. Choose 'Credit " +type+ "'");
-		 		//document.getElementById("amountpaid").focus();
-		 		return;
-		 	}
-		 	else
-		 	{
-		 		p = true;
-		 		return true;
-		 	}
-		}
-		else
-		{
-			p = true;
-		 	return true;
-		}
-	 }
+	var transtype=$("input[name='transType']:checked"). val();
+	 var uncheckedTypes = [];  
+   var flag=false;
+ 	$.each($("input[name='type']:not(:checked)"), function(){            
+ 		uncheckedTypes.push($(this).val());
+ });  
+
+ if(uncheckedTypes.length==4)
+ {
+ 		document.getElementById("cashAP").value="";
+ 		document.getElementById("neftAP").value="";
+ 		document.getElementById("chequeAP").value="";
+ 		document.getElementById("swipeAP").value="";
+ 		document.getElementById("amountpaid").value="0";
+ 	
+ 		document.getElementById("cashAP").required='false';
+ 		document.getElementById("neftAP").required='false';
+ 		document.getElementById("chequeAP").required='false';
+ 		document.getElementById("swipeAP").required='false';
+	     document.getElementById("cashAP").removeAttribute("required");
+	     document.getElementById("neftAP").removeAttribute("required");
+	     document.getElementById("chequeAP").removeAttribute("required");
+	     document.getElementById("swipeAP").removeAttribute("required");
+	     if(transtype=="nocredit")
+	 	{
+	  	  alert("Please select Type.");
+	  	  flag=true;
+	  	  return;
+	 	}
+	   
+ }
+ if(flag==false)
+ {
+ 		
+ 		for(var i=0;i<uncheckedTypes.length;i++)
+ 		{ 
+ 			var label1="";
+      	if(uncheckedTypes[i]=="Cash")
+ 		 	{
+     	    		label1 = "cashAP";
+ 		 	}
+      	else if(uncheckedTypes[i]=="Neft")
+      	{ 
+      		label1 = "neftAP";
+      	}
+      	else if(uncheckedTypes[i]=="Cheque")
+      	{ 
+      		label1 = "chequeAP";
+      	}
+       	else if(uncheckedTypes[i]=="Swipe")
+      	{ 
+       		label1 = "swipeAP";
+      	}
+ 		    if(label1!="")
+ 		    	{
+ 		    		document.getElementById(label1).value="";
+ 		    		document.getElementById(label1).required='false';
+ 		    	     document.getElementById(label1).removeAttribute("required");
+ 		    		calculateTotalAP();
+ 		    	}
+ 		  }
+
+ 		if(amountpaid=="" || amountpaid==null)
+ 		{
+ 			amountpaid="0";
+ 		}
+ 		if(transtype!=null && transtype!="")
+		{ 
+			if(transtype=="nocredit")
+			{
+				if(parseFloat(amountpaid)<parseFloat(ftotal))
+			 	{
+			 		alert("Amount paid cannot be less than Final Total. Choose 'Credit'");
+			 		//document.getElementById("amountpaid").focus();
+			 		return;
+			 	}
+			 	else
+			 	{
+			 		p = true;
+			 	 	return true;
+			 		
+			 	}
+			}
+			else
+			{
+				p = true;
+			 	return true;
+
+			}
+      	 }
+ 	   }	    	   
+
+	
+
+
 	
 }
 
@@ -1130,6 +1319,35 @@ function tot(i)
 	
 }
 
+function calculateTotalAP()
+{
+var cashAP;
+var neftAP;
+var chequeAP;
+var swipeAP;
+var totalAP;
+cashAP=document.getElementById("cashAP").value;	
+neftAP=document.getElementById("neftAP").value;	
+chequeAP=document.getElementById("chequeAP").value;	
+swipeAP=document.getElementById("swipeAP").value;	
+
+if(cashAP=="")
+	cashAP=0;	
+if(neftAP=="")
+	neftAP=0;	
+if(chequeAP=="")
+	chequeAP=0;	
+if(swipeAP=="")
+	swipeAP=0;	
+
+totalAP=parseInt(cashAP)+parseInt(neftAP)+parseInt(chequeAP)+parseInt(swipeAP);
+document.getElementById("amountpaid").value=totalAP;
+balcalc();
+}
+
+
+
+
 function balcalc()
 {
 var bal;
@@ -1172,6 +1390,91 @@ function cls(elt)
 		      return false;
 		    }
 		  });
+	 
+	$('input[type="checkbox"]').click(function(){
+	   
+	 	var checkedTypes = [];
+	   
+	 	var j=1;
+    	    var labelname;
+    	    $(".bankdet").hide();
+        	$.each($("input[name='type']:checked"), function(){            
+        		checkedTypes.push($(this).val());
+        });
+        
+       	 var uncheckedTypes = [];  
+ 	  	
+	  	 	$.each($("input[name='type']:not(:checked)"), function(){            
+	  	 		uncheckedTypes.push($(this).val());
+	  	 }); 
+        	for(var i=0;i<checkedTypes.length;i++)
+		{ 
+	 		var labelId="label";
+	 		var label="";
+	  		$("." + checkedTypes[i]).show();
+	  		labelId= checkedTypes[i]+labelId;
+	  		
+	  		if(checkedTypes[i]=="Neft")
+	  		{
+		  		labelname=j+". Bank Transfer(NEFT/RTGS)" + " Details"; 		  
+	  		}
+	  		else
+	  		{
+		  		labelname=j+". "+checkedTypes[i]+ " Details"; 		  
+	  		}
+	  		
+	  		document.getElementById(labelId).innerHTML=labelname;
+         	if(checkedTypes[i]=="Cash")
+    		 	{
+        	    		label = "cashAP";
+    		 	}
+         	else if(checkedTypes[i]=="Neft")
+         	{ 
+         		label = "neftAP";
+         	}
+         	else if(checkedTypes[i]=="Cheque")
+         	{ 
+         		label = "chequeAP";
+         	}
+          	else if(checkedTypes[i]=="Swipe")
+         	{ 
+          		label = "swipeAP";
+         	}
+	  		document.getElementById(label).required='true';
+	  	
+	  		j++;
+		}
+
+        	for(var i=0;i<uncheckedTypes.length;i++)
+	 		{ 
+	 			var label1="";
+	      	if(uncheckedTypes[i]=="Cash")
+	 		 	{
+	     	    		label1 = "cashAP";
+	 		 	}
+	      	else if(uncheckedTypes[i]=="Neft")
+	      	{ 
+	      		label1 = "neftAP";
+	      	}
+	      	else if(uncheckedTypes[i]=="Cheque")
+	      	{ 
+	      		label1 = "chequeAP";
+	      	}
+	       	else if(uncheckedTypes[i]=="Swipe")
+	      	{ 
+	       		label1 = "swipeAP";
+	      	}
+	     
+	 		    if(label1!="")
+	 		    	{
+	 		    		document.getElementById(label1).value="";
+	 		    		document.getElementById(label1).required='false';
+	 		    	     document.getElementById(label1).removeAttribute("required");
+	 		    		calculateTotalAP();
+	 		    	}
+	 		  }
+        	
+	    });
 	 var ubran=document.getElementById('ubran').value;
 		var role=document.getElementById('urole').value;
 		/* var environment=document.getElementById('uenv').value;
@@ -1258,10 +1561,10 @@ function cls(elt)
 	 $('.right_col').animate({height:h}, 500);
 	 $(".select2_single").change(function(){
 		
-	        $(this).find("option:selected").each(function(){
-	        		var optionValue = $(this).attr("value");
+	      $(this).find("option:selected").each(function(){
+	    		 /* var optionValue = $(this).attr("value");
 	        	
-	           	var flag=false;
+	        	    	var flag=false;
 	            if(optionValue)
 	            {	           	            	
 		        		if(optionValue=="CreditCash" ||optionValue=="CreditNeft" || optionValue=="CreditCheque" || optionValue=="CreditSwipe")
@@ -1293,8 +1596,8 @@ function cls(elt)
 	               	$("#customername").prop('readonly', true);
 	              	$("#customernumber").prop('readonly', true); 
 
-	              /* 	$("#GST").prop('readonly', true);  */
-	              /* 	$("#aadhaar").prop('readonly', true);  */
+	              //	$("#GST").prop('readonly', true);  
+	              // 	$("#aadhaar").prop('readonly', true);  
 
 	              	//$("#GST").prop('readonly', true); 
 	              	$("#aadhaar").prop('readonly', true); 
@@ -1322,28 +1625,7 @@ function cls(elt)
          		    $("#GST").val("");
      
 	            	}
- 	            /* if(optionValue.search("Neft")!=-1)
-	            	{
-	            		$("#cusbank").prop('required',true);
-	            		$("#kkbank").prop('required',true);
-	            	}
-	            else
-	            	{
-	            		$("#cusbank").prop('required',false);
-	            		$("#kkbank").prop('required',false);
-	            	}
-	            if(optionValue.search("Cheque")!=-1)
-            		{
-            			$("#bankname").prop('required',true);
-            			$("#chkno").prop('required',true);
-            			$("#single_cal4").prop('required',true);           			
-            		}
-            		else
-            		{
-            			$("#bankname").prop('required',false);
-            			$("#chkno").prop('required',false);
-            			$("#single_cal4").prop('required',false); 
-            		} */
+	            */
             	 	 var dcNo= document.getElementById("dcnumber").value;
            	 	 var taxInvoiceFlag = dcNo.startsWith("T");
            	 	 if(taxInvoiceFlag==true)
@@ -1361,8 +1643,14 @@ function cls(elt)
            	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
            	 	 }
 	        });
-	        
-	        $("div.ttype select").val("");
+	       
+	        /* $("div.ttype select").val("");
+	         $(":radio").attr('checked', false);
+                $(":checkbox").attr("checked", false);
+                $(".bankdet").hide();
+                $(".Credit").hide(); */
+          
+      
 	    }).change();
 	var c=1;
 	
