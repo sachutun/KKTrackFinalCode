@@ -689,62 +689,70 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                 
                         </div>
                        <br/>
-                          <div class="form-group Cash bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+               
+                   <div style=" border: 1px solid rgba(128, 128, 128, 0.2);margin-top: 3%;background-color: rgb(247, 247, 247);">
+                     <b><p style="padding: 20px 50px 0px 38px;font-size: medium;">Amount Paid Details</p> </b>
+                    <div class="form-group Cash bankdet" style=" display: none;  margin-top: 3%; padding: 20px 50px 50px 38px;/* border: 1px solid rgba(128, 128, 128, 0.2); */margin-bottom: 2%;/* background-color: rgb(247, 247, 247); */">
                         <b> <p id="Cashlabel"></p> </b>
                       
-                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Cash):<span class="required">*</span>
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-top:1%;margin-left:1%;width:200px;">Amount Paid(Cash):<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="cashAP" class="form-control col-md-7 col-xs-12" type="number" name="cashAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cash")%>">
+                          <input id="cashAP" class="form-control col-md-7 col-xs-12" type="number" name="cashAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cash")%>" >
                         </div> 
                     </div>
-                    <br/>
-                    
                    
-                      <div class="form-group Neft bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <div class="form-group Neft bankdet" style=" display: none; padding: 20px 50px 50px 38px;/* border: 1px solid rgba(128, 128, 128, 0.2); *//* margin-bottom: 2%; *//* background-color: rgb(247, 247, 247); */">
                             <b> <p id="Neftlabel"></p> </b> 
-                       <label class="control-label col-md-3 col-sm-2 col-xs-3" style="margin-left:1%;width:200px;">Customer Bank Name:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank" value="<%=cusbank %>" >
-                        </div>
-                        
-                        <label class="control-label col-md-2 col-sm-2 col-xs-3">KK Bank Name:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
-                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank" value="<%=kkbank %>" >
-                        </div> <br/> 
-                                            
-<br/>
-<br/>
-              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(NEFT/RTGS):<span class="required">*</span>
+                             <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-top:1%;margin-left:1%;width:200px;">Amount Paid(NEFT/RTGS):<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="neftAP" class="form-control col-md-7 col-xs-12" type="number" name="neftAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Neft")%>">
                         </div>
-                        
-                        
-                        
+                        <br/>
+                        <br/>
+                         <br/>
+                       <label class="control-label col-md-3 col-sm-2 col-xs-3" style="margin-top:1%;margin-left:1%;width:200px;">Customer Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="cusbank" class="form-control col-md-7 col-xs-12" type="text" name="cusbank" value="">
                         </div>
                         
+                        <label class="control-label col-md-2 col-sm-2 col-xs-3" style="margin-top:1%;margin-left:3%;">KK Bank Name:<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6" style="margin-left:-1%;" >
+                        <input id="kkbank" class="form-control col-md-7 col-xs-12" type="text" name="kkbank" value="">
+                        </div>  
+                 
+                        </div>
                         
-                        
-                              <div class="form-group Cheque bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                              <div class="form-group Cheque bankdet" style=" display: none; padding-left: 38px;padding-right: 50px;padding-top: 20px;padding-bottom: 50px;/* border: 1px solid rgba(128, 128, 128, 0.2); */margin-bottom: 2%;/* background-color: rgb(247, 247, 247); */">
                                  <b> <p id="Chequelabel"></p> </b> 
-                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname" style="margin-left:1%;width:200px;">Bank Name:<span class="required">*</span>
+                                <!--  <br/>
+                                 <br/> -->
+                     
+                        <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-top:1%;margin-left:1%;width:200px;">Amount Paid(Cheque):<span class="required">*</span>
+                        </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="chequeAP" class="form-control col-md-7 col-xs-12" type="number" name="chequeAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cheque")%>">
+                        </div>
+                        <br/> 
+                      
+<br/>
+<br/>
+  <label class="control-label col-md-2 col-sm-2 col-xs-3" for="bankname" style="margin-top:1%;margin-left:1%;width:200px;">Bank Name:<span class="required">*</span>
                         </label>
                         <div class="col-md-2 col-sm-3 col-xs-6">
                           <input id="bankname" class="form-control col-md-7 col-xs-12" type="text" name="bankname" value="<%=bankname %>" >
                         </div>
                         
-                        <label class="control-label col-md-1 col-sm-2 col-xs-3" for="chkno">Cheque Number:<span class="required">*</span>
-                        </label>
-                        <div class="col-md-2 col-sm-3 col-xs-6">
+                       <label class="control-label col-md-2 col-sm-2 col-xs-3" for="chkno" style="margin-top:1%;margin-left: 1%;">Cheque No:</label>
+                        <div class="col-md-2 col-sm-3 col-xs-6" style="margin-left: -8%;">
                         <input id="chkno" class="form-control col-md-7 col-xs-12" type="text" name="chkno" value="<%=chkno %>" >
                         </div> 
-                        <label class="control-label col-md-1 col-sm-2 col-xs-3" for="chkdate">Cheque Date:<span class="required">*</span>
+                        <label class="control-label col-md-1 col-sm-2 col-xs-3" for="chkdate" style="margin-top:1%;">Date:<span class="required">*</span>
                         </label>
-                       <div class="col-md-3" style="margin-left:-10px;">
+                      <div class="col-md-3" style="margin-left: -4%;">
                            <div class="daterangepicker dropdown-menu ltr single opensright show-calendar picker_3 xdisplay"><div class="calendar left single" style="display: block;"><div class="daterangepicker_input"><input class="input-mini form-control active" type="text" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th><th colspan="5" class="month">Oct 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">25</td><td class="off available" data-title="r0c1">26</td><td class="off available" data-title="r0c2">27</td><td class="off available" data-title="r0c3">28</td><td class="off available" data-title="r0c4">29</td><td class="off available" data-title="r0c5">30</td><td class="weekend available" data-title="r0c6">1</td></tr><tr><td class="weekend available" data-title="r1c0">2</td><td class="available" data-title="r1c1">3</td><td class="available" data-title="r1c2">4</td><td class="available" data-title="r1c3">5</td><td class="available" data-title="r1c4">6</td><td class="available" data-title="r1c5">7</td><td class="weekend available" data-title="r1c6">8</td></tr><tr><td class="weekend available" data-title="r2c0">9</td><td class="available" data-title="r2c1">10</td><td class="available" data-title="r2c2">11</td><td class="available" data-title="r2c3">12</td><td class="available" data-title="r2c4">13</td><td class="available" data-title="r2c5">14</td><td class="weekend available" data-title="r2c6">15</td></tr><tr><td class="weekend available" data-title="r3c0">16</td><td class="available" data-title="r3c1">17</td><td class="today active start-date active end-date available" data-title="r3c2">18</td><td class="available" data-title="r3c3">19</td><td class="available" data-title="r3c4">20</td><td class="available" data-title="r3c5">21</td><td class="weekend available" data-title="r3c6">22</td></tr><tr><td class="weekend available" data-title="r4c0">23</td><td class="available" data-title="r4c1">24</td><td class="available" data-title="r4c2">25</td><td class="available" data-title="r4c3">26</td><td class="available" data-title="r4c4">27</td><td class="available" data-title="r4c5">28</td><td class="weekend available" data-title="r4c6">29</td></tr><tr><td class="weekend available" data-title="r5c0">30</td><td class="available" data-title="r5c1">31</td><td class="off available" data-title="r5c2">1</td><td class="off available" data-title="r5c3">2</td><td class="off available" data-title="r5c4">3</td><td class="off available" data-title="r5c5">4</td><td class="weekend off available" data-title="r5c6">5</td></tr></tbody></table></div></div><div class="calendar right" style="display: none;"><div class="daterangepicker_input"><input class="input-mini form-control" type="text" name="daterangepicker_end" value="" style="display: none;"><i class="fa fa-calendar glyphicon glyphicon-calendar" style="display: none;"></i><div class="calendar-time" style="display: none;"><div></div><i class="fa fa-clock-o glyphicon glyphicon-time"></i></div></div><div class="calendar-table"><table class="table-condensed"><thead><tr><th></th><th colspan="5" class="month">Nov 2016</th><th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="weekend off available" data-title="r0c0">30</td><td class="off available" data-title="r0c1">31</td><td class="available" data-title="r0c2">1</td><td class="available" data-title="r0c3">2</td><td class="available" data-title="r0c4">3</td><td class="available" data-title="r0c5">4</td><td class="weekend available" data-title="r0c6">5</td></tr><tr><td class="weekend available" data-title="r1c0">6</td><td class="available" data-title="r1c1">7</td><td class="available" data-title="r1c2">8</td><td class="available" data-title="r1c3">9</td><td class="available" data-title="r1c4">10</td><td class="available" data-title="r1c5">11</td><td class="weekend available" data-title="r1c6">12</td></tr><tr><td class="weekend available" data-title="r2c0">13</td><td class="available" data-title="r2c1">14</td><td class="available" data-title="r2c2">15</td><td class="available" data-title="r2c3">16</td><td class="available" data-title="r2c4">17</td><td class="available" data-title="r2c5">18</td><td class="weekend available" data-title="r2c6">19</td></tr><tr><td class="weekend available" data-title="r3c0">20</td><td class="available" data-title="r3c1">21</td><td class="available" data-title="r3c2">22</td><td class="available" data-title="r3c3">23</td><td class="available" data-title="r3c4">24</td><td class="available" data-title="r3c5">25</td><td class="weekend available" data-title="r3c6">26</td></tr><tr><td class="weekend available" data-title="r4c0">27</td><td class="available" data-title="r4c1">28</td><td class="available" data-title="r4c2">29</td><td class="available" data-title="r4c3">30</td><td class="off available" data-title="r4c4">1</td><td class="off available" data-title="r4c5">2</td><td class="weekend off available" data-title="r4c6">3</td></tr><tr><td class="weekend off available" data-title="r5c0">4</td><td class="off available" data-title="r5c1">5</td><td class="off available" data-title="r5c2">6</td><td class="off available" data-title="r5c3">7</td><td class="off available" data-title="r5c4">8</td><td class="off available" data-title="r5c5">9</td><td class="weekend off available" data-title="r5c6">10</td></tr></tbody></table></div></div><div class="ranges" style="display: none;"><div class="range_inputs"><button class="applyBtn btn btn-sm btn-success" type="button">Apply</button> <button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button></div></div></div>
 
                         <fieldset>
@@ -759,26 +767,22 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                           </div>
                         </fieldset>
                          <input id="cd" class="form-control col-md-7 col-xs-12" type="hidden" name="cd" value="2017-11-16">
-                      </div> <br/> 
-                      
-<br/>
-<br/>
-              <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Cheque):<span class="required">*</span>
-                        </label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="chequeAP" class="form-control col-md-7 col-xs-12" type="number" name="chequeAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Cheque")%>">
-                        </div>
+                      </div> 
+              
                       </div>
                    
-                   <div class="form-group Swipe bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+               <!--     <div class="form-group Swipe bankdet" style="display: none;padding-left: 38px; padding-right: 50px;padding-top: 20px;padding-bottom: 50px;border: 1px solid rgba(128, 128, 128, 0.2);margin-bottom: 2%; background-color: rgb(247, 247, 247);">
+                        <b> <p id="Swipelabel"></p> </b> -->
+                        <div class="form-group Swipe bankdet" style="display: none; padding: 20px 50px 50px 38px;/* border: 1px solid rgba(128, 128, 128, 0.2); *//* margin-bottom: 2%; *//* background-color: rgb(247, 247, 247); */">
                         <b> <p id="Swipelabel"></p> </b>
                       
-                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-left:1%;width:200px;">Amount Paid(Swipe):<span class="required">*</span>
+                       <label class="control-label col-md-2 col-sm-2 col-xs-5" style="margin-top:1%;margin-left:1%;width:200px;">Amount Paid(Swipe):<span class="required">*</span>
                         </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="swipeAP" class="form-control col-md-7 col-xs-12" type="number" name="swipeAP" onchange="calculateTotalAP();" min="0" value="<%=resultSet.getString("Swipe")%>">
                         </div> 
                     </div>      
+                    </div>
                                       
                         
    <div class="form-group" style="margin-top:3%;">
@@ -948,10 +952,17 @@ e.printStackTrace();
                
  </div>
   </div>
-   </div>
-    </div>
+
    
-    
+          <footer>
+          <div class="pull-right">
+            KK Heavy Machinery 
+          <!--    <button type="button" class="btn btn-success " onclick="hideprices()">Hide </button> -->
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+      </div>
+    </div>
            
 
     <!-- jQuery -->
@@ -1726,7 +1737,7 @@ $(document).ready(function() {
 		  		
 		  		if(checkedTypes[i]=="Neft")
 		  		{
-			  		labelname=j+". Bank Transfer(NEFT/RTGS)" + " Details"; 		  
+			  		labelname=j+". NEFT/RTGS" + " Details"; 		  
 		  		}
 		  		else
 		  		{
@@ -1827,7 +1838,7 @@ $(document).ready(function() {
 	 $("." + lbl).show();
 	 document.getElementById("neftAP").required='true';
 	 lblId= lbl+"label";
-	 lablnme=k+". Bank Transfer(NEFT/RTGS)" + " Details"; 
+	 lablnme=k+". NEFT/RTGS" + " Details"; 
 	 document.getElementById(lblId).innerHTML=lablnme;
 	 k++;
  	 }
