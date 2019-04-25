@@ -551,6 +551,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                       
                         	   cp=rs.getString("BillDetails.CostPrice");
                         	   double total=Double.parseDouble(cp) * bqty;
+                        	   String bal=resultSet.getString("BalanceAmount");
                         	   
 	%>
 
@@ -564,8 +565,8 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><input type="number" class=" qnty disable4Credit" step="any"  id="nq<%=i %>" name="nq<%=i %>" value=<%=bqty%> onchange="calculate(<%=i %>)" >   
                <%--  <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" max="<%=bqty%>">  --%>
           <%--        <input type="hidden" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid")%> > --%>
-                <input type="hidden" id="ba" name="ba" value=<%=resultSet.getString("BalanceAmount")%> > 
-         
+                <input type="hidden" id="ba" name="ba" value=<%=bal%> > 
+           <input type="hidden" id="oldba" name="oldba" value=<%=bal%> > 
                 <input type="hidden" id="q<%=i %>" name="q<%=i %>" value=<%=bqty%> > 
                <%--  <input type="hidden" id="cp<%=i %>" name="cp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > --%>
                  <input type="hidden" id="bid<%=i %>" name="bid<%=i %>" value=<%=i%> >
@@ -1234,8 +1235,14 @@ function chsn(i)
 		 	return true;
 		}
 	 } */
-	 var transtype=$("input[name='transtype']:checked"). val();
+	 //var transtype=$("input[name='transtype']:checked"). val();
 	 var uncheckedTypes = [];  
+	 var checkedTypes = [];
+
+     	$.each($("input[name='transtype']:checked"), function(){            
+     		checkedTypes.push($(this).val());
+     });
+     
 	   var flag=false;
 	 	$.each($("input[name='transtype']:not(:checked)"), function(){            
 	 		uncheckedTypes.push($(this).val());
@@ -1255,7 +1262,7 @@ function chsn(i)
 		  creditTrans=true;
 	  }
 	}
-	//alert("creditTrans: "+creditTrans);
+
 	 if(uncheckedTypes.length==4)
 	 {
 	 		document.getElementById("cashAP").value="";
@@ -1315,10 +1322,39 @@ function chsn(i)
 	 		{
 	 			amountpaid="0";
 	 		}
-	 		if(transtype!=null && transtype!="")
+	 		if(checkedTypes.length!=0)
 			{ 
 				if(creditTrans==false)
 				{
+					
+			        	for(var i=0;i<checkedTypes.length;i++)
+					{ 				 	
+				 		var label="";
+				  		
+			         	if(checkedTypes[i]=="Cash")
+			    		 	{
+			        	    		label = "cashAP";
+			    		 	}
+			         	else if(checkedTypes[i]=="Neft")
+			         	{ 
+			         		label = "neftAP";
+			         	}
+			         	else if(checkedTypes[i]=="Cheque")
+			         	{ 
+			         		label = "chequeAP";
+			         	}
+			          	else if(checkedTypes[i]=="Swipe")
+			         	{ 
+			          		label = "swipeAP";
+			         	}
+
+				  	if(document.getElementById(label).value==0)
+				  	{
+				  		alert("Please enter valid Amount Paid(" +checkedTypes[i] +")");
+				  		return;
+				  	}
+					}
+										
 					if(parseFloat(amountpaid)<parseFloat(ftotal))
 				 	{
 				 		alert("Amount paid cannot be less than Final Total. Convert to 'Credit'");

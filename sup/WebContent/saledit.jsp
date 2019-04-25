@@ -40,6 +40,7 @@ try{
 
     String branch = request.getParameter("branch");
     String ba = request.getParameter("ba");
+    String oldba = request.getParameter("oldba");
     String dc = request.getParameter("dcno");
     String cname = request.getParameter("cusnam");
     String cno = request.getParameter("cusno");
@@ -128,7 +129,7 @@ Date ndate=df.parse(dt);
     String dis=request.getParameter("dis");
     String s1="";
     int Pid=Integer.parseInt(recordToUpdate);
-    double oldBal=Double.parseDouble(ba);
+    double oldBal=Double.parseDouble(oldba);
     int tax=Integer.parseInt(tx);
     int disc=Integer.parseInt(dis);
     int code=0;
@@ -270,6 +271,7 @@ Date ndate=df.parse(dt);
  
    	   newOB=newBalAmt-oldBal;
    	//System.out.println("newBalAmt: " +newBalAmt);
+   //	System.out.println("oldBal: " +oldBal);
 	//System.out.println("newOB: " +newOB);
 
        if(creditCustId!="" && creditCustId!=null)
