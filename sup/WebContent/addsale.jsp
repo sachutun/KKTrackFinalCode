@@ -165,6 +165,7 @@ xmlHttp.send(null);
 	 		document.getElementById('GSTdiv').style.visibility = 'visible';
 	        document.getElementById('GSTLabel').style.visibility = 'visible';
 	        document.getElementById('GST').required = 'true';
+	    	document.getElementById('taxInvoice').checked=true;
 	 	 }
 	 	 else
 	 	 {
@@ -173,6 +174,7 @@ xmlHttp.send(null);
 	        document.getElementById('GST').value = '';
 	    		document.getElementById('GSTdiv').style.visibility = 'hidden';
 	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+	    	document.getElementById('generalInvoice').checked=true;
 	 	 }
 	  }   
 	  }
@@ -1059,14 +1061,14 @@ function creditCheck() {
       	$("#customernumber").prop('readonly', false); 
       	$("#creditCustId").prop('required',false);
       	document.getElementById("creditMsg").innerHTML = "";
-      	document.getElementById('generalInvoice').checked=true;
-        document.getElementById('GSTdiv').style.visibility = 'hidden';
-        document.getElementById('GSTLabel').style.visibility = 'hidden';
+      	//document.getElementById('generalInvoice').checked=true;
+       // document.getElementById('GSTdiv').style.visibility = 'hidden';
+      //  document.getElementById('GSTLabel').style.visibility = 'hidden';
        // $("#GST").prop('readonly', false); 
    		$("#aadhaar").prop('readonly', false); 
    	    $("#customername").val("");
 		    $("#customernumber").val("");
-		    $("#GST").val("");
+		//    $("#GST").val("");
      
     	}
 

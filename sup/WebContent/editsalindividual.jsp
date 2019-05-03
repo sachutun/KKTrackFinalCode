@@ -505,7 +505,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
 <td><strong> TotalPrice: </strong><input class="col-md-12" type="text" style="border:none;" id="totalprice" name="totalprice" value="<%=resultSet.getFloat("TotalPrice") %> "> </td>
-<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %> onchange="balcalc()"></td>
+<td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" readOnly value=<%=resultSet.getString("AmountPaid") %> onchange="balcalc()"></td>
 <td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %> onchange="calculatetax()"></td>
 <td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %> onchange="calculatedis()"></td></tr>
 
@@ -807,12 +807,12 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 %>
 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;"> UN-REG Invoice:</label>
 <div class="col-md-1 col-sm-1 col-xs-3" >
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general">
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="generalInvoice" value="general">
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		  <div class="col-md-1 col-sm-1 col-xs-3" >
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax" checked>
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="taxInvoice" value="tax" checked>
                        		 </div> 
                        		 
                        		 <label id="GSTLabel" style="width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
@@ -827,12 +827,12 @@ gst ="";
 %>
 	<label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:125px;padding-left: 0px;">UN-REG Invoice:</label>
 <div class="col-md-1 col-sm-1 col-xs-3">
-                          		<input type="radio" onclick="javascript:invoiceCheck();" name="generalInvoice" id="generalInvoice" value="general" checked>
+                          		<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="generalInvoice" value="general" checked>
                         		</div>
                         
                        		 <label class="control-label col-md-2 col-sm-2 col-xs-3" style="width:100px;">REG Invoice:</label>
                        		  <div class="col-md-1 col-sm-1 col-xs-3">
-                        			<input type="radio" onclick="javascript:invoiceCheck();" name="taxInvoice" id="taxInvoice" value="tax">
+                        			<input type="radio" onclick="javascript:invoiceCheck();" name="invoiceType" id="taxInvoice" value="tax">
                        		 </div> 
                        		 
                        		 <label id="GSTLabel" style="visibility:hidden;width:150px;" class="control-label col-md-2 col-sm-2 col-xs-3">Customer GST No:*</label>
@@ -1013,7 +1013,9 @@ e.printStackTrace();
 </script>
  <script type="text/javascript">
 function invoiceCheck() {
-if (document.getElementById('taxInvoice').checked) {
+	var invoiceType=$("input[name='invoiceType']:checked"). val();
+	//alert(invoiceType);
+    if (invoiceType=="tax") {
     document.getElementById('GSTdiv').style.visibility = 'visible';
     document.getElementById('GSTLabel').style.visibility = 'visible';
     document.getElementById('GST').required = 'true';
