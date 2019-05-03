@@ -79,8 +79,8 @@ try{
     String ba=values.get(2);
 
     int d=Integer.parseInt(recordToUpdate);
-    double bala=Double.parseDouble(ba);
-    double ftot=0;
+    float bala=Float.parseFloat(ba);
+    float ftot=0;
     int code=0;
     int cost=0;
     float qty=0;
@@ -132,7 +132,7 @@ try{
      billid=Integer.parseInt(bid);
    /*  String up=Integer.toString(d);  */
     //totalp is total price of item being deleted
-   double totalp=Double.parseDouble(totp);
+   float totalp=Float.parseFloat(totp);
  
     //if new quantity> q i.e. more items
     String s3= "";
@@ -165,8 +165,8 @@ try{
     //System.out.println(s3);
     
     preparedStatement = conn.prepareStatement("UPDATE `Purchases` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-? WHERE Id=?");
-    preparedStatement.setDouble(1,cost*qty);
-    preparedStatement.setDouble(2,cost*qty);
+    preparedStatement.setFloat(1,cost*qty);
+    preparedStatement.setFloat(2,cost*qty);
     preparedStatement.setInt(3,d);
     preparedStatement.executeUpdate(); 
     //System.out.println(s1);

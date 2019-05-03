@@ -43,7 +43,7 @@
 		String cp = request.getParameter("cp");
 		String code = request.getParameter("code");
 		String notes = request.getParameter("notes");
-		double discount=0;
+		float discount=0;
 		String creditCustId="";
 		boolean saleDeleteFlag=false;
 
@@ -84,18 +84,18 @@
 		//System.out.println("Select * from Sale where Date='"+date+"'and Branch='"+branch+"'and DCNumber='"+invNo+"'");   
 		rs1 = st.executeQuery("Select * from Sale where Date='" + date + "'and Branch='" + branch
 				+ "'and DCNumber='" + invNo + "'");
-		double totalprice = 0;
-		//double balanceamount = 0;
-		double tax = 0;
+		float totalprice = 0;
+		//float balanceamount = 0;
+		float tax = 0;
 		if (rs1.next()) {
 
 			Id = rs1.getInt("Id");
 			creditCustId=rs1.getString("CustID");
-			discount=rs1.getDouble("Discount");
+			discount=rs1.getFloat("Discount");
 			//System.out.println("creditCustId" +creditCustId);
 	
-			totalprice = (Double.parseDouble(cp) * (Double.parseDouble(qty)));
-			tax = 0.18*totalprice;
+			totalprice = (Float.parseFloat(cp) * (Float.parseFloat(qty)));
+			tax =(float)(0.18*totalprice);
 			
 			totalprice=totalprice+tax;
 			//System.out.println("tax: " +tax);
@@ -133,9 +133,9 @@
 		{
 			// System.out.println("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?,`Tax`=`Tax`-?  WHERE Id= "+totalprice +" " +totalprice +" "+Id);
 			ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?, `Tax`=`Tax`-? WHERE Id=?");
-			ps3.setDouble(1, totalprice);
-			ps3.setDouble(2, totalprice);
-			ps3.setDouble(3, tax);
+			ps3.setFloat(1, totalprice);
+			ps3.setFloat(2, totalprice);
+			ps3.setFloat(3, tax);
 			ps3.setInt(4, Id);
 			ps3.executeUpdate();
 			//System.out.println("Hi"+totalprice);
@@ -158,7 +158,7 @@
 			String s="UPDATE `Debtors` SET `OB`=`OB`-"+(totalprice)+" WHERE CustId="+creditCustId;
 			//System.out.println("all checked: " +s);
 			     ps4 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-			     ps4.setDouble(1,totalprice);
+			     ps4.setFloat(1,totalprice);
 			     ps4.setString(2,creditCustId);
 			     ps4.executeUpdate();
 			     

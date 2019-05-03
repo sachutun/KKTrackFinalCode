@@ -113,7 +113,7 @@ preparedStatement.setString(2,branch);
 preparedStatement.setFloat(3,q[i]);
 preparedStatement.setFloat(4,q[i]);
 preparedStatement.executeUpdate(); 
-ft+=Double.parseDouble(totalprice[i]);
+ft+=Float.parseFloat(totalprice[i]);
 
 int minp=(Integer.parseInt(costprice[i])+((5*Integer.parseInt(costprice[i]))/100));
 
@@ -140,7 +140,7 @@ String s="UPDATE `Purchases` SET `TotalPrice`=`TotalPrice`+?,`BalanceAmount`=Tot
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement2 = connection.prepareStatement(s);
-preparedStatement2.setDouble(1,ft);
+preparedStatement2.setFloat(1,ft);
 preparedStatement2.setString(2,id);
 preparedStatement2.executeUpdate();  
  

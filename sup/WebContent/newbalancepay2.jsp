@@ -40,14 +40,14 @@ try{
     String custId = request.getParameter("custId"); 
     int d=Integer.parseInt(recordToUpdate);
     float bala=Float.parseFloat(ba);
-//     double totalPrice = Double.parseDouble(totPrice);
-    double ftot=0;
+//     float totalPrice = Float.parseFloat(totPrice);
+    float ftot=0;
     float iftot=Float.parseFloat(tp);
     //System.out.println();
     float totalQty=0;
     String s4="SELECT * FROM BillDetails WHERE DC="+d;
-    double rtx=0;
-    double frtx=0;
+    float rtx=0;
+    float frtx=0;
     /* Context context = new InitialContext();
     Context envCtx = (Context) context.lookup("java:comp/env");
     ds =  (DataSource)envCtx.lookup("jdbc/KKTrack");
@@ -116,13 +116,13 @@ try{
     
     //return tax amount
     	
-    	 rtx=returncost*0.18;
+    	 rtx=(float)(returncost*0.18);
     frtx+=rtx;
     //new total - total to update in BillDetails
-    double totalp=cost*qty;
+    float totalp=cost*qty;
     
     //diff to subtract from Sale total - Sale=Sale-diff
-    double diff=itotalp-totalp;
+    float diff=itotalp-totalp;
     //System.out.println("diff: " +diff);
     //System.out.println("qty: " +qty);
     //System.out.println("totalQty: " +totalQty);
@@ -151,7 +151,7 @@ try{
   String s2="UPDATE `BillDetails` SET `Total`="+totalp+",`Qty`="+qty+" WHERE Id="+billid;
   //System.out.println(s2);
      ps = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=? WHERE Id=?");
-    ps.setDouble(1,totalp);
+    ps.setFloat(1,totalp);
     ps.setFloat(2,qty);
     ps.setInt(3,billid);
     ps.executeUpdate();   
@@ -172,7 +172,7 @@ try{
 	String s="UPDATE `Debtors` SET `OB`=`OB`-"+(diff+rtx)+" WHERE CustId="+custId;
 	System.out.println(s);
 	     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-	     ps1.setDouble(1,(diff+rtx));
+	     ps1.setFloat(1,(diff+rtx));
 	     ps1.setString(2,custId);
 	     ps1.executeUpdate();
 	     
@@ -181,15 +181,15 @@ try{
    
    
        } 
-      	double finaltot=iftot-ftot-frtx;  
+      	float finaltot=iftot-ftot-frtx;  
     	bala=finaltot-Float.parseFloat(ap);
      	
        String s1= "UPDATE `Sale` SET `TotalPrice`="+finaltot+",`BalanceAmount`="+bala+" WHERE Id="+d;
        System.out.println(s1);
        preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?, `Tax`=`Tax`-? WHERE Id=?");
-       preparedStatement.setDouble(1,finaltot);
-       preparedStatement.setDouble(2,bala);
-       preparedStatement.setDouble(3,frtx);
+       preparedStatement.setFloat(1,finaltot);
+       preparedStatement.setFloat(2,bala);
+       preparedStatement.setFloat(3,frtx);
        preparedStatement.setInt(4,d);
        preparedStatement.executeUpdate(); 
   
@@ -203,14 +203,14 @@ try{
    			String s="UPDATE `Debtors` SET `OB`=`OB`-"+(bala)+" WHERE CustId="+custId;
    			//System.out.println("subtract rem bal  " +s);
    	     	ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-   	     	ps1.setDouble(1,bala);
+   	     	ps1.setFloat(1,bala);
    	     	ps1.setString(2,custId);
    	     	ps1.executeUpdate();
       	}
    	  		String s2= "UPDATE `Sale` SET `TotalPrice`="+0+",`Tax`="+0+" ,`Discount`="+0+" WHERE Id="+d;
       		//System.out.println(s2);
       		ps3 = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`Tax`=?,`Discount`=? WHERE Id=?");
-      		ps3.setDouble(1,0);
+      		ps3.setFloat(1,0);
 			ps3.setInt(2,0);
       		ps3.setInt(3,0);
       		ps3.setInt(4,d);

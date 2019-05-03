@@ -533,13 +533,13 @@ while(resultSet.next()){
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
 	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
 	String tx= resultSet.getString("Tax");
-	double tax=0;
-	double cgst=0;
-	double sgst=0;
+	float tax=0;
+	float cgst=0;
+	float sgst=0;
 	String taxValue="";
 	if(!tx.equals("0"))
 	{
-	tax=Double.parseDouble(tx);
+	tax=Float.parseFloat(tx);
     cgst=tax/2;
     sgst=tax/2;
 	}
@@ -625,7 +625,7 @@ swipe=resultSet.getString("Swipe");
 <td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
 
-<td class=" admin price"><%=rs.getDouble("BillDetails.CostPrice")+rs.getDouble("BillDetails.CostPrice")*(0.18)%></td>
+<td class=" admin price"><%=rs.getFloat("BillDetails.CostPrice")+rs.getFloat("BillDetails.CostPrice")*(0.18)%></td>
 <td class="admin price"><%=rs.getString("BillDetails.LC") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
 

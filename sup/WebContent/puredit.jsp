@@ -40,15 +40,15 @@ try{
     String s1="";
     int Pid=Integer.parseInt(recordToUpdate);
     int tax=Integer.parseInt(tx);
-    double bala=Double.parseDouble(ba);
+    float bala=Float.parseFloat(ba);
     int code=0;
-    double newcp=0; 
-    double oldcp=0;
+    float newcp=0; 
+    float oldcp=0;
     float oq=0;
     float nq=0;
-    double ap=0;
+    float ap=0;
     int billid=0;
-    double ftot=0;
+    float ftot=0;
     String s4="SELECT * FROM InvoiceDetails WHERE INo="+Pid;
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy"); 
     Date startDate;
@@ -104,13 +104,13 @@ try{
    /*  System.out.println(newq+","+ncp+","+ocp+","+oldq+","+bid+","+cod+","+oldftp);   */
     float diffq=0;
      code=Integer.parseInt(cod);
-     newcp=Double.parseDouble(ncp);
-     oldcp=Double.parseDouble(ocp);
+     newcp=Float.parseFloat(ncp);
+     oldcp=Float.parseFloat(ocp);
      oq=Float.parseFloat(oldq);
      nq=Float.parseFloat(newq);
-     ap=Double.parseDouble(amtpaid);
-     double oldftotalp=Double.parseDouble(oldftp);
-     double newtotalp=0;
+     ap=Float.parseFloat(amtpaid);
+     float oldftotalp=Float.parseFloat(oldftp);
+     float newtotalp=0;
      
      billid=Integer.parseInt(bid);
 
@@ -149,21 +149,21 @@ try{
  String s2="UPDATE `InvoiceDetails` SET `TotalPrice`="+newtotalp+",`Qty`="+nq+", `Price`="+newcp+"  WHERE Id="+billid;
   
     preparedStatement = conn.prepareStatement("UPDATE `InvoiceDetails` SET `TotalPrice`=?,`Qty`=?, `Price`=?, `USD`=?  WHERE Id=?");
-    preparedStatement.setDouble(1,newtotalp);
+    preparedStatement.setFloat(1,newtotalp);
     preparedStatement.setFloat(2,nq);
-    preparedStatement.setDouble(3,newcp);
+    preparedStatement.setFloat(3,newcp);
     preparedStatement.setString(4,nusd);
     preparedStatement.setInt(5,billid);
     preparedStatement.executeUpdate();  
    
-    double minp=(newcp+(10*newcp)/100);
+    float minp=(newcp+(10*newcp)/100);
 
     String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
     /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
     /* System.out.println(s); */
     preparedStatement2 = conn.prepareStatement(s);
-    preparedStatement2.setDouble(1,newcp);
-    preparedStatement2.setDouble(2,minp);
+    preparedStatement2.setFloat(1,newcp);
+    preparedStatement2.setFloat(2,minp);
     preparedStatement2.setString(3,nusd);
     preparedStatement2.setInt(4,code);
     preparedStatement2.executeUpdate();  
@@ -185,13 +185,13 @@ try{
       
       /*  System.out.println(tax); */
        ps = conn.prepareStatement("UPDATE `Purchases` SET `TotalPrice`=?,`BalanceAmount`=?, `SupplierName`=?, `SupplierNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=? WHERE Id=?");
-       ps.setDouble(1,ftot);
-       ps.setDouble(2,ftot-ap);
+       ps.setFloat(1,ftot);
+       ps.setFloat(2,ftot-ap);
        ps.setString(3,sname);
        ps.setString(4,sno);
-       ps.setDouble(5,ap);
+       ps.setFloat(5,ap);
        ps.setString(6,nd);
-       ps.setDouble(7,tax);
+       ps.setFloat(7,tax);
        ps.setInt(8,Pid);
        ps.executeUpdate();    
        

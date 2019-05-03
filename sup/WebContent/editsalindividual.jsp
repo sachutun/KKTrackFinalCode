@@ -504,7 +504,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 %>
 <td><strong> Customer Name: </strong><input class="col-md-12" type="text" id="cusnam" name="cusnam" value="<%=resultSet.getString("CustomerName") %> "></td>
 <td><strong> Customer No: </strong><input class="col-md-10" type="number" id="cusno" name="cusno" value="<%=resultSet.getString("CustomerNumber") %>" maxlength = "10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></td>
-<td><strong> TotalPrice: </strong><input class="col-md-12" type="text" style="border:none;" id="totalprice" name="totalprice" value="<%=resultSet.getDouble("TotalPrice") %> "> </td>
+<td><strong> TotalPrice: </strong><input class="col-md-12" type="text" style="border:none;" id="totalprice" name="totalprice" value="<%=resultSet.getFloat("TotalPrice") %> "> </td>
 <td><strong> Amount Paid: </strong><input class="col-md-8 disable4Credit" type="number" id="ap" name="ap" value=<%=resultSet.getString("AmountPaid") %> onchange="balcalc()"></td>
 <td><strong> Tax Amount: </strong><input class="col-md-8 disable4Credit" type="number"  id="tax" name="tax" value=<%=resultSet.getString("Tax") %> onchange="calculatetax()"></td>
 <td><strong> Discount: </strong><input class="col-md-8 disable4Credit" type="number" id="dis" name="dis" min="0" value=<%=resultSet.getString("Discount") %> onchange="calculatedis()"></td></tr>
@@ -550,7 +550,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         	   String cp="";
                       
                         	   cp=rs.getString("BillDetails.CostPrice");
-                        	   double total=Double.parseDouble(cp) * bqty;
+                        	   float total=Float.parseFloat(cp) * bqty;
                         	   String bal=resultSet.getString("BalanceAmount");
                         	   
 	%>
@@ -574,7 +574,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                 <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
                 <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("BillDetails.CostPrice")%> > 
-                <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
+                <input type="hidden" id="tp" name="tp" value=<%=resultSet.getFloat("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
                <input type="hidden" id="total<%=i %>" name="total<%=i %>" value=<%=total %>>  
        
@@ -584,7 +584,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                  <input type="hidden" id="ddd" name="ddd" value=<%=cn%> >  
                <input type="hidden"  name="ids[]" class="billIds"  value="<%=i %>" />
 </td>
-<%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
+<%-- <td style="width: 10%;"><a href="delsal.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&dc=<%=dc%>&sd=<%=cn%>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("BillDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("BillDetails.CostPrice")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getFloat("TotalPrice") %>&i=<%=i %>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
 
 <%--  <td><button onclick="f(<%=i%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td> --%>
 
@@ -629,7 +629,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
  list.add(resultSet.getString("BalanceAmount"));
  list.add(rs.getString("BillDetails.Code"));
  list.add(rs.getString("BillDetails.CostPrice"));
- list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
+ list.add(String.valueOf(resultSet.getFloat("TotalPrice")));
  list.add(String.valueOf(i));
  list.add(custId);
  list.add(existingtype);

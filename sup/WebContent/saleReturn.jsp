@@ -431,7 +431,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("DCNumber") %></td>
 <td><%=resultSet.getString("CustomerName") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><a href="addsalereturn.jsp?dc=<%=resultSet.getString("DCNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Return Item </button></a></td> 
@@ -464,9 +464,9 @@ while(resultSet.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
-<td class="price"><%=rs.getDouble("BillDetails.CostPrice") %></td>
+<td class="price"><%=rs.getFloat("BillDetails.CostPrice") %></td>
 <td><%=rs.getFloat("BillDetails.Qty") %></td>
-<td class="price"><%=rs.getDouble("BillDetails.Total") %></td>
+<td class="price"><%=rs.getFloat("BillDetails.Total") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>

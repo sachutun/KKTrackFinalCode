@@ -64,16 +64,16 @@ try{
    /*  String up=Integer.toString(d);  */
     
     //initial total
-    double itotalp=cost*qty;
+    float itotalp=cost*qty;
     
     //after return
     qty-=damage+excess;
     
     //new total - total to update in BillDetails
-    double totalp=cost*qty;
+    float totalp=cost*qty;
     
     //diff to subtract from Sale total - Sale=Sale-diff
-    double diff=itotalp-totalp;
+    float diff=itotalp-totalp;
     
     //bal amt = bal amt- diff
     		
@@ -111,13 +111,13 @@ try{
     st2=conn.createStatement();
    
    preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=? WHERE Id=?");
-    preparedStatement.setDouble(1,diff);
+    preparedStatement.setFloat(1,diff);
     preparedStatement.setInt(2,bala);
     preparedStatement.setInt(3,d);
     preparedStatement.executeUpdate(); 
     
     ps = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=? WHERE Id=?");
-    ps.setDouble(1,totalp);
+    ps.setFloat(1,totalp);
     ps.setFloat(2,qty);
     ps.setInt(3,billid);
     ps.executeUpdate();  

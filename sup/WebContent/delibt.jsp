@@ -131,7 +131,7 @@ try{
     
     while(resultSet.next())
     {
-    	double t=resultSet.getInt("TotalQty");
+    	float t=resultSet.getInt("TotalQty");
     	
     	if (t==0)
     	{

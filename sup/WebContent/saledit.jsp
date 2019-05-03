@@ -129,18 +129,18 @@ Date ndate=df.parse(dt);
     String dis=request.getParameter("dis");
     String s1="";
     int Pid=Integer.parseInt(recordToUpdate);
-    double oldBal=Double.parseDouble(oldba);
+    float oldBal=Float.parseFloat(oldba);
     int tax=Integer.parseInt(tx);
     int disc=Integer.parseInt(dis);
     int code=0;
-    double newcp=0; 
-    double oldcp=0;
+    float newcp=0; 
+    float oldcp=0;
     float oq=0;
     float nq=0;
-    double ap=0;
+    float ap=0;
     int billid=0;
-    double ftot=0;
-    double newOB=0;
+    float ftot=0;
+    float newOB=0;
     String sql1="";
     String s4="SELECT * FROM BillDetails WHERE DC="+Pid;
    
@@ -170,7 +170,7 @@ Date ndate=df.parse(dt);
 	    conn = DriverManager.getConnection(url, username, password);
        st2=conn.createStatement();
        resultSet = st2.executeQuery(s4);
-       double newBalAmt=0;
+       float newBalAmt=0;
        while (resultSet.next())
        {
        int sn=resultSet.getInt("Id");
@@ -188,13 +188,13 @@ Date ndate=df.parse(dt);
 
     float diffq=0;
      code=Integer.parseInt(cod);
-     newcp=Double.parseDouble(ncp);
-     oldcp=Double.parseDouble(ocp);
+     newcp=Float.parseFloat(ncp);
+     oldcp=Float.parseFloat(ocp);
      oq=Float.parseFloat(oldq);
      nq=Float.parseFloat(newq);
-     ap=Double.parseDouble(amp);
-     double oldftotalp=Double.parseDouble(oldftp);
-     double newtotalp=0;
+     ap=Float.parseFloat(amp);
+     float oldftotalp=Float.parseFloat(oldftp);
+     float newtotalp=0;
    
      //oldbalamt=oldftotalp-ap
     		 
@@ -244,9 +244,9 @@ Date ndate=df.parse(dt);
 //System.out.println(s2);
 
     preparedStatement = conn.prepareStatement("UPDATE `BillDetails` SET `Total`=?,`Qty`=?, `CostPrice`=?  WHERE Id=?");
-    preparedStatement.setDouble(1,newtotalp);
+    preparedStatement.setFloat(1,newtotalp);
     preparedStatement.setFloat(2,nq);
-    preparedStatement.setDouble(3,newcp);
+    preparedStatement.setFloat(3,newcp);
     preparedStatement.setInt(4,billid);
     preparedStatement.executeUpdate();  
   
@@ -279,11 +279,11 @@ Date ndate=df.parse(dt);
     	    s1="UPDATE `Sale` SET `TotalPrice`="+ftot+",`BalanceAmount`="+newBalAmt+",`CustomerName`="+cname+", `CustomerNumber`="+cno+", `AmountPaid`="+ap+", `Date`="+nd+", `Tax`="+tx+", `Discount`="+dis+", `Comments`="+com+" , `GST`="+gst+", `CustID`="+creditCustId+", `Type`="+type+", `TaxType`="+taxtype+", `Cash`="+cashAP+", `Neft`="+neftAP+", `Cheque`="+chequeAP+", `Swipe`="+swipeAP+" WHERE Id="+Pid;
     	       System.out.println(s1);
        	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=? , `CustID`=?, `Type`=? , `TaxType`=? , `Cash`=?, `Neft`=?, `Cheque`=?, `Swipe`=?  WHERE Id=?");
-       ps.setDouble(1,ftot);
-       ps.setDouble(2,newBalAmt);
+       ps.setFloat(1,ftot);
+       ps.setFloat(2,newBalAmt);
        ps.setString(3,cname);
        ps.setString(4,cno);
-       ps.setDouble(5,ap);
+       ps.setFloat(5,ap);
        ps.setString(6,nd);
        ps.setString(7,tx);
        ps.setString(8,dis);
@@ -305,11 +305,11 @@ Date ndate=df.parse(dt);
  	       //System.out.println(s1);
     	       System.out.println(s1);
     	 	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=?,`BalanceAmount`=?,`CustomerName`=?, `CustomerNumber`=?, `AmountPaid`=?, `Date`=?, `Tax`=?, `Discount`=?, `Comments`=? , `GST`=?, `Type`=? ,`TaxType`=?, `Cash`=?, `Neft`=?, `Cheque`=?, `Swipe`=?  WHERE Id=?");
-    	       ps.setDouble(1,ftot);
-    	       ps.setDouble(2,newBalAmt);
+    	       ps.setFloat(1,ftot);
+    	       ps.setFloat(2,newBalAmt);
     	       ps.setString(3,cname);
     	       ps.setString(4,cno);
-    	       ps.setDouble(5,ap);
+    	       ps.setFloat(5,ap);
     	       ps.setString(6,nd);
     	       ps.setString(7,tx);
     	       ps.setString(8,dis);
@@ -330,7 +330,7 @@ Date ndate=df.parse(dt);
     	   //System.out.println(s5);
     	  // System.out.println("existing credit cust: "+s5);
        ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
-       ps1.setDouble(1,newOB);
+       ps1.setFloat(1,newOB);
        ps1.setString(2,custId);
        ps1.executeUpdate(); 
        }
@@ -340,7 +340,7 @@ Date ndate=df.parse(dt);
     	   String s5="UPDATE `Debtors` SET `OB`=`OB`+" +newBalAmt+" WHERE CustId="+creditCustId; 
     	  // System.out.println("update s5: "+s5);
        ps3 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
-       ps3.setDouble(1,newBalAmt);
+       ps3.setFloat(1,newBalAmt);
        ps3.setString(2,creditCustId);
        ps3.executeUpdate();
        

@@ -366,7 +366,7 @@ while(resultSet.next()){
 <td><strong> InvoiceNo: </strong><%=resultSet.getString("InvoiceNumber") %></td>
 <td><strong>Supplier Name: </strong><input class="col-md-12" type="text" id="supnam" name="supnam" value= "<%=resultSet.getString("SupplierName") %>"></td>
 <td><strong>Supplier Number:</strong><input class="col-md-10" type="number" id="supno" name="supno" value= "<%=resultSet.getString("SupplierNumber") %>"></td>
-<td><strong>TotalPrice:</strong> <%=resultSet.getDouble("TotalPrice") %></td>
+<td><strong>TotalPrice:</strong> <%=resultSet.getFloat("TotalPrice") %></td>
 <td><strong>Amount Paid:</strong><input class="col-md-8" type="number" id="ap" name="ap" value= <%=resultSet.getString("AmountPaid") %>></td>
 <td><strong>Tax Amount:</strong><input class="col-md-8" type="number" id="tax" name="tax" value= <%=resultSet.getString("Tax") %>></td></tr>
 
@@ -429,12 +429,12 @@ while(resultSet.next()){
                 <input type="hidden" id="payid" name="payid" value=<%=primaryKey %> > 
                 <input type="hidden" id="branch" name="branch" value=<%=branch %> > 
                 <input type="hidden" id="ocp<%=i %>" name="ocp<%=i %>" value=<%=rs.getString("InvoiceDetails.Price")%> > 
-                <input type="hidden" id="tp" name="tp" value=<%=resultSet.getDouble("TotalPrice") %> > 
+                <input type="hidden" id="tp" name="tp" value=<%=resultSet.getFloat("TotalPrice") %> > 
                 <input type="hidden" id="i" name="i">  
                 <input type="hidden" id="date" name="date" value=<%=cn%> >  
                 <input type="hidden" id="dc" name="dc" value=<%=dc%> > 
 </td>
-<%-- <td style="width: 10%;"><a href="delpur.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("InvoiceDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("InvoiceDetails.Price")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getDouble("TotalPrice") %>&i=<%=i %>&dc=<%=dc%>&sd=<%=cn%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
+<%-- <td style="width: 10%;"><a href="delpur.jsp?deleteid=<%=primaryKey %>&branch=<%=branch %>&ba=<%=resultSet.getString("BalanceAmount")%>&code<%=i %>=<%=rs.getString("InvoiceDetails.Code")%>&q<%=i %>=<%=bqty%>&cp<%=i %>=<%=rs.getString("InvoiceDetails.Price")%>&bid<%=i %>=<%=i %>&tp=<%=resultSet.getFloat("TotalPrice") %>&i=<%=i %>&dc=<%=dc%>&sd=<%=cn%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a> </td> --%>
   <td>  <input type="checkbox" class="chkbox" name="checkboxRow" value="<%=i %>">   </td>   
 </tr>
  <%
@@ -445,7 +445,7 @@ while(resultSet.next()){
  list.add(String.valueOf(bqty));
  list.add(rs.getString("InvoiceDetails.Price"));
  list.add(String.valueOf(i));
- list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
+ list.add(String.valueOf(resultSet.getFloat("TotalPrice")));
  list.add(String.valueOf(i));
  list.add(dc); 
  list.add(cn);

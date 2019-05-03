@@ -40,9 +40,9 @@ try{
 //System.out.println(fbranch + " , " +dc+ " , " +sd+" , " +d);
     int code=0;
     float qty=0;
-    double tax=0;
-    double totp=0;
-    double ibtprice=0;
+    float tax=0;
+    float totp=0;
+    float ibtprice=0;
     int billid=0;
     String s4="SELECT * FROM IBTDetails WHERE INo="+d;
    
@@ -120,9 +120,9 @@ String[] selectedItemsArray=selectedItems.split(",");
   
   //updated prices
   
-  totp=ibtprice*qty+ibtprice*qty*0.18;
+  totp=(float)(ibtprice*qty+ibtprice*qty*0.18);
   
-  tax=ibtprice*qty*0.18;
+  tax=(float)(ibtprice*qty*0.18);
   
   //System.out.println(totp+","+tax);
   
@@ -178,8 +178,8 @@ String[] selectedItemsArray=selectedItems.split(",");
     
     preparedStatement = conn.prepareStatement("UPDATE `IBT` SET `TotalQty`=`TotalQty`-?, `TotalPrice`=`TotalPrice`-?, `tax`=`tax`-? WHERE Id=?");
     preparedStatement.setFloat(1,qty);
-    preparedStatement.setDouble(2,totp);
-    preparedStatement.setDouble(3,tax);
+    preparedStatement.setFloat(2,totp);
+    preparedStatement.setFloat(3,tax);
     preparedStatement.setInt(4,d);
     preparedStatement.executeUpdate(); 
   //  System.out.println("hi"+totp+","+tax);
@@ -189,7 +189,7 @@ String[] selectedItemsArray=selectedItems.split(",");
     
     while(resultSet.next())
     {
-    	double t=resultSet.getInt("TotalQty");
+    	float t=resultSet.getInt("TotalQty");
     	
     	if (t==0)
     	{

@@ -100,7 +100,7 @@ ResultSet rs2 = stmt2.executeQuery(s);
 
 
 while(rs2.next()){
-	 pp+=rs2.getDouble("Price");  
+	 pp+=rs2.getFloat("Price");  
 }
  b+=mac+","+des+","+part+","+min+","+max+","+grp+","+pp+","+iq+","+res+","+res2; 
  //System.out.println(b);

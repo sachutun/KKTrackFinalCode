@@ -270,7 +270,7 @@ if(branch!=null && dc!=null && cn!=null)
 {
 resultSet = statement.executeQuery(sql1);
 int sno=1;
-double finaltotal=0;
+float finaltotal=0;
 while(resultSet.next()){
 	
 	String sql2="SELECT IBTDetails.Code, CodeList.HSNCode, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.MinPrice, IBTDetails.Qty, IBTDetails.Id,IBTDetails.SalePrice FROM IBTDetails inner join CodeList on IBTDetails.Code=CodeList.Code where IBTDetails.IBT=";
@@ -294,7 +294,7 @@ while(resultSet.next()){
 <input class="" type="text" id="totalqty" name="totalqty" value=<%=resultSet.getString("TotalQty") %> readonly="readonly" style="border:none"></td>
 <% if(ibt.contains("T"))
 {
-	finaltotal=resultSet.getDouble("TotalPrice")-resultSet.getDouble("tax");
+	finaltotal=resultSet.getFloat("TotalPrice")-resultSet.getFloat("tax");
 %> 
 
 <td width="4%"><strong> Tax: </strong><input class="" type="text" id="tax" name="tax" value=<%=resultSet.getString("Tax") %> onblur="calculateTotalPrice()"></td>
@@ -342,10 +342,10 @@ while(resultSet.next()){
 <% if(ibt.contains("T"))
 {%> 
 <td>
-<input class="col-md-4" type="text" id="nsp<%=i %>" name="nsp<%=i %>" value=<%=rs.getDouble("SalePrice") %> onblur="calculateTotalPrice()" >
+<input class="col-md-4" type="text" id="nsp<%=i %>" name="nsp<%=i %>" value=<%=rs.getFloat("SalePrice") %> onblur="calculateTotalPrice()" >
 </td> 
 <%}else{ %>
-<td><%=rs.getDouble("MinPrice") %></td> 
+<td><%=rs.getFloat("MinPrice") %></td> 
 <%} %>
 <td><input class="col-md-4" type="text" id="nq<%=i %>" name="nq<%=i %>" value=<%=rs.getFloat("IBTDetails.Qty") %> onblur="calculateTotalQty()">
 <input type="hidden" id="i" name="i">  
@@ -374,9 +374,9 @@ while(resultSet.next()){
  list.add(rs.getString("IBTDetails.Code"));
  list.add(String.valueOf(rs.getFloat("IBTDetails.Qty")));
  list.add(String.valueOf(i));
- list.add(String.valueOf(rs.getDouble("IBTDetails.SalePrice")));
- list.add(String.valueOf(resultSet.getDouble("TotalPrice")));
- list.add(String.valueOf(resultSet.getDouble("tax")));
+ list.add(String.valueOf(rs.getFloat("IBTDetails.SalePrice")));
+ list.add(String.valueOf(resultSet.getFloat("TotalPrice")));
+ list.add(String.valueOf(resultSet.getFloat("tax")));
  map.put(i, list);
  sno++;
 } 

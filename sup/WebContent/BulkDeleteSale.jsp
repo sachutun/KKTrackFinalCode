@@ -43,7 +43,7 @@ try{
 	    String sd = request.getParameter("sd");
 	    //System.out.println("sd: "+sd);
 	    String ap = request.getParameter("amtpaid");
-	    double amountpaid=Double.parseDouble(ap);
+	    float amountpaid=Float.parseFloat(ap);
 	   // System.out.println("amountpaid: "+amountpaid);
 	    String comments=request.getParameter("comments");
 	    boolean mflag=false;
@@ -82,7 +82,7 @@ String[] selectedItemsArray=selectedItems.split(",");
     conn = DriverManager.getConnection(url, username, password);
     boolean flag;
     String custId="";
-    double bal=0;
+    float bal=0;
     System.out.println("totRecs: " +totRecs); 
     System.out.println("checkedRecs: "+checkedRecs); 
     if(totRecs.equals(checkedRecs))
@@ -127,8 +127,8 @@ for(i=0;i<selectedItemsArray.length;i++)
 String ba=values.get(5);
  custId=values.get(10);
      d=Integer.parseInt(recordToUpdate);
-    double bala=Double.parseDouble(ba);
-    double ftot=0;
+    float bala=Float.parseFloat(ba);
+    float ftot=0;
     int code=0;
     int cost=0;
     float qty=0;
@@ -179,8 +179,8 @@ String ba=values.get(5);
      billid=Integer.parseInt(bid);
    /*  String up=Integer.toString(d);  */
     //totalp is total price of item being deleted
-   double totalp=Double.parseDouble(totp);
-    bal=Double.parseDouble(ba);
+   float totalp=Float.parseFloat(totp);
+    bal=Float.parseFloat(ba);
    //System.out.println("custId: " +custId);
  //System.out.println("bal: " +bal);
     //if new quantity> q i.e. more items
@@ -215,17 +215,17 @@ String ba=values.get(5);
     		ps2.executeUpdate(); 
    
    }
-   double totalprice= cost*qty;
+   float totalprice= cost*qty;
   
-   double tax=cost*qty*0.18;
+   float tax=(float)(cost*qty*0.18);
    totalprice=totalprice+tax;
 
    String s1= "UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-"+totalprice+",`BalanceAmount`=`BalanceAmount`-"+(totalprice)+" ,`Tax`="+tax+" WHERE Id="+d;
   // System.out.println(s1);
     preparedStatement = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=`BalanceAmount`-?, `Tax`=`Tax`-? WHERE Id=?");
-    preparedStatement.setDouble(1,totalprice);
-    preparedStatement.setDouble(2,totalprice);
-    preparedStatement.setDouble(3,tax);
+    preparedStatement.setFloat(1,totalprice);
+    preparedStatement.setFloat(2,totalprice);
+    preparedStatement.setFloat(3,tax);
     preparedStatement.setInt(4,d);
     preparedStatement.executeUpdate(); 
     
@@ -253,7 +253,7 @@ String ba=values.get(5);
 		String s="UPDATE `Debtors` SET `OB`=`OB`-"+(totalprice)+" WHERE CustId="+custId;
 		//System.out.println("single: " +s);
      	ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-     	ps1.setDouble(1,totalprice);
+     	ps1.setFloat(1,totalprice);
      	ps1.setString(2,custId);
      	ps1.executeUpdate();
      
@@ -302,7 +302,7 @@ String ba=values.get(5);
 	String s="UPDATE `Debtors` SET `OB`=`OB`-"+(bal+amountpaid)+" WHERE CustId="+custId;
 	//System.out.println("all checked: " +s);
 	     ps1 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`-? WHERE CustId=?");
-	     ps1.setDouble(1,bal+amountpaid);
+	     ps1.setFloat(1,bal+amountpaid);
 	     ps1.setString(2,custId);
 	     ps1.executeUpdate();
 	     

@@ -409,7 +409,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("DCNumber") %></td>
 <td><%=resultSet.getString("CustomerName") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("BalanceAmount") %></td>
 <td><%=resultSet.getString("days") %></td>
@@ -448,7 +448,7 @@ while(resultSet.next()){
 <td><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td><%=rs.getInt("BillDetails.Total") %></td>
 <td class="admin"><%=rs.getInt("LC") %></td>
-<td><%=rs.getDouble("MaxPrice") %></td>
+<td><%=rs.getFloat("MaxPrice") %></td>
 </tr>
  <% }%>
 </tbody> </table></td> 

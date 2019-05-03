@@ -461,7 +461,7 @@ while(resultSet.next())
 <td><%=resultSet.getString("DCNumber") %></td>
 <td><%=resultSet.getString("CustomerName") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td class="admin"><a href="editsalindividual.jsp?dc=<%=resultSet.getString("DCNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>&pk=<%=primaryKey%>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Edit </button></a></td> 

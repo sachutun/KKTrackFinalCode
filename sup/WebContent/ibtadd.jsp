@@ -42,19 +42,19 @@ ResultSet resultSet = null;
    String totalqty=request.getParameter("totalq");
    float tqty=Float.parseFloat(totalqty);
    float[] q= new float[qty.length];
-   double[] sp=new double[saleprice.length];
+   float[] sp=new float[saleprice.length];
    String t=request.getParameter("tax");
-   double tax;
+   float tax;
    if(t==null || t=="")
 	   tax=0;
    else
-       tax=Double.parseDouble(t);
+       tax=Float.parseFloat(t);
    String tp=request.getParameter("totalprice");
-   double totalprice;
+   float totalprice;
    if(tp==null || tp=="")
 	   totalprice=0;
    else
-	   totalprice=Double.parseDouble(tp);
+	   totalprice=Float.parseFloat(tp);
 
    for(int i=0;i<qty.length;i++)
   {
@@ -67,7 +67,7 @@ ResultSet resultSet = null;
 	  // System.out.println("saleprice"+"["+i+"]: "+saleprice[i]);
         String salep=saleprice[i];
         if(salep!=null && salep!="")
-	   		sp[i]=Double.parseDouble(salep);  
+	   		sp[i]=Float.parseFloat(salep);  
         //else
         		//sp[i]=0;
    } 

@@ -375,7 +375,7 @@ while(resultSet.next()){
 <td width="80%"><%=rs.getString("Machine") %></td>
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getDouble("MinPrice") %></td> 
+<td><%=rs.getFloat("MinPrice") %></td> 
 <td><%=rs.getFloat("IBTDetails.Qty") %></td>
 </tr>
  <% }%>

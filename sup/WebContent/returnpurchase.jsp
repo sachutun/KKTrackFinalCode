@@ -347,11 +347,11 @@ while(resultSet.next()){
 <td><%=resultSet.getString("InvoiceNumber") %></td>
 <%-- <td><%=resultSet.getString("Code") %></td>
 <td><%=resultSet.getString("Description") %></td>
-<td><%=resultSet.getDouble("Price") %></td>
-<td><%=resultSet.getDouble("Qty") %></td> --%>
+<td><%=resultSet.getFloat("Price") %></td>
+<td><%=resultSet.getFloat("Qty") %></td> --%>
 <td><%=resultSet.getString("SupplierName") %></td> 
 <td><%=resultSet.getString("SupplierNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td> 
 <td><%=resultSet.getString("PaymentMode") %></td> 
 <td><a href="purchasereturn.jsp?dc=<%=resultSet.getString("InvoiceNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Return </button></a></td> 
@@ -381,10 +381,10 @@ while(resultSet.next()){
 <td><%=rs.getString("Description") %></td>
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td><%-- 
-<td><%=rs.getDouble("MaxPrice") %></td> --%>
-<td><%=rs.getDouble("InvoiceDetails.Price") %></td>
+<td><%=rs.getFloat("MaxPrice") %></td> --%>
+<td><%=rs.getFloat("InvoiceDetails.Price") %></td>
 <td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
-<td><%=rs.getDouble("InvoiceDetails.TotalPrice") %></td>
+<td><%=rs.getFloat("InvoiceDetails.TotalPrice") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>

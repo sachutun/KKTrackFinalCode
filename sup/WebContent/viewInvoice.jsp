@@ -323,7 +323,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
 %>
 <td><strong> Customer Name: </strong><br/><%=resultSet.getString("CustomerName") %></td>
 <td><strong> Customer No: </strong><br/><%=resultSet.getString("CustomerNumber") %></td>
-<td><strong> TotalPrice: </strong><br/> <%=resultSet.getDouble("TotalPrice") %></td>
+<td><strong> TotalPrice: </strong><br/> <%=resultSet.getFloat("TotalPrice") %></td>
 <td><strong> Amount Paid: </strong><br/><%=resultSet.getString("AmountPaid") %></td>
 <td><strong> Tax Amount: </strong><br/><%=resultSet.getString("Tax") %></td>
 <td><strong> Discount: </strong><br/><%=discount %></td></tr>

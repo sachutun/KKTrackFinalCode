@@ -446,7 +446,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("Machine") %></td>
 <td><%=resultSet.getString("Grp") %></td>
 <td><%=resultSet.getString("Qty") %></td>
-<td><%=resultSet.getDouble("b.CostPrice")%></td>
+<td><%=resultSet.getFloat("b.CostPrice")%></td>
 <td><%=resultSet.getString("LC") %></td>
 <td><%=resultSet.getString("Total") %></td>
 <td><%=lctot %></td>

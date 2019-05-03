@@ -32,19 +32,19 @@ ResultSet resultSet = null;
    String ibt=request.getParameter("ibt");
    int id= Integer.parseInt(request.getParameter("pid"));
    String[] saleprice = request.getParameterValues("saleprice");
-   double[] sp=new double[saleprice.length];
+   float[] sp=new float[saleprice.length];
    String t=request.getParameter("tax");
-   double tax;
+   float tax;
    if(t==null || t=="")
 	   tax=0;
    else
-       tax=Double.parseDouble(t);
+       tax=Float.parseFloat(t);
    String tp=request.getParameter("totalprice");
-   double totalprice;
+   float totalprice;
    if(tp==null || tp=="")
 	   totalprice=0;
    else
-	   totalprice=Double.parseDouble(tp);
+	   totalprice=Float.parseFloat(tp);
 float tq=Float.parseFloat(totalqty);
 float[] q= new float[qty.length];
 
@@ -58,7 +58,7 @@ for(int i=0;i<saleprice.length;i++)
 	  // System.out.println("saleprice"+"["+i+"]: "+saleprice[i]);
      String salep=saleprice[i];
      if(salep!=null && salep!="")
-	   		sp[i]=Double.parseDouble(salep);  
+	   		sp[i]=Float.parseFloat(salep);  
      //else
      		//sp[i]=0;
 } 
@@ -160,8 +160,8 @@ String s="UPDATE `IBT` SET `TotalQty`=`TotalQty`+? , `TotalPrice`=`TotalPrice`+?
 /* System.out.println(s); */
 preparedStatement3 = connection.prepareStatement(s);
 preparedStatement3.setFloat(1,tq);
-preparedStatement3.setDouble(2,totalprice);
-preparedStatement3.setDouble(3,tax);
+preparedStatement3.setFloat(2,totalprice);
+preparedStatement3.setFloat(3,tax);
 preparedStatement3.setInt(4,id);
 preparedStatement3.executeUpdate();  
 connection.commit();

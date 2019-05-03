@@ -313,7 +313,7 @@ Date date=resultSet.getDate("Date");
 <td><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("Description") %></td>
-<td><%=resultSet.getDouble("Amount") %></td>
+<td><%=resultSet.getFloat("Amount") %></td>
 <td><button onclick="f(<%=primaryKey%>)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-trash-o"></i></button></td>
  
                                         </tr>

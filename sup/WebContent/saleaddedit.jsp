@@ -37,7 +37,7 @@ ResultSet rs = null;
    String branch = request.getParameter("branch");
    String[] qty = request.getParameterValues("qty");
    String[] totalprice=request.getParameterValues("totalprice");
-   double ftx=0;
+   float ftx=0;
    
 /*    System.out.println(code[0]+dcnumber+costprice[0]+branch+qty[0]+totalprice[0]); */
 /*    String total=request.getParameter("total"); */
@@ -128,8 +128,8 @@ preparedStatement.setFloat(1,q[i]);
 preparedStatement.setString(2,code[i]);
 preparedStatement.setString(3,branch);
 preparedStatement.executeUpdate();  
-ft+=Double.parseDouble(totalprice[i]);
-ftx+=Double.parseDouble(totalprice[i])*0.18;
+ft+=Float.parseFloat(totalprice[i]);
+ftx+=Float.parseFloat(totalprice[i])*0.18;
 if(i!=(count-1))
 qparts+=",";
 	
@@ -143,8 +143,8 @@ String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `
  
  System.out.println("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+(ft+ftx)+",`BalanceAmount`=`TotalPrice`-`AmountPaid`, `Tax`=`Tax`+ "+ftx+" WHERE Id="+id); 
  preparedStatement2 = connection.prepareStatement(s);
-preparedStatement2.setDouble(1,(ft+ftx));
-preparedStatement2.setDouble(2,ftx);
+preparedStatement2.setFloat(1,(ft+ftx));
+preparedStatement2.setFloat(2,ftx);
 preparedStatement2.setInt(3,id);
 preparedStatement2.executeUpdate();  
 
@@ -154,7 +154,7 @@ if(custId!=null && custId!="")
 	   //System.out.println(s5);
 	  // System.out.println("existing credit cust: "+s5);
 preparedStatement3 = connection.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
-preparedStatement3.setDouble(1,(ft+ftx));
+preparedStatement3.setFloat(1,(ft+ftx));
 preparedStatement3.setString(2,custId);
 preparedStatement3.executeUpdate(); 
 }

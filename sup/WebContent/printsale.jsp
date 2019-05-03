@@ -607,7 +607,7 @@ $(document).ready(function() {
 	             return $cols.map(function (j, col) {
 	                 var $col = $(col);
 	                 var text = $col.text().replace(/\./g, '');
-	                 return text.replace('"', '""'); // escape double quotes
+	                 return text.replace('"', '""'); // escape float quotes
 	 
 	             }).get().join(tmpColDelim);
 	             csv =csv +'"\r\n"' +'fin '+'"\r\n"';

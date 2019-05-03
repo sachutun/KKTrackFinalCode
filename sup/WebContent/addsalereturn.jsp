@@ -529,7 +529,7 @@
 													
 														<td><strong>Customer Name: </strong> <%=resultSet.getString("CustomerName")%></td>
 														<td><strong>Customer Number:</strong> <%=resultSet.getString("CustomerNumber")%></td>
-														<td><strong>Total Price:</strong> <%=resultSet.getDouble("TotalPrice")%></td>
+														<td><strong>Total Price:</strong> <%=resultSet.getFloat("TotalPrice")%></td>
 														<td><strong>Amount Paid:</strong> <%=resultSet.getString("AmountPaid")%></td>
 														<td><strong>Balance Amount: </strong><%=resultSet.getString("BalanceAmount")%></td>
 														<td><strong>Type:</strong> <%=resultSet.getString("Type")%></td>
@@ -571,7 +571,7 @@
 														<td><%=rs.getString("Machine")%></td>
 														<td><%=rs.getString("PartNo")%></td>
 														<td><%=rs.getString("Grp")%></td>
-														<td><%=rs.getDouble("BillDetails.CostPrice")%></td>
+														<td><%=rs.getFloat("BillDetails.CostPrice")%></td>
 														<td><%=bqty%></td>
 														<td style="width: 10%;"><input id="dq<%=i%>"
 															name="dq<%=i%>" value="0"

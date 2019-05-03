@@ -371,7 +371,7 @@ while(resultSet.next()){
 <td><strong>Supplier Name: </strong><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><strong>Supplier Name: </strong> <%=resultSet.getString("SupplierName") %></td>
 <td><strong>Supplier Number:</strong> <%=resultSet.getString("SupplierNumber") %></td>
-<td><strong>Total Price:</strong> <%=resultSet.getDouble("TotalPrice") %></td>
+<td><strong>Total Price:</strong> <%=resultSet.getFloat("TotalPrice") %></td>
 <td><strong>Amount Paid:</strong> <%=resultSet.getString("AmountPaid") %></td>
 <td><strong>Balance Amount: </strong><%=resultSet.getString("BalanceAmount") %></td>
 <td><strong>Payment Mode:</strong> <%=resultSet.getString("PaymentMode") %></td></tr>
@@ -412,7 +412,7 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getDouble("InvoiceDetails.Price") %></td>
+<td><%=rs.getFloat("InvoiceDetails.Price") %></td>
 <td><%=bqty%></td>
 <td style="width: 10%;">          
                 <input type="number" id="dq<%=i %>" name="dq<%=i %>" value="0" style="width: 80%;margin-left: 7%;" min="0" step="any" max="<%=bqty%>"> 

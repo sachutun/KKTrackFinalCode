@@ -441,7 +441,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("InvoiceNumber") %></td>
 <td><%=resultSet.getString("SupplierName") %></td> 
 <td><%=resultSet.getString("SupplierNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td> 
 <td><%=resultSet.getString("PaymentMode") %></td> 
 <td><a href="editpurindividual.jsp?dc=<%=resultSet.getString("InvoiceNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Edit </button></a></td> 
@@ -471,10 +471,10 @@ while(resultSet.next()){
 <td><%=rs.getString("Description") %></td>
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td><%-- 
-<td><%=rs.getDouble("MaxPrice") %></td> --%>
-<td class="price"><%=rs.getDouble("InvoiceDetails.Price") %></td>
+<td><%=rs.getFloat("MaxPrice") %></td> --%>
+<td class="price"><%=rs.getFloat("InvoiceDetails.Price") %></td>
 <td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
-<td class="price"><%=rs.getDouble("InvoiceDetails.TotalPrice") %></td>
+<td class="price"><%=rs.getFloat("InvoiceDetails.TotalPrice") %></td>
 </tr>
  <% }%>
 </tbody> </table></td>

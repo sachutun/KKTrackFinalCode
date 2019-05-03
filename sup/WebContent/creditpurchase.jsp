@@ -390,7 +390,7 @@ while(resultSet.next()){
 <td ><%=resultSet.getString("InvoiceNumber") %></td>
 <td><%=resultSet.getString("SupplierName") %></td>
 <td><%=resultSet.getString("SupplierNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("BalanceAmount") %></td>
 <td><%=resultSet.getString("PaymentMode") %></td>
@@ -423,9 +423,9 @@ while(resultSet.next()){
 <td><%=rs.getString("Machine") %></td>
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td class="price"><%=rs.getDouble("InvoiceDetails.Price") %></td>
+<td class="price"><%=rs.getFloat("InvoiceDetails.Price") %></td>
 <td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
-<td class="price"><%=rs.getDouble("InvoiceDetails.TotalPrice") %></td>
+<td class="price"><%=rs.getFloat("InvoiceDetails.TotalPrice") %></td>
 </tr>
  <% }%>
 </tbody> </table></td> 
@@ -470,7 +470,7 @@ if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))
                 <form action="balancepaypur.jsp?branch=<%=resultSet.getString("Branch") %>" class="form-horizontal form-label-left">
                 <div class="col-md-5 col-sm-3 col-xs-4 ">
                <label  for="pay" > Amount:</label>
-                <input type="text" id="pay" name="pay" style="margin-left: 7%;" min="0" max="<%=resultSet.getDouble("BalanceAmount") %>"> 
+                <input type="text" id="pay" name="pay" style="margin-left: 7%;" min="0" max="<%=resultSet.getFloat("BalanceAmount") %>"> 
              </div>
                <div class="col-md-5 col-sm-3 col-xs-4 ">
                <label  for="pdate" > Date:</label>

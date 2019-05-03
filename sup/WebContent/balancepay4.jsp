@@ -34,8 +34,8 @@ try{
     String rd = request.getParameter("red");
     
     int d=Integer.parseInt(recordToUpdate);
-    double bala=Integer.parseInt(ba);
-    double ftot=0;
+    float bala=Integer.parseInt(ba);
+    float ftot=0;
     
     String s4="SELECT * FROM InvoiceDetails WHERE INo="+d;
    
@@ -96,16 +96,16 @@ try{
    /*  String up=Integer.toString(d);  */
     
     //initial total
-    double itotalp=cost*qty;
+    float itotalp=cost*qty;
     
     //after return
     qty-=damage+excess;
     
     //new total - total to update in BillDetails
-    double totalp=cost*qty;
+    float totalp=cost*qty;
     
     //diff to subtract from Sale total - Sale=Sale-diff
-    double diff=itotalp-totalp;
+    float diff=itotalp-totalp;
     
     //bal amt = bal amt- diff
     		
@@ -130,7 +130,7 @@ try{
   
     
      ps = conn.prepareStatement("UPDATE `InvoiceDetails` SET `TotalPrice`=?,`Qty`=? WHERE Id=?");
-    ps.setDouble(1,totalp);
+    ps.setFloat(1,totalp);
     ps.setFloat(2,qty);
     ps.setInt(3,billid);
     ps.executeUpdate();   
@@ -148,8 +148,8 @@ try{
        } 
        
        preparedStatement = conn.prepareStatement("UPDATE `Purchases` SET `TotalPrice`=`TotalPrice`-?,`BalanceAmount`=? WHERE Id=?");
-       preparedStatement.setDouble(1,ftot);
-       preparedStatement.setDouble(2,bala);
+       preparedStatement.setFloat(1,ftot);
+       preparedStatement.setFloat(2,bala);
        preparedStatement.setInt(3,d);
        preparedStatement.executeUpdate();  
   

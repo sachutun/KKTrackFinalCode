@@ -389,7 +389,7 @@ while(resultSet.next()){
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td ><%=resultSet.getString("InvoiceNumber") %></td>
 <td><%=resultSet.getString("SupplierName") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=resultSet.getString("BalanceAmount") %></td>
 
@@ -420,7 +420,7 @@ while(resultSet.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Description") %></td>
 <td><%=rs.getString("Grp") %></td>
-<td><%=rs.getDouble("InvoiceDetails.Price") %></td>
+<td><%=rs.getFloat("InvoiceDetails.Price") %></td>
 <td><%=rs.getFloat("InvoiceDetails.Qty") %></td>
 
 </tr>

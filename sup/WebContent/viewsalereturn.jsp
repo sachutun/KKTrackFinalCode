@@ -319,7 +319,7 @@ while(resultSet.next()){
 	rs = st.executeQuery(sql2);
 	int sno=1;
 	String b=resultSet.getString("Branch");
-	double bal=-(resultSet.getDouble("BalanceAmount"));
+	float bal=-(resultSet.getFloat("BalanceAmount"));
 	Date date=resultSet.getDate("Date");
 %>
                                         <tr class="odd gradeX">
@@ -329,7 +329,7 @@ while(resultSet.next()){
 <td><%=resultSet.getString("DCNumber") %></td>
 <td><%=resultSet.getString("CustomerName") %></td>
 <td><%=resultSet.getString("CustomerNumber") %></td>
-<td><%=resultSet.getDouble("TotalPrice") %></td>
+<td><%=resultSet.getFloat("TotalPrice") %></td>
 <td><%=resultSet.getString("AmountPaid") %></td>
 <td><%=bal %></td>
 <td><%=resultSet.getString("Type") %></td>

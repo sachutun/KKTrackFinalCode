@@ -85,9 +85,9 @@ try{
     conn = DriverManager.getConnection(url, username, password);
     boolean flag;
     //String custId="";
-    double bal=0;
-    double ftot=0;
-    double tax=0;
+    float bal=0;
+    float ftot=0;
+    float tax=0;
     if(totRecs.equals(checkedRecs))
     { 
    	   flag=true;
@@ -192,7 +192,7 @@ for(i=0;i<selectedItemsArray.length;i++)
 
      d=Integer.parseInt(recordToUpdate);
      
-  // double bala=Double.parseDouble(ba);
+  // float bala=Float.parseFloat(ba);
   
    
     int code=0;
@@ -234,7 +234,7 @@ for(i=0;i<selectedItemsArray.length;i++)
     // Calculate total price of all selected items 
 
     ftot+=totp;
-    tax=0.18*ftot;
+    tax=(float)(0.18*ftot);
   
     //System.out.println("total price: " +ftot);
     //System.out.println("tax: " +tax);
@@ -280,9 +280,9 @@ for(i=0;i<selectedItemsArray.length;i++)
 
 ps2 = conn.prepareStatement( "UPDATE `BillDetails` SET `Notes`=?,`Total`=?,`Qty`=?, `CostPrice`=?  WHERE Id=?");
 ps2.setString(1,"Added to Invoice "+ndc+ ", "+nd);
-ps2.setDouble(2, totp);
-ps2.setDouble(3,qty);
-ps2.setDouble(4,cost);
+ps2.setFloat(2, totp);
+ps2.setFloat(3,qty);
+ps2.setFloat(4,cost);
 ps2.setString(5,bid);
 ps2.executeUpdate(); 
 
@@ -299,14 +299,14 @@ qparts="";
 
 
 //update sale bal amt, ftot, custId, type
-double totalprice=ftot+tax;
+float totalprice=ftot+tax;
  	ps = conn.prepareStatement("UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+ ?,`BalanceAmount`=`BalanceAmount` + ?,`Comments`=? , `Type`=?, `Tax`=`Tax`+?  WHERE Id=?");
-     ps.setDouble(1,totalprice);
-     ps.setDouble(2,totalprice);
+     ps.setFloat(1,totalprice);
+     ps.setFloat(2,totalprice);
      ps.setString(3,"Reference Memo: "+dc+", "+sd);
      //ps.setString(4,custId);
      ps.setString(4,type);
-     ps.setDouble(5,tax);
+     ps.setFloat(5,tax);
      ps.setInt(6,Id);
      ps.executeUpdate(); 
    
@@ -316,7 +316,7 @@ double totalprice=ftot+tax;
 String s="UPDATE `Debtors` SET `OB`=`OB`+"+(totalprice)+" WHERE CustId="+creditcustId;
 //System.out.println("single: " +s);
      ps4 = conn.prepareStatement("UPDATE `Debtors` SET `OB`=`OB`+? WHERE CustId=?");
-     ps4.setDouble(1,totalprice);
+     ps4.setFloat(1,totalprice);
      ps4.setString(2,creditcustId);
      ps4.executeUpdate();
      

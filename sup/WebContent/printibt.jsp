@@ -308,7 +308,7 @@ while(resultSet.next()){
 <%-- <td width="30%"><%=rs.getString("Machine") %></td>
 <td width="80%"><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td> --%>
-<td><%=rs.getDouble("MinPrice") %></td> 
+<td><%=rs.getFloat("MinPrice") %></td> 
 <td><%=rs.getFloat("IBTDetails.Qty") %>
 <input type="hidden" id="i" name="i">  
  <input type="hidden" id="code<%=i %>" name="code<%=i %>" value=<%=rs.getString("IBTDetails.Code")%> >

@@ -332,7 +332,7 @@ while(resultSet.next()){
 <td><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td><%=resultSet.getString("Type") %></td>
 <td><%=resultSet.getString("Description") %></td>
-<td><%=resultSet.getDouble("Amount") %></td>
+<td><%=resultSet.getFloat("Amount") %></td>
                                         </tr>
                                         <% 
 }
