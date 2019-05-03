@@ -345,7 +345,7 @@ statement=connection.createStatement();
 if(std!=null && std.length()!=0)
 {
 resultSet = statement.executeQuery(sql2);
- System.out.println("sql: "+sql2); 
+ System.out.println("sql2: "+sql2); 
 }
 /* else
 {
@@ -379,10 +379,13 @@ while(resultSet.next()){
  									sql4+=whr2;
  									sql5+=whr2;
  									st=connection.createStatement();
+ 									// System.out.println("sql4: "+sql4); 
  									rs = st.executeQuery(sql4);
  									st2=connection.createStatement();
+ 									// System.out.println("sql5: "+sql5); 
  									rs2= st2.executeQuery(sql5);
- 									if(!rs.isLast() && ((rs.getRow() != 0) || rs.isBeforeFirst()))	
+ 									
+ 									if(rs!=null && (!rs.isLast() && ((rs.getRow() != 0) || rs.isBeforeFirst())))	
  									{
  										
  									%>	
@@ -419,7 +422,8 @@ while(resultSet.next()){
                         	  sql6+=" and sa.CustId='"+primaryKey+"'";
                         	/// System.out.println(sql6);
                         	  st3=connection.createStatement();
-					      rs3= st3.executeQuery(sql6);
+                        	 // System.out.println("sql6: " +sql6);
+                        	  rs3= st3.executeQuery(sql6);
                        	  
 	%>
 
@@ -450,7 +454,7 @@ while(resultSet.next()){
                                        
                                         <% }
  									
- 									if(!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst()))	
+ 									if(rs2!=null && (!rs2.isLast() && ((rs2.getRow() != 0) || rs2.isBeforeFirst())))	
  									{
  										
  									%>	
@@ -492,7 +496,7 @@ while(resultSet.next()){
                    <td></td>
                                         
                                         <% }
- 									if(!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst()))	
+ 									if(rs3!=null && (!rs3.isLast() && ((rs3.getRow() != 0) || rs3.isBeforeFirst())))	
  									{
  										
  										%>
