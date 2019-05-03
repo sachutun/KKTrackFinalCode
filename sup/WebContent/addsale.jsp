@@ -1012,8 +1012,9 @@ function addCreditCustCode()
   
 	}
 function invoiceCheck() {
-
-    if (document.getElementById('taxInvoice').checked) {
+	var invoiceType=$("input[name='invoiceType']:checked"). val();
+	//alert(invoiceType);
+    if (invoiceType=="tax") {
         document.getElementById('GSTdiv').style.visibility = 'visible';
         document.getElementById('GSTLabel').style.visibility = 'visible';
         document.getElementById('GST').required = 'true';
@@ -1628,11 +1629,14 @@ function cls(elt)
 	            */
             	 	 var dcNo= document.getElementById("dcnumber").value;
            	 	 var taxInvoiceFlag = dcNo.startsWith("T");
+           	 	 //alert("taxInvoiceFlag: " +taxInvoiceFlag);
            	 	 if(taxInvoiceFlag==true)
            	 	 {
            	 		document.getElementById('GSTdiv').style.visibility = 'visible';
            	        document.getElementById('GSTLabel').style.visibility = 'visible';
            	        document.getElementById('GST').required = 'true';
+           	     document.getElementById('taxInvoice').checked = true;
+            	    document.getElementById('generalInvoice').checked = false;
            	 	 }
            	 	 else
            	 	 {
@@ -1641,6 +1645,8 @@ function cls(elt)
            	        document.getElementById('GST').value = '';
            	    		document.getElementById('GSTdiv').style.visibility = 'hidden';
            	     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+           	       document.getElementById('taxInvoice').checked = false;
+           	    document.getElementById('generalInvoice').checked = true;
            	 	 }
 	        });
 	       
