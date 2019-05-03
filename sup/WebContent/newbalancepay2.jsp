@@ -39,10 +39,11 @@ try{
     String rd = request.getParameter("red");
     String custId = request.getParameter("custId"); 
     int d=Integer.parseInt(recordToUpdate);
-    double bala=Integer.parseInt(ba);
+    float bala=Float.parseFloat(ba);
 //     double totalPrice = Double.parseDouble(totPrice);
     double ftot=0;
     float iftot=Float.parseFloat(tp);
+    //System.out.println();
     float totalQty=0;
     String s4="SELECT * FROM BillDetails WHERE DC="+d;
     double rtx=0;
@@ -95,7 +96,7 @@ try{
     
     int damage=Integer.parseInt(dq);
     int code=Integer.parseInt(cod);
-    int cost=Integer.parseInt(cp);
+    Float cost=Float.parseFloat(cp);
     float qty=Float.parseFloat(q);
     float excess=Float.parseFloat(eq);
    
