@@ -834,36 +834,21 @@ String role=(String)session.getAttribute("role");
                  </div>
 
              </form>
-           </div>
-         </div>
-       </div>
-     </div>
-
-        	
- <%--      <% String r=request.getParameter("res");
-      System.out.println(r);	
- String succ="<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Inserted successfully in database.</strong></div>";
- String err="<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong> Sale already exists for same date, branch and Invoice No!   </strong></div>";
- 
- if(r!=null && r.equals("1"))
-        	out.println(succ);
- else if(r!=null && r.equals("2"))
- 	System.out.println(err);		 
-        else
-        {
-        	String cd=request.getParameter("code"); 
-        	if(cd!=null)
-        	out.println("<div class=\"col-md-6\" style= \"margin-left:280px; margin-top:-56%\"><div class=\"alert alert-error alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" onclick=\"ref()\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button><strong>Insufficient quantity for Code "+cd+"</strong></div>");
-        }
-     %>  --%>
- 
-       
-        <!-- /page content -->
-</div>
-</div>
-</div>
-</div>
-</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <div class="pull-right">
+            KK Heavy Machinery 
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+      </div>
+    </div>
        
     <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>

@@ -368,7 +368,7 @@ if(user==null)
                   
                   <div class="x_content">
                  
-        <form id="form1" action="saledit.jsp">   
+        <form id="form1" action="saledit.jsp" method="post">   
         
              <%--    <input type="hidden" id="sno" name="sno" value=<%=sno%> > --%>
                          <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
