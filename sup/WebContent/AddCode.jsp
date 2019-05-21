@@ -285,9 +285,9 @@ String environment = props.getProperty("jdbc.environment");
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">LC </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">ARR </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="qty" class="form-control col-md-7 col-xs-12" type="number" name="LC" min=0>
+                          <input id="qty" class="form-control col-md-7 col-xs-12" type="number" name="ARR" min=0>
                         </div>
                       </div>
                       <div class="ln_solid"></div>
@@ -309,7 +309,7 @@ String environment = props.getProperty("jdbc.environment");
    String description = request.getParameter("description");
    String group = request.getParameter("group");
   /*  String branch = request.getParameter("branch"); */
-   String LC = request.getParameter("LC");
+   String ARR = request.getParameter("ARR");
  /*  int max=Integer.parseInt(maxprice);
   int min=Integer.parseInt(minprice); */
   /*  String connectionURL = "jdbc:mysql://localhost:8889/KKTrack"; */
@@ -348,7 +348,7 @@ String environment = props.getProperty("jdbc.environment");
    // conn = ds.getConnection();
     st = conn.createStatement();
   
-       int i=st.executeUpdate("insert into CodeList(Code, HSNCode, Machine, PartNo, Description, Grp, MaxPrice, MinPrice,LC ) values ('"+code+"','"+hsncode+"','"+mac+"','"+partno+"','"+description+"','"+group+"','"+maxprice+"','"+minprice+"','"+LC+"')");
+       int i=st.executeUpdate("insert into CodeList(Code, HSNCode, Machine, PartNo, Description, Grp, MaxPrice, MinPrice,ARR ) values ('"+code+"','"+hsncode+"','"+mac+"','"+partno+"','"+description+"','"+group+"','"+maxprice+"','"+minprice+"','"+ARR+"')");
        
   %>
                  </div>

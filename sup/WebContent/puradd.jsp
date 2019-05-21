@@ -116,7 +116,7 @@ preparedStatement.executeUpdate();
 
 int minp=(Integer.parseInt(costprice[i])+((10*Integer.parseInt(costprice[i]))/100));
 
-String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `SUP`=? , `USD/Loc`=? WHERE Code=?"; 
+String s="UPDATE `CodeList` SET `ARR`=?, `minprice`=?, `SUP`=? , `USD/Loc`=? WHERE Code=?"; 
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement2 = connection.prepareStatement(s);

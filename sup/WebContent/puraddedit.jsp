@@ -117,7 +117,7 @@ ft+=Float.parseFloat(totalprice[i]);
 
 int minp=(Integer.parseInt(costprice[i])+((10*Integer.parseInt(costprice[i]))/100));
 
-String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
+String s="UPDATE `CodeList` SET `ARR`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
 /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
 /* System.out.println(s); */
 preparedStatement3 = connection.prepareStatement(s);

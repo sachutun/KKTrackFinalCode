@@ -390,16 +390,16 @@ String sql1="";
 int primaryKey=0;
 String sqlc="";
 String g="group by s.Id";
-String sql ="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
+String sql ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) group by s.Id";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) ";
+	sql1 ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)= month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE) ";
 
 	/* if(code!=null && code.length()!=0)
 	{
-		sqlc="SELECT *, SUM(b.LC*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
+		sqlc="SELECT *, SUM(b.ARR*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
 	} */
 	
-	String sql3="SELECT *,SUM(b.LC*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
+	String sql3="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
 	String w="";
 	if((branch!=null && branch.equals("Workshop")) || (code!=null && code.equals("9999")))
 	{
@@ -468,7 +468,7 @@ if(role!="null" && role.equals("1"))
 <!--                                             <th>Code qty</th> -->
                                     <th>Type</th>
                                             <th >Total price</th>
-                                            <th >LC</th>
+                                            <th >ARR</th>
                                             <th >Tax</th>
 <!--                                             <th >Discount</th> -->
                                             <th >Cash</th>
@@ -519,7 +519,7 @@ if(role!="null" && role.equals("1"))
 
 <%
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.ARR, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
 	primaryKey = resultSet.getInt("s.Id");
 	String whr=primaryKey+"";
@@ -597,7 +597,7 @@ swipe=resultSet.getString("Swipe");
                                             <th class="price">Sale Price</th>
                                             <th class="price">Total</th>                                        
                                             <th class="admin price">Sale Price with tax</th>
-                                            <th class="admin price">LC</th> 
+                                            <th class="admin price">ARR</th> 
                                             <th class="price">Max Price</th>
                                             
                                         </tr>
@@ -626,7 +626,7 @@ swipe=resultSet.getString("Swipe");
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
 
 <td class=" admin price"><%=rs.getFloat("BillDetails.CostPrice")+rs.getFloat("BillDetails.CostPrice")*(0.18)%></td>
-<td class="admin price"><%=rs.getString("BillDetails.LC") %></td>
+<td class="admin price"><%=rs.getString("BillDetails.ARR") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
 
 </tr>
@@ -1151,8 +1151,8 @@ var table=$('#ex').DataTable( {
 		        scrollCollapse: true,
 		     /*    "createdRow": function ( row, data, index ) {
 		        var tp=$('td', row).eq(5).text();
-		        var lc=$('td', row).eq(6).text();
-			         if(Number(tp) < Number(lc))
+		        var arr=$('td', row).eq(6).text();
+			         if(Number(tp) < Number(arr))
 			        	 {
 			        
 	                $('td', row).addClass('highlight');

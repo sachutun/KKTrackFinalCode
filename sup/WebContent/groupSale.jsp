@@ -333,9 +333,9 @@ String std=request.getParameter("std");
                                             <th>Grp</th>
                                             <th>Qty</th> 
                                             <th>Invoice Price</th>
-                                            <th>LC</th> 
+                                            <th>ARR</th> 
                                             <th>Total</th> 
-                                            <th>Total LC</th> 
+                                            <th>Total ARR</th> 
                                            
                                         </tr>
                       </thead>
@@ -429,7 +429,7 @@ else
 while(resultSet.next()){
 	//System.out.println("Hi4");
 
-	Float lctot=resultSet.getFloat("LC") * resultSet.getFloat("Qty");
+	Float arrtot=resultSet.getFloat("ARR") * resultSet.getFloat("Qty");
 	Date date=resultSet.getDate("Date");
 /* 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy"); */
 	/* System.out.println(new SimpleDateFormat("MM-dd-yyyy").format(date)); */
@@ -447,9 +447,9 @@ while(resultSet.next()){
 <td><%=resultSet.getString("Grp") %></td>
 <td><%=resultSet.getString("Qty") %></td>
 <td><%=resultSet.getFloat("b.CostPrice")%></td>
-<td><%=resultSet.getString("LC") %></td>
+<td><%=resultSet.getString("ARR") %></td>
 <td><%=resultSet.getString("Total") %></td>
-<td><%=lctot %></td>
+<td><%=arrtot %></td>
 
 
 <%-- <td><button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%; " onclick="showDet(<%=primaryKey%>)">View </button></td> --%>

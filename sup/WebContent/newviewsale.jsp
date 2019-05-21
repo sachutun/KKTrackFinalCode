@@ -357,7 +357,7 @@ if(role!=null && !(role.equals("1")))
                                             <th>Quantity</th>
                                             <th>Sale Price</th>
                                             <th>Total</th>
-                                            <th class="admin">LC</th> 
+                                            <th class="admin">ARR</th> 
                                             <th>Max Price</th>
 
                                         </tr>

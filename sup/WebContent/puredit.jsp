@@ -158,7 +158,7 @@ try{
    
     float minp=(newcp+(10*newcp)/100);
 
-    String s="UPDATE `CodeList` SET `LC`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
+    String s="UPDATE `CodeList` SET `ARR`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
     /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
     /* System.out.println(s); */
     preparedStatement2 = conn.prepareStatement(s);

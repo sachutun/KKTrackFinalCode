@@ -264,7 +264,7 @@ String environment = props.getProperty("jdbc.environment");
                                             <th>Description</th>
                                             <th>Group</th>
                                             <!-- <th>MinPrice</th>
-                                            <th>LC</th> -->
+                                            <th>ARR</th> -->
                                             <th>Quantity</th>
                                             <th>Bin Location</th>
                                             <th>New Bin Location </th>
@@ -320,7 +320,7 @@ while(rs.next()){
 <td><%=rs.getString("PartNo") %></td>
 <td><%=rs.getString("Grp") %></td>
 <%-- <td><%=rs.getFloat("MinPrice") %></td>
-<td><%=rs.getFloat("LC") %></td> --%>
+<td><%=rs.getFloat("ARR") %></td> --%>
 <td><%=rs.getFloat("Quantity") %></td>
 <td><%=rs.getString("Location") %></td>
 <td style="width: 10%;">          

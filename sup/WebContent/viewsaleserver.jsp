@@ -7,7 +7,7 @@
 <%
 String role=request.getParameter("role");
 /* System.out.println("role="+role); */
-    String[] cols = { "Branch","Code","Machine", "HSNCode",  "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity","LC" };
+    String[] cols = { "Branch","Code","Machine", "HSNCode",  "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity","ARR" };
     
    
   /*   	 String[] cols2= { "Branch","Code","Machine", "HSNCode",  "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity"}; */
@@ -47,7 +47,7 @@ String role=request.getParameter("role");
     String MaxPrice = "";
     String MinPrice = "";
     String Quantity = "";
-    String LC="";
+    String ARR="";
   
     String dir = "asc";
     String sStart = request.getParameter("iDisplayStart");
@@ -66,7 +66,7 @@ String role=request.getParameter("role");
     MaxPrice = request.getParameter("sSearch_7");
     MinPrice = request.getParameter("sSearch_8");
     Quantity = request.getParameter("sSearch_9");
-    LC = request.getParameter("sSearch_10");
+    ARR = request.getParameter("sSearch_10");
       
      List<String> sArray = new ArrayList<String>();
      
@@ -113,8 +113,8 @@ String role=request.getParameter("role");
     if (Quantity!="" && Quantity!=null)
         sArray.add(" Quantity like '%" + Quantity + "%'");
     
-    if (LC!="" && LC!=null)
-        sArray.add(" LC like '%" + LC + "%'");
+    if (ARR!="" && ARR!=null)
+        sArray.add(" ARR like '%" + ARR + "%'");
     
     String individualSearch = "";
     if(sArray.size()==1){
@@ -232,7 +232,7 @@ String role=request.getParameter("role");
             ja.put(rs.getString("MinPrice"));
             ja.put(rs.getString("Quantity"));
             if(role.equals("1"))
-            ja.put(rs.getString("LC"));
+            ja.put(rs.getString("ARR"));
             array.put(ja);
         }
          String sql2 = "SELECT DISTINCT count(*) FROM "+table;

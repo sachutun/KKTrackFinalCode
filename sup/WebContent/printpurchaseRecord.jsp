@@ -374,7 +374,7 @@ if(branch!=null && branch.length()!=0 && std!=null)
 resultSet = statement.executeQuery(sql1);
 
 while(resultSet.next()){
-	String sql2="SELECT InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,CodeList.Grp, CodeList.MinPrice, CodeList.LC, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where Ino=";
+	String sql2="SELECT InvoiceDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,CodeList.Grp, CodeList.MinPrice, CodeList.ARR, InvoiceDetails.Price, InvoiceDetails.Qty, InvoiceDetails.TotalPrice FROM InvoiceDetails inner join CodeList on InvoiceDetails.Code=CodeList.Code where Ino=";
 	int	primaryKey = resultSet.getInt("Purchases.Id");
 	String whr=primaryKey+"";
 	sql2+=whr;

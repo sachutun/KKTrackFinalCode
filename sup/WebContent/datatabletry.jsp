@@ -3,7 +3,7 @@
 <%@page import="java.sql.*"%>
 <%@page import="org.json.*"%>
 <%
-    String[] cols = { "Branch","Code", "HSNCode", "Machine", "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity","LC" };
+    String[] cols = { "Branch","Code", "HSNCode", "Machine", "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity","ARR" };
     String table = "CodeList inner join NewInventory on NewInventory.Code=CodeList.Code";
     Class.forName("com.mysql.jdbc.Driver").newInstance();  
     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/KKTrack","root","root");  
@@ -24,7 +24,7 @@
     String MaxPrice = "";
     String MinPrice = "";
     String Quantity = "";
-    String LC="";
+    String ARR="";
  
     String dir = "asc";
     String sStart = request.getParameter("iDisplayStart");
@@ -43,7 +43,7 @@
     MaxPrice = request.getParameter("sSearch_7");
     MinPrice = request.getParameter("sSearch_8");
     Quantity = request.getParameter("sSearch_9");
-    LC = request.getParameter("sSearch_10");
+    ARR = request.getParameter("sSearch_10");
       
 /*     List<String> sArray = new ArrayList<String>();
     if (!Branch.equals("")) {
@@ -81,8 +81,8 @@
         sArray.add(" MinPrice like '%" + MinPrice + "%'");
     if (!Quantity.equals(""))
         sArray.add(" Quantity like '%" + Quantity + "%'");
-    if (!LC.equals(""))
-        sArray.add(" LC like '%" + LC + "%'");
+    if (!ARR.equals(""))
+        sArray.add(" ARR like '%" + ARR + "%'");
     
     String individualSearch = "";
     if(sArray.size()==1){
@@ -169,7 +169,7 @@
             ja.put(rs.getString("MaxPrice"));
             ja.put(rs.getString("MinPrice"));
             ja.put(rs.getString("Quantity"));
-            ja.put(rs.getString("LC"));
+            ja.put(rs.getString("ARR"));
             array.put(ja);
         }
        /*  String sql2 = "SELECT count(*) FROM "+table;

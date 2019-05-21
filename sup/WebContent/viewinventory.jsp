@@ -387,7 +387,7 @@ var table= $('#ex').DataTable( {
             {
            
             %>
-                                            <th class="">LC</th>
+                                            <th class="">ARR</th>
                                             	<%
             }
             %>
@@ -433,7 +433,7 @@ var table= $('#ex').DataTable( {
             {
            
             %>
-                                            <th class="">LC</th>
+                                            <th class="">ARR</th>
                                             	<%
             }
             %> 

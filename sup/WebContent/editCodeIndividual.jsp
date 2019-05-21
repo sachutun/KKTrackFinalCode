@@ -222,7 +222,7 @@ String environment = props.getProperty("jdbc.environment");
                                             <th>Group</th>
                                             <th>MaxPrice</th>
                                             <th>MinPrice</th>
-                                            <th>LC</th>
+                                            <th>ARR</th>
                                             
                                            
                                         </tr>
@@ -270,7 +270,7 @@ while(resultSet.next()){
 <td><input class="col-md-12" type="text" id="grp" name="grp" value="<%=resultSet.getString("Grp") %>" ></td>
 <td><input class="col-md-12" type="text" id="max" name="max" value="<%=resultSet.getString("MaxPrice") %>" ></td>
 <td><input class="col-md-12" type="text" id="min" name="min" value="<%=resultSet.getString("MinPrice") %>" ></td>
-<td><input class="col-md-12" type="text" id="lc" name="lc" value="<%=resultSet.getString("LC") %>" >
+<td><input class="col-md-12" type="text" id="arr" name="arr" value="<%=resultSet.getString("ARR") %>" >
 <input class="col-md-12" type="hidden" id="cod" name="cod" value="<%=resultSet.getString("Code") %>" ></td>
 </tr>
 

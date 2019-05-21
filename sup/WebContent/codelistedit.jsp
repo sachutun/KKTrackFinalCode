@@ -311,7 +311,7 @@ var table= $('#ex').DataTable( {
             %><th>Min</th>
                                             <th>Max</th>
                                             
-                                            <th>LC</th>
+                                            <th>ARR</th>
                                             <th>USD/Loc</th>
                                             <th>SUP</th>
                                             <th>Wt</th>
@@ -339,7 +339,7 @@ var table= $('#ex').DataTable( {
             %><th>Min</th>
                                             <th>Max</th>
                                             
-                                            <th>LC</th>
+                                            <th>ARR</th>
                                             <th>USD/Loc</th>
                                              <th>SUP</th>
                                             <th>Wt</th>
@@ -584,7 +584,7 @@ var table=$('#ex').DataTable( {
 	           	 });
 	           	 var dat=da.split(",");
 	           	
-	         	window.location.href="autocodeedit.jsp?c="+dat[0]+"&mac="+dat[1]+"&pno="+dat[2]+"&des="+dat[3]+"&grp="+dat[4]+"&max="+dat[5]+"&min="+dat[6]+"&lc="+dat[7]+"&USD="+dat[8]+"&sup="+dat[9]+"&wt="+dat[10]+"&date="+dat[11]+"&qty="+dat[12];
+	         	window.location.href="autocodeedit.jsp?c="+dat[0]+"&mac="+dat[1]+"&pno="+dat[2]+"&des="+dat[3]+"&grp="+dat[4]+"&max="+dat[5]+"&min="+dat[6]+"&arr="+dat[7]+"&USD="+dat[8]+"&sup="+dat[9]+"&wt="+dat[10]+"&date="+dat[11]+"&qty="+dat[12];
 	        			$(this).html(c);
 	        		 });
 	        		

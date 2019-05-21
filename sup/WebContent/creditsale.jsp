@@ -408,7 +408,7 @@ sql1+=whr;
 resultSet = st.executeQuery(sql1);
 
 while(resultSet.next()){
-	String sql2="SELECT BillDetails.Id, BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.LC, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
+	String sql2="SELECT BillDetails.Id, BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo, CodeList.Grp, CodeList.ARR, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 	int	primaryKey = resultSet.getInt("Sale.Id");
 	String whr2=primaryKey+"";
 	sql2+=whr2;
@@ -444,7 +444,7 @@ while(resultSet.next()){
                                             <th>Quantity</th> 
                                             <th class="price">Sale Price</th>
                                             <th class="price">Total</th>
-                                            <th class="admin price">LC</th> 
+                                            <th class="admin price">ARR</th> 
                                             <th class="price">Max Price</th>
 
                                         </tr>
@@ -464,7 +464,7 @@ while(resultSet.next()){
 <td><%=rs.getFloat("BillDetails.Qty") %></td>
 <td class="price"><%=rs.getInt("BillDetails.CostPrice") %></td>
 <td class="price"><%=rs.getInt("BillDetails.Total") %></td>
-<td class="admin price"><%=rs.getInt("LC") %></td>
+<td class="admin price"><%=rs.getInt("ARR") %></td>
 <td class="price"><%=rs.getString("MaxPrice") %></td>
 </tr>
  <% }%>

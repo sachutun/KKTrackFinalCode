@@ -5,7 +5,7 @@
 <%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 <%@ page import="java.io.InputStream" %>
 <%
-// SELECT c.Code, c.HSNCode, c.Description,c.Machine, c.PartNo, c.Grp, c.MaxPrice, c.MinPrice, c.LC, sum(n.Quantity) FROM NewInventory n INNER JOIN CodeList c ON n.Code=c.Code group by c.Code */
+// SELECT c.Code, c.HSNCode, c.Description,c.Machine, c.PartNo, c.Grp, c.MaxPrice, c.MinPrice, c.ARR, sum(n.Quantity) FROM NewInventory n INNER JOIN CodeList c ON n.Code=c.Code group by c.Code */
     String[] cols = { "Code", "Machine", "HSNCode", "PartNo", "Description","Grp","Quantity" };
     String table = "CodeList c inner join NewInventory n on n.Code=c.Code";
   /*   Class.forName("com.mysql.jdbc.Driver").newInstance();  

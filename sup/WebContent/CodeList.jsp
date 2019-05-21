@@ -320,7 +320,7 @@ var table= $('#ex').DataTable( {
             %>
                                             <th>Max</th>
                                             
-                                            <th>LC</th>
+                                            <th>ARR</th>
                                             <th>USD/Loc</th>
                                             <th>SUP</th>
                                             <th>Wt</th>
@@ -356,7 +356,7 @@ var table= $('#ex').DataTable( {
            
             %>
                                             <th>Max</th>
-                                            <th>LC</th>
+                                            <th>ARR</th>
                                             <th>USD/Loc</th>
                                             <th>SUP</th>
                                             <th>Wt</th>

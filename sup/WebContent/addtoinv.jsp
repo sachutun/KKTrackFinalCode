@@ -155,12 +155,12 @@ else
      // parsing the column each time is a linear search
      int column1Pos = rs2.findColumn("Code");
      int column2Pos = rs2.findColumn("MinPrice");
-     int column3Pos = rs2.findColumn("LC");
+     int column3Pos = rs2.findColumn("ARR");
      while (rs2.next()) {
          int codeKey = rs2.getInt(column1Pos);
          String mp = rs2.getString(column2Pos);
-         String lc = rs2.getString(column3Pos);
-         String mplcValue=mp+","+lc;
+         String arr = rs2.getString(column3Pos);
+         String mplcValue=mp+","+arr;
          codeList.put(codeKey, mplcValue);
      }
     
@@ -241,7 +241,7 @@ for(i=0;i<selectedItemsArray.length;i++)
     
 	mapValue=codeList.get(code);
 	String[] mplcValues = mapValue.split(",");
-//	mplcValues[0] is minPrice  and mplcValues[1] is LC
+//	mplcValues[0] is minPrice  and mplcValues[1] is ARR
 
    //Add billdetails depending on whther the sale exists or not
 
@@ -290,7 +290,7 @@ ps2.executeUpdate();
 
         }
     }
-    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
+    String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `ARR`) VALUES"+ qparts;
     //System.out.println("Bill Details: "+isql);
     int y=st2.executeUpdate(isql);
     

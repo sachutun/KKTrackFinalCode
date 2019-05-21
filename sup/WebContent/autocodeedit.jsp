@@ -35,7 +35,7 @@ try{
     String grp = request.getParameter("grp");
     String max = request.getParameter("max");
     String min = request.getParameter("min");
-    String lc = request.getParameter("lc");
+    String arr = request.getParameter("arr");
     String hsn = request.getParameter("hsn");
     String usd = request.getParameter("USD");
     String sup = request.getParameter("sup");
@@ -70,10 +70,10 @@ try{
     conn = DriverManager.getConnection(url, username, password);
     st2=conn.createStatement();
 
-  String s3="UPDATE `CodeList` SET `Machine`="+mac+",`HSNCode`="+hsn+",`PartNo`="+pno+",`Description`="+des+",`Grp`="+grp+",`MaxPrice`="+max+",`MinPrice`="+min+",`LC`="+lc+",`USD/Loc`="+usd+",`SUP`="+sup+",`Wt`="+wt+",`Dt`="+date+",`Qty`="+qty+" WHERE `Code`="+code;
+  String s3="UPDATE `CodeList` SET `Machine`="+mac+",`HSNCode`="+hsn+",`PartNo`="+pno+",`Description`="+des+",`Grp`="+grp+",`MaxPrice`="+max+",`MinPrice`="+min+",`ARR`="+arr+",`USD/Loc`="+usd+",`SUP`="+sup+",`Wt`="+wt+",`Dt`="+date+",`Qty`="+qty+" WHERE `Code`="+code;
  
 System.out.println(s3);
-  ps2 = conn.prepareStatement("UPDATE `CodeList` SET `Machine`=?,`HSNCode`=?,`PartNo`=?,`Description`=?,`Grp`=?,`MaxPrice`=?,`MinPrice`=?,`LC`=?,`USD/Loc`=?,`SUP`=?,`Wt`=?,`Dt`=?,`Qty`=? WHERE `Code`=?");
+  ps2 = conn.prepareStatement("UPDATE `CodeList` SET `Machine`=?,`HSNCode`=?,`PartNo`=?,`Description`=?,`Grp`=?,`MaxPrice`=?,`MinPrice`=?,`ARR`=?,`USD/Loc`=?,`SUP`=?,`Wt`=?,`Dt`=?,`Qty`=? WHERE `Code`=?");
     ps2.setString(1,mac);
     ps2.setString(2,hsn);
     ps2.setString(3,pno);
@@ -81,7 +81,7 @@ System.out.println(s3);
     ps2.setString(5,grp);
     ps2.setString(6,max);
     ps2.setString(7,min);
-    ps2.setString(8,lc);
+    ps2.setString(8,arr);
     ps2.setString(9,usd);
     ps2.setString(10,sup);
     ps2.setString(11,wt);

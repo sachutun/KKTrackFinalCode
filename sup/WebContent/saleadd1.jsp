@@ -199,12 +199,12 @@ statement=connection.createStatement();
         // parsing the column each time is a linear search
         int column1Pos = rs2.findColumn("Code");
         int column2Pos = rs2.findColumn("MinPrice");
-        int column3Pos = rs2.findColumn("LC");
+        int column3Pos = rs2.findColumn("ARR");
         while (rs2.next()) {
             int codeKey = rs2.getInt(column1Pos);
             String mp = rs2.getString(column2Pos);
-            String lc = rs2.getString(column3Pos);
-            String mplcValue=mp+","+lc;
+            String arr = rs2.getString(column3Pos);
+            String mplcValue=mp+","+arr;
             codeList.put(codeKey, mplcValue);
         }
 
@@ -221,14 +221,14 @@ for(int i=0;i<count;i++)
 		if(rs2.getString("Code").equals(code[i]))
 		{
 			minPrice=rs2.getString("MinPrice");
-			LC=rs2.getString("LC");
+			ARR=rs2.getString("ARR");
 			break;
 		}
 	} */
 	cde=Integer.parseInt(code[i]);
 	mapValue=codeList.get(cde);
 	String[] values = mapValue.split(",");
-//	values[0] is minPrice  and values[1] is LC
+//	values[0] is minPrice  and values[1] is ARR
 	
 qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+values[0]+","+values[1]+")";
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
@@ -245,7 +245,7 @@ qparts+=",";
 	
 }
 
-String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `LC`) VALUES"+ qparts;
+String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `ARR`) VALUES"+ qparts;
 System.out.println("Bill Details: "+isql);
 int y=st2.executeUpdate(isql);
 //System.out.println("---type---" +type);
