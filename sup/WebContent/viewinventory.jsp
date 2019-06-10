@@ -388,6 +388,8 @@ var table= $('#ex').DataTable( {
            
             %>
                                             <th class="">ARR</th>
+                                            <th class="">LC</th>
+                                            
                                             	<%
             }
             %>
@@ -434,6 +436,7 @@ var table= $('#ex').DataTable( {
            
             %>
                                             <th class="">ARR</th>
+                                            <th class="">LC</th>
                                             	<%
             }
             %> 
@@ -686,8 +689,8 @@ var table=$('#ex').DataTable( {
 	        scrollY:        '50vh',
 	        scrollCollapse: true,
 	        "createdRow": function ( row, data, index ) {
-	        		var quantity=$('td', row).eq(7).html();      	
-	        		var minLevel= $('td', row).eq(9).html();
+	        		var quantity=$('td', row).eq(6).html();      	
+	        		var minLevel= $('td', row).eq(10).html();
 	       
 		         if((minLevel != null || minLevel != "") && parseInt(quantity) < parseInt(minLevel))
 		       	 {
@@ -721,7 +724,8 @@ var table=$('#ex').DataTable( {
 	    } );
 	    if(role!=null && role=="1")
 		{
-	    	  table.column(10).visible(false);
+	    	  table.column(7).visible(false);
+	    	  table.column(8).visible(false);
 		
 		}
 	    function hideprices()
@@ -731,7 +735,8 @@ var table=$('#ex').DataTable( {
 	        for (var i = 0; i < elements.length; i++){
 	        	elements[i].style.display = "table-cell";
 	        }
-	        table.column(10).visible(true);
+	        table.column(7).visible(true);
+	        table.column(8).visible(true);
 	    }
 	    var h= $('.right_col').height()+200;
 	    $('.right_col').animate({height:h}, 500);

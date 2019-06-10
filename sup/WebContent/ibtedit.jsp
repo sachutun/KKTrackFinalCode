@@ -111,7 +111,7 @@ try{
     else  if(nq<oq)
     {
     	 diffq=oq-nq;
-    	  sq1="UPDATE `NewInventory` SET `Quantity`=`Quantity`- ? WHERE Code=? AND Branch=?";
+    	  sq1="UPDATE `NewInventory` SET `Quantity`=`Quantity`+ ? WHERE Code=? AND Branch=?";
     	    sq2="UPDATE `NewInventory` SET `Quantity`=`Quantity`- ? WHERE Code=? AND Branch=?";
    //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code+","+fbranch+","+diffq+") ON DUPLICATE KEY UPDATE Quantity=Quantity+"+diffq);
    //System.out.println("INSERT INTO NewInventory (Code, Branch, Quantity) VALUES ("+code+","+tbranch+","+diffq+") ON DUPLICATE KEY UPDATE Quantity=Quantity-"+diffq);
@@ -129,19 +129,22 @@ try{
     if(nq!=oq)
     {
      //update inventory
-  /*   preparedStatement = conn.prepareStatement(sq1);
-    preparedStatement.setInt(1,diffq);
+     System.out.println(diffq);
+     System.out.println(sq1);
+     System.out.println(sq2);
+    preparedStatement = conn.prepareStatement(sq1);
+    preparedStatement.setFloat(1,diffq);
     preparedStatement.setString(2,code);
     preparedStatement.setString(3,fbranch);
     preparedStatement.executeUpdate(); 
 
     preparedStatement2 = conn.prepareStatement(sq2);
-    preparedStatement2.setInt(1,diffq);
-    preparedStatement2.setString(3,tbranch);
+    preparedStatement2.setFloat(1,diffq);
     preparedStatement2.setString(2,code);
-    preparedStatement2.executeUpdate(); */ 
+    preparedStatement2.setString(3,tbranch);
+    preparedStatement2.executeUpdate(); 
      
-    preparedStatement = conn.prepareStatement(sq1);
+ /*    preparedStatement = conn.prepareStatement(sq1);
 
     conn.setAutoCommit(false);
 
@@ -155,7 +158,7 @@ try{
     preparedStatement.setString(3,tbranch);
     preparedStatement.addBatch();
 
-    int[] cnt = preparedStatement.executeBatch();
+    int[] cnt = preparedStatement.executeBatch(); */
     
     ps2 = conn.prepareStatement("UPDATE `IBTDetails` SET `Qty`=?,`SalePrice`=?  WHERE Id=?");
     ps2.setFloat(1,nq);
@@ -176,7 +179,7 @@ try{
        ps.setString(5,tax);
        ps.setInt(6,Pid);
        ps.executeUpdate();     
-       conn.commit();
+      // conn.commit();
   }
   else if(nq<oq)
   {
@@ -188,7 +191,7 @@ try{
 	       ps.setString(5,tax);
 	       ps.setInt(6,Pid);
 	       ps.executeUpdate();     
-	       conn.commit();
+	     //  conn.commit();
 	  }
   else
 	 {

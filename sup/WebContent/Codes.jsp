@@ -7,7 +7,7 @@
 <%
 String role=request.getParameter("role");
 /* System.out.println("role="+role); */
-    String[] cols = { "Code","Machine", "HSNCode",  "PartNo", "Description","Grp","Min","Max","ARR","USD/Loc","SUP","Wt","Dt","Qty"};
+    String[] cols = { "Code","Machine", "HSNCode",  "PartNo", "Description","Grp","Min","Max","ARR","LC","USD/Loc","SUP","Wt","Dt","Qty"};
     
    
   /*   	 String[] cols2= { "Branch","Code","Machine", "HSNCode",  "PartNo", "Description","Grp","MaxPrice","MinPrice","Quantity"}; */
@@ -33,6 +33,7 @@ String role=request.getParameter("role");
     String MaxPrice = "";
     String MinPrice = "";
     String ARR = "";
+    String LC = "";
   
     String dir = "asc";
     String sStart = request.getParameter("iDisplayStart");
@@ -51,6 +52,7 @@ String role=request.getParameter("role");
     MaxPrice = request.getParameter("sSearch_5");
     MinPrice = request.getParameter("sSearch_6");
     ARR = request.getParameter("sSearch_7");
+    LC = request.getParameter("sSearch_8");
   
       
      List<String> sArray = new ArrayList<String>();
@@ -93,6 +95,9 @@ String role=request.getParameter("role");
     
     if (ARR!="" && ARR!=null)
         sArray.add(" ARR like '%" + ARR + "%'");
+    
+    if (LC!="" && LC!=null)
+        sArray.add(" LC like '%" + LC + "%'");
     
     String individualSearch = "";
     if(sArray.size()==1){
@@ -208,6 +213,7 @@ String role=request.getParameter("role");
             ja.put(rs.getString("MinPrice"));
             ja.put(rs.getString("MaxPrice"));
             ja.put(rs.getString("ARR"));
+            ja.put(rs.getString("LC"));
             ja.put(rs.getString("USD/Loc"));
             ja.put(rs.getString("SUP"));
             ja.put(rs.getString("Wt"));
