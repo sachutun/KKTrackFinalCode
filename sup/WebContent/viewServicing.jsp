@@ -494,7 +494,7 @@ if(role!="null" && role.equals("1"))
                                             <th >Amount Paid</th>
                                             <th>Type</th>
                                             <th>Customer Number</th>
-                                            <th>Details</th> 
+                                            <th class="none">Details</th> 
                                             <!-- <th>Previous Payment Details</th>  -->
                                             <th>Comments</th> 
                                             <th>Customer GST Number </th>

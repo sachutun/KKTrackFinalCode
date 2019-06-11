@@ -293,16 +293,16 @@ var table= $('#ex').DataTable( {
                   <div class="x_content">
                   
                      <div class=""> 
-                    <table id="ex" class="table table-striped table-bordered ">
+                    <table id="ex" class="table table-striped table-bordered " width="120%">
                       <thead>
                         <tr>
                             <tr>
                             
                                             <th>Code</th>
-                                            <th>Machine</th>
+                                            <th>Mac</th>
                                             <th>PartNo</th>
                                             <th>Description</th>
-                                            <th>Group</th>
+                                            <th>Grp</th>
                                             
              <%
             if(role!=null && role.equals("1"))
@@ -313,7 +313,7 @@ var table= $('#ex').DataTable( {
                                             
                                             <th>ARR</th>
                                             <th>LC</th>
-                                            <th>USD/Loc</th>
+                                            <th>usd</th>
                                             <th>SUP</th>
                                             <th>Wt</th>
                                             <th>Date</th>
@@ -329,10 +329,10 @@ var table= $('#ex').DataTable( {
             <tr>
           
                                             <th>Code</th>
-                                            <th>Machine</th>
+                                            <th>Mac</th>
                                             <th>PartNo</th>
                                             <th>Description</th>
-                                            <th>Group</th>
+                                            <th>Grp</th>
                                             <%
             if(role!=null && role.equals("1"))
             {
@@ -342,12 +342,12 @@ var table= $('#ex').DataTable( {
                                             
                                             <th>ARR</th>
                                             <th>LC</th>
-                                            <th>USD/Loc</th>
+                                            <th>USD</th>
                                              <th>SUP</th>
                                             <th>Wt</th>
                                             <th>Date</th>
                                             <th>Qty</th>
-                                            <th>Edit</th> 
+                                            <th></th> 
                                             	<%
             }
             %>
@@ -473,7 +473,7 @@ var table= $('#ex').DataTable( {
 
 	   $('#ex tfoot th').each( function () {
 	        var title = $(this).text();
-	        $(this).html( '<input id=i'+title+' type="text" placeholder="Search '+title+'" />' );
+	        $(this).html( '<input id=i'+title+' type="text" placeholder="'+title+'" />' );
 	    } );
 	$('#bran').html('');
 	/* if(role!=null && role!="1")
