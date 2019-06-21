@@ -310,6 +310,13 @@ String environment = props.getProperty("jdbc.environment");
    String group = request.getParameter("group");
   /*  String branch = request.getParameter("branch"); */
    String ARR = request.getParameter("ARR");
+/*    double lc=0;
+  if(ARR!=null)
+  {
+   double arr=Double.parseDouble(ARR);
+    lc=arr*1.18;
+  } */
+  
  /*  int max=Integer.parseInt(maxprice);
   int min=Integer.parseInt(minprice); */
   /*  String connectionURL = "jdbc:mysql://localhost:8889/KKTrack"; */

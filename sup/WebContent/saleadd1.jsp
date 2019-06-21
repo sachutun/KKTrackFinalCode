@@ -22,6 +22,7 @@ Statement st3 = null;
 Statement st4 = null;
 Statement st5 = null;
 Statement st6 = null;
+Statement st7 = null;
 PreparedStatement preparedStatement = null;
 PreparedStatement preparedStatement1 = null;
 PreparedStatement preparedStatement2 = null;
@@ -29,8 +30,9 @@ ResultSet resultSet = null;
 ResultSet rs = null;
 ResultSet rs1 = null;
 ResultSet rs2 = null;
+ResultSet rs3 = null;
 int res=0;
-
+int id=0;
           String[] code = request.getParameterValues("code");
         
     
@@ -187,21 +189,21 @@ statement=connection.createStatement();
        resultSet = statement.executeQuery(sql);
      
        resultSet.next();
-       int id=resultSet.getInt("Max(Id)");
+       id=resultSet.getInt("Max(Id)");
        
         st2=connection.createStatement();
         st3=connection.createStatement();
         st6=connection.createStatement(); 
         rs2=st6.executeQuery("Select * from CodeList");
         
-        Map<Integer,String> codeList = new HashMap<Integer,String>();
+        Map<String,String> codeList = new HashMap<String,String>();
 
         // parsing the column each time is a linear search
         int column1Pos = rs2.findColumn("Code");
         int column2Pos = rs2.findColumn("MinPrice");
         int column3Pos = rs2.findColumn("ARR");
         while (rs2.next()) {
-            int codeKey = rs2.getInt(column1Pos);
+            String codeKey = rs2.getString(column1Pos);
             String mp = rs2.getString(column2Pos);
             String arr = rs2.getString(column3Pos);
             String mplcValue=mp+","+arr;
@@ -212,7 +214,7 @@ int count=code.length;
 String qparts="";
 String sq="";
 String mapValue="";
-int cde=0;
+String cde;
 for(int i=0;i<count;i++)
 {
 	/* 
@@ -225,7 +227,7 @@ for(int i=0;i<count;i++)
 			break;
 		}
 	} */
-	cde=Integer.parseInt(code[i]);
+	cde=code[i];
 	mapValue=codeList.get(cde);
 	String[] values = mapValue.split(",");
 //	values[0] is minPrice  and values[1] is ARR
@@ -299,9 +301,14 @@ res=1;
    //  } 
               }
      catch (Exception ex) {
-     out.println("Unable to connect to database.");
+     out.println(ex);
      System.out.println(ex);
-
+     System.out.println(id);
+     if(id!=0)
+     {
+    	 st7=connection.createStatement();
+    	  rs3 = st7.executeQuery("Delete from Sale where Id="+id);
+     }
         }
               finally {
            	     try {

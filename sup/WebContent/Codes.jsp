@@ -70,7 +70,7 @@ String role=request.getParameter("role");
         //the same as followings
     }  */
     if (Code!="" && Code!=null) {
-        String sCode = "Code ="+Code;
+        String sCode = "Code ='"+Code+"'";
         sArray.add(sCode);
     }
 
