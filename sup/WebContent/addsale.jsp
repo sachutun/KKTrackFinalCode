@@ -217,6 +217,8 @@ function showCustomer(custID){
 	 	else
 	 		document.getElementById("aadhaar").value="";
 		var gst=dv[4];
+		 var dcNo= document.getElementById("dcnumber").value;
+	 	 var taxInvoiceFlag = dcNo.startsWith("T");
 		if(gst!="" && gst!=null)
 			{
 			document.getElementById("GST").value=gst;	
@@ -232,12 +234,23 @@ function showCustomer(custID){
 			}
 		else
 			{
-			document.getElementById("GST").value="";	
-			document.getElementById('generalInvoice').checked=true;
-	        document.getElementById('GSTdiv').style.visibility = 'hidden';
-	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        document.getElementById('GST').required = false;
-	        //document.getElementById("GST").readOnly = false;
+			
+		 	 if(taxInvoiceFlag==true)
+		 	 {
+		 		document.getElementById('GSTdiv').style.visibility = 'visible';
+		        document.getElementById('GSTLabel').style.visibility = 'visible';
+		        document.getElementById('GST').required = 'true';
+		    	document.getElementById('taxInvoice').checked=true;
+		 	 }
+		 	 else
+		 	 {
+		 	 	document.getElementById('GST').required = 'false';
+		        document.getElementById('GST').removeAttribute("required");
+		        document.getElementById('GST').value = '';
+		    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+		     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+		    	document.getElementById('generalInvoice').checked=true;
+		 	 }
 			}
 	 	 res="update";
 	 	
@@ -253,20 +266,20 @@ function showCustomer(custID){
 	 			 document.getElementById("customernumber").readOnly = false;
 	 			 document.getElementById("aadhaar").readOnly = false;
 	 			 //document.getElementById("GST").readOnly = false;
-	 			document.getElementById("GST").value="";	 			
+	 			/* document.getElementById("GST").value="";	 			
 				document.getElementById('generalInvoice').checked=true;
 		        document.getElementById('GSTdiv').style.visibility = 'hidden';
 		        document.getElementById('GSTLabel').style.visibility = 'hidden';
-		   	  document.getElementById('GST').required = false;
+		   	  document.getElementById('GST').required = false; */
 	 			creditMsg="Add the above Customer!"
 	 			res="insert";
 	 		}
 	 		else {
-	 		document.getElementById("GST").value="";	 			
+	 	/* 	document.getElementById("GST").value="";	 			
 			document.getElementById('generalInvoice').checked=true;
 	        document.getElementById('GSTdiv').style.visibility = 'hidden';
 	        document.getElementById('GSTLabel').style.visibility = 'hidden';
-	        document.getElementById('GST').required = false;
+	        document.getElementById('GST').required = false; */
 	        document.getElementById("customername").readOnly = true;
 			 document.getElementById("customernumber").readOnly = true;
 			 document.getElementById("aadhaar").readOnly = true;
@@ -279,6 +292,23 @@ function showCustomer(custID){
 	 		creditMsg="Please enter valid Credit Customer Id to proceed."
 	 		document.getElementById("creditMsg").style.color = "#ff0000";
 	 		 }
+	 		 var taxInvoiceFlag = dcNo.startsWith("T");
+		 	 if(taxInvoiceFlag==true)
+		 	 {
+		 		document.getElementById('GSTdiv').style.visibility = 'visible';
+		        document.getElementById('GSTLabel').style.visibility = 'visible';
+		        document.getElementById('GST').required = 'true';
+		    	document.getElementById('taxInvoice').checked=true;
+		 	 }
+		 	 else
+		 	 {
+		 	 	document.getElementById('GST').required = 'false';
+		        document.getElementById('GST').removeAttribute("required");
+		        document.getElementById('GST').value = '';
+		    		document.getElementById('GSTdiv').style.visibility = 'hidden';
+		     	document.getElementById('GSTLabel').style.visibility = 'hidden';
+		    	document.getElementById('generalInvoice').checked=true;
+		 	 }
 	 		 }
 	  }
 	 // alert(creditMsg);
