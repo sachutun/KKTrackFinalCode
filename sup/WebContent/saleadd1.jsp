@@ -30,7 +30,6 @@ ResultSet resultSet = null;
 ResultSet rs = null;
 ResultSet rs1 = null;
 ResultSet rs2 = null;
-ResultSet rs3 = null;
 int res=0;
 int id=0;
           String[] code = request.getParameterValues("code");
@@ -301,13 +300,14 @@ res=1;
    //  } 
               }
      catch (Exception ex) {
+    out.println("SALE DID NOT GET ADDED. PLEASE ADD SALE AGAIN.");
      out.println(ex);
      System.out.println(ex);
      System.out.println(id);
      if(id!=0)
      {
     	 st7=connection.createStatement();
-    	  rs3 = st7.executeQuery("Delete from Sale where Id="+id);
+    	st7.executeUpdate("Delete from Sale where Id="+id);
      }
         }
               finally {
