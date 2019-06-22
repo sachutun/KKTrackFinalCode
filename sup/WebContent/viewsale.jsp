@@ -404,9 +404,9 @@ String sql1="";
 int primaryKey=0;
 String sqlc="";
 String g="group by s.Id";
-String sql ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE week(Date)= week(CURDATE())  and year(Date)=year(CURRENT_DATE)  group by s.Id";
+//String sql ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE month(Date)=month(CURRENT_DATE)  and year(Date)=year(CURRENT_DATE) and branch='Barhi' group by s.Id";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  week(Date)= week(CURDATE()) and year(Date)=year(CURRENT_DATE)  ";
+	sql1 ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)=month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE)  ";
 
 	if(code!=null && code.length()!=0)
 	{
@@ -460,8 +460,8 @@ else if(branch!="" && branch!=null)
 }
 else
 {
-resultSet = statement.executeQuery(sql);
-System.out.println(sql);
+//resultSet = statement.executeQuery(sql);
+//System.out.println(sql);
 
 }
 
@@ -517,6 +517,8 @@ if(role!="null" && role.equals("1"))
                         <tbody id="country">
 
 <%
+if(resultSet!=null)
+{
 while(resultSet.next()){
 	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.ARR, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
@@ -687,6 +689,7 @@ else {
                          
 
 	  }
+}
 %>
 
 </tbody>
@@ -734,6 +737,8 @@ else
                         <tbody id="country">
 
 <%
+if(resultSet!=null)
+{
 while(resultSet.next()){
 	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.ARR, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
@@ -874,6 +879,7 @@ while(resultSet.next()){
                          
 
 	  }
+}
 }
 	  
 
