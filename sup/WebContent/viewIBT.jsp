@@ -242,12 +242,59 @@ String Tbranch = request.getParameter("Tbranch"); */
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
                <!--  <td>Type</td> -->
-                <td align="center">From Branch: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+             
+                 <%
+							ResourceBundle resources =ResourceBundle.getBundle("branches");
+							Enumeration resourceKeys = resources.getKeys();
+							ArrayList<String> listOfBranches = new ArrayList<String>();
+						%>
+                   <td align="center">From Branch:   <select class="column_filter " tabindex="-1"  id="col3_filter" data-column="3" style="border: 1px solid #ccc;background-color: white;">
+                            <option></option>
+                       <%
+							 while (resourceKeys.hasMoreElements()) {
+									String branchKey = (String) resourceKeys.nextElement();
+									listOfBranches.add(branchKey);
+							 Collections.sort(listOfBranches);
+							 }		
+							 String branchKey="";
+                        	 	 String branchValue="";
+							for(int i=0;i<listOfBranches.size();i++)
+							{
+								branchKey = listOfBranches.get(i);
+								branchValue=resources.getString(branchKey);																															
+							%>
+							<option value="<%=branchKey%>"> <%=branchValue%>
+							</option> 
+							<%
+								}
+							%> 
+                          </select></td>
                
            <!--  </tr>
             <tr id="filter_col6" data-column="6"> -->
-                <!-- <td>Description</td> -->
-                <td align="center">To Branch: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td>
+             
+                
+                  <td align="center">To Branch:   <select class="column_filter " tabindex="-1"  id="col4_filter" data-column="4" style="border: 1px solid #ccc;background-color: white;">
+                            <option></option>
+                       <%
+							 while (resourceKeys.hasMoreElements()) {
+									String branchKey1 = (String) resourceKeys.nextElement();
+									listOfBranches.add(branchKey);
+							 Collections.sort(listOfBranches);
+							 }		
+							 String branchKey1="";
+                        	 	 String branchValue1="";
+							for(int i=0;i<listOfBranches.size();i++)
+							{
+								branchKey1 = listOfBranches.get(i);
+								branchValue1=resources.getString(branchKey1);																															
+							%>
+							<option value="<%=branchKey1%>"> <%=branchValue1%>
+							</option> 
+							<%
+								}
+							%> 
+                          </select></td>
   
        
   
@@ -732,6 +779,9 @@ $(document).ready(function() {
     
 $('input.column_filter').on( 'keyup click', function () {
 filterColumn( $(this).attr('data-column') );
+} );
+$('select.column_filter').on( 'change', function () {
+    filterColumn( $(this).attr('data-column') );
 } );
 	} );
   $("#FormId").submit( function(e) {

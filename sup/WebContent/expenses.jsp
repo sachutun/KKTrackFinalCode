@@ -246,6 +246,9 @@ String environment = props.getProperty("jdbc.environment");
                          <br/>
         <br/>
                 <br/>
+                             <br/>
+        <br/>
+                <br/>
                  <div style=" float:right; margin-right: 10px; margin-top: -5%">         
               <a class="hide4acc&man" href="expenseform.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
@@ -385,6 +388,8 @@ try{
      //connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");     
 statement=connection.createStatement();
 
+String sql1="SELECT * FROM Expenses where month(Date)=month(CURDATE()) and year(Date)=year(CURDATE())";
+
 String sql ="SELECT * FROM Expenses where 1";
 String whr="";
 if(sn!=null && sn.length()!=0)
@@ -397,8 +402,16 @@ sql+=whr;
 
 statement=connection.createStatement();
 
+if((sn!=null && sn.length()!=0) || (std!=null && std.length()!=0) || (branch!="" && branch!=null))
+{
+System.out.println(sql);
 resultSet = statement.executeQuery(sql);
-	
+}
+else
+{
+	System.out.println(sql1);
+	resultSet = statement.executeQuery(sql1);
+}
 while(resultSet.next()){
 	
 	Date date=resultSet.getDate("Date");

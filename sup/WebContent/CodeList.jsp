@@ -590,7 +590,10 @@ var table=$('#ex').DataTable( {
 	            }
 	        } );
 	    } );
-	 
+	    var data = table
+	    .column( 0 )
+	    .data()
+	    .sort();
 	    var h= $('.right_col').height()+200;
 	    $('.right_col').animate({height:h}, 500);
 	  

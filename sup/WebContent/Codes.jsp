@@ -198,7 +198,7 @@ String role=request.getParameter("role");
                  amount = total;
          }
      /*   sql += " order by " + colName + " " + dir; */
-         sql += " limit " + start + ", " + amount; 
+         sql += " order by CAST(Code AS unsigned) asc limit " + start + ", " + amount; 
         System.out.println(sql);  
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
