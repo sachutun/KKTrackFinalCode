@@ -406,14 +406,14 @@ String sqlc="";
 String g="group by s.Id";
 //String sql ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE month(Date)=month(CURRENT_DATE)  and year(Date)=year(CURRENT_DATE) and branch='Barhi' group by s.Id";
 if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)=month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE)  ";
+	sql1 ="SELECT * FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  month(Date)=month(CURRENT_DATE) and year(Date)=year(CURRENT_DATE)  ";
 
 	if(code!=null && code.length()!=0)
 	{
-		sqlc="SELECT *, SUM(b.ARR*b.qty) as slc, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
+		sqlc="SELECT *, b.Qty as 'tq' From Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code where s.Id in(SELECT DC FROM BillDetails where Code='"+code+"') and b.Code='"+code+"'";
 	}
 	
-	String sql3="SELECT *,SUM(b.ARR*b.qty) as slc FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
+	String sql3="SELECT * FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE 1 ";
 	String w="";
 	if((branch!=null && branch.equals("Workshop")) || (code!=null && code.equals("9999")))
 	{
@@ -558,7 +558,7 @@ while(resultSet.next()){
 <td></td>
 <%} %>
 <td ><%=resultSet.getInt("TotalPrice") %></td>
-<td ><%=resultSet.getInt("slc") %></td>
+<td ><%=resultSet.getString("TotalARR") %></td>
 <td ><%=resultSet.getInt("Tax") %></td>
 <td ><%=resultSet.getInt("Discount") %></td>
 <td ><%=resultSet.getString("AmountPaid") %></td>

@@ -67,6 +67,7 @@ int id=0;
    String chequeAP = request.getParameter("chequeAP");
    String swipeAP = request.getParameter("swipeAP");
    String type="";
+   float totalARR=0;
 /*    System.out.println("typeArray: " +typeArray);
    System.out.println("transtype: " +transtype);
    System.out.println("cashAP: " +cashAP);
@@ -232,6 +233,7 @@ for(int i=0;i<count;i++)
 //	values[0] is minPrice  and values[1] is ARR
 	
 qparts+=" ('"+dcnumber+"',"+code[i]+","+q[i]+","+costprice[i]+","+totalprice[i]+","+id+","+values[0]+","+values[1]+")";
+totalARR+=q[i]*Float.parseFloat(values[1]);
  sq="Update NewInventory SET Quantity=Quantity-? WHERE Code=?and Branch=?";	
 /* System.out.println("Update NewInventory SET Quantity=Quantity-"+qty[i]+" WHERE Code="+code[i]+" and Branch="+branch); */
 System.out.println("---qparts---" +qparts);
@@ -248,8 +250,17 @@ qparts+=",";
 
 String isql= "INSERT INTO BillDetails (`DCNumber`, `Code`, `Qty`, `CostPrice`, `Total`, `DC`,`MinPrice`, `ARR`) VALUES"+ qparts;
 System.out.println("Bill Details: "+isql);
+
 int y=st2.executeUpdate(isql);
 //System.out.println("---type---" +type);
+
+String sq2="UPDATE `Sale` SET `TotalARR`=? WHERE Id=?";
+// System.out.println("--update-sq---" +sq);
+ preparedStatement2 = connection.prepareStatement(sq2);
+ preparedStatement2.setString(1,String.valueOf(totalARR));
+ preparedStatement2.setInt(2,id);
+ preparedStatement2.executeUpdate(); 
+
 if(type.contains("Neft"))
 {
 	   String cbankname=request.getParameter("cusbank");
