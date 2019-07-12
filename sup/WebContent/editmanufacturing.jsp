@@ -126,7 +126,7 @@ xmlHttp.send(null);
   
  </script>  
   <body class="nav-md">
-  <div class="se-pre-con"></div>
+    <div class="se-pre-con"></div>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -144,7 +144,7 @@ xmlHttp.send(null);
             <!-- sidebar menu -->
              <%! String includeMenuPage= "sidebarMenu.html"; %>
 			<jsp:include page="<%= includeMenuPage %>"></jsp:include>
-                        
+             
        
           </div>
         </div>
@@ -207,7 +207,7 @@ String environment = props.getProperty("jdbc.environment");
                 <h1>Manufacturing <!-- <small>Some examples to get you started</small> --></h1>
               </div>
               <div class="clearfix"></div>
-<form id="FormId" action="viewManufacturing.jsp" method="post" class="form-horizontal form-label-left">
+<form id="FormId" action="editmanufacturing.jsp" method="post" class="form-horizontal form-label-left">
    <div class="col-md-4 col-sm-6 col-xs-12">
                         <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -216,22 +216,37 @@ String environment = props.getProperty("jdbc.environment");
                   <input id="end" name="end" class="form-control col-md-7 col-xs-12" type="hidden" > 
                         </div>
                       </div>
- <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Code:</label>
+<!--  <label class="control-label col-md-1 col-sm-1 col-xs-2" for="sno" style=" margin-left:-7% "> Code:</label>
                         <div class="col-md-1 col-sm-3 col-xs-3">
                           <input type="text" id="code" class="form-control col-md-7 col-xs-12" name="code">
-                        </div>
-                        <%
+                        </div> -->
+                   <%--      <%
 							ResourceBundle resources =ResourceBundle.getBundle("branches");
 							Enumeration resourceKeys = resources.getKeys();
 							ArrayList<String> listOfBranches = new ArrayList<String>();
-						%>
-             <div class="col-md-3 col-sm-3 col-xs-4">
-                          <select class="select2_single form-control hide4branch&store&acc" tabindex="-1" name="branch" id="branch">
+						%> --%>
+             <div class="col-md-3 col-sm-3 col-xs-4 admin">
+                          <select class="select2_single form-control" tabindex="-1" name="branch" id="branch">
                             <option value="">Select Another Branch</option>
+                            <option value="All">All Branches</option>
+                             <option value="BarhiWS">Barhi Workshop</option>
                             <option value="Workshop2">Workshop 2</option>
-                            <option value="BarhiWS">Barhi Workshop</option>
-                            
-                 <%--            <%
+                          <!--     <option value="Bowenpally">Bowenpally</option>
+                            <option value="Miyapur">Miyapur</option>
+                            <option value="LBNagar">LB Nagar</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Workshop2">Workshop 2</option>
+                            <option value="Vishakapatnam">Vishakapatnam</option>
+                            <option value="Bhubhaneshwar">Bhubhaneshwar</option>
+                            <option value="Vijayawada">Vijayawada Old</option>
+                            <option value="Vijayawadan">Vijayawada New</option>
+                            <option value="Rajahmundry">Rajahmundry</option>
+                            <option value="Tekkali">Tekkali</option>
+                           <option value="Barhi">Barhi</option>
+                            <option value="Udaipur">Udaipur</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Chittoor">Chittoor</option> -->
+                         <%--    <%
 							 while (resourceKeys.hasMoreElements()) {
 									String branchKey = (String) resourceKeys.nextElement();
 									listOfBranches.add(branchKey);
@@ -250,39 +265,31 @@ String environment = props.getProperty("jdbc.environment");
 								}
 							%>  --%>
                           </select>
-                           <input type="text" id="name" required="required" class="form-control col-md-7 col-xs-12 currentBranch" name="br" style="display:none;" value=<%=uBranch %> disabled>
                         </div>
                        <button type="submit" class="btn btn-success " onclick="d()">Go </button>
                         <input id="ubran" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=uBranch %>> 
-                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>>
-                  <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>>
-                   </form>
-                   
+                  <input id="urole" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=role %>> 
+                      <input id="uenv" class="form-control col-md-7 col-xs-12" type="hidden" value=<%=environment %>> 
+                  </form>
+                    
             <div class="clearfix"></div>
-    
+           
 <%  String branch = request.getParameter("branch");
-
-if(role!=null && !(role.equals("1")))
-{
-	if(!(role.equals("3")))
-	   branch=uBranch; 
-}
 if(branch!=null && branch.equals("All"))
     branch="";
+if(role!=null && !(role.equals("1")))
+	   branch=uBranch; 
 String std=request.getParameter("std");
  String end=request.getParameter("end");	
- String code=request.getParameter("code");	
- 
-
+/*  String code=request.getParameter("code");	 */
                    %>
-          <div class="admin" style=" float:right; margin-right: 10px; margin-top:0px">
+         <div style=" float:right; margin-right: 10px; margin-top:10px">
 
-            <a href="addpurchase.jsp"><button type="button" class="btn btn-success">Add </button></a>
+            <a href="addItem.jsp"><button type="button" class="btn btn-success">Add </button></a>
 
                   <a href="viewManufacturing.jsp" style="color:white;">  <button type="button" class="btn btn-info">View </button></a>
 
                  <a href="editmanufacturing.jsp" style="color:white;">   <button type="button" class="btn btn-warning">Edit</button></a>
-                 
              </div>       
 
             <br/>
@@ -300,14 +307,17 @@ String std=request.getParameter("std");
           <!--   </tr>
             <tr id="filter_col4" data-column="4"> -->
                <!--  <td>Date</td> -->
-                <td align="center">Memo Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
+                <td align="center">Manufacturing Memo Number: <input type="text" class="column_filter" id="col3_filter" data-column="3"></td>
               
             <!-- </tr>
             <tr id="filter_col5" data-column="5"> -->
                <!--  <td>Type</td> -->
-                <td align="center">Supplier Name: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td>
-               
-      
+              <!--   <td align="center">Manufacturer Name: <input type="text" class="column_filter" id="col4_filter" data-column="4"></td>
+                -->
+           <!--  </tr>
+            <tr id="filter_col6" data-column="6"> -->
+                <!-- <td>Description</td> -->
+                <!-- <td align="center">Payment Mode: <input type="text" class="column_filter" id="col8_filter" data-column="8"></td> -->
   
        
   
@@ -316,39 +326,29 @@ String std=request.getParameter("std");
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>View Manufacturing</h2>
+                    <h2>Edit Manufacturing</h2>
               
   <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <div class="table-responsive"> 
+                  <div class="table-responsive"> 
                     <table id="ex" class="table table-striped table-bordered dt-responsive" width="100%">
                       <thead>
                         <tr>
                             <tr>
-                                            <th>Id</th>
+                                  <th>Id</th>
                                             <th>Branch</th>
                                             <th>Date</th>
                                             <th>Manufacturing Memo Number</th>
                                             <th>Manufacturer Name</th>
-                                            <th>Code qty</th>
+                                         
+                                                 <th>Edit</th> 
                                             <th class="none">Manufacturing Details</th> 
                                             <th class="none" >Comments</th> 
-                                      
+                                            
+
                                         </tr>
                       </thead>
-             <!--                 <tfoot>
-            <tr>
-                <th colspan="6" style="text-align:right">Total Manufacturing Amount:</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Comments</th> 
-            </tr>
-        </tfoot> -->
                         <tbody id="country">
 <%
 try{ 
@@ -358,69 +358,69 @@ try{
 	  if (ds != null) {
 		  connection = ds.getConnection(); */
 		 
-		 // Class.forName("com.mysql.jdbc.Driver").newInstance();  
-	 	  //   connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
-		 if (driver != null) {
-	        Class.forName(driver).newInstance();  
-	    }
-	
-	    connection = DriverManager.getConnection(url, username, password);
+		  //Class.forName("com.mysql.jdbc.Driver").newInstance();  
+	 	   //  connection = DriverManager.getConnection("jdbc:mysql://kkheavydb.ceiyzsxhqtzy.us-east-2.rds.amazonaws.com:3306/KKTrack","root","Test1234");  
+		if (driver != null) {
+        		Class.forName(driver).newInstance();  
+    		}
+
+    		connection = DriverManager.getConnection(url, username, password);
 	 	     statement=connection.createStatement();
-st=connection.createStatement();
-st2=connection.createStatement();
-String sqlc="";
-String sql1="";
-String sql ="SELECT * FROM Manufacturing where Month(Date) in( Month(CURDATE())) and year(Date) in (year(CURDATE()))";
-if (branch!=null && branch.length()!=0 )
-	sql1 ="SELECT * FROM Manufacturing where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1) and year(Date) in (year(CURDATE()))";
+	 	    st=connection.createStatement();
+	 	   st2=connection.createStatement();
+	 	  /*  String sqlc=""; */
+	 	   String sql1="";
+	 	   String sql ="SELECT * FROM Manufacturing where Month(Date) in( Month(CURDATE())) and Year(Date)= Year(CURDATE())";
+	 	   if (branch!=null && branch.length()!=0 )
+	 	   	sql1 ="SELECT * FROM Manufacturing where Month(Date) in (Month(CURDATE()), Month(CURDATE())-1) and Year(Date)= Year(CURDATE())";
 
-	if(code!=null && code.length()!=0)
-	{
-		sqlc="SELECT *, ManDetails.Qty as 'tq' From Manufacturing inner join ManDetails on Manufacturing.Id=ManDetails.Mno where Manufacturing.Id in(SELECT MNo FROM ManDetails where Code='"+code+"') and ManDetails.Code='"+code+"'";
-	}
-	
-	String sql3="Select * from Manufacturing where 1";
-	String w="";
-	
-if(branch!="" && branch!=null)
-{
-	w+=" and Branch='"+branch+"'";
-	//sql+=w;
-	sql1+=" and Branch='"+branch+"'";
-}
-if(std!=null && std.length()!=0)
-{
-	w+=" and Date between '"+std+"' and '"+end+"'";
-	//sql3+=w;
-}
+	 	  /*  	if(code!=null && code.length()!=0)
+	 	   	{
+	 	   		sqlc="SELECT *, InvoiceDetails.Qty as 'tq' From Purchases inner join InvoiceDetails on Purchases.Id=InvoiceDetails.Ino where Purchases.Id in(SELECT INo FROM InvoiceDetails where Code='"+code+"') and InvoiceDetails.Code='"+code+"'";
+	 	   	} */
+	 	   	
+	 	   	String sql3="Select * from Manufacturing where 1";
+	 	   	String w="";
+	 	   	
+	 	   if(branch!="" && branch!=null)
+	 	   {
+	 	   	w+=" and Branch='"+branch+"'";
+	 	   	//sql+=w;
+	 	   	sql1+=" and Branch='"+branch+"'";
+	 	   }
+	 	   if(std!=null && std.length()!=0)
+	 	   {
+	 	   	w+=" and Date between '"+std+"' and '"+end+"'";
+	 	   	//sql3+=w;
+	 	   }
 
-sqlc+=w;
-sql3+=w;
+	 	 /*   sqlc+=w; */
+	 	   sql3+=w;
 
-if(code!=null && code.length()!=0)
-{
-	resultSet = statement.executeQuery(sqlc);
-	System.out.println(sqlc);
-}
+	 	/*    if(code!=null && code.length()!=0)
+	 	   {
+	 	   	resultSet = statement.executeQuery(sqlc);
+	 	   	System.out.println(sqlc);
+	 	   }
+ */
+	 	    if(std!=null && std.length()!=0)
+	 	   {
+	 	   	resultSet = statement.executeQuery(sql3);
+	 	   	System.out.println(sql3);
+	 	   }
 
-else if(std!=null && std.length()!=0)
-{
-	resultSet = statement.executeQuery(sql3);
-	System.out.println(sql3);
-}
 
+	 	   else if(branch!="" && branch!=null)
+	 	   {
+	 	   	resultSet = statement.executeQuery(sql1);	
+	 	   	System.out.println(sql1);
+	 	   }
+	 	   else
+	 	   {
+	 	   resultSet = statement.executeQuery(sql);
+	 	   System.out.println(sql);
 
-else if(branch!="" && branch!=null)
-{
-	resultSet = statement.executeQuery(sql1);	
-	System.out.println(sql1);
-}
-else
-{
-resultSet = statement.executeQuery(sql);
-System.out.println(sql);
-
-}
+	 	   }
 
 while(resultSet.next()){
 	String sql2="SELECT ManDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,CodeList.Grp, CodeList.MaxPrice, ManDetails.ARR, ManDetails.Qty, ManDetails.TotalPrice, ManDetails.Tax FROM ManDetails inner join CodeList on ManDetails.Code=CodeList.Code where Mno=";
@@ -431,24 +431,24 @@ while(resultSet.next()){
 	Date date=resultSet.getDate("Date");
 %>
                                         <tr class="odd gradeX">
+                                  
 <td><%=resultSet.getString("Date") %></td>                                          
 <td ><%=resultSet.getString("Branch") %></td>
 <td width="50%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <td width="70%"><%=resultSet.getString("InvoiceNumber") %></td>
 <td><%=resultSet.getString("ManufacturerName") %></td> 
 <%-- <td><%=resultSet.getInt("TotalPrice") %></td> --%>
-<%if(code!=null && code.length()!=0){%>
-<td><%=resultSet.getInt("tq") %></td>
-<%}else {%>
-<td></td>
-<%} %>
- 
+
+
+
+
+<td><a href="editmanindividual.jsp?dc=<%=resultSet.getString("InvoiceNumber") %>&sd=<%=resultSet.getDate("Date") %>&branch=<%=resultSet.getString("Branch") %>"> <button type="button" class="btn btn-success" style="margin-bottom: 1px;margin-left: 2%;">Edit </button></a></td> 
 <td><table id="" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                             <tr>
                                             
-                                            <th>Code</th>
+                                              <th>Code</th>
                                             <th>Description</th>
                                             <th>Machine</th>
                                             <th>Part No</th>
@@ -457,6 +457,7 @@ while(resultSet.next()){
                                             <th class="price">ARR</th>
                                             <th class="price">ARR+Tax</th>
 											<th class="price">TotalPrice</th>
+
                                         </tr>
                       </thead>
                         <tbody >
@@ -474,14 +475,14 @@ while(resultSet.next()){
 <td class="price"><%=rs.getFloat("ManDetails.ARR") %></td>
 <td class="price"><%=rs.getFloat("ManDetails.ARR") + rs.getFloat("ManDetails.Tax") %></td>
 <td class="price"><%=rs.getFloat("ManDetails.TotalPrice") %></td>
-
 </tr>
  <% }%>
 </tbody> </table></td>
 
-                                       
    <td><%=resultSet.getString("Comments") %></td> 
-</tr>                 
+
+                                        
+                   
                                         <%
                                         whr="";
 }
@@ -559,15 +560,25 @@ finally {
 
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
- <script src="build/js/shortcut.js"></script>
-  <script>
+    <script src="build/js/shortcut.js"></script>
+     <script>
     var ubran=document.getElementById('ubran').value;
     var role=document.getElementById('urole').value;
     var environment=document.getElementById('uenv').value;
     var path = window.location.pathname;
     var callingJSP = path.split("/").pop();
 </script>
+    <script>
+jQuery(function(){
+$("#code").autocomplete("dem.jsp");
+});
+</script>
 <script>
+function filterColumn ( i ) {
+    $('#ex').DataTable().column( i ).search(
+        $('#col'+i+'_filter').val()
+    ).draw();
+}
 function showDet(i)
 {
 	if(document.getElementById(i).style.display=="none")
@@ -578,11 +589,6 @@ function showDet(i)
 </script>
  
 <script>
-function filterColumn ( i ) {
-    $('#ex').DataTable().column( i ).search(
-        $('#col'+i+'_filter').val()
-    ).draw();
-}
 $(document).ready(function() {
 	shortcut.add("Ctrl+Shift+X",function() {
 		hideprices();
@@ -593,8 +599,8 @@ $(document).ready(function() {
 	    for (var i = 0; i < elements.length; i++){
 	    	elements[i].innerHTML="";
 	    }
-		}		
-	});
+		}
+	});  
 	 $.getScript("js/rolePermissions.js");
 	var ubran=document.getElementById('ubran').value;
 	var role=document.getElementById('urole').value;
@@ -607,60 +613,59 @@ $(document).ready(function() {
 		{
 		$('.site_title').css('background-color', '');
 		}
-	if(role!=null && role!="1")
+
+if(role!=null && role!="1")
 	{
-		$( '[class*="admin"]' ).hide();
-		if(role!="3")
-		{
-			$( '[class*="user"]' ).show();
-		}
-	
+	   $( '[class*="admin"]' ).hide();
 	}
 	if(role!=null && role=="2")
 	{
 		$( '[class*="branch"]' ).hide();
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Barhi")))
-    			document.getElementById("invAdj").style.display="block";
+    		document.getElementById("invAdj").style.display="block";
    		if(ubran!=null && ((ubran=="Workshop")||(ubran=="Workshop2")))
 			{
 			document.getElementById("mod").style.display="block";
 			document.getElementById("grping").style.display="block";
 			}
 	}
-	 if(role!=null && role=="3")
+	if(role!=null && role=="3")
 	{
-		 $( '[class*="man"]' ).hide();
+		$( '[class*="man"]' ).hide();
 	} 
 
 	if(role!=null && role=="4")
 	{
 		$( '[class*="store"]' ).hide();
-	    
 	}
 	if(role!=null && role=="5")
 	{
 		$( '[class*="acc"]' ).hide();
+	    
 		document.getElementById("br").style.display="block";
-	} */
+	}
+	 */
 	   
 	var table=$('#ex').DataTable( {
-		     
-		        "iDisplayStart":0,
-		      
-		        "lengthMenu": [[25, 50, 100,-1], [25, 50, 100, "All"]],
-		        "order": [[ 0, "desc" ]],
-		        "columnDefs": [
-		            { "visible": false, "targets": 0 }
-		          ],
-		          scrollY:        '53vh',
-			        scrollCollapse: true,
-		    
-		    /*     "createdRow": function ( row, data, index ) {
-		           
-		                $('td', row).eq(5).addClass('highlight');}, */
-		      
-		        dom: 'lfrtip'
-		    } );
+	     
+        "iDisplayStart":0,
+       // "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [[25, 50, 100,-1], [25, 50, 100, "All"]],
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [
+            { "visible": false, "targets": 0 },
+          //  { "targets": [6,7], "visible": false }
+          ],
+    
+    /*     "createdRow": function ( row, data, index ) {
+           
+                $('td', row).eq(5).addClass('highlight');}, */
+      
+        dom: 'lfrtip'/* ,
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ] */
+    } );
 	function hideprices()
 	{
 		 var elements = document.getElementsByClassName('price');
@@ -671,13 +676,11 @@ $(document).ready(function() {
 	  
        table.column(6).visible(true);
        table.column(7).visible(true);
-       table.column(8).visible(true);
         
-	}
-	$('input.column_filter').on( 'keyup click', function () {
-	    filterColumn( $(this).attr('data-column') );
-	} );
-	
+	} 
+$('input.column_filter').on( 'keyup click', function () {
+filterColumn( $(this).attr('data-column') );
+} );
 	} );
   $("#FormId").submit( function(e) {
 	  loadAjax();
@@ -722,6 +725,7 @@ function d(){
   var end=convert(edate);
     	document.getElementById('std').value=std;
     	document.getElementById('end').value=end;
+    	
     	
  
     	localStorage.setItem("std", std);
