@@ -3,6 +3,7 @@
 
 Role No : Description
 -----------------------
+ 0      : superAdm
  1      : admin
  2      : branch
  3      : manager
@@ -61,9 +62,17 @@ else
 	$('.site_title').css('background-color', '');
 }
 
-if (role != null && role != "1") 
+
+if (role != null && role == "1") 
+{
+	$('[class*="superAdm"]').hide();
+	$('[class*="admin"]').show();
+}
+
+if (role != null && role != "0" && role != "1") 
 {
 	$('[class*="admin"]').hide();
+	$('[class*="superAdm"]').hide();
 	if(callingJSP == "hidepricesale.jsp" || callingJSP == "viewsaletry.jsp" )
     	{
     		if(ubran!='Workshop' && ubran!='All')

@@ -20,15 +20,15 @@ Description		: KK Track Menu options
                   </li>
                  <li class="hide4acc&store"><a><i class="fa fa-shopping-cart"></i> Purchase <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                      <li class="admin"><a href="addpurchase.jsp">Add New Purchase</a></li>
+                      <li class="admin&superAdm"><a href="addpurchase.jsp">Add New Purchase</a></li>
                       <li  class="hide4store"><a href="viewpurchase.jsp">View Purchase</a></li>
                       <li  class="hide4store"><a href="creditpurchase.jsp">Credit Purchase</a></li>
                       <li  class="hide4store&man"><a href="printpurchase.jsp">Print Purchase</a></li>
-                      <li  class="admin"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
+                      <li  class="admin&superAdm"><a href="printpurchaseRecord.jsp">Print Purchase Admin</a></li>
                       <li class="hide4store"><a>Purchase Returns</a>
                       <ul class="nav child_menu">
                       <li class="hide4store"><a href="viewpurchasereturn.jsp">View Returned Purchase items</a></li>
-                      <li class="admin"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
+                      <li class="admin&superAdm"><a href="purchasereturn.jsp">Enter Returned Purchase items</a></li>
                     </ul>
                       </li>
                     </ul>
@@ -37,7 +37,7 @@ Description		: KK Track Menu options
                     <ul class="nav child_menu">
                       <li class="hide4acc&store&man"><a href="addsale.jsp">Add New Sale</a></li>
                       <li  class="hide4store"><a href="viewsale.jsp">View Sale</a></li>
-                        <li  class="admin"><a href="viewSaleTransactions.jsp">View Sale Transactions</a></li>                     
+                        <li  class="admin&superAdm"><a href="viewSaleTransactions.jsp">View Sale Transactions</a></li>                     
                        <li  class="hide4acc&store"><a href="viewInvoices.jsp">View Invoice</a></li>
                       <li id="viewService" class="hide4acc&store&branch"><a href="viewServicing.jsp">View Servicing</a></li>
                       <li class="hide4acc&store"><a href="creditsale.jsp">Credit Sale</a></li>
@@ -63,10 +63,10 @@ Description		: KK Track Menu options
                    <li ><a href="viewinventory.jsp">View Stock</a></li>
                    <li ><a href="viewinvbal.jsp">View Overall Stock</a></li>
                    <li ><a href="CodeList.jsp">View Code List</a></li>
-                   <li id="invAdj" class="admin" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
-                   <li id="mod" class="admin" ><a href="modification.jsp">Modification</a></li>
-                    <li id="grping" class="admin" ><a href="group.jsp">Grouping</a></li>
-                      <li class="admin"><a href="AddCode.jsp">Add New Code</a></li>
+                   <li id="invAdj" class="admin&superAdm" ><a href="inventoryAdjustment.jsp">Inventory Adjustment</a></li>
+                   <li id="mod" class="admin&superAdm" ><a href="modification.jsp">Modification</a></li>
+                    <li id="grping" class="admin&superAdm" ><a href="group.jsp">Grouping</a></li>
+                      <li class="admin&superAdm"><a href="AddCode.jsp">Add New Code</a></li>
                       </ul>
                   </li>
                   <li><a><i class="fa fa-truck"></i> Branch Transfer <span class="fa fa-chevron-down"></span></a>
@@ -85,9 +85,9 @@ Description		: KK Track Menu options
                     
                     </ul>
                   </li>
-                   <li class="admin" id="reports"><a><i class="fa fa-bar-chart-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                   <li class="superAdm" id="reports"><a><i class="fa fa-bar-chart-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                       <li class="admin"><a href="groupSale.jsp">Group Sale</a></li>                   
+                       <li class="superAdm"><a href="groupSale.jsp">Group Sale</a></li>                   
                     </ul>
                   </li>
                 </ul>

@@ -205,7 +205,11 @@ statement=connection.createStatement();
         while (rs2.next()) {
             String codeKey = rs2.getString(column1Pos);
             String mp = rs2.getString(column2Pos);
+            if(mp=="" || mp==null || mp.length()==0)
+            	mp="0";
             String arr = rs2.getString(column3Pos);
+            if(arr=="" || arr==null || arr.length()==0)
+            	arr="0";
             String mplcValue=mp+","+arr;
             codeList.put(codeKey, mplcValue);
         }
