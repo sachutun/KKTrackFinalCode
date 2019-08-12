@@ -134,7 +134,7 @@
 
 			st = conn.createStatement();
 
-			s1 = "UPDATE `Manufacturing` SET `TotalPrice`=" + totalprice + ",`Tax`=" + (totaltax) + " WHERE Id="+ Pid;
+			s1 = "UPDATE `Manufacturing` SET `TotalPrice`=" + totalprice + ",`Tax`=" + (totaltax) + ", `Date`=" + nd + " WHERE Id="+ Pid;
 			String s2 = "UPDATE `ManDetails` SET `TotalPrice`=" + newtotalp + ",`Qty`=" + nq + ",`ARR`=" + arr + ", `Tax`=" + tax + "  WHERE Id=" + manid;
 			//System.out.println(s2 + "," + s2);
 
@@ -173,10 +173,11 @@
 		}
 
 		//System.out.println(s1 + "," + s1);
-		ps = conn.prepareStatement("UPDATE `Manufacturing` SET `TotalPrice`=?,`Tax`=? WHERE Id=?");
+		ps = conn.prepareStatement("UPDATE `Manufacturing` SET `TotalPrice`=?,`Tax`=?,`Date`=? WHERE Id=?");
 		ps.setFloat(1, totalprice);
 		ps.setFloat(2, totaltax);
-		ps.setInt(3, Pid);
+		ps.setString(3, nd);
+		ps.setInt(4, Pid);
 		ps.executeUpdate();
 
 		response.sendRedirect("editmanindividual.jsp?res=1&branch=" + branch + "&dc=" + dc + "&sd=" + nd);
