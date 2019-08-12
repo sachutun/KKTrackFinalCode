@@ -361,7 +361,7 @@ if(resultSet.getString("CustID")!=null && resultSet.getString("CustID")!="")
                         	   
 	%>
 
-<td><%=sno%></td>
+<td><%=sno++%></td>
 <td><%=rs.getString("BillDetails.Code") %></td>
 <td><%=rs.getString("CodeList.Description") %></td>
 <td><%=rs.getString("CodeList.Machine") %></td>

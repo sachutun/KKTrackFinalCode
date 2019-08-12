@@ -369,7 +369,7 @@ if(branch!=null && branch.equals("All"))
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2 style="text-align:center; font-size:xx-large">Last 5 Prices of  <b><%=code %></b></h2>
+                    <h2 style="text-align:center; font-size:large">Last 5 Prices of  <b><%=code %></b></h2>
               
   <div class="clearfix"></div>
                   </div>
@@ -437,6 +437,7 @@ else
                                             <th>Branch</th>
                                             <th>Date</th>
                                            <!--  <th>Code</th> -->
+                                           <!--  <th>Sale Price</th> -->
                                             <th>Sale Price</th>
                                             <th>Invoice No</th>
                                         </tr>
@@ -455,7 +456,8 @@ if(resultSet!=null)
 while(resultSet.next()){
 
 	Date date=resultSet.getDate("Date");
-
+	double cp=Math.round(resultSet.getFloat("b.CostPrice")+resultSet.getFloat("b.CostPrice")*(0.18));
+	String costp=String.format("%,.2f",cp);
 %>
 
                                         <tr class="odd gradeX">
@@ -463,8 +465,9 @@ while(resultSet.next()){
 <td><%=resultSet.getString("Branch") %></td>
 <td width="10%"><%=new SimpleDateFormat("dd-MM-yyyy").format(date) %></td>
 <%-- <td ><%=resultSet.getString("b.Code") %></td> --%>
-<td ><%=resultSet.getString("b.CostPrice") %></td>
-<td><%=resultSet.getString("DCNumber") %></td>
+<%-- <td ><%=resultSet.getString("b.CostPrice") %></td> --%>
+<td><%=costp%></td>
+<td><a style="color: #35c335;" target="_blank" href="viewInvoice.jsp?dc=<%=resultSet.getString("DCNumber") %>&sd=<%=new SimpleDateFormat("yyyy-MM-dd").format(resultSet.getDate("Date") ) %>&branch=<%=resultSet.getString("Branch") %>&callingPage=PriceCheck.jsp"> <%=resultSet.getString("DCNumber")%></a></td>
 
 
                                         <%
@@ -628,22 +631,17 @@ var table=$('#ex').DataTable( {
 	           
 	              var theColumnTotal = columnData
 	                  .reduce( function (a, b) {
-	                      if(isNaN(a)){
-	                          return '';
-	                      } else {
-	                          a = parseFloat(a);
-	                      }
-	                      if(isNaN(b)){
-	                          return '';
-	                      } else {
-	                          b = parseFloat(b);
-	                      }
-	                      return (a + b).toFixed(2);
+	                  
+	                      return (intVal(a) + intVal(b)).toFixed(2);
 	                  }, 0 );
-	            
+	            var total=theColumnTotal / columnData.count();
 	              // Update footer
 	              $( api.column( 2 ).footer() ).html(
-	                  theColumnTotal / columnData.count()
+	            		  total.toLocaleString('en-IN', {
+	                  	    maximumFractionDigits: 2,
+	                  	    style: 'currency',
+	                  	    currency: 'INR'
+	            		  })
 	              );
 	   
 	          
