@@ -438,25 +438,25 @@ if(std!=null && std.length()!=0)
 sqlc+=w+g;
 sql3+=w+g;
 
-
-if(code!=null && code.length()!=0)
+if(std!=null && std.length()!=0)
 {
-	resultSet = statement.executeQuery(sqlc);
-	System.out.println(sqlc);
-}
+	if(code!=null && code.length()!=0)
+ 	{
+		resultSet = statement.executeQuery(sqlc);
+		System.out.println(sqlc);
+ 	}
 
-else if(std!=null && std.length()!=0)
-{
-	resultSet = statement.executeQuery(sql3);
-	System.out.println(sql3);
-}
+	else if(std!=null && std.length()!=0)
+	{
+		resultSet = statement.executeQuery(sql3);
+		System.out.println(sql3);
+	}
 
-
-else if(branch!="" && branch!=null)
-{
-
-	resultSet = statement.executeQuery(sql1);	
-	System.out.println(sql1);
+	else if(branch!="" && branch!=null)
+	{
+		resultSet = statement.executeQuery(sql1);	
+		System.out.println(sql1);
+	}
 }
 else
 {
