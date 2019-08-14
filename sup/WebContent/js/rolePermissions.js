@@ -163,6 +163,12 @@ if (role != null && role == "2")
 		document.getElementById("mod").style.display = "block";
 		document.getElementById("grping").style.display = "block";
 	}
+	
+	if (ubran != null && ((ubran == "Barhi"))) 
+	{
+		document.getElementById("grping").style.display = "block";
+	}
+		
 	if (ubran != null && ubran == "Workshop") 
 	{
 		document.getElementById("viewService").style.display = "block";
