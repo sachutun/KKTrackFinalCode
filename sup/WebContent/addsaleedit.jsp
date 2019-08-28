@@ -102,6 +102,7 @@
 			document.getElementById("grp" + i).value = dv[5];
 			/* 	 document.getElementById("qmax").value=dv[7]; */
 			document.getElementById("qty" + i).max = dv[7];
+			document.getElementById("existQty" +i).innerHTML=dv[7];
 
 		}
 	}
@@ -280,6 +281,7 @@
 																<input id="qty1" class="form-control col-md-7 col-xs-12"
 																	required="required" type="number" step="any" name="qty"
 																	onchange="calculate(1)" min=0.0>
+																	  <p id="existQty1"></p> 
 															</div>
 															<label class="control-label col-md-1 col-sm-1 col-xs-2">Total:</label>
 															<div class="col-md-1 col-sm-1 col-xs-2">
@@ -552,7 +554,7 @@
 														+ c
 														+ "\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onchange=\"calculate("
 														+ c
-														+ ")\"> </div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\">Total:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"totalprice"
+														+ ")\"><p id=\"existQty"+c+"\"></p> </div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\">Total:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"totalprice"
 														+ c
 														+ "\" class=\"form-control col-md-7 col-xs-12\"  type=\"text\" name=\"totalprice\" readonly=\"readonly\" onchange=\"tot(c);\"></div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" required=\"required\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div><label class=\"control-label col-md-1 col-sm-1 col-xs-2\">Max Price:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input id=\"mp"+c+"\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"text\" name=\"maxprice\"disabled></div></div></div></div></div>";
 												/*    $('.codedetails:last').before(s1); */
