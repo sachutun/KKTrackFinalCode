@@ -390,7 +390,7 @@ String sql1="";
 int primaryKey=0;
 String sqlc="";
 String g="group by s.Id";
-String sql ="SELECT * FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  week(Date)= week(CURDATE()) and year(Date)=year(CURRENT_DATE) group by s.Id";
+//String sql ="SELECT * FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  week(Date)= week(CURDATE()) and year(Date)=year(CURRENT_DATE) group by s.Id";
 if (branch!=null && branch.length()!=0 )
 	sql1 ="SELECT * FROM Sale s inner join BillDetails b on s.Id=b.DC inner join CodeList c on b.Code=c.Code WHERE  week(Date)= week(CURDATE()) and year(Date)=year(CURRENT_DATE) ";
 
@@ -417,7 +417,7 @@ if(branch!="" && branch!=null)
 }
 if(std!=null && std.length()!=0)
 {
-	w+=" and Date between '"+std+"' and '"+end+"'";
+	w+=" and Date between '"+std+"' and '"+end+"' ";
 	//sql3+=w;
 }
 
@@ -446,8 +446,8 @@ else if(branch!="" && branch!=null)
 }
 else
 {
-resultSet = statement.executeQuery(sql);
-System.out.println("sql: "+sql);
+//resultSet = statement.executeQuery(sql);
+//System.out.println("sql: "+sql);
 
 }
 
@@ -518,6 +518,8 @@ if(role!="null" && role.equals("1"))
                         <tbody id="country">
 
 <%
+if(resultSet!=null)
+{
 while(resultSet.next()){
 	String sql2="SELECT BillDetails.Code, CodeList.Description, CodeList.Machine, CodeList.PartNo,  CodeList.Grp, BillDetails.ARR, CodeList.MaxPrice, BillDetails.CostPrice, BillDetails.Qty, BillDetails.Total FROM BillDetails inner join CodeList on BillDetails.Code=CodeList.Code where DC=";
 
@@ -714,6 +716,7 @@ else {
                          
 
 	  }
+}
 %>
 
 </tbody>
