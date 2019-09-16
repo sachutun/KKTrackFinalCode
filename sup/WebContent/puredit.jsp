@@ -156,7 +156,7 @@ try{
     preparedStatement.setInt(5,billid);
     preparedStatement.executeUpdate();  
    
-    float minp=(newcp+(10*newcp)/100);
+    float minp=(newcp+(5*newcp)/100);
 
     String s="UPDATE `CodeList` SET `ARR`=?, `minprice`=?, `USD/Loc`=? WHERE Code=?"; 
     /* String s="UPDATE `Sale` SET `TotalPrice`=`TotalPrice`+"+ft+",`BalanceAmount`=TotalPrice-AmountPaid WHERE Id="+id; */
