@@ -91,6 +91,7 @@ xmlHttp.send(null);
 	/*  document.getElementById("mp"+i).value=dv[4]; */
 	 document.getElementById("grp"+i).value=dv[5];
 	 document.getElementById("qty"+i).max=dv[7]; 
+	document.getElementById("existQty" +i).innerHTML=dv[7];
  }   
  }
   
@@ -256,6 +257,7 @@ String environment = props.getProperty("jdbc.environment");
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-2">
                           <input id="qty1" class="form-control col-md-7 col-xs-12" required="required" type="number" name="qty"  min=0 onblur="calculate(1)">
+                          <p id="existQty1"></p> 
                         </div>
                         <!-- <label class="control-label col-md-1 col-sm-1 col-xs-2">Total:</label>
                         <div class="col-md-1 col-sm-1 col-xs-2">
@@ -610,7 +612,7 @@ function cls(elt)
 													+ c
 													+ "\" class=\"form-control col-md-7 col-xs-12\" required=\"required\" type=\"number\" name=\"qty\" onblur=\"calculate("
 													+ c
-													+ ")\"> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
+													+ ")\"> <p id=\"existQty"+c+"\"></p> </div> </div><div class=\"form-group\" style=\"margin-top:2%; margin-bottom:2%; margin-left:-3%\"><label class=\"control-label col-md-1 col-sm-1 col-xs-2\" for=\"mac\"> Mac:</label><div class=\"col-md-1 col-sm-1 col-xs-2\"><input type=\"text\" id=\"mac"+c+"\" class=\"form-control col-md-7 col-xs-12\" name=\"mac\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">PartNo:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"partno"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"partno\" disabled></div><label  class=\"control-label col-md-1 col-sm-1 col-xs-2\">Group:</label><div class=\"col-md-2 col-sm-2 col-xs-3\"><input id=\"grp"+c+"\" class=\"form-control col-md-7 col-xs-12\" type=\"text\" name=\"grp\" disabled></div></div></div></div></div>";
 											$('.codedetails:last').after(s1);
 											/*  $('#main').after(s1); */
 											var h = $('.right_col').height() + 200;
